@@ -2,8 +2,13 @@
 call pathogen#infect()
 call pathogen#helptags()
 
+
+
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
+
+" swapfiel location
+set dir=~/temp
 
 colorscheme solarized
 " Visibiliyt of invisible chars set list. low|normal|high
@@ -39,6 +44,9 @@ set guioptions-=L
 " Representation of invisible characters with set list
 set listchars=tab:▸\ ,eol:¬
 
+" Move to previous buffer
+nnoremap ## :b#<CR>
+
 "{{{1 SPELLCHECK
 
 set spell
@@ -47,23 +55,22 @@ set spelllang=en_us
 " Choose first word in list
 nmap zz 1z=e
 
-" Alert for repeated word
-syn match SpellBad /\c\v<(\w+)\s+\1>/
 
+let languagetool_jar='$HOME/LanguageTool-3.1/languagetool-commandline.jar'
 
 
 "{{{1 DISPLAY -------------------
 " Display linennumbers
-" set number
+set number
 
 " GUIFONTS
 "set guifont=Letter\ Gothic:h14 
     " Nice and very bright but no arabic diacrtitics.
 "set guifont=AnonymousPro:h14 
     " Brigh. No arabic diacrtitics.
-set guifont=Consolas:h14
+" set guifont=Consolas:h12
     " Very nice and has arabic characters and italics.
-"set guifont=Source\ Code\ Pro:h14
+set guifont=Source\ Code\ Pro:h14
    " Has various heavynesses byt no italics
 "set guifont=Ubuntu\ Mono:h15
    " Has bold and italics
@@ -74,20 +81,29 @@ highlight Comment cterm=italic
 
 " When scorlling, keep the cursor 8 lines from the top and 8
 " lines from the bottom
-set scrolloff=15
+set scrolloff=8
 
-" $ at end of chnaged (<c>) object 
-set cpoptions+=$
+" | at end of chnaged (<c>) object 
+set cpoptions+=|
 
 " Show as much as possible of a wrapped last line, not just '@'.
+
+" Soft wrap gundo preview
+augroup MyGundo
+    au!
+    au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
+augroup end
+
+" List characters opaque
+let g:solarized_visibility='low'
 
 " {{{1 MOVEMENT & EDITING ---------------
 " Remmao window prefix
 nmap <Leader>w <C-w>
 
 " Capital movement for horizontal window switch
-nnoremap H <C-W>h
-nnoremap L <C-W>l
+nnoremap HH <C-W>h
+nnoremap LL <C-W>l
 
 " backspace over everything in insert mode
 set backspace=indent,eol,start 
@@ -110,12 +126,6 @@ set ignorecase
 " Case-sensitive when upper case is used in search string
 set smartcase
 
-" Always use very magic regex
-nnoremap / /\v
-vnoremap / /\v
-
-" Always search globally, i.e. on whole line
-set gdefault
 
 " Set undo points at end of sentence.
 inoremap . .<C-g>u
@@ -137,6 +147,12 @@ set cole=2
 " Also when cursor is on the line, in all the modes
 set concealcursor=
 
+" Wider gundo window
+    let g:gundo_width = 60
+" Auto-close gundo window on revert.
+    let g:gundo_close_on_revert=1
+
+nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 " {{{1  MARKDOWN & LECTURE NOTES
 " Function and mappeing to compile lecturenotes in markdown to pdf via
@@ -145,30 +161,38 @@ set concealcursor=
 
 "nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
 
-nmap <Leader>n :w<CR>:!pandoc -o lecturenotes.pdf --latex-engine=xelatex --number-sections -H toheader.tex %<CR>
+nmap <Leader>n :w<CR>:!pandoc -o pdf --latex-engine=xelatex --number-sections -H toheader.tex %<CR>
 
 " {{{1 CHARACTER INPUT
 
-" abbrevation command for common misspellings
-iab tow two
+" Space to insert one character before
+nnoremap <Space> :exec "normal i".nr2char(getchar())."\e"<CR>
+
+
+" Command to find and replace repeated word or phrase.
+command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+)\s+\1>/\1/gc
+
+" abbreviation command for common misspellings
+iabbrev tow two
+iabbrev teh the 
 
 " Disable repeated use of backspace. Use instead movements jj.
-inoremap <BS><BS> <NOP>
+inoremap <BS><BS><BS> <NOP>
 
 " Remove word in input mode
+" Must go through visual mode to get character under cursor. 
 inoremap jj <Esc>vbc
 
 nnoremap == i==========<Esc>
 
-" Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep tuping
-imap {} {}<ESC>i
-imap {}<Space> {}<Space>
-imap {}, {},
-imap {}. {}.
-
-imap () ()<ESC>i
-
-imap [] []<ESC>i
+" Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
+inoremap {} {}<Left>
+inoremap () ()<Left>
+inoremap [] []<Left>
+" To keep typing after {}
+inoremap {}<Space> {}<Space>
+inoremap {}, {},
+inoremap {}. {}.
 
 
 " Enable Arabic transcription. (simulate Alt-Latin mapping)
@@ -179,7 +203,7 @@ inoremap <M-a>I Ī
 inoremap <M-a>u ū
 inoremap <M-a>U Ū
 inoremap <M-a>ō ō
-inoremap M-a>Ō Ō 
+inoremap <M-a>Ō Ō 
 inoremap <M-a>e ē
 inoremap <M-a>E Ē
 inoremap <M-p> ʿ
@@ -213,17 +237,29 @@ noremap <M-y> ẏ
 function! SweType()
   set spelllang=sv
   inoremap ; ö
+  nnoremap r; rö
   inoremap ;; ;
+  nnoremap r;; r;
   inoremap : Ö
+  nnoremap r: rÖ
   inoremap :: :
+  nnoremap r:: r:
   inoremap [ å
+  nnoremap r[ rå
   inoremap { Å
+  nnoremap r{ rÅ
   inoremap ' ä
+  nnoremap r' rä
   inoremap '' '
+  nnoremap r'' r'
   inoremap " Ä
+  nnoremap r" rÄ
   inoremap "" "
+  nnoremap r"" r"
   inoremap [[ [
+  nnoremap r[[ r[
   inoremap {{ {
+  nnoremap r{{ r{
 endfunction
 nmap <Leader>s :<C-U>call SweType()<CR>
 
@@ -232,17 +268,29 @@ nmap <Leader>s :<C-U>call SweType()<CR>
 function! EngType()
   set spelllang=en_us
   inoremap ; ;
+unmap r;
   iunmap ;;
+  unmap r;;
   inoremap : :
+  unmap r:
   iunmap ::
+  unmap r::
   inoremap [ [
+  unmap r[
   iunmap [[
+  unmap r[[
   inoremap { {
+  unmap r{
   iunmap {{
+  unmap r{{
   inoremap ' '
+  unmap r'
   iunmap ''
+  unmap r''
   inoremap " "
+  unmap r"
   iunmap ""
+  unmap r""
 endfunction
 nmap <Leader>e :<C-U>call EngType()<CR>
 
@@ -256,13 +304,9 @@ let g:tex_comment_nospell= 1
 
 " Don't conceal TeX code
 let g:tex_conceal=""
-
+"
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 " comment environments
-
-" TeX quote marks for surrond plugin.
-" E.g. ysw-
-autocmd FileType tex let b:surround_45 = "``\r''"
 
 " LaTeX mappings on words.
 function! LaTeXmaps()
@@ -271,10 +315,10 @@ nmap <Leader>it <ESC>bi\textit{ea}
 nmap <Leader>bf <ESC>bi\textbf{ea}
 nmap <Leader>em <ESC>bi\emph{ea}
 nmap <Leader>ar <ESC>bi\textarabic{ea}
-nmap <Leader>7  <ESC>bi\7{ea}
-nmap <Leader>6  <ESC>bi\6{ea}
-nmap <Leader>5  <ESC>bi\5{ea}
-nmap <Leader>i  <ESC>bi\widx{ea}
+nmap <Leader>7 <ESC>bi\7{ea}
+nmap <Leader>6 <ESC>bi\6{ea}
+nmap <Leader>5 <ESC>bi\5{ea}
+nmap <Leader>i "iyiwea\index{<ESC>pi}<ESC>
 endfunction
 autocmd BufRead *.tex call LaTeXmaps()
 
@@ -285,8 +329,6 @@ nmap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o
 " Requires vim-latex-textobj plugin.
 nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
-" Compile with XeLaTeX with \lx
-    let g:Tex_CompileRule_pdf = 'xelatex -aux-directory=~/Desktop/latexaux --synctex=1 --src-specials --interaction=nonstopmode $*'
 
 " LaTeX compilation and bibtex run
 " Saves, sets ed and compiles
@@ -297,9 +339,10 @@ map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>" %< gives current filename with
 
 " Key mapping to Tabularize LaTeX tabular
 map <Leader>t :<C-U>Tabularize /&<CR>
-" Do not go to location of first warning when compiling
-let g:Tex_GotoError=0
+" Tabularize gloss
+map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
 
+"{{{2 settings fomr latex-suite
 "View Pdf with
 let g:Tex_ViewRule_pdf = 'Skim'
 
@@ -316,7 +359,7 @@ let g:Tex_FoldedSections = 'section,subsection,paragraph'
 
 " Do not fold items
 let g:Tex_FoldedMisc = 'preamble,<<<'
-
+" }}}2
 "{{{1 Project specific for Case in spoken SA 
 map <Leader>xc :w<CR>:cd ~/Desktop/bok/<CR>:! xelatex -aux-directory=~/Desktop/bok/latexaux --synctex=1 --src-specials ~/Desktop/bok/111.caseinspokenMSA.tex<CR>
 map <Leader>bc :! biber ~/Desktop/bok/111.caseinspokenMSA.tex<<CR>
@@ -332,7 +375,6 @@ if &term =~ "xterm" || &term =~ "256" || $DISPLAY != "" || $HAS_256_COLORS == "y
 endif
 "}}}1
 " {{{1 MailApp
-" Tell MailApp where to look for bundle file
 
 " Default 'from'
 let MailApp_from = "Andreas Hallberg <andreas.hallberg@mellost.lu.se>"
