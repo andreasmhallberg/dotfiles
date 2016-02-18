@@ -25,7 +25,7 @@ set linebreak
 set autoindent
 " Length of tab-character for indention
 " 4 spaces for markdown syntax
-set shiftwidth=4
+set shiftwidth=2
 
 " Automatically write buffer when switching to another
 set autowriteall
