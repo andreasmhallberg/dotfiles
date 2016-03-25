@@ -2,8 +2,14 @@
 call pathogen#infect()
 call pathogen#helptags()
 
+" Set to auto read when a file is changed from the outside
+set autoread
 
-
+" Separate timeoutlength in insert and normalmode. Short in insert for jj and
+" åå and the like. Long in normal for r operation with Arabic transcription
+:autocmd InsertEnter * set timeoutlen=200
+:autocmd InsertLeave * set timeoutlen=2000
+"
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
@@ -21,6 +27,7 @@ filetype plugin on
 
 " Soft-wrap on words
 set linebreak
+
 
 set autoindent
 " Length of tab-character for indention
@@ -55,13 +62,17 @@ set spelllang=en_us
 " Choose first word in list
 nmap zz 1z=e
 
-
-let languagetool_jar='$HOME/LanguageTool-3.1/languagetool-commandline.jar'
-
+" LanguageTool
+let g:languagetool_jar='~/LanguageTool-3.1/languagetool-commandline.jar'
+let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
+    \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY,EN_UNPAIRED_BRACKETS'
 
 "{{{1 DISPLAY -------------------
 " Display linennumbers
 set number
+
+" Add a bit extra margin to the left
+set foldcolumn=2
 
 " GUIFONTS
 "set guifont=Letter\ Gothic:h14 
@@ -97,13 +108,23 @@ augroup end
 " List characters opaque
 let g:solarized_visibility='low'
 
+" DiffChar
+" Set wrap in diff
+au FilterWritePre * if &diff | set wrap | endif
+
+let g:DiffUpdate = 1
+let g:DiffUnit = 'Word3'
+let g:DiffModeSync = 1
+
+" autocmd InsertEnter * :RDCha
+" autocmd InsertLeave * :TDCha
+
 " {{{1 MOVEMENT & EDITING ---------------
 " Remmao window prefix
 nmap <Leader>w <C-w>
 
-" Capital movement for horizontal window switch
-nnoremap HH <C-W>h
-nnoremap LL <C-W>l
+" Gundo toggle window
+nnoremap <Leader>u :GundoToggle<CR>
 
 " backspace over everything in insert mode
 set backspace=indent,eol,start 
@@ -126,6 +147,9 @@ set ignorecase
 " Case-sensitive when upper case is used in search string
 set smartcase
 
+" Move to win horizontally
+nmap HH <C-w>h
+nmap LL <C-w>l
 
 " Set undo points at end of sentence.
 inoremap . .<C-g>u
@@ -135,9 +159,6 @@ inoremap : :<C-g>u
 
 " Command completion.
 set wildmenu
-
-" Mapping for file exploration
-:nmap <F8> :Explore<CR>
 
 " Next item in location list window
 nmap <Leader>nn :lne<CR>
@@ -161,7 +182,7 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 "nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
 
-nmap <Leader>n :w<CR>:!pandoc -o pdf --latex-engine=xelatex --number-sections -H toheader.tex %<CR>
+nmap <Leader>p :w<CR>:cd %:p:h<CR>:!pandoc % --latex-engine=xelatex --number-sections -H ~/mypandocstuff/toheader.tex -o %.pdf<CR>
 
 " {{{1 CHARACTER INPUT
 
@@ -176,14 +197,9 @@ command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+)\s+\1>/\1/gc
 iabbrev tow two
 iabbrev teh the 
 
-" Disable repeated use of backspace. Use instead movements jj.
-inoremap <BS><BS><BS> <NOP>
-
 " Remove word in input mode
 " Must go through visual mode to get character under cursor. 
 inoremap jj <Esc>vbc
-
-nnoremap == i==========<Esc>
 
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
@@ -194,8 +210,7 @@ inoremap {}<Space> {}<Space>
 inoremap {}, {},
 inoremap {}. {}.
 
-
-" Enable Arabic transcription. (simulate Alt-Latin mapping)
+" {{{2 Enable Arabic transcription. (simulate Alt-Latin mapping)
 inoremap <M-a>a ā
 inoremap <M-a>A Ā
 inoremap <M-a>i ī
@@ -227,17 +242,50 @@ inoremap <M-x>T Ṯ
 inoremap <M-v>s š
 inoremap <M-v>S Š
 
+nmap r<M-a>a rā
+nmap r<M-a>A rĀ
+nmap r<M-a>i rī
+nmap r<M-a>I rĪ
+nmap r<M-a>u rū
+nmap r<M-a>U rŪ
+nmap r<M-a>ō rō
+nmap r<M-a>Ō rŌ 
+nmap r<M-a>e rē
+nmap r<M-a>E rĒ
+nmap r<M-p> rʿ
+nmap r<M-P> rʾ
+nmap r<M-.>d rḍ
+nmap r<M-.>D rḌ
+nmap r<M-.>s rṣ
+nmap r<M-.>S rṢ
+nmap r<M-.>t rṭ
+nmap r<M-.>T rṬ
+nmap r<M-.>z rẓ
+nmap r<M-.>Z rẒ
+nmap r<M-.>h rḥ
+nmap r<M-.>H rḤ
+nmap r<M-w>g rġ
+nmap r<M-w>G rĠ
+nmap r<M-x>d rḏ
+nmap r<M-x>D rḎ
+nmap r<M-x>t rṯ
+nmap r<M-x>T rṮ
+nmap r<M-v>s rš
+nmap r<M-v>S rŠ
+
 " EALLx
 noremap <M-e> ´
 noremap <M-w> ẇ
 noremap <M-y> ẏ
 
-
-" Switch to Swedish
+" {{{2 Switch to Swedish
 function! SweType()
+" To switch back from Arabic
+  set keymap=
+  set norightleft
   set spelllang=sv
   inoremap ; ö
-  nnoremap r; rö
+  noremap r; rö
   inoremap ;; ;
   nnoremap r;; r;
   inoremap : Ö
@@ -263,12 +311,14 @@ function! SweType()
 endfunction
 nmap <Leader>s :<C-U>call SweType()<CR>
 
-
-" Switch to English
+"{{{2 Switch to English
 function! EngType()
+" To switch back from Arabic
+  set keymap=
+  set norightleft
   set spelllang=en_us
   inoremap ; ;
-unmap r;
+  unmap r;
   iunmap ;;
   unmap r;;
   inoremap : :
@@ -294,10 +344,15 @@ unmap r;
 endfunction
 nmap <Leader>e :<C-U>call EngType()<CR>
 
+" {{{ Switch to arabic
+function! AraType()
+set keymap=arabic
+set rightleft
+endfunction
+nmap <Leader>a :<C-U>call AraType()<CR>
 
-" Gundo toggle window
-nnoremap <Leader>u :GundoToggle<CR>
-
+" To switch back from Arabic
+  set keymap=
 "{{{1 LATEX 
 " No spell checking in comments.
 let g:tex_comment_nospell= 1
