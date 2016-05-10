@@ -5,11 +5,6 @@ call pathogen#helptags()
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" Separate timeoutlength in insert and normalmode. Short in insert for jj and
-" åå and the like. Long in normal for r operation with Arabic transcription
-:autocmd InsertEnter * set timeoutlen=200
-:autocmd InsertLeave * set timeoutlen=2000
-"
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
@@ -27,7 +22,6 @@ filetype plugin on
 
 " Soft-wrap on words
 set linebreak
-
 
 set autoindent
 " Length of tab-character for indention
@@ -108,7 +102,60 @@ augroup end
 " List characters opaque
 let g:solarized_visibility='low'
 
-" DiffChar
+
+" {{{1 Leader commands
+" Window command prefix
+nmap <Leader>w <C-w>
+" Gundo toggle window
+nnoremap <Leader>u :GundoToggle<CR>
+" Execute last command
+nmap <Leader>c :<Up><CR>
+" Next item in location list window
+nmap <Leader>nn :lne<CR>
+"nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
+" Compile markdon to pdf  
+nmap <Leader>p :w<CR>:cd %:p:h<CR>:!pandoc % --latex-engine=xelatex -H ~/mypandocstuff/toheader.tex -o %.pdf<CR>
+
+" Switch to Swedish typing
+nmap <Leader>s :<C-U>call SweType()<CR>
+" Switch to English typing
+nmap <Leader>e :<C-U>call EngType()<CR>
+" Switch to Arabic typing
+nmap <Leader>a :<C-U>call AraType()<CR>
+
+" {{{2 LaTeX mappings
+function! LaTeXmaps()
+nmap <Leader>sc <ESC>bi\textsc{ea}
+nmap <Leader>it <ESC>bi\textit{ea}
+nmap <Leader>bf <ESC>bi\textbf{ea}
+nmap <Leader>em <ESC>bi\emph{ea}
+nmap <Leader>ar <ESC>bi\textarabic{ea}
+nmap <Leader>i "iyiwea\index{<ESC>pi}<ESC>
+
+" Input covington example frame.
+nmap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
+
+" Input yanked rcode in comment.
+" Requires vim-latex-textobj plugin.
+nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
+
+
+" LaTeX compilation and bibtex run
+" Saves, sets ed and compiles
+map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex -aux-directory=~/latexaux --synctex=1 --src-specials %<CR>
+" Run biber. rm -rf `biber --cache` clears cash to fix bug.
+map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>" %< gives current filename without extension
+
+
+" Key mapping to Tabularize LaTeX tabular
+map <Leader>t :<C-U>Tabularize /&<CR>
+" Tabularize gloss
+map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
+endfunction
+autocmd BufRead *.tex call LaTeXmaps()
+" }}}2
+
+" {{{1 DiffChar
 " Set wrap in diff
 au FilterWritePre * if &diff | set wrap | endif
 
@@ -119,13 +166,9 @@ let g:DiffModeSync = 1
 " autocmd InsertEnter * :RDCha
 " autocmd InsertLeave * :TDCha
 
+" }}}
+
 " {{{1 MOVEMENT & EDITING ---------------
-" Remmao window prefix
-nmap <Leader>w <C-w>
-
-" Gundo toggle window
-nnoremap <Leader>u :GundoToggle<CR>
-
 " backspace over everything in insert mode
 set backspace=indent,eol,start 
 
@@ -160,8 +203,6 @@ inoremap : :<C-g>u
 " Command completion.
 set wildmenu
 
-" Next item in location list window
-nmap <Leader>nn :lne<CR>
 
 " Conceal what is to be concealed
 set cole=2
@@ -175,14 +216,6 @@ set concealcursor=
 
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
-" {{{1  MARKDOWN & LECTURE NOTES
-" Function and mappeing to compile lecturenotes in markdown to pdf via
-" xelatex. Folder must cuntain lecturnotes.tex with preample and
-" \input{notes.tex}
-
-"nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
-
-nmap <Leader>p :w<CR>:cd %:p:h<CR>:!pandoc % --latex-engine=xelatex --number-sections -H ~/mypandocstuff/toheader.tex -o %.pdf<CR>
 
 " {{{1 CHARACTER INPUT
 
@@ -309,7 +342,6 @@ function! SweType()
   inoremap {{ {
   nnoremap r{{ r{
 endfunction
-nmap <Leader>s :<C-U>call SweType()<CR>
 
 "{{{2 Switch to English
 function! EngType()
@@ -342,14 +374,12 @@ function! EngType()
   iunmap ""
   unmap r""
 endfunction
-nmap <Leader>e :<C-U>call EngType()<CR>
 
 " {{{ Switch to arabic
 function! AraType()
 set keymap=arabic
 set rightleft
 endfunction
-nmap <Leader>a :<C-U>call AraType()<CR>
 
 " To switch back from Arabic
   set keymap=
@@ -363,39 +393,7 @@ let g:tex_conceal=""
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 " comment environments
 
-" LaTeX mappings on words.
-function! LaTeXmaps()
-nmap <Leader>sc <ESC>bi\textsc{ea}
-nmap <Leader>it <ESC>bi\textit{ea}
-nmap <Leader>bf <ESC>bi\textbf{ea}
-nmap <Leader>em <ESC>bi\emph{ea}
-nmap <Leader>ar <ESC>bi\textarabic{ea}
-nmap <Leader>7 <ESC>bi\7{ea}
-nmap <Leader>6 <ESC>bi\6{ea}
-nmap <Leader>5 <ESC>bi\5{ea}
-nmap <Leader>i "iyiwea\index{<ESC>pi}<ESC>
-endfunction
-autocmd BufRead *.tex call LaTeXmaps()
 
-" Input covington example frame.
-nmap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
-
-" Input yanked rcode in comment.
-" Requires vim-latex-textobj plugin.
-nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
-
-
-" LaTeX compilation and bibtex run
-" Saves, sets ed and compiles
-map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex -aux-directory=~/latexaux --synctex=1 --src-specials %<CR>
-" Run biber. rm -rf `biber --cache` clears cash to fix bug.
-map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>" %< gives current filename without extension
-
-
-" Key mapping to Tabularize LaTeX tabular
-map <Leader>t :<C-U>Tabularize /&<CR>
-" Tabularize gloss
-map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
 
 "{{{2 settings fomr latex-suite
 "View Pdf with
@@ -415,13 +413,6 @@ let g:Tex_FoldedSections = 'section,subsection,paragraph'
 " Do not fold items
 let g:Tex_FoldedMisc = 'preamble,<<<'
 " }}}2
-"{{{1 Project specific for Case in spoken SA 
-map <Leader>xc :w<CR>:cd ~/Desktop/bok/<CR>:! xelatex -aux-directory=~/Desktop/bok/latexaux --synctex=1 --src-specials ~/Desktop/bok/111.caseinspokenMSA.tex<CR>
-map <Leader>bc :! biber ~/Desktop/bok/111.caseinspokenMSA.tex<<CR>
-map <Leader>c :e ~/Desktop/bok/111.caseinspokenMSA.tex<CR>:cd ~/Desktop/bok/<CR>:arg *.tex<CR>:setlocal fdm=marker<CR>
-
-autocmd BufRead ~/Desktop/bok/111.caseinspokenMSA.tex setlocal fdm=marker 
-
 "{{{1 R
 
 " Force Vim to use 256 colors if running in a capable terminal emulator:
