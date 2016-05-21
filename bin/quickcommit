@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Adding all and committing to github with "
+
+  git add -A
+  wait $!
+  git commit -m "$1"
+  echo "Committing and pushing repo with message: $1"
+  git push
