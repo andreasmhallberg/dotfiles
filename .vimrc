@@ -24,23 +24,25 @@ filetype plugin on
 set linebreak
 
 set autoindent
-" Length of tab-character for indention
-" 4 spaces for markdown syntax
-set shiftwidth=4
 
-" Automatically write buffer when switching to another
-set autowriteall
+" tab key inserts spaces
+set expandtab
+" Length of tab-character for indention
+" 2 spaces for markdown syntax
+set shiftwidth=2
+" Tab is 4 spaces in markdown
+let ftToIgnore = ['markadown']
+autocmd WinEnter,BufEnter * if index(ftToIgnore, &ft) < 0 
+    \ | set shiftwidth=4
+    \ | endif
+
 
 set formatoptions=rqj
 
-" Enable ALT-key in vim
-set macmeta
-
-" Remove left and right scrollbar
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
+" Enable ALT-key in vim. (Only on Mac)
+if has('macunix')
+    set macmeta
+endif
 
 " Representation of invisible characters with set list
 set listchars=tab:▸\ ,eol:¬
@@ -62,8 +64,14 @@ let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
     \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY,EN_UNPAIRED_BRACKETS'
 
 "{{{1 DISPLAY -------------------
-" Display linennumbers
+" Display linen numbers
 set number
+
+" Remove left and right scrollbar
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
 
 " Add a bit extra margin to the left
 set foldcolumn=2
@@ -125,11 +133,11 @@ nmap <Leader>a :<C-U>call AraType()<CR>
 
 " {{{2 LaTeX mappings
 function! LaTeXmaps()
-nmap <Leader>sc <ESC>bi\textsc{ea}
-nmap <Leader>it <ESC>bi\textit{ea}
-nmap <Leader>bf <ESC>bi\textbf{ea}
-nmap <Leader>em <ESC>bi\emph{ea}
-nmap <Leader>ar <ESC>bi\textarabic{ea}
+nmap <Leader>sc <ESC>bi\textsc{<ESC>ea}<ESC>
+nmap <Leader>it <ESC>bi\textit{<ESC>ea}<ESC>
+nmap <Leader>bf <ESC>bi\textbf{<ESC>ea}<ESC>
+nmap <Leader>em <ESC>bi\emph{<ESC>ea}<ESC>
+nmap <Leader>ar <ESC>bi\textarabic{<ESC>ea}<ESC>
 nmap <Leader>i "iyiwea\index{<ESC>pi}<ESC>
 
 " Input covington example frame.
@@ -163,11 +171,11 @@ let g:DiffUpdate = 1
 let g:DiffUnit = 'Word3'
 let g:DiffModeSync = 1
 
+" Reduce error reports
 " autocmd InsertEnter * :RDCha
 " autocmd InsertLeave * :TDCha
 
 " }}}
-
 " {{{1 MOVEMENT & EDITING ---------------
 " backspace over everything in insert mode
 set backspace=indent,eol,start 
@@ -250,8 +258,8 @@ inoremap <M-a>i ī
 inoremap <M-a>I Ī
 inoremap <M-a>u ū
 inoremap <M-a>U Ū
-inoremap <M-a>ō ō
-inoremap <M-a>Ō Ō 
+inoremap <M-a>o ō
+inoremap <M-a>O Ō 
 inoremap <M-a>e ē
 inoremap <M-a>E Ē
 inoremap <M-p> ʿ
