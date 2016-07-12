@@ -1,9 +1,7 @@
 #!/bin/bash
 
-echo "Adding all and committing to github with "
+echo "Adding all and committing to github the message minor edit"
 
   git add -A
-  wait $!
-  git commit -m "$1"
-  echo "Committing and pushing repo with message: $1"
+  git commit -m "minor edit"
   git push

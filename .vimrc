@@ -33,7 +33,7 @@ set shiftwidth=2
 " Tab is 4 spaces in markdown
 let ftToIgnore = ['markadown']
 autocmd WinEnter,BufEnter * if index(ftToIgnore, &ft) < 0 
-    \ | set shiftwidth=4
+    \ | setlocal shiftwidth=4
     \ | endif
 
 
@@ -59,13 +59,16 @@ set spelllang=en_us
 nmap zz 1z=e
 
 " LanguageTool
-let g:languagetool_jar='~/LanguageTool-3.1/languagetool-commandline.jar'
+let g:languagetool_jar='/Applications/LanguageTool-3.1/languagetool-commandline.jar'
 let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
-    \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY,EN_UNPAIRED_BRACKETS'
+    \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
 
 "{{{1 DISPLAY -------------------
 " Display linen numbers
 set number
+
+" Dark background
+set bg=dark
 
 " Remove left and right scrollbar
 set guioptions-=r
@@ -150,7 +153,7 @@ nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
 " LaTeX compilation and bibtex run
 " Saves, sets ed and compiles
-map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex -aux-directory=~/latexaux --synctex=1 --src-specials %<CR>
+map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %<CR>
 " Run biber. rm -rf `biber --cache` clears cash to fix bug.
 map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>" %< gives current filename without extension
 
@@ -241,6 +244,7 @@ iabbrev teh the
 " Remove word in input mode
 " Must go through visual mode to get character under cursor. 
 inoremap jj <Esc>vbc
+imap <BS><BS> <NOP>
 
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
