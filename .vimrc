@@ -124,8 +124,11 @@ nmap <Leader>c :<Up><CR>
 " Next item in location list window
 nmap <Leader>nn :lne<CR>
 "nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
-" Compile markdon to pdf  
-nmap <Leader>p :w<CR>:cd %:p:h<CR>:!pandoc % --latex-engine=xelatex -H ~/mypandocstuff/toheader.tex -o %.pdf<CR>
+
+" Compile markdown to tex  
+nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc % -S --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -o test.tex
+" Compile markdown to pdf  
+nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc % -S --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -o test.pdf
 
 " Switch to Swedish typing
 nmap <Leader>s :<C-U>call SweType()<CR>

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+TIME=`date +%y%m%d`
+
+mkdir /Volumes/BACKUP1/jobb.$TIME
+
+for F in \
+.git \
+.vim \
+blog \
+dotfiles \
+jobb \
+hobby-projects \
+mylatexstuff \
+mypandocstuff \
+prosa
+do
+    tar -cpzf /Volumes/BACKUP1/jobb.$TIME/${F}.tar ~/$F
+    echo Finished backing up ${F}.
+done
