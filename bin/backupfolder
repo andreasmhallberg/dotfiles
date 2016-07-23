@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TIME=`date +%y%m%d`
+
+FOLDERNAME=`basename $1`
+
+    tar -cpzf /Volumes/BACKUP1/${TIME}.${FOLDERNAME}.tar $1
+    echo Finished backing up $FOLDERNAME in /Volumes/BACKUP1/${TIME}.${FOLDERNAME}.tar

@@ -50,6 +50,9 @@ set listchars=tab:▸\ ,eol:¬
 " Move to previous buffer
 nnoremap ## :b#<CR>
 
+" Open vsplit window to the right
+set splitright
+
 "{{{1 SPELLCHECK
 
 set spell
