@@ -19,6 +19,7 @@ syntax on
 "filetype plugin indent on " (Mosty annoying)
 set nocompatible
 filetype plugin on
+filetype indent on
 
 " Soft-wrap on words
 set linebreak
@@ -129,9 +130,9 @@ nmap <Leader>nn :lne<CR>
 "nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
 
 " Compile markdown to tex  
-nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc % -S --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -o test.tex
+nmap <Leader>pat :w<CR>:cd %:p:h<CR>:!pandoc % -S --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -o test.tex
 " Compile markdown to pdf  
-nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc % -S --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -o test.pdf
+nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc % --latex-engine=xelatex --bibliography /Users/andy/mylatexstuff/bibliotek.bib -o '%:p'.pdf<CR>
 
 " Switch to Swedish typing
 nmap <Leader>s :<C-U>call SweType()<CR>
@@ -139,6 +140,7 @@ nmap <Leader>s :<C-U>call SweType()<CR>
 nmap <Leader>e :<C-U>call EngType()<CR>
 " Switch to Arabic typing
 nmap <Leader>a :<C-U>call AraType()<CR>
+
 
 " {{{2 LaTeX mappings
 function! LaTeXmaps()
@@ -171,7 +173,6 @@ map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
 endfunction
 autocmd BufRead *.tex call LaTeXmaps()
 " }}}2
-
 " {{{1 DiffChar
 " Set wrap in diff
 au FilterWritePre * if &diff | set wrap | endif
@@ -198,6 +199,8 @@ vnoremap j gj
 " Makes h and l and arrow keyes wrap to pre/next line.
 set whichwrap+=<,>,h,l,[,]
 
+" No wraparournd end of file in normal searches
+set nowrapscan
 " No high-light search hits
 set nohlsearch 
 "Search while typing
@@ -446,3 +449,13 @@ let MailApp_from = "Andreas Hallberg <andreas.hallberg@mellost.lu.se>"
 " Add signature
 nmap <Plug>AddMailSignature Go<CR><CR>Andreas Hallberg<CR><CR>Doktorand, semitiska spr<C-V>u00e5k<CR>SOL-centrum<CR>Lunds universitet<CR>Box 201, 221 00 Lund<CR><CR>Ph.D. student, Semitic languages<CR>Centre for Languages and Literature<CR>Lund University<CR>Box 201, 221 00 Lund<ESC>
 nmap <Leader>si <Plug>AddMailSignature
+
+" {{{ vim-pandoc
+" No conceal
+let g:pandoc#syntax#conceal#use=0
+
+" File extension synonyms
+autocmd BufEnter *.md :setlocal filetype=pandoc " vim-pandoc plugin
+autocmd BufEnter *.mkd :setlocal filetype=pandoc " vim-pandoc plugin
+
+" }}}
