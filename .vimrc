@@ -1,4 +1,4 @@
-" {{{1 General stuff
+"{{{1 General stuff
 call pathogen#infect()
 call pathogen#helptags()
 
@@ -13,10 +13,10 @@ set dir=~/temp
 
 colorscheme solarized
 " Visibiliyt of invisible chars set list. low|normal|high
-"g:solarized_visibility= "low"
+" g:solarized_visibility= "normal"
+
 syntax on
 
-"filetype plugin indent on " (Mosty annoying)
 set nocompatible
 filetype plugin on
 filetype indent on
@@ -27,7 +27,7 @@ set linebreak
 set autoindent
 
 " tab key inserts spaces
-set expandtab
+" set expandtab
 " Length of tab-character for indention
 " 2 spaces for markdown syntax
 set shiftwidth=2
@@ -54,6 +54,9 @@ nnoremap ## :b#<CR>
 " Open vsplit window to the right
 set splitright
 
+" No swapfile exists warning
+set shortmess+=A
+
 "{{{1 SPELLCHECK
 
 set spell
@@ -71,6 +74,9 @@ let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
 " Display linen numbers
 set number
 
+" Display all concealed elements by default
+set cole=0
+
 " Dark background
 set bg=dark
 
@@ -85,11 +91,11 @@ set foldcolumn=2
 
 " GUIFONTS
 "set guifont=Letter\ Gothic:h14 
-    " Nice and very bright but no arabic diacrtitics.
+    " Nice and very bright but no Arabic diacritics.
 "set guifont=AnonymousPro:h14 
-    " Brigh. No arabic diacrtitics.
+    " Brigh. No arabic diacritics.
 " set guifont=Consolas:h12
-    " Very nice and has arabic characters and italics.
+    " Very nice and has Arabic characters and italics.
 set guifont=Source\ Code\ Pro:h14
    " Has various heavynesses byt no italics
 "set guifont=Ubuntu\ Mono:h15
@@ -129,10 +135,15 @@ nmap <Leader>c :<Up><CR>
 nmap <Leader>nn :lne<CR>
 "nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
 
+" compite tex
+nmap <Leader>x :w<CR>:!xelatex % '%'.pdf<CR>:!open '%'.pdf<CR>
+
 " Compile markdown to tex  
-nmap <Leader>pat :w<CR>:cd %:p:h<CR>:!pandoc % -S --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -o test.tex
+nmap <Leader>pat :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib --template ~/mypandocstuff/templates/template -o '%'.tex<CR>
 " Compile markdown to pdf  
-nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc % --latex-engine=xelatex --bibliography /Users/andy/mylatexstuff/bibliotek.bib -o '%:p'.pdf<CR>
+nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography /Users/andy/mylatexstuff/bibliotek.bib --template ~/mypandocstuff/templates/template -o '%'.pdf; open '%'.pdf<CR>
+" Compile markdown to docx. -S needed for parsing of dahses in non TeX.
+nmap <Leader>pad :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography /Users/andy/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 " Switch to Swedish typing
 nmap <Leader>s :<C-U>call SweType()<CR>
@@ -405,35 +416,13 @@ endfunction
 " To switch back from Arabic
   set keymap=
 "{{{1 LATEX 
-" No spell checking in comments.
-let g:tex_comment_nospell= 1
-
-" Don't conceal TeX code
-let g:tex_conceal=""
 "
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
-" comment environments
+
+" Vimtex settings
+let g:vimtex_complete_close_braces = 1
 
 
-
-"{{{2 settings fomr latex-suite
-"View Pdf with
-let g:Tex_ViewRule_pdf = 'Skim'
-
-" Run compiler, bibtex etc. as many times as neede for pdf output
-let g:Tex_MultipleCompileFormats = 'pdf'
-
-" Disable annoying completions
-let g:Imap_FreezeImap=1
-
-let g:Tex_FoldedEnvironments= 'frame,rcode,figure,sidewaysfigure,table,sidewaystable,nonfloattable,tikzpicture,comment'
-
-" Do not fold part and chapter
-let g:Tex_FoldedSections = 'section,subsection,paragraph'
-
-" Do not fold items
-let g:Tex_FoldedMisc = 'preamble,<<<'
-" }}}2
 "{{{1 R
 
 " Force Vim to use 256 colors if running in a capable terminal emulator:
@@ -445,10 +434,6 @@ endif
 
 " Default 'from'
 let MailApp_from = "Andreas Hallberg <andreas.hallberg@mellost.lu.se>"
-
-" Add signature
-nmap <Plug>AddMailSignature Go<CR><CR>Andreas Hallberg<CR><CR>Doktorand, semitiska spr<C-V>u00e5k<CR>SOL-centrum<CR>Lunds universitet<CR>Box 201, 221 00 Lund<CR><CR>Ph.D. student, Semitic languages<CR>Centre for Languages and Literature<CR>Lund University<CR>Box 201, 221 00 Lund<ESC>
-nmap <Leader>si <Plug>AddMailSignature
 
 " {{{ vim-pandoc
 " No conceal

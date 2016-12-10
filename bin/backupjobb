@@ -15,6 +15,9 @@ mylatexstuff \
 mypandocstuff \
 prosa
 do
+    echo Backar upp ${F}.
     tar -cpzf /Volumes/BACKUP1/jobb.$TIME/${F}.tar ~/$F
-    echo Finished backing up ${F}.
+    echo Klar med ${F}.
 done
+
+echo Har backat upp allt jobbrelaterat.
