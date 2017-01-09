@@ -136,12 +136,12 @@ nmap <Leader>nn :lne<CR>
 "nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
 
 " compite tex
-nmap <Leader>x :w<CR>:!xelatex % '%'.pdf<CR>:!open '%'.pdf<CR>
+nmap <Leader>x :w<CR>:!xelatex<CR>
 
 " Compile markdown to tex  
 nmap <Leader>pat :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib --template ~/mypandocstuff/templates/template -o '%'.tex<CR>
 " Compile markdown to pdf  
-nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography /Users/andy/mylatexstuff/bibliotek.bib --template ~/mypandocstuff/templates/template -o '%'.pdf; open '%'.pdf<CR>
+nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography /Users/andy/mylatexstuff/bibliotek.bib --columns=200 --template ~/mypandocstuff/templates/template -o '%'.pdf && open '%'.pdf<CR>
 " Compile markdown to docx. -S needed for parsing of dahses in non TeX.
 nmap <Leader>pad :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography /Users/andy/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
@@ -251,7 +251,7 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 " {{{1 CHARACTER INPUT
 
 " Space to insert one character before
-nnoremap <Space> :exec "normal i".nr2char(getchar())."\e"<CR>
+nnoremap <Space> i<Space><ESC>
 
 
 " Command to find and replace repeated word or phrase.
