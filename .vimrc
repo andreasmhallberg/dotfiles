@@ -1,6 +1,41 @@
-"{{{1 General stuff
-call pathogen#infect()
-call pathogen#helptags()
+set nocompatible
+" {{{1 Plugin management
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-repeat'
+Plugin 'vim-scripts/YankRing.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'vim-pandoc/vim-pandoc'
+Plugin 'vim-pandoc/vim-pandoc-syntax'
+Plugin 'vim-pandoc/vim-markdownfootnotes'
+Plugin 'chrisbra/csv.vim'
+Plugin 'sjl/gundo.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'lervag/vimtex'
+Plugin 'vim-scripts/direcionalWindowResizer'
+" LanguageTool
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+" }}}1
+
+" {{{1 General stuff
+
+" Use TAB for completions
+inoremap <Tab> <c-n>
+inoremap <Tab> <c-n>
+
+" Show command completion alternatives
+set wildmenu
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -8,16 +43,9 @@ set autoread
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
-" swapfiel location
-set dir=~/temp
+" Set wd for current file
+autocmd BufEnter * silent! lcd %:p:h
 
-colorscheme solarized
-" Visibiliyt of invisible chars set list. low|normal|high
-" g:solarized_visibility= "normal"
-
-syntax on
-
-set nocompatible
 filetype plugin on
 filetype indent on
 
@@ -71,11 +99,19 @@ let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
     \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
 
 "{{{1 DISPLAY -------------------
-" Display linen numbers
+" Display line numbers
 set number
 
-" Display all concealed elements by default
-set cole=0
+" Override conceal applied by varies packages. No pseudo wysywyg here.
+autocmd BufEnter * silent! set cole=0
+
+
+"{{{2 syntax color
+colorscheme solarized
+" Visibiliyt of invisible chars set list. low|normal|high
+let g:solarized_visibility= "medium"
+
+syntax on
 
 " Dark background
 set bg=dark
@@ -86,6 +122,10 @@ set guioptions-=R
 set guioptions-=l
 set guioptions-=L
 
+" Italic comments.
+highlight Comment cterm=italic
+"}}}2
+
 " Add a bit extra margin to the left
 set foldcolumn=2
 
@@ -94,7 +134,7 @@ set foldcolumn=2
     " Nice and very bright but no Arabic diacritics.
 "set guifont=AnonymousPro:h14 
     " Brigh. No arabic diacritics.
-" set guifont=Consolas:h12
+" set guifont=Consolas:h14
     " Very nice and has Arabic characters and italics.
 set guifont=Source\ Code\ Pro:h14
    " Has various heavynesses byt no italics
@@ -102,8 +142,6 @@ set guifont=Source\ Code\ Pro:h14
    " Has bold and italics
 
 set linespace=5
-" Italic comments.
-highlight Comment cterm=italic
 
 " When scorlling, keep the cursor 8 lines from the top and 8
 " lines from the bottom
@@ -125,6 +163,7 @@ let g:solarized_visibility='low'
 
 
 " {{{1 Leader commands
+
 " Window command prefix
 nmap <Leader>w <C-w>
 " Gundo toggle window
@@ -133,15 +172,11 @@ nnoremap <Leader>u :GundoToggle<CR>
 nmap <Leader>c :<Up><CR>
 " Next item in location list window
 nmap <Leader>nn :lne<CR>
-"nmap <Leader>xn :cd %:p:h<CR>:!pandoc -o notes.tex %<CR>:!sed -i.bak 's/, center,/, left,/g' notes.tex<CR>:!xelatex lecturenotes.tex<CR>:!bibtex lecturenotes.tex<CR>:!xelatex lecturenotes.tex<CR>
-
-" compite tex
-nmap <Leader>x :w<CR>:!xelatex<CR>
 
 " Compile markdown to tex  
 nmap <Leader>pat :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib --template ~/mypandocstuff/templates/template -o '%'.tex<CR>
 " Compile markdown to pdf  
-nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography /Users/andy/mylatexstuff/bibliotek.bib --columns=200 --template ~/mypandocstuff/templates/template -o '%'.pdf && open '%'.pdf<CR>
+nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -N --columns=200 -o '%'.pdf<CR>
 " Compile markdown to docx. -S needed for parsing of dahses in non TeX.
 nmap <Leader>pad :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography /Users/andy/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
@@ -154,34 +189,40 @@ nmap <Leader>a :<C-U>call AraType()<CR>
 
 
 " {{{2 LaTeX mappings
+" Mappings only used in .tex files 
 function! LaTeXmaps()
-nmap <Leader>sc <ESC>bi\textsc{<ESC>ea}<ESC>
-nmap <Leader>it <ESC>bi\textit{<ESC>ea}<ESC>
-nmap <Leader>bf <ESC>bi\textbf{<ESC>ea}<ESC>
-nmap <Leader>em <ESC>bi\emph{<ESC>ea}<ESC>
-nmap <Leader>ar <ESC>bi\textarabic{<ESC>ea}<ESC>
-nmap <Leader>i "iyiwea\index{<ESC>pi}<ESC>
 
-" Input covington example frame.
-nmap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
+  nmap <Leader>sc <ESC>bi\textsc{<ESC>ea}<ESC>
+  nmap <Leader>it <ESC>bi\textit{<ESC>ea}<ESC>
+  nmap <Leader>bf <ESC>bi\textbf{<ESC>ea}<ESC>
+  nmap <Leader>em <ESC>bi\emph{<ESC>ea}<ESC>
+  nmap <Leader>ar <ESC>bi\textarabic{<ESC>ea}<ESC>
+  nmap <Leader>i "iyiwea\index{<ESC>pi}<ESC>
 
-" Input yanked rcode in comment.
-" Requires vim-latex-textobj plugin.
-nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
+  " Input covington example frame.
+  nmap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
 
-
-" LaTeX compilation and bibtex run
-" Saves, sets ed and compiles
-map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %<CR>
-" Run biber. rm -rf `biber --cache` clears cash to fix bug.
-map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>" %< gives current filename without extension
+  " Input yanked rcode in comment.
+  " Requires vim-latex-textobj plugin.
+  nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
 
-" Key mapping to Tabularize LaTeX tabular
-map <Leader>t :<C-U>Tabularize /&<CR>
-" Tabularize gloss
-map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
+  " LaTeX compilation and bibtex run
+  " Saves, sets ed and compiles
+  map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %<CR>
+  
+  " %< "gives current filename without extension
+  map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
+  " OBS!!! Run biber. rm -rf `biber --cache` clears cash to fix bug.
+
+  " Key mapping to Tabularize LaTeX tabular: Unescaped &
+  " Tabularize by & unless escaped
+  map <Leader>t :<C-U>Tabularize /\\\@<!&<CR> 
+  " Tabularize gloss (by spaces)
+  map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
+
 endfunction
+
 autocmd BufRead *.tex call LaTeXmaps()
 " }}}2
 " {{{1 DiffChar
@@ -200,6 +241,8 @@ let g:DiffModeSync = 1
 " {{{1 MOVEMENT & EDITING ---------------
 " backspace over everything in insert mode
 set backspace=indent,eol,start 
+
+
 
 " Move on soft-wrapped lines
 nnoremap k gk
@@ -230,16 +273,9 @@ inoremap . .<C-g>u
 inoremap ! !<C-g>u
 inoremap ? ?<C-g>u
 inoremap : :<C-g>u
+inoremap ; ;<C-g>u
 
-" Command completion.
-set wildmenu
-
-
-" Conceal what is to be concealed
-set cole=2
-" Also when cursor is on the line, in all the modes
-set concealcursor=
-
+" gundo plugin
 " Wider gundo window
     let g:gundo_width = 60
 " Auto-close gundo window on revert.
@@ -270,10 +306,11 @@ imap <BS><BS> <NOP>
 inoremap {} {}<Left>
 inoremap () ()<Left>
 inoremap [] []<Left>
+inoremap <> <><Left>
 " To keep typing after {}
 inoremap {}<Space> {}<Space>
-inoremap {}, {},
-inoremap {}. {}.
+inoremap []<Space> []<Space>
+inoremap <><Space> <><Space>
 
 " {{{2 Enable Arabic transcription. (simulate Alt-Latin mapping)
 inoremap <M-a>a ā
@@ -423,6 +460,34 @@ endfunction
 let g:vimtex_complete_close_braces = 1
 
 
+" From vimtex help
+            let g:vimtex_view_general_viewer
+                  \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+            let g:vimtex_view_general_options = '-r @line @pdf @tex'
+
+            " This adds a callback hook that updates Skim after compilation
+            let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+            function! UpdateSkim(status)
+              if !a:status | return | endif
+
+              let l:out = b:vimtex.out()
+              let l:tex = expand('%:p')
+              let l:cmd = [g:vimtex_view_general_viewer, '-r']
+              if !empty(system('pgrep Skim'))
+                call extend(l:cmd, ['-g'])
+              endif
+              if has('nvim')
+                call jobstart(l:cmd + [line('.'), l:out, l:tex])
+              elseif has('job')
+                call job_start(l:cmd + [line('.'), l:out, l:tex])
+              else
+                call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+              endif
+            endfunction
+
+" vimtex folding
+let g:vimtex_fold_enabled=1
+
 "{{{1 R
 
 " Force Vim to use 256 colors if running in a capable terminal emulator:
@@ -430,11 +495,6 @@ if &term =~ "xterm" || &term =~ "256" || $DISPLAY != "" || $HAS_256_COLORS == "y
     set t_Co=256
 endif
 "}}}1
-" {{{1 MailApp
-
-" Default 'from'
-let MailApp_from = "Andreas Hallberg <andreas.hallberg@mellost.lu.se>"
-
 " {{{ vim-pandoc
 " No conceal
 let g:pandoc#syntax#conceal#use=0
