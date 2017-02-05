@@ -13,7 +13,6 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
 Plugin 'vim-scripts/YankRing.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-pandoc/vim-pandoc'
 Plugin 'vim-pandoc/vim-pandoc-syntax'
 Plugin 'vim-pandoc/vim-markdownfootnotes'
@@ -26,7 +25,8 @@ Plugin 'vim-scripts/direcionalWindowResizer'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-" }}}1
+"  }}}1
+ 
 
 " {{{1 General stuff
 
@@ -55,15 +55,10 @@ set linebreak
 set autoindent
 
 " tab key inserts spaces
-" set expandtab
+set expandtab
 " Length of tab-character for indention
-" 2 spaces for markdown syntax
-set shiftwidth=2
-" Tab is 4 spaces in markdown
-let ftToIgnore = ['markadown']
-autocmd WinEnter,BufEnter * if index(ftToIgnore, &ft) < 0 
-    \ | setlocal shiftwidth=4
-    \ | endif
+" 4 spaces for markdown syntax
+set shiftwidth=4
 
 
 set formatoptions=rqj
@@ -176,7 +171,7 @@ nmap <Leader>nn :lne<CR>
 " Compile markdown to tex  
 nmap <Leader>pat :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib --template ~/mypandocstuff/templates/template -o '%'.tex<CR>
 " Compile markdown to pdf  
-nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -N --columns=200 -o '%'.pdf<CR>
+nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex -N --columns=200 -o '%'.pdf<CR>
 " Compile markdown to docx. -S needed for parsing of dahses in non TeX.
 nmap <Leader>pad :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography /Users/andy/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
@@ -302,15 +297,36 @@ iabbrev teh the
 inoremap jj <Esc>vbc
 imap <BS><BS> <NOP>
 
+" CANT GET TO WORK
+" Insert empty line above, repeatable
+nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
+nmap gO <Plug>EmptyLineAbove
+" Insert empty line below, repeatable
+nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyLineBelow")<CR>
+nmap go <Plug>EmptyLineBelow
+
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
 inoremap () ()<Left>
 inoremap [] []<Left>
 inoremap <> <><Left>
-" To keep typing after {}
+inoremap "" ""<Left>
+inoremap '' ''<Left>
+" Space to keep typing after pair
 inoremap {}<Space> {}<Space>
 inoremap []<Space> []<Space>
 inoremap <><Space> <><Space>
+inoremap ''<Space> ''<Space>
+" Dot to keep typing after pair
+inoremap {}, {},
+inoremap [], [],
+inoremap <>, <>,
+inoremap '', '',
+" Comma to keep typing after pair
+inoremap {}. {}.
+inoremap []. [].
+inoremap <>. <>.
+inoremap ''. ''.
 
 " {{{2 Enable Arabic transcription. (simulate Alt-Latin mapping)
 inoremap <M-a>a ā
