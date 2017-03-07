@@ -3,35 +3,42 @@ set nocompatible
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'jalvesaq/Nvim-R' " Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
 Plugin 'vim-scripts/YankRing.vim'
 Plugin 'vim-pandoc/vim-pandoc'
 Plugin 'vim-pandoc/vim-pandoc-syntax'
-Plugin 'vim-pandoc/vim-markdownfootnotes'
+Plugin 'vim-scripts/textutil.vim'
 Plugin 'chrisbra/csv.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'lervag/vimtex'
-Plugin 'vim-scripts/direcionalWindowResizer'
-" LanguageTool
+Plugin 'vim-scripts/directionalWindowResizer'
+Plugin 'vim-scripts/LanguageTool'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 "  }}}1
- 
-
 " {{{1 General stuff
 
+" No wraparournd end of file in normal searches
+set nowrapscan
+" No high-light search hits
+set nohlsearch 
+"Search while typing
+set incsearch
+" Ignore case when searching
+set ignorecase
+" Case-sensitive when upper case is used in search string
+set smartcase
+
 " Use TAB for completions
-inoremap <Tab> <c-n>
 inoremap <Tab> <c-n>
 
 " Show command completion alternatives
@@ -56,12 +63,14 @@ set autoindent
 
 " tab key inserts spaces
 set expandtab
+"
 " Length of tab-character for indention
 " 4 spaces for markdown syntax
 set shiftwidth=4
 
-
-set formatoptions=rqj
+set formatoptions=rj
+" r    Automatically insert the current comment leader after hitting <Enter> in Insert mode.
+" j    Where it makes sense, remove a comment leader when joining lines.
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
@@ -88,11 +97,16 @@ set spelllang=en_us
 " Choose first word in list
 nmap zz 1z=e
 
+" Command to find and replace repeated word, word duplet or triplet.
+command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
+
+
 " LanguageTool
-let g:languagetool_jar='/Applications/LanguageTool-3.1/languagetool-commandline.jar'
+let g:languagetool_jar='/Applications/LanguageTool-3.6/languagetool-commandline.jar'
 let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
     \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
 
+"
 "{{{1 DISPLAY -------------------
 " Display line numbers
 set number
@@ -122,7 +136,7 @@ highlight Comment cterm=italic
 "}}}2
 
 " Add a bit extra margin to the left
-set foldcolumn=2
+set foldcolumn=0
 
 " GUIFONTS
 "set guifont=Letter\ Gothic:h14 
@@ -168,13 +182,28 @@ nmap <Leader>c :<Up><CR>
 " Next item in location list window
 nmap <Leader>nn :lne<CR>
 
-" Compile markdown to tex  
-nmap <Leader>pat :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib --template ~/mypandocstuff/templates/template -o '%'.tex<CR>
-" Compile markdown to pdf  
-nmap <Leader>pap :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex -N --columns=200 -o '%'.pdf<CR>
-" Compile markdown to docx. -S needed for parsing of dahses in non TeX.
-nmap <Leader>pad :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography /Users/andy/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+" {{{2 Markdown compilation  
 
+" Markdown to tex
+nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
+
+" Compile markdown to pdf  
+" && = open only run if pandoc succeeds
+nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -N -S -o '%'.pdf && open '%'.pdf<CR>
+
+" Compile markdown -> latex -> pdf
+nmap <Leader>plp :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -S -s -o '%'.tex
+	    \ && <CR>
+
+" Compile markdown to docx. -S needed for parsing of dahses in non TeX.
+nmap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+
+" to beamer 
+nmap <Leader>pb :w<CR>:!pandoc -t beamer % --latex-engine=xelatex -o '%'.pdf<CR>
+
+
+
+" {{{2 Language switching
 " Switch to Swedish typing
 nmap <Leader>s :<C-U>call SweType()<CR>
 " Switch to English typing
@@ -183,16 +212,20 @@ nmap <Leader>e :<C-U>call EngType()<CR>
 nmap <Leader>a :<C-U>call AraType()<CR>
 
 
-" {{{2 LaTeX mappings
+" {{{1 LaTeX mappings
 " Mappings only used in .tex files 
+
+autocmd Filetype tex call LaTeXmaps()
+
 function! LaTeXmaps()
 
-  nmap <Leader>sc <ESC>bi\textsc{<ESC>ea}<ESC>
-  nmap <Leader>it <ESC>bi\textit{<ESC>ea}<ESC>
-  nmap <Leader>bf <ESC>bi\textbf{<ESC>ea}<ESC>
-  nmap <Leader>em <ESC>bi\emph{<ESC>ea}<ESC>
-  nmap <Leader>ar <ESC>bi\textarabic{<ESC>ea}<ESC>
-  nmap <Leader>i "iyiwea\index{<ESC>pi}<ESC>
+  nmap <Leader>sc <ESC>bi\textsc<ESC>lyse}e
+  nmap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
+  nmap <Leader>it <ESC>bi\textit<ESC>lyse}e
+  nmap <Leader>bf <ESC>bi\textbf<ESC>lyse}e
+  nmap <Leader>em <ESC>bi\emph<ESC>lyse}e
+  nmap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
+  nmap <Leader>i "iyiwea\index<ESC>lyse}e
 
   " Input covington example frame.
   nmap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
@@ -204,7 +237,9 @@ function! LaTeXmaps()
 
   " LaTeX compilation and bibtex run
   " Saves, sets ed and compiles
-  map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %<CR>
+  map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
+              \&& mv '%<'.pdf '%<'.tex.pdf
+              \&& open '%'.pdf<CR>
   
   " %< "gives current filename without extension
   map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
@@ -212,14 +247,29 @@ function! LaTeXmaps()
 
   " Key mapping to Tabularize LaTeX tabular: Unescaped &
   " Tabularize by & unless escaped
-  map <Leader>t :<C-U>Tabularize /\\\@<!&<CR> 
+  map <Leader>t mtvip:Tabularize /\\\@<!&<CR>`t
   " Tabularize gloss (by spaces)
   map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
 
 endfunction
 
-autocmd BufRead *.tex call LaTeXmaps()
-" }}}2
+" }}1
+
+
+" {{1 Markdown mappings
+" Mappings only used in markdown files 
+
+autocmd Filetype mkd      call MarkdownMaps()
+autocmd Filetype md       call MarkdownMaps()
+autocmd Filetype md       call MarkdownMaps()
+autocmd Filetype pandoc call MarkdownMaps()
+
+function! MarkdownMaps()
+
+    nnoremap <Leader>t vip:Tabularize /\|<CR>
+
+endfunction
+" }}}1
 " {{{1 DiffChar
 " Set wrap in diff
 au FilterWritePre * if &diff | set wrap | endif
@@ -248,17 +298,6 @@ vnoremap j gj
 " Makes h and l and arrow keyes wrap to pre/next line.
 set whichwrap+=<,>,h,l,[,]
 
-" No wraparournd end of file in normal searches
-set nowrapscan
-" No high-light search hits
-set nohlsearch 
-"Search while typing
-set incsearch
-" Ignore case when searching
-set ignorecase
-" Case-sensitive when upper case is used in search string
-set smartcase
-
 " Move to win horizontally
 nmap HH <C-w>h
 nmap LL <C-w>l
@@ -285,48 +324,44 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 nnoremap <Space> i<Space><ESC>
 
 
-" Command to find and replace repeated word or phrase.
-command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+)\s+\1>/\1/gc
-
 " abbreviation command for common misspellings
 iabbrev tow two
 iabbrev teh the 
 
 " Remove word in input mode
 " Must go through visual mode to get character under cursor. 
-inoremap jj <Esc>vbc
+inoremap jj <Esc>ciw
 imap <BS><BS> <NOP>
 
-" CANT GET TO WORK
-" Insert empty line above, repeatable
+" When inserting empty line, return to cursor position
 nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
-nmap gO <Plug>EmptyLineAbove
+nmap O<ESC> <Plug>EmptyLineAbove
 " Insert empty line below, repeatable
 nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyLineBelow")<CR>
-nmap go <Plug>EmptyLineBelow
+nmap o<ESC> <Plug>EmptyLineBelow
+
 
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
 inoremap () ()<Left>
 inoremap [] []<Left>
 inoremap <> <><Left>
-inoremap "" ""<Left>
-inoremap '' ''<Left>
+inoremap ** **<Left>
+
 " Space to keep typing after pair
 inoremap {}<Space> {}<Space>
 inoremap []<Space> []<Space>
-inoremap <><Space> <><Space>
-inoremap ''<Space> ''<Space>
+inoremap **<Space> **<Space>
+
 " Dot to keep typing after pair
 inoremap {}, {},
 inoremap [], [],
 inoremap <>, <>,
-inoremap '', '',
+
 " Comma to keep typing after pair
 inoremap {}. {}.
 inoremap []. [].
 inoremap <>. <>.
-inoremap ''. ''.
 
 " {{{2 Enable Arabic transcription. (simulate Alt-Latin mapping)
 inoremap <M-a>a ā
@@ -398,12 +433,14 @@ noremap <M-y> ẏ
 
 " {{{2 Switch to Swedish
 function! SweType()
+
 " To switch back from Arabic
+  set guifont=Source\ Code\ Pro:h14
   set keymap=
   set norightleft
   set spelllang=sv
   inoremap ; ö
-  noremap r; rö
+  nnoremap r; rö
   inoremap ;; ;
   nnoremap r;; r;
   inoremap : Ö
@@ -431,6 +468,7 @@ endfunction
 "{{{2 Switch to English
 function! EngType()
 " To switch back from Arabic
+  set guifont=Source\ Code\ Pro:h14
   set keymap=
   set norightleft
   set spelllang=en_us
@@ -462,8 +500,33 @@ endfunction
 
 " {{{ Switch to arabic
 function! AraType()
-set keymap=arabic
+set guifont=Source\ Code\ Pro:h18
+set keymap=arabic-pc "Modified keymap in .vim/keymap
 set rightleft
+  inoremap ; ;
+  unmap r;
+  iunmap ;;
+  unmap r;;
+  inoremap : :
+  unmap r:
+  iunmap ::
+  unmap r::
+  inoremap [ [
+  unmap r[
+  iunmap [[
+  unmap r[[
+  inoremap { {
+  unmap r{
+  iunmap {{
+  unmap r{{
+  inoremap ' '
+  unmap r'
+  iunmap ''
+  unmap r''
+  inoremap " "
+  unmap r"
+  iunmap ""
+  unmap r""
 endfunction
 
 " To switch back from Arabic
@@ -518,5 +581,6 @@ let g:pandoc#syntax#conceal#use=0
 " File extension synonyms
 autocmd BufEnter *.md :setlocal filetype=pandoc " vim-pandoc plugin
 autocmd BufEnter *.mkd :setlocal filetype=pandoc " vim-pandoc plugin
+autocmd BufEnter *.markdown :setlocal filetype=pandoc " vim-pandoc plugin
 
 " }}}
