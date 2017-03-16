@@ -41,6 +41,9 @@ set smartcase
 " Use TAB for completions
 inoremap <Tab> <c-n>
 
+" Load bib file to make cite keys available in autocompletion
+bad ~/mylatexstuff/bibliotek.bib
+
 " Show command completion alternatives
 set wildmenu
 
@@ -199,7 +202,7 @@ nmap <Leader>plp :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_
 nmap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 " to beamer 
-nmap <Leader>pb :w<CR>:!pandoc -t beamer % --latex-engine=xelatex -o '%'.pdf<CR>
+nmap <Leader>pb :w<CR>:!pandoc -t beamer % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -S -o '%'.pdf<CR>
 
 
 
@@ -256,8 +259,11 @@ endfunction
 " }}1
 
 
-" {{1 Markdown mappings
+" {{{1 Markdown mappings and function
 " Mappings only used in markdown files 
+
+
+
 
 autocmd Filetype mkd      call MarkdownMaps()
 autocmd Filetype md       call MarkdownMaps()
@@ -265,6 +271,7 @@ autocmd Filetype md       call MarkdownMaps()
 autocmd Filetype pandoc call MarkdownMaps()
 
 function! MarkdownMaps()
+
 
     nnoremap <Leader>t vip:Tabularize /\|<CR>
 
@@ -347,11 +354,13 @@ inoremap () ()<Left>
 inoremap [] []<Left>
 inoremap <> <><Left>
 inoremap ** **<Left>
+inoremap "" ""<Left>
 
 " Space to keep typing after pair
 inoremap {}<Space> {}<Space>
 inoremap []<Space> []<Space>
 inoremap **<Space> **<Space>
+inoremap ""<Space> ""<Space>
 
 " Dot to keep typing after pair
 inoremap {}, {},
@@ -435,7 +444,6 @@ noremap <M-y> ẏ
 function! SweType()
 
 " To switch back from Arabic
-  set guifont=Source\ Code\ Pro:h14
   set keymap=
   set norightleft
   set spelllang=sv
@@ -468,7 +476,6 @@ endfunction
 "{{{2 Switch to English
 function! EngType()
 " To switch back from Arabic
-  set guifont=Source\ Code\ Pro:h14
   set keymap=
   set norightleft
   set spelllang=en_us
@@ -498,10 +505,9 @@ function! EngType()
   unmap r""
 endfunction
 
-" {{{ Switch to arabic
+" {{{2 Switch to Arabic
 function! AraType()
-set guifont=Source\ Code\ Pro:h18
-set keymap=arabic-pc "Modified keymap in .vim/keymap
+set keymap=arabic-pc "Modified keymap. File in .vim/keymap
 set rightleft
   inoremap ; ;
   unmap r;
@@ -529,8 +535,6 @@ set rightleft
   unmap r""
 endfunction
 
-" To switch back from Arabic
-  set keymap=
 "{{{1 LATEX 
 "
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and

@@ -8,3 +8,5 @@ export PATH=$PATH:~/dotfiles/bin
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+export CLICOLOR=1
+alias ls='ls -Fa'
