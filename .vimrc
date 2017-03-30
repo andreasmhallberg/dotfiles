@@ -40,10 +40,11 @@ set smartcase
 
 " Use TAB for completions
 inoremap <Tab> <c-n>
+inoremap <S-Tab> <c-x><c-l>
 
 " Load bib file to make cite keys available in autocompletion
 bad ~/mylatexstuff/bibliotek.bib
-
+ 
 " Show command completion alternatives
 set wildmenu
 
@@ -187,23 +188,38 @@ nmap <Leader>nn :lne<CR>
 
 " {{{2 Markdown compilation  
 
-" Markdown to tex
-nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
+"  to tex
+autocmd Filetype pandoc 
+            \ nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
 
-" Compile markdown to pdf  
-" && = open only run if pandoc succeeds
-nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -N -S -o '%'.pdf && open '%'.pdf<CR>
+"  to pdf  
+autocmd Filetype pandoc 
+            \ nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -N -S -o '%'.pdf 
+            \ && open '%'.pdf<CR>
 
-" Compile markdown -> latex -> pdf
-nmap <Leader>plp :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -S -s -o '%'.tex
-	    \ && <CR>
+"  to docx. -S needed for parsing of daises in non TeX.
+autocmd Filetype pandoc
+    \ nmap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
-" Compile markdown to docx. -S needed for parsing of dahses in non TeX.
-nmap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+"  to beamer 
+autocmd Filetype pandoc
+    \ nmap <Leader>pb :w<CR>:!pandoc -t beamer % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -S -o '%'.pdf && open '%'.pdf<CR>
 
-" to beamer 
-nmap <Leader>pb :w<CR>:!pandoc -t beamer % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -S -o '%'.pdf<CR>
+" {{{2 TeX compilation
+autocmd Filetype tex
+  \ nmap <Leader>pp  :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
+  \ && mv '%<'.pdf '%<'.tex.pdf
+  \ && open '%'.pdf<CR> 
 
+" Backwards compability for above
+autocmd Filetype tex nmap <Leader>x <Leader>pp
+
+" Bibtex run
+" %< "gives current filename without extension
+autocmd Filetype tex nmap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
+" OBS!!! Run
+"      rm -rf `biber --cache`
+" to fix bug crash bug.
 
 
 " {{{2 Language switching
@@ -213,7 +229,6 @@ nmap <Leader>s :<C-U>call SweType()<CR>
 nmap <Leader>e :<C-U>call EngType()<CR>
 " Switch to Arabic typing
 nmap <Leader>a :<C-U>call AraType()<CR>
-
 
 " {{{1 LaTeX mappings
 " Mappings only used in .tex files 
@@ -237,16 +252,6 @@ function! LaTeXmaps()
   " Requires vim-latex-textobj plugin.
   nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
-
-  " LaTeX compilation and bibtex run
-  " Saves, sets ed and compiles
-  map <Leader>x :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
-              \&& mv '%<'.pdf '%<'.tex.pdf
-              \&& open '%'.pdf<CR>
-  
-  " %< "gives current filename without extension
-  map <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
-  " OBS!!! Run biber. rm -rf `biber --cache` clears cash to fix bug.
 
   " Key mapping to Tabularize LaTeX tabular: Unescaped &
   " Tabularize by & unless escaped
@@ -273,6 +278,11 @@ autocmd Filetype pandoc call MarkdownMaps()
 function! MarkdownMaps()
 
 
+    " Do comments in Markdown as suggested here http://stackoverflow.com/a/20885980/3210474
+    " No comment in HTML or TeX output.
+    set commentstring=[//]:\ #\ (%s)
+
+    " Let Tabularize do pipe tables 
     nnoremap <Leader>t vip:Tabularize /\|<CR>
 
 endfunction
@@ -343,10 +353,12 @@ imap <BS><BS> <NOP>
 " When inserting empty line, return to cursor position
 nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
 nmap O<ESC> <Plug>EmptyLineAbove
+
 " Insert empty line below, repeatable
 nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyLineBelow")<CR>
 nmap o<ESC> <Plug>EmptyLineBelow
 
+" {{{2 Delimiters
 
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
@@ -356,30 +368,40 @@ inoremap <> <><Left>
 inoremap ** **<Left>
 inoremap "" ""<Left>
 
-" Space to keep typing after pair
+" Normal behaviour if folowed by space, enter, comma, full stop
 inoremap {}<Space> {}<Space>
-inoremap []<Space> []<Space>
-inoremap **<Space> **<Space>
-inoremap ""<Space> ""<Space>
-
-" Dot to keep typing after pair
+inoremap {}<CR> {}<CR>
 inoremap {}, {},
-inoremap [], [],
-inoremap <>, <>,
-
-" Comma to keep typing after pair
 inoremap {}. {}.
+
+inoremap []<Space> []<Space>
+inoremap []<CR> []<CR>
+inoremap [], [],
 inoremap []. [].
+
+inoremap **<Space> **<Space>
+inoremap **<CR> **<CR>
+inoremap <>, <>,
 inoremap <>. <>.
+
+inoremap ""<Space> ""<Space>
+inoremap ""<CR> ""<CR>
+inoremap "", "",
+inoremap "". "".
+
 
 " {{{2 Enable Arabic transcription. (simulate Alt-Latin mapping)
 inoremap <M-a>a ā
 inoremap <M-a>A Ā
+inoremap <M-.>b ḅ
+inoremap <M-.>B Ḅ
 inoremap <M-a>i ī
 inoremap <M-a>I Ī
 inoremap <M-a>u ū
 inoremap <M-a>U Ū
-inoremap <M-a>o ō
+inoremap <M-a>U Ū
+inoremap <M-.>m ṃ
+inoremap <M-.>M Ṃ
 inoremap <M-a>O Ō 
 inoremap <M-a>e ē
 inoremap <M-a>E Ē
@@ -442,35 +464,10 @@ noremap <M-y> ẏ
 
 " {{{2 Switch to Swedish
 function! SweType()
-
 " To switch back from Arabic
-  set keymap=
+  set keymap=swe-us
   set norightleft
   set spelllang=sv
-  inoremap ; ö
-  nnoremap r; rö
-  inoremap ;; ;
-  nnoremap r;; r;
-  inoremap : Ö
-  nnoremap r: rÖ
-  inoremap :: :
-  nnoremap r:: r:
-  inoremap [ å
-  nnoremap r[ rå
-  inoremap { Å
-  nnoremap r{ rÅ
-  inoremap ' ä
-  nnoremap r' rä
-  inoremap '' '
-  nnoremap r'' r'
-  inoremap " Ä
-  nnoremap r" rÄ
-  inoremap "" "
-  nnoremap r"" r"
-  inoremap [[ [
-  nnoremap r[[ r[
-  inoremap {{ {
-  nnoremap r{{ r{
 endfunction
 
 "{{{2 Switch to English
@@ -479,60 +476,12 @@ function! EngType()
   set keymap=
   set norightleft
   set spelllang=en_us
-  inoremap ; ;
-  unmap r;
-  iunmap ;;
-  unmap r;;
-  inoremap : :
-  unmap r:
-  iunmap ::
-  unmap r::
-  inoremap [ [
-  unmap r[
-  iunmap [[
-  unmap r[[
-  inoremap { {
-  unmap r{
-  iunmap {{
-  unmap r{{
-  inoremap ' '
-  unmap r'
-  iunmap ''
-  unmap r''
-  inoremap " "
-  unmap r"
-  iunmap ""
-  unmap r""
 endfunction
 
 " {{{2 Switch to Arabic
 function! AraType()
-set keymap=arabic-pc "Modified keymap. File in .vim/keymap
-set rightleft
-  inoremap ; ;
-  unmap r;
-  iunmap ;;
-  unmap r;;
-  inoremap : :
-  unmap r:
-  iunmap ::
-  unmap r::
-  inoremap [ [
-  unmap r[
-  iunmap [[
-  unmap r[[
-  inoremap { {
-  unmap r{
-  iunmap {{
-  unmap r{{
-  inoremap ' '
-  unmap r'
-  iunmap ''
-  unmap r''
-  inoremap " "
-  unmap r"
-  iunmap ""
-  unmap r""
+    set keymap=arabic-pc "Modified keymap. File in .vim/keymap
+    set rightleft
 endfunction
 
 "{{{1 LATEX 
