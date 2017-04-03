@@ -24,7 +24,6 @@ Plugin 'vim-scripts/LanguageTool'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-"  }}}1
 " {{{1 General stuff
 
 " No wraparournd end of file in normal searches
@@ -93,6 +92,12 @@ set splitright
 " No swapfile exists warning
 set shortmess+=A
 
+" Regard markdown extension variants as pandoc
+autocmd Filetype mkd set ft=pandoc
+autocmd Filetype md  set ft=pandoc
+autocmd Filetype markdown  set ft=pandoc
+
+
 "{{{1 SPELLCHECK
 
 set spell
@@ -111,7 +116,7 @@ let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
     \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
 
 "
-"{{{1 DISPLAY -------------------
+"{{{1 DISPLAY
 " Display line numbers
 set number
 
@@ -121,7 +126,8 @@ autocmd BufEnter * silent! set cole=0
 
 "{{{2 syntax color
 colorscheme solarized
-" Visibiliyt of invisible chars set list. low|normal|high
+
+" Visibility of invisible chars set list. low|normal|high
 let g:solarized_visibility= "medium"
 
 syntax on
@@ -139,31 +145,29 @@ set guioptions-=L
 highlight Comment cterm=italic
 "}}}2
 
-" Add a bit extra margin to the left
+" No columns to show folds
 set foldcolumn=0
 
 " GUIFONTS
 "set guifont=Letter\ Gothic:h14 
     " Nice and very bright but no Arabic diacritics.
 "set guifont=AnonymousPro:h14 
-    " Brigh. No arabic diacritics.
+    " Bright. No arabic diacritics.
 " set guifont=Consolas:h14
     " Very nice and has Arabic characters and italics.
-set guifont=Source\ Code\ Pro:h14
+set guifont=Source\ Code\ Pro\ Light:h14
    " Has various heavynesses byt no italics
 "set guifont=Ubuntu\ Mono:h15
    " Has bold and italics
 
 set linespace=5
 
-" When scorlling, keep the cursor 8 lines from the top and 8
+" When scrolling, keep the cursor 8 lines from the top and 8
 " lines from the bottom
 set scrolloff=8
 
 " | at end of chnaged (<c>) object 
 set cpoptions+=|
-
-" Show as much as possible of a wrapped last line, not just '@'.
 
 " Soft wrap gundo preview
 augroup MyGundo
@@ -211,9 +215,6 @@ autocmd Filetype tex
   \ && mv '%<'.pdf '%<'.tex.pdf
   \ && open '%'.pdf<CR> 
 
-" Backwards compability for above
-autocmd Filetype tex nmap <Leader>x <Leader>pp
-
 " Bibtex run
 " %< "gives current filename without extension
 autocmd Filetype tex nmap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
@@ -255,9 +256,11 @@ function! LaTeXmaps()
 
   " Key mapping to Tabularize LaTeX tabular: Unescaped &
   " Tabularize by & unless escaped
-  map <Leader>t mtvip:Tabularize /\\\@<!&<CR>`t
+  " Requires vimtex for `vie` operation  
+  map <Leader>t vie:Tabularize /\\\@<!&<CR>
+
   " Tabularize gloss (by spaces)
-  map <Leader>tc :'<,'>s/\v +/ /<CR>:'<,'>Tabularize / <CR>
+  map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
 
 endfunction
 
@@ -270,9 +273,6 @@ endfunction
 
 
 
-autocmd Filetype mkd      call MarkdownMaps()
-autocmd Filetype md       call MarkdownMaps()
-autocmd Filetype md       call MarkdownMaps()
 autocmd Filetype pandoc call MarkdownMaps()
 
 function! MarkdownMaps()
@@ -367,6 +367,7 @@ inoremap [] []<Left>
 inoremap <> <><Left>
 inoremap ** **<Left>
 inoremap "" ""<Left>
+inoremap '' ''<Left>
 
 " Normal behaviour if folowed by space, enter, comma, full stop
 inoremap {}<Space> {}<Space>
@@ -389,6 +390,10 @@ inoremap ""<CR> ""<CR>
 inoremap "", "",
 inoremap "". "".
 
+inoremap ''<Space> ''<Space>
+inoremap ''<CR> ''<CR>
+inoremap '', '',
+inoremap ''. ''.
 
 " {{{2 Enable Arabic transcription. (simulate Alt-Latin mapping)
 inoremap <M-a>a ā
@@ -526,14 +531,5 @@ let g:vimtex_fold_enabled=1
 if &term =~ "xterm" || &term =~ "256" || $DISPLAY != "" || $HAS_256_COLORS == "yes"
     set t_Co=256
 endif
-"}}}1
-" {{{ vim-pandoc
-" No conceal
-let g:pandoc#syntax#conceal#use=0
 
-" File extension synonyms
-autocmd BufEnter *.md :setlocal filetype=pandoc " vim-pandoc plugin
-autocmd BufEnter *.mkd :setlocal filetype=pandoc " vim-pandoc plugin
-autocmd BufEnter *.markdown :setlocal filetype=pandoc " vim-pandoc plugin
 
-" }}}
