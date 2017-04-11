@@ -26,6 +26,9 @@ Plugin 'vim-scripts/LanguageTool'
 call vundle#end()            " required
 " {{{1 General stuff
 
+" Load US-alt-latin keymap extension
+set keymap=us-altlatin
+
 " No wraparournd end of file in normal searches
 set nowrapscan
 " No high-light search hits
@@ -41,9 +44,6 @@ set smartcase
 inoremap <Tab> <c-n>
 inoremap <S-Tab> <c-x><c-l>
 
-" Load bib file to make cite keys available in autocompletion
-bad ~/mylatexstuff/bibliotek.bib
- 
 " Show command completion alternatives
 set wildmenu
 
@@ -96,6 +96,10 @@ set shortmess+=A
 autocmd Filetype mkd set ft=pandoc
 autocmd Filetype md  set ft=pandoc
 autocmd Filetype markdown  set ft=pandoc
+
+" Vim Pandoc. Add .bib to completion
+ let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
+ let g:pandoc#completion#bib#mode = 'fallback'
 
 
 "{{{1 SPELLCHECK
@@ -198,7 +202,11 @@ autocmd Filetype pandoc
 
 "  to pdf  
 autocmd Filetype pandoc 
-            \ nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -N -S -o '%'.pdf 
+            \ nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f
+            \ markdown+implicit_figures+table_captions %
+            \ --latex-engine=xelatex
+            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ -N -S -o '%'.pdf 
             \ && open '%'.pdf<CR>
 
 "  to docx. -S needed for parsing of daises in non TeX.
@@ -395,78 +403,6 @@ inoremap ''<CR> ''<CR>
 inoremap '', '',
 inoremap ''. ''.
 
-" {{{2 Enable Arabic transcription. (simulate Alt-Latin mapping)
-inoremap <M-a>a ā
-inoremap <M-a>A Ā
-inoremap <M-.>b ḅ
-inoremap <M-.>B Ḅ
-inoremap <M-a>i ī
-inoremap <M-a>I Ī
-inoremap <M-a>u ū
-inoremap <M-a>U Ū
-inoremap <M-a>U Ū
-inoremap <M-.>m ṃ
-inoremap <M-.>M Ṃ
-inoremap <M-a>O Ō 
-inoremap <M-a>e ē
-inoremap <M-a>E Ē
-inoremap <M-p> ʿ
-inoremap <M-P> ʾ
-inoremap <M-.>d ḍ
-inoremap <M-.>D Ḍ
-inoremap <M-.>s ṣ
-inoremap <M-.>S Ṣ
-inoremap <M-.>t ṭ
-inoremap <M-.>T Ṭ
-inoremap <M-.>z ẓ
-inoremap <M-.>Z Ẓ
-inoremap <M-.>h ḥ
-inoremap <M-.>H Ḥ
-inoremap <M-w>g ġ
-inoremap <M-w>G Ġ
-inoremap <M-x>d ḏ
-inoremap <M-x>D Ḏ
-inoremap <M-x>t ṯ
-inoremap <M-x>T Ṯ
-inoremap <M-v>s š
-inoremap <M-v>S Š
-
-nmap r<M-a>a rā
-nmap r<M-a>A rĀ
-nmap r<M-a>i rī
-nmap r<M-a>I rĪ
-nmap r<M-a>u rū
-nmap r<M-a>U rŪ
-nmap r<M-a>ō rō
-nmap r<M-a>Ō rŌ 
-nmap r<M-a>e rē
-nmap r<M-a>E rĒ
-nmap r<M-p> rʿ
-nmap r<M-P> rʾ
-nmap r<M-.>d rḍ
-nmap r<M-.>D rḌ
-nmap r<M-.>s rṣ
-nmap r<M-.>S rṢ
-nmap r<M-.>t rṭ
-nmap r<M-.>T rṬ
-nmap r<M-.>z rẓ
-nmap r<M-.>Z rẒ
-nmap r<M-.>h rḥ
-nmap r<M-.>H rḤ
-nmap r<M-w>g rġ
-nmap r<M-w>G rĠ
-nmap r<M-x>d rḏ
-nmap r<M-x>D rḎ
-nmap r<M-x>t rṯ
-nmap r<M-x>T rṮ
-nmap r<M-v>s rš
-nmap r<M-v>S rŠ
-
-" EALLx
-noremap <M-e> ´
-noremap <M-w> ẇ
-noremap <M-y> ẏ
-
 " {{{2 Switch to Swedish
 function! SweType()
 " To switch back from Arabic
@@ -478,7 +414,7 @@ endfunction
 "{{{2 Switch to English
 function! EngType()
 " To switch back from Arabic
-  set keymap=
+  set keymap=us-altlatin
   set norightleft
   set spelllang=en_us
 endfunction
