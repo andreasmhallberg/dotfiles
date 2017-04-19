@@ -215,7 +215,11 @@ autocmd Filetype pandoc
 
 "  to beamer 
 autocmd Filetype pandoc
-    \ nmap <Leader>pb :w<CR>:!pandoc -t beamer % --latex-engine=xelatex --bibliography ~/mylatexstuff/bibliotek.bib -S -o '%'.pdf && open '%'.pdf<CR>
+    \ nmap <Leader>pb :w<CR>:!pandoc -t beamer %
+    \ --latex-engine=xelatex
+    \ --bibliography ~/mylatexstuff/bibliotek.bib
+    \ -S -o '%'.pdf
+    \ && open '%'.pdf<CR>
 
 " {{{2 TeX compilation
 autocmd Filetype tex
@@ -232,12 +236,36 @@ autocmd Filetype tex nmap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
 
 
 " {{{2 Language switching
+"
 " Switch to Swedish typing
 nmap <Leader>s :<C-U>call SweType()<CR>
 " Switch to English typing
 nmap <Leader>e :<C-U>call EngType()<CR>
 " Switch to Arabic typing
 nmap <Leader>a :<C-U>call AraType()<CR>
+
+
+"  Switch to Swedish
+function! SweType()
+" To switch back from Arabic
+  set keymap=swe-us
+  set norightleft
+  set spelllang=sv
+endfunction
+
+" Switch to English
+function! EngType()
+" To switch back from Arabic
+  set keymap=us-altlatin
+  set norightleft
+  set spelllang=en_us
+endfunction
+
+" Switch to Arabic
+function! AraType()
+    set keymap=arabic-pc "Modified keymap. File in .vim/keymap
+    set rightleft
+endfunction
 
 " {{{1 LaTeX mappings
 " Mappings only used in .tex files 
@@ -262,10 +290,10 @@ function! LaTeXmaps()
   nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
 
-  " Key mapping to Tabularize LaTeX tabular: Unescaped &
+  " Key mapping to Tabularize LaTeX tabular
   " Tabularize by & unless escaped
   " Requires vimtex for `vie` operation  
-  map <Leader>t vie:Tabularize /\\\@<!&<CR>
+  map <Leader>t vip:Tabularize /\\\@<!&<CR>
 
   " Tabularize gloss (by spaces)
   map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
@@ -273,13 +301,8 @@ function! LaTeXmaps()
 endfunction
 
 " }}1
-
-
 " {{{1 Markdown mappings and function
 " Mappings only used in markdown files 
-
-
-
 
 autocmd Filetype pandoc call MarkdownMaps()
 
@@ -312,8 +335,6 @@ let g:DiffModeSync = 1
 " backspace over everything in insert mode
 set backspace=indent,eol,start 
 
-
-
 " Move on soft-wrapped lines
 nnoremap k gk
 nnoremap j gj
@@ -345,7 +366,7 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 " {{{1 CHARACTER INPUT
 
-" Space to insert one character before
+" Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
 
@@ -403,27 +424,6 @@ inoremap ''<CR> ''<CR>
 inoremap '', '',
 inoremap ''. ''.
 
-" {{{2 Switch to Swedish
-function! SweType()
-" To switch back from Arabic
-  set keymap=swe-us
-  set norightleft
-  set spelllang=sv
-endfunction
-
-"{{{2 Switch to English
-function! EngType()
-" To switch back from Arabic
-  set keymap=us-altlatin
-  set norightleft
-  set spelllang=en_us
-endfunction
-
-" {{{2 Switch to Arabic
-function! AraType()
-    set keymap=arabic-pc "Modified keymap. File in .vim/keymap
-    set rightleft
-endfunction
 
 "{{{1 LATEX 
 "
