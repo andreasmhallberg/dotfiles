@@ -21,12 +21,15 @@ loadkeymap
 <M-.>m ṃ
 <M-.>M Ṃ
 <M-a>O Ō 
+<M-a>o ō 
 <M-a>e ē
 <M-a>E Ē
 <M-p> ʿ
 <M-P> ʾ
 <M-.>d ḍ
 <M-.>D Ḍ
+<M-.>l ḷ
+<M-.>L Ḷ
 <M-.>s ṣ
 <M-.>S Ṣ
 <M-.>t ṭ

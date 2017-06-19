@@ -7,7 +7,7 @@
 " Use this short name in the status line.
 let b:keymap_name = "arabic-pc"
 
-" Midified by Andreas to fit PC layout with THAL on paragraph character.
+" Modified by Andreas to fit PC layout with THAL on paragraph character.
 " To be symlinked in .vim/keymap
 
 loadkeymap

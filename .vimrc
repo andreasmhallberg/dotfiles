@@ -159,7 +159,7 @@ set foldcolumn=0
     " Bright. No arabic diacritics.
 " set guifont=Consolas:h14
     " Very nice and has Arabic characters and italics.
-set guifont=Source\ Code\ Pro\ Light:h14
+set guifont=Source\ Code\ Pro\ Light:h16
    " Has various heavynesses byt no italics
 "set guifont=Ubuntu\ Mono:h15
    " Has bold and italics
@@ -215,7 +215,8 @@ autocmd Filetype pandoc
 
 "  to beamer 
 autocmd Filetype pandoc
-    \ nmap <Leader>pb :w<CR>:!pandoc -t beamer %
+    \ nmap <Leader>pb :w<CR>:!pandoc -t beamer -f
+    \ markdown+implicit_figures+table_captions %
     \ --latex-engine=xelatex
     \ --bibliography ~/mylatexstuff/bibliotek.bib
     \ -S -o '%'.pdf
@@ -248,7 +249,7 @@ nmap <Leader>a :<C-U>call AraType()<CR>
 "  Switch to Swedish
 function! SweType()
 " To switch back from Arabic
-  set keymap=swe-us
+  set keymap=swe-us "Modified keymap. File in .vim/keymap
   set norightleft
   set spelllang=sv
 endfunction
@@ -256,7 +257,7 @@ endfunction
 " Switch to English
 function! EngType()
 " To switch back from Arabic
-  set keymap=us-altlatin
+  set keymap=us-altlatin "Modified keymap. File in .vim/keymap
   set norightleft
   set spelllang=en_us
 endfunction
@@ -369,10 +370,10 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
-
 " abbreviation command for common misspellings
 iabbrev tow two
 iabbrev teh the 
+iabbrev Andras Andreas
 
 " Remove word in input mode
 " Must go through visual mode to get character under cursor. 
@@ -404,6 +405,11 @@ inoremap {}<CR> {}<CR>
 inoremap {}, {},
 inoremap {}. {}.
 
+inoremap ()<Space> ()<Space>
+inoremap ()<CR> ()<CR>
+inoremap (), (),
+inoremap (). ().
+
 inoremap []<Space> []<Space>
 inoremap []<CR> []<CR>
 inoremap [], [],
@@ -411,6 +417,11 @@ inoremap []. [].
 
 inoremap **<Space> **<Space>
 inoremap **<CR> **<CR>
+inoremap **, **,
+inoremap **. **.
+
+inoremap <><Space> <><Space>
+inoremap <><CR> <><CR>
 inoremap <>, <>,
 inoremap <>. <>.
 
