@@ -8,7 +8,7 @@
 let b:keymap_name = "arabic-pc"
 
 " Modified by Andreas to fit PC layout with THAL on paragraph character.
-" To be symlinked in .vim/keymap
+" To be symlinked in .vim/keymap.
 
 loadkeymap
 q	<char-0x0636>			" (1590)	- DAD
