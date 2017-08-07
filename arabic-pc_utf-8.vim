@@ -7,7 +7,9 @@
 " Use this short name in the status line.
 let b:keymap_name = "arabic-pc"
 
-" Modified by Andreas to fit PC layout with THAL on paragraph character.
+" Modified by Andreas to fit PC layout with THAL on paragraph character as
+" well as replacing لا on the B key.
+" Last modified 2017-08-07
 " To be symlinked in .vim/keymap.
 
 loadkeymap
@@ -39,7 +41,7 @@ z	<char-0x0626>			" (1574)	- YEH with HAMZA ABOVE
 x	<char-0x0621>			" (1569)	- HAMZA
 c	<char-0x0624>			" (1572)	- WAW with HAMZA ABOVE
 v	<char-0x0631>			" (1585)	- REH
-b	<char-0x0644><char-0x0627>	" (1604/1575)	- LAA (lam alef)
+b	<char-0x0630>			" 		- THAL ### MODIFIED ###
 n	<char-0x0649>			" (1609)	- ALEF MAKSURA
 m	<char-0x0629>			" (1577)	- TEH MARBUTA
 ,	<char-0x0648>			" (1608)	- WAW
@@ -55,7 +57,7 @@ m	<char-0x0629>			" (1577)	- TEH MARBUTA
 7	<char-0x0667>			" (1639)	- Arabic 7
 8	<char-0x0668>			" (1640)	- Arabic 8
 9	<char-0x0669>			" (1641)	- Arabic 9
-§	<char-0x0630>			" (1584)	- THAL ### MODIFEID ###
+§	<char-0x0630>			"		- THAL ### MODIFEID ###
 ~	<char-0x0651>			" (1617)	- Tanween -- SHADDA
 Q	<char-0x064e>			" (1614)	- Tanween -- FATHA
 W	<char-0x064b>			" (1611)	- Tanween -- FATHATAN
