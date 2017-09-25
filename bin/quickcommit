@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Adding all and committing to github the message minor edit"
+echo "Adding all and committing to github the message \"minor edit\""
 
   git add -A
   git commit -m "minor edit"

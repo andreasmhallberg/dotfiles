@@ -1,5 +1,7 @@
 #!/bin/bash
 
-# see order of characters in http://www.qamus.org/transliteration.htm
+# Transliterate from Buckwalter to Arabic.
 
-tr AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\< ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآإأؤئ 
+# See order of characters in http://www.qamus.org/transliteration.htm
+
+tr AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئى 
