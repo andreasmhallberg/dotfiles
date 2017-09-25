@@ -42,7 +42,7 @@ set smartcase
 
 " Use TAB for completions
 inoremap <Tab> <c-n>
-inoremap <S-Tab> <c-x><c-l>
+inoremap <S-Tab> <Tab>
 
 " Show command completion alternatives
 set wildmenu
@@ -65,8 +65,8 @@ set linebreak
 set autoindent
 
 " tab key inserts spaces
-set expandtab
-"
+" set expandtab
+
 " Length of tab-character for indention
 " 4 spaces for markdown syntax
 set shiftwidth=4
@@ -312,7 +312,7 @@ function! MarkdownMaps()
 
     " Do comments in Markdown as suggested here http://stackoverflow.com/a/20885980/3210474
     " No comment in HTML or TeX output.
-    set commentstring=[//]:\ #\ (%s)
+    set commentstring=<!--%s-->
 
     " Let Tabularize do pipe tables 
     nnoremap <Leader>t vip:Tabularize /\|<CR>

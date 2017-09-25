@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# see order of characters in http://www.qamus.org/transliteration.htm
+
+tr AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\< ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآإأؤئ 
