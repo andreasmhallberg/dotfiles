@@ -1,4 +1,6 @@
-set nocompatible
+set nocompatible " don't pretend to be VI
+filetype plugin on
+filetype indent on
 " {{{1 Plugin management
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -21,76 +23,75 @@ Plugin 'godlygeek/tabular'
 Plugin 'lervag/vimtex'
 Plugin 'vim-scripts/directionalWindowResizer'
 Plugin 'vim-scripts/LanguageTool'
+Plugin 'qpkorr/vim-renamer'
+Plugin 'thinca/vim-fontzoom'
+Plugin 'kien/ctrlp.vim'
+Plugin 'blueyed/vim-diminactive'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 " {{{1 General stuff
-
-" Load US-alt-latin keymap extension
-set keymap=us-altlatin
-
-" No wraparournd end of file in normal searches
-set nowrapscan
-" No high-light search hits
-set nohlsearch 
-"Search while typing
-set incsearch
-" Ignore case when searching
-set ignorecase
-" Case-sensitive when upper case is used in search string
-set smartcase
-
-" Use TAB for completions
-inoremap <Tab> <c-n>
-inoremap <S-Tab> <Tab>
-
-" Show command completion alternatives
-set wildmenu
-
-" Set to auto read when a file is changed from the outside
-set autoread
-
-" Foldmethod for .vimrc
-autocmd BufRead ~/.vimrc setlocal fdm=marker 
-
-" Set wd for current file
-autocmd BufEnter * silent! lcd %:p:h
-
-filetype plugin on
-filetype indent on
-
-" Soft-wrap on words
-set linebreak
-
-set autoindent
-
-" tab key inserts spaces
-" set expandtab
-
-" Length of tab-character for indention
-" 4 spaces for markdown syntax
-set shiftwidth=4
-
-set formatoptions=rj
-" r    Automatically insert the current comment leader after hitting <Enter> in Insert mode.
-" j    Where it makes sense, remove a comment leader when joining lines.
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
     set macmeta
 endif
 
-" Representation of invisible characters with set list
-set listchars=tab:▸\ ,eol:¬
+" Mapping to invoce ctrlp fuzzy file finder
+let g:ctrlp_map = '<Leader>f'
 
-" Move to previous buffer
-nnoremap ## :b#<CR>
+" Foldmethod for .vimrc
+autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
-" Open vsplit window to the right
-set splitright
+" Set wd for current file
+autocmd BufEnter * silent! lcd %:p:h
+" netrw list style
+" let g:netrw_liststyle=3 " tree style listing
+let g:netrw_banner=0 " supress banner
 
-" No swapfile exists warning
-set shortmess+=A
+                                             " {{{1 settings
+set path+=**                                 " make file-based commans search in subfolders
+set belloff=all                              " turn off all warnings bells
+set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
+set nowrapscan                               " No wraparournd end of file in normal searches
+set nohlsearch                               " No high-light search hits
+set incsearch                                " Search while typing
+set ignorecase                               " Ignore case when searching
+set smartcase                                " Case-sensitive when upper case is used in search string
+set complete +=s~/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
+set wildmenu                                 " Show command completion alternatives
+set autoread                                 " autoread when a file is changed from the outside
+set backspace=indent,eol,start               " backspace over everything in insert mode
+set hidden                                   " Allow unsaved buffers to be hidden.
+set virtualedit=block                        " Allow block selection over empty lines.
+" set termguicolors                            " 24-bit colors in terminal  
+
+
+
+" DISPLAY
+set number                                    " Display line numbers
+set foldcolumn=0                              " No columns to show folds
+set guifont=Source\ Code\ Pro\ ExtraLight:h16
+set linespace=5
+set scrolloff=4                               " When scrolling, keep the cursor 8 lines from the top and 8 lines from the bottom
+set cpoptions+=|                              " | at end of changed (<c>) object
+
+
+set linebreak               " Soft-wrap between words
+set autoindent
+set listchars=tab:▸\ ,eol:¬ " Representation of invisible characters with set list
+set splitright              " Open vsplit window to the right
+set shortmess+=A            " No swapfile exists warning
+set expandtab               " tab key inserts spaces
+set shiftwidth=4            " Length of tab-character for indention 4 spaces for markdown syntax
+set spell                   " check spelling by default
+set spelllang=en_us
+set formatoptions=rj        " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
+                            " j=Where it makes sense, remove a comment leader when joining lines.
+
+
+
+
 
 " Regard markdown extension variants as pandoc
 autocmd Filetype mkd set ft=pandoc
@@ -102,16 +103,6 @@ autocmd Filetype markdown  set ft=pandoc
  let g:pandoc#completion#bib#mode = 'fallback'
 
 
-"{{{1 SPELLCHECK
-
-set spell
-set spelllang=en_us
-
-" Choose first word in list
-nmap zz 1z=e
-
-" Command to find and replace repeated word, word duplet or triplet.
-command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
 
 
 " LanguageTool
@@ -120,9 +111,6 @@ let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
     \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
 
 "
-"{{{1 DISPLAY
-" Display line numbers
-set number
 
 " Override conceal applied by varies packages. No pseudo wysywyg here.
 autocmd BufEnter * silent! set cole=0
@@ -136,8 +124,7 @@ let g:solarized_visibility= "medium"
 
 syntax on
 
-" Dark background
-set bg=dark
+set bg=dark " Dark background
 
 " Remove left and right scrollbar
 set guioptions-=r
@@ -149,29 +136,6 @@ set guioptions-=L
 highlight Comment cterm=italic
 "}}}2
 
-" No columns to show folds
-set foldcolumn=0
-
-" GUIFONTS
-"set guifont=Letter\ Gothic:h14 
-    " Nice and very bright but no Arabic diacritics.
-"set guifont=AnonymousPro:h14 
-    " Bright. No arabic diacritics.
-" set guifont=Consolas:h14
-    " Very nice and has Arabic characters and italics.
-set guifont=Source\ Code\ Pro\ Light:h16
-   " Has various heavynesses byt no italics
-"set guifont=Ubuntu\ Mono:h15
-   " Has bold and italics
-
-set linespace=5
-
-" When scrolling, keep the cursor 8 lines from the top and 8
-" lines from the bottom
-set scrolloff=8
-
-" | at end of chnaged (<c>) object 
-set cpoptions+=|
 
 " Soft wrap gundo preview
 augroup MyGundo
@@ -182,7 +146,23 @@ augroup end
 " List characters opaque
 let g:solarized_visibility='low'
 
+"{{{ completion
+" Use TAB for completions
+inoremap <Tab> <c-n>
+inoremap <S-Tab> <Tab>
 
+" set complete +=kspell " Complete from dictionary when spell is on. Mostly
+" annoying. Technical words will be written more than once and that way added
+" to completion list.
+
+
+"}}}
+
+" {{{1 Statusline
+set statusline=%f " filenamre relative to current folder
+set statusline+=%=  " separator between left and right alignmet
+set statusline+=%k " current keymap
+" }}}1
 " {{{1 Leader commands
 
 " Window command prefix
@@ -200,11 +180,16 @@ nmap <Leader>nn :lne<CR>
 autocmd Filetype pandoc 
             \ nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
 
+" to txt
+autocmd Filetype pandoc 
+            \ nmap <Leader>px :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions %  --bibliography ~/mylatexstuff/bibliotek.bib -Ss -o '%'.txt<CR>
+
 "  to pdf  
 autocmd Filetype pandoc 
             \ nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f
             \ markdown+implicit_figures+table_captions %
             \ --latex-engine=xelatex
+            \ --columns=200
             \ --bibliography ~/mylatexstuff/bibliotek.bib
             \ -N -S -o '%'.pdf 
             \ && open '%'.pdf<CR>
@@ -271,6 +256,9 @@ endfunction
 " {{{1 LaTeX mappings
 " Mappings only used in .tex files 
 
+" run last command
+nnoremap <CR> @:
+
 autocmd Filetype tex call LaTeXmaps()
 
 function! LaTeXmaps()
@@ -333,10 +321,19 @@ let g:DiffModeSync = 1
 
 " }}}
 " {{{1 MOVEMENT & EDITING ---------------
-" backspace over everything in insert mode
-set backspace=indent,eol,start 
 
-" Move on soft-wrapped lines
+
+
+" Choose first word in spellinglist
+nmap zz 1z=e
+
+" Command to find and replace repeated word, word duplet or triplet.
+command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
+" Move to previous buffer
+
+nnoremap ## :b#<CR>
+
+" Move visually on soft-wrapped lines
 nnoremap k gk
 nnoremap j gj
 vnoremap k gk
@@ -364,8 +361,7 @@ inoremap ; ;<C-g>u
 
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
-
-" {{{1 CHARACTER INPUT
+" {{{2 CHARACTER INPUT
 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
@@ -375,10 +371,9 @@ iabbrev tow two
 iabbrev teh the 
 iabbrev Andras Andreas
 
-" Remove word in input mode
-" Must go through visual mode to get character under cursor. 
+" Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
-imap <BS><BS> <NOP>
+" imap <BS><BS> <NOP> " to train above
 
 " When inserting empty line, return to cursor position
 nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
@@ -409,7 +404,7 @@ inoremap ()<Space> ()<Space>
 inoremap ()<CR> ()<CR>
 inoremap (), (),
 inoremap (). ().
-
+       
 inoremap []<Space> []<Space>
 inoremap []<CR> []<CR>
 inoremap [], [],

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+### UNDER CONSTRUCTION ###
+
+# Transliterate from Arabic to EALL.
+# See order of characters in http://www.qamus.org/transliteration.htm
+
+# Presupposes correct use of hamza, e.g. Qatʿ in maṣdar IV.
+
+# First to Buckwalter
+tr ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئى AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y | \
+
+# The to EALL. Leave 'A' (alif) for later. 
+tr bptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y bptṯjḥxdḏrzsšṣḍṭẓʿġfqklmnhwyʾʾʾʾʾā | \
+
+# Definite article "-"
+    # without prefix
+    gsed -E "s/\bAl(?!(tzAm|thAb)\b)/al-/g" #| \
+
+    # with prefix -w, not "wālī"
+    # gsed -E "s/\b(w?)Al(?!y?\b)/\1al-/g" | \
+    # gsub -E "s/\bwal-/wa-l-/g" | \
+
+    # # with prefix b- not "bāl". Optional "w-"
+    # gsed -E "s/\b(w?)bAl(?!\b)/\1bi-l-/g" | \
+    # gsed -E "s/\bwbi-l/wa-bi-l/g" | \
+
+    # # with prefix k-. Optional "w-"
+    # gsed -E "s/\b(w?)kAl/\1ka-l-/g" | \
+    # gsed -E "s/\bwka-l/wa-ka-l/g" | \
+
+
+    # # with prefix l-. Optional "w-"
+    # gsed -E "s/\b(w?)ll/\1li-l-/g" | \
+    # gsed -E "s/\bwli-l/wa-li-l/g" | \
+
+    # gsed -E "s/([auiāīēōeū]) Al/\1 l-/g"
+
+# Definite article inside word as long ā DO AFTER DETEMRMIner
+    # gsed -E "s/\BA/ā/g"
+
+
+
+    # sed -E s/آ/ʾā/g | \
+# madda
+# alif
+
+
