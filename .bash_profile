@@ -9,7 +9,17 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 export CLICOLOR=1
+
 alias ls='ls -Fa'
+alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+
+
+# cs to cd and ls
+function cs () {
+    cd "$@" && ls
+        }
+alias cd='cs'
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave

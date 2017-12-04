@@ -1,6 +1,7 @@
 set nocompatible " don't pretend to be VI
 filetype plugin on
 filetype indent on
+
 " {{{1 Plugin management
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -13,10 +14,9 @@ Plugin 'jalvesaq/Nvim-R' " Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
-Plugin 'vim-scripts/YankRing.vim'
-Plugin 'vim-pandoc/vim-pandoc'
+Plugin 'vim-pandoc/vim-pandoc' " needed for folding
 Plugin 'vim-pandoc/vim-pandoc-syntax'
-Plugin 'vim-scripts/textutil.vim'
+" Plugin 'vim-scripts/textutil.vim'
 Plugin 'chrisbra/csv.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'godlygeek/tabular'
@@ -24,9 +24,9 @@ Plugin 'lervag/vimtex'
 Plugin 'vim-scripts/directionalWindowResizer'
 Plugin 'vim-scripts/LanguageTool'
 Plugin 'qpkorr/vim-renamer'
-Plugin 'thinca/vim-fontzoom'
 Plugin 'kien/ctrlp.vim'
-Plugin 'blueyed/vim-diminactive'
+Plugin 'vim-scripts/YankRing.vim' " after ctrlp to remap <c-p>
+Plugin 'blueyed/vim-diminactive' " Dims window that is not in focus
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -37,9 +37,6 @@ if has('macunix')
     set macmeta
 endif
 
-" Mapping to invoce ctrlp fuzzy file finder
-let g:ctrlp_map = '<Leader>f'
-
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
@@ -49,7 +46,15 @@ autocmd BufEnter * silent! lcd %:p:h
 " let g:netrw_liststyle=3 " tree style listing
 let g:netrw_banner=0 " supress banner
 
-                                             " {{{1 settings
+" Read docx through pandoc
+autocmd BufReadPost *.docx :%!pandoc % -f docx -t markdown
+
+" save ctrlp chache between sessoins
+let g:ctrlp_clear_cache_on_exit = 0
+
+" {{{1 settings
+
+set whichwrap+=<,>,h,l,[,] " Makes h and l and arrow keyes wrap to pre/next line.
 set path+=**                                 " make file-based commans search in subfolders
 set belloff=all                              " turn off all warnings bells
 set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
@@ -64,7 +69,8 @@ set autoread                                 " autoread when a file is changed f
 set backspace=indent,eol,start               " backspace over everything in insert mode
 set hidden                                   " Allow unsaved buffers to be hidden.
 set virtualedit=block                        " Allow block selection over empty lines.
-" set termguicolors                            " 24-bit colors in terminal  
+set termguicolors                            " 24-bit colors in terminal  
+set scrolloff=4                               " When scrolling, keep the cursor 8 lines from the top and 8 lines from the bottom
 
 
 
@@ -73,50 +79,24 @@ set number                                    " Display line numbers
 set foldcolumn=0                              " No columns to show folds
 set guifont=Source\ Code\ Pro\ ExtraLight:h16
 set linespace=5
-set scrolloff=4                               " When scrolling, keep the cursor 8 lines from the top and 8 lines from the bottom
 set cpoptions+=|                              " | at end of changed (<c>) object
-
-
 set linebreak               " Soft-wrap between words
 set autoindent
 set listchars=tab:▸\ ,eol:¬ " Representation of invisible characters with set list
 set splitright              " Open vsplit window to the right
 set shortmess+=A            " No swapfile exists warning
-set expandtab               " tab key inserts spaces
+set expandtab               " tab key inserts spaces. Needed for indentation with <
 set shiftwidth=4            " Length of tab-character for indention 4 spaces for markdown syntax
 set spell                   " check spelling by default
 set spelllang=en_us
 set formatoptions=rj        " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
                             " j=Where it makes sense, remove a comment leader when joining lines.
 
+" }}}1
+
+"{{{2 display color
 
 
-
-
-" Regard markdown extension variants as pandoc
-autocmd Filetype mkd set ft=pandoc
-autocmd Filetype md  set ft=pandoc
-autocmd Filetype markdown  set ft=pandoc
-
-" Vim Pandoc. Add .bib to completion
- let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
- let g:pandoc#completion#bib#mode = 'fallback'
-
-
-
-
-" LanguageTool
-let g:languagetool_jar='/Applications/LanguageTool-3.6/languagetool-commandline.jar'
-let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
-    \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
-
-"
-
-" Override conceal applied by varies packages. No pseudo wysywyg here.
-autocmd BufEnter * silent! set cole=0
-
-
-"{{{2 syntax color
 colorscheme solarized
 
 " Visibility of invisible chars set list. low|normal|high
@@ -132,9 +112,38 @@ set guioptions-=R
 set guioptions-=l
 set guioptions-=L
 
+
 " Italic comments.
 highlight Comment cterm=italic
 "}}}2
+"
+
+" leader find to fuzzy find from home directory
+nmap <Leader>f :CtrlP<Space>~/<CR>
+
+nmap <Leader>x :Explore<cr>
+
+" Regard markdown extension variants as pandoc
+" autocmd Filetype mkd set ft=pandoc
+" autocmd Filetype md  set ft=pandoc
+" autocmd Filetype markdown  set ft=pandoc
+
+" Vim Pandoc. Add .bib to completion
+ let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
+ let g:pandoc#completion#bib#mode = 'fallback'
+
+
+
+" LanguageTool
+let g:languagetool_jar='/Applications/LanguageTool-3.6/languagetool-commandline.jar'
+let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
+    \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
+
+"
+
+" Override conceal applied by varies packages. No pseudo wysywyg here.
+autocmd BufEnter * silent! set cole=0
+
 
 
 " Soft wrap gundo preview
@@ -163,6 +172,30 @@ set statusline=%f " filenamre relative to current folder
 set statusline+=%=  " separator between left and right alignmet
 set statusline+=%k " current keymap
 " }}}1
+
+" {{{1 ctrl-p. Open pdfs in external program with '!open'
+" https://github.com/kien/ctrlp.vim/issues/232
+
+function! PdfOpenFunc(action, line)
+        if fnamemodify(a:line, ':e') =~? '^pdf\?$'
+            " Get the filename
+            let filename = fnameescape(fnamemodify(a:line, ':p'))
+
+            " Close CtrlP
+            call ctrlp#exit()
+
+            " Open the file
+            silent! execute '!open' filename
+        else
+            " Not a HTML file, simulate pressing <c-o> again
+            call feedkeys("\<c-o>")
+        endif
+endfunction
+
+let g:ctrlp_open_func = { 'files': 'PdfOpenFunc' }
+
+" }}}
+
 " {{{1 Leader commands
 
 " Window command prefix
@@ -173,6 +206,10 @@ nnoremap <Leader>u :GundoToggle<CR>
 nmap <Leader>c :<Up><CR>
 " Next item in location list window
 nmap <Leader>nn :lne<CR>
+
+" run last command
+nnoremap <CR> @:
+
 
 " {{{2 Markdown compilation  
 
@@ -190,8 +227,9 @@ autocmd Filetype pandoc
             \ markdown+implicit_figures+table_captions %
             \ --latex-engine=xelatex
             \ --columns=200
+            \ -N
             \ --bibliography ~/mylatexstuff/bibliotek.bib
-            \ -N -S -o '%'.pdf 
+            \ -S -o '%'.pdf 
             \ && open '%'.pdf<CR>
 
 "  to docx. -S needed for parsing of daises in non TeX.
@@ -206,6 +244,12 @@ autocmd Filetype pandoc
     \ --bibliography ~/mylatexstuff/bibliotek.bib
     \ -S -o '%'.pdf
     \ && open '%'.pdf<CR>
+
+"  to html. -S needed for parsing of daises in non TeX.
+autocmd Filetype pandoc
+    \ nmap <Leader>ph :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+
+
 
 " {{{2 TeX compilation
 autocmd Filetype tex
@@ -255,9 +299,6 @@ endfunction
 
 " {{{1 LaTeX mappings
 " Mappings only used in .tex files 
-
-" run last command
-nnoremap <CR> @:
 
 autocmd Filetype tex call LaTeXmaps()
 
@@ -320,9 +361,7 @@ let g:DiffModeSync = 1
 " autocmd InsertLeave * :TDCha
 
 " }}}
-" {{{1 MOVEMENT & EDITING ---------------
-
-
+" {{{1 MOVEMENT & EDITING
 
 " Choose first word in spellinglist
 nmap zz 1z=e
@@ -332,6 +371,7 @@ command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
 " Move to previous buffer
 
 nnoremap ## :b#<CR>
+ 
 
 " Move visually on soft-wrapped lines
 nnoremap k gk
@@ -339,8 +379,6 @@ nnoremap j gj
 vnoremap k gk
 vnoremap j gj
 
-" Makes h and l and arrow keyes wrap to pre/next line.
-set whichwrap+=<,>,h,l,[,]
 
 " Move to win horizontally
 nmap HH <C-w>h
@@ -368,7 +406,7 @@ nnoremap <Space> i<Space><ESC>
 
 " abbreviation command for common misspellings
 iabbrev tow two
-iabbrev teh the 
+iabbrev teh the
 iabbrev Andras Andreas
 
 " Remove word in input mode. Best mapping ever.
@@ -467,11 +505,7 @@ let g:vimtex_complete_close_braces = 1
 " vimtex folding
 let g:vimtex_fold_enabled=1
 
-"{{{1 R
-
-" Force Vim to use 256 colors if running in a capable terminal emulator:
-if &term =~ "xterm" || &term =~ "256" || $DISPLAY != "" || $HAS_256_COLORS == "yes"
-    set t_Co=256
-endif
 
 
+   vmap <Leader>rs <Plug>RDSendSelection
+   nmap <Leader>rs <Plug>RDSendLine

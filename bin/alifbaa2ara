@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# EXPERIMENTAL
+
 # Transliterate from Alif Baa to Arabic.
 # Does not handle:
 #     - ta marbuta
@@ -11,6 +13,8 @@
     #     - DH e.g. 'aDHaa'. Transliterates as DHaa.
     # - hamza. Transliterates all as hamza on alif
     # - shadda.
+
+# final -a shuuld always be interpreted to ta marbuuta 
 
 # Prefixed conjunctions
  sed -E  's/wa-/وِ-/g' |\
@@ -31,7 +35,6 @@
 # hamza at beginning
  sed -E  's/\bʾ/أ/g' |\
  sed -E  's/-ʾ/-أ/g' |\
-tr  btjJdrzsSDJʿfqklmnhwy بتجحدرزسصضطعفقكلمنهوي |\
  sed -E  's/aa/ا/g' |\
  sed -E  's/uu/ًو/g' |\
  sed -E  's/ii/ِي/g' |\
@@ -41,6 +44,7 @@ tr  btjJdrzsSDJʿfqklmnhwy بتجحدرزسصضطعفقكلمنهوي |\
  sed -E  's/sh/ش/g' |\
  sed -E  's/DH/ظ/g' |\
  sed -E  's/gh/غ/g' |\
+tr  btjJdrzsSDJʿfqklmnhwy بتجحدرزسصضطعفقكلمنهوي |\
 # Short vowels
 tr aiu َُِ |\
 # Shadda
