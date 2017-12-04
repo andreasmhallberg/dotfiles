@@ -172,9 +172,14 @@ set statusline=%f " filenamre relative to current folder
 set statusline+=%=  " separator between left and right alignmet
 set statusline+=%k " current keymap
 " }}}1
+" {{{1 ctrlp
 
-" {{{1 ctrl-p. Open pdfs in external program with '!open'
+let g:ctrlp_show_hidden = 1 " include dotfiles in search
+
+" {{{2 Open pdfs in external program with '!open'
 " https://github.com/kien/ctrlp.vim/issues/232
+" ÖVERFET!!!!!
+
 
 function! PdfOpenFunc(action, line)
         if fnamemodify(a:line, ':e') =~? '^pdf\?$'
@@ -187,15 +192,15 @@ function! PdfOpenFunc(action, line)
             " Open the file
             silent! execute '!open' filename
         else
-            " Not a HTML file, simulate pressing <c-o> again
-            call feedkeys("\<c-o>")
+            " Not a HTML file, simulate pressing <c-o>r to replace current buffer
+            call feedkeys("\<c-o>r")
         endif
 endfunction
 
 let g:ctrlp_open_func = { 'files': 'PdfOpenFunc' }
 
 " }}}
-
+" }}}1
 " {{{1 Leader commands
 
 " Window command prefix
