@@ -3,4 +3,8 @@
 # Transliterate from Arabic script to Buckwalter.
 # See order of characters in http://www.qamus.org/transliteration.htm
 
-tr ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئى AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}y
+# Todo
+#    - numbers
+#    - punctuation marks
+
+tr ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئىًٌٍَُِّْ AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}yauiFNK~o

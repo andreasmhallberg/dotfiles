@@ -3,30 +3,31 @@ filetype plugin on
 filetype indent on
 
 " {{{1 Plugin management
-" set the runtime path to include Vundle and initialize
+ " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'jalvesaq/Nvim-R' " Successor of R-vimplugin. Requires tmux.
+Plugin 'jalvesaq/Nvim-R'                       " Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
-Plugin 'vim-pandoc/vim-pandoc' " needed for folding
+Plugin 'vim-pandoc/vim-pandoc'                 " needed for folding
 Plugin 'vim-pandoc/vim-pandoc-syntax'
-" Plugin 'vim-scripts/textutil.vim'
-Plugin 'chrisbra/csv.vim'
+" Plugin 'vim-scripts/textutil.vim' " Use pandoc instead.
+" Plugin 'chrisbra/csv.vim'                    " not very good. use sc-im in the Terminal instead.
 Plugin 'sjl/gundo.vim'
-Plugin 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'                     " :Tabular command to align stuff
 Plugin 'lervag/vimtex'
-Plugin 'vim-scripts/directionalWindowResizer'
-Plugin 'vim-scripts/LanguageTool'
-Plugin 'qpkorr/vim-renamer'
-Plugin 'kien/ctrlp.vim'
-Plugin 'vim-scripts/YankRing.vim' " after ctrlp to remap <c-p>
-Plugin 'blueyed/vim-diminactive' " Dims window that is not in focus
+Plugin 'vim-scripts/directionalWindowResizer'  " c-<hjkl> to resize window
+" Plugin 'vim-scripts/LanguageTool' " Spell and grammar checking. Not very useful in files with markup.
+Plugin 'qpkorr/vim-renamer'                    " Batch rename files vim-style.
+Plugin 'kien/ctrlp.vim'                        " Fuzzy file finder.
+Plugin 'vim-scripts/YankRing.vim'              " after ctrlp to remap <c-p>
+Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focus
+Plugin 'itchyny/calendar.vim'                  " cool but not very practical
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -36,6 +37,11 @@ call vundle#end()            " required
 if has('macunix')
     set macmeta
 endif
+
+" enable connection with google calendar with calendar.vim
+let g:calendar_google_calendar = 1
+
+
 
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
@@ -47,10 +53,11 @@ autocmd BufEnter * silent! lcd %:p:h
 let g:netrw_banner=0 " supress banner
 
 " Read docx through pandoc
-autocmd BufReadPost *.docx :%!pandoc % -f docx -t markdown
+autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
 
-" save ctrlp chache between sessoins
-let g:ctrlp_clear_cache_on_exit = 0
+" Don't let pandoc-syntax plugin use conceal. Why would a vim user want WYSIWYG?
+let g:pandoc#syntax#conceal#use = 0
+
 
 " {{{1 settings
 
@@ -69,7 +76,9 @@ set autoread                                 " autoread when a file is changed f
 set backspace=indent,eol,start               " backspace over everything in insert mode
 set hidden                                   " Allow unsaved buffers to be hidden.
 set virtualedit=block                        " Allow block selection over empty lines.
-set termguicolors                            " 24-bit colors in terminal  
+if has("gui_running")
+    set termguicolors                            " 24-bit colors in terminal  
+endif
 set scrolloff=4                               " When scrolling, keep the cursor 8 lines from the top and 8 lines from the bottom
 
 
@@ -86,7 +95,7 @@ set listchars=tab:▸\ ,eol:¬ " Representation of invisible characters with set
 set splitright              " Open vsplit window to the right
 set shortmess+=A            " No swapfile exists warning
 set expandtab               " tab key inserts spaces. Needed for indentation with <
-set shiftwidth=4            " Length of tab-character for indention 4 spaces for markdown syntax
+set shiftwidth=2            " Length of tab-character for indention 4 spaces for markdown syntax
 set spell                   " check spelling by default
 set spelllang=en_us
 set formatoptions=rj        " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
@@ -94,13 +103,15 @@ set formatoptions=rj        " r=automatically insert the current comment leader 
 
 " }}}1
 
-"{{{2 display color
+"{{{2 display & color
 
+" list characters
+set lcs+=nbsp:_
 
 colorscheme solarized
 
 " Visibility of invisible chars set list. low|normal|high
-let g:solarized_visibility= "medium"
+let g:solarized_visibility= "normal"
 
 syntax on
 
@@ -118,9 +129,12 @@ highlight Comment cterm=italic
 "}}}2
 "
 
-" leader find to fuzzy find from home directory
-nmap <Leader>f :CtrlP<Space>~/<CR>
+" No wiggly line in terminal 
+if has('terminal')
+  hi SpellBad cterm=underline
+endif
 
+nmap <Leader>f :CtrlP<Space>~/<CR>
 nmap <Leader>x :Explore<cr>
 
 " Regard markdown extension variants as pandoc
@@ -139,9 +153,7 @@ let g:languagetool_jar='/Applications/LanguageTool-3.6/languagetool-commandline.
 let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
     \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
 
-"
-
-" Override conceal applied by varies packages. No pseudo wysywyg here.
+" Override conceal applied by varies packages. No pseudo wysywyg here!
 autocmd BufEnter * silent! set cole=0
 
 
@@ -173,16 +185,27 @@ set statusline+=%=  " separator between left and right alignmet
 set statusline+=%k " current keymap
 " }}}1
 " {{{1 ctrlp
+" leader find to fuzzy find from home directory
 
-let g:ctrlp_show_hidden = 1 " include dotfiles in search
+" save ctrlp chache between sessoins
+let g:ctrlp_clear_cache_on_exit = 0
 
-" {{{2 Open pdfs in external program with '!open'
+" unlimited cashe
+let g:ctrlp_max_files = 0
+
+" Don't use ^ in regex here. Deosn't work
+let g:ctrlp_custom_ignore = {
+    \ 'dir': '\v(Downloads|Library|Trash)$',
+    \ }
+
+" let g:ctrlp_show_hidden = 1 " include dotfiles in search
+
+" {{{2 Open non-text files in external program with '!open'
 " https://github.com/kien/ctrlp.vim/issues/232
 " ÖVERFET!!!!!
 
-
 function! PdfOpenFunc(action, line)
-        if fnamemodify(a:line, ':e') =~? '^pdf\?$'
+        if fnamemodify(a:line, ':e') =~? '^\(pdf\|ma4\|mp3\|jpeg\|png\)\?$'
             " Get the filename
             let filename = fnameescape(fnamemodify(a:line, ':p'))
 
@@ -211,7 +234,8 @@ nnoremap <Leader>u :GundoToggle<CR>
 nmap <Leader>c :<Up><CR>
 " Next item in location list window
 nmap <Leader>nn :lne<CR>
-
+" open vimrc
+nnoremap <Leader>m :e $MYVIMRC<CR>
 " run last command
 nnoremap <CR> @:
 
@@ -368,6 +392,9 @@ let g:DiffModeSync = 1
 " }}}
 " {{{1 MOVEMENT & EDITING
 
+nmap Y yg_
+
+
 " Choose first word in spellinglist
 nmap zz 1z=e
 
@@ -410,9 +437,11 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 nnoremap <Space> i<Space><ESC>
 
 " abbreviation command for common misspellings
-iabbrev tow two
-iabbrev teh the
-iabbrev Andras Andreas
+ab tow two
+ab teh the
+ab Andras Andreas
+ab ruel rule
+ab ARabic Arabic
 
 " Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
@@ -434,7 +463,9 @@ inoremap () ()<Left>
 inoremap [] []<Left>
 inoremap <> <><Left>
 inoremap ** **<Left>
+inoremap **** ****<Left><Left>
 inoremap "" ""<Left>
+inoremap '' ''<Left>
 inoremap '' ''<Left>
 
 " Normal behaviour if folowed by space, enter, comma, full stop
@@ -509,8 +540,3 @@ let g:vimtex_complete_close_braces = 1
 
 " vimtex folding
 let g:vimtex_fold_enabled=1
-
-
-
-   vmap <Leader>rs <Plug>RDSendSelection
-   nmap <Leader>rs <Plug>RDSendLine
