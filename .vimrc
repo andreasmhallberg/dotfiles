@@ -27,19 +27,80 @@ Plugin 'qpkorr/vim-renamer'                    " Batch rename files vim-style.
 Plugin 'kien/ctrlp.vim'                        " Fuzzy file finder.
 Plugin 'vim-scripts/YankRing.vim'              " after ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focus
-Plugin 'itchyny/calendar.vim'                  " cool but not very practical
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+
+" {{{1 settings
+
+set laststatus=2                             " Always show statusline.
+set directory=~/.vim/temp                    " Dir for backup files
+set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keyes wrap to pre/next line.
+set path+=**                                 " make file-based commans search in subfolders
+set belloff=all                              " turn off all warnings bells
+set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
+set nowrapscan                               " No wraparournd end of file in normal searches
+set nohlsearch                               " No high-light search hits
+set incsearch                                " Search while typing
+set ignorecase                               " Ignore case when searching
+set smartcase                                " Case-sensitive when upper case is used in search string
+set complete +=s~/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
+set wildmenu                                 " Show command completion alternatives
+set autoread                                 " autoread when a file is changed from the outside
+set backspace=indent,eol,start               " backspace over everything in insert mode
+set hidden                                   " Allow unsaved buffers to be hidden.
+set virtualedit=block                        " Allow block selection over empty lines.
+if has("gui_running" )
+  set termguicolors                          " 24-bit colors in terminal
+endif
+set scrolloff=4                              " When scrolling, keep the cursor 4 lines from the top/bottom
+set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
+
+
+
+" DISPLAY
+set number                                    " Display line numbers
+set foldcolumn=0                              " No columns to show folds
+set guifont=Source\ Code\ Pro\ ExtraLight:h18
+set linespace=5
+set cpoptions=|                              " | at end of changed (<c>) object
+set linebreak               " Soft-wrap between words
+set autoindent
+set listchars=tab:▸\ ,eol:¬,nbsp:_ " Representation of invisible characters with set list
+set splitright              " Open vsplit window to the right
+set shortmess+=A            " No swapfile exists warning
+set expandtab               " tab key inserts spaces. Needed for indentation with <
+set shiftwidth=2            " Length of tab-character for indention 4 spaces for markdown syntax
+set spell                   " check spelling by default
+set spelllang=en_us
+set formatoptions=rj        " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
+                            " j=Where it makes sense, remove a comment leader when joining lines.
+
+" }}}1
 " {{{1 General stuff
+
+" {{{2 plugin tweeks
+" Don't use vim-pandoc's elaborate foldtext
+let g:pandoc#folding#use_foldext = 0
+" Don't use vim-pandoc's keymaps
+let g:pandoc#keyboard#use_default_mappings = 0
+" Don't let pandoc-syntax plugin use conceal. Why would a vim user want WYSIWYG?
+let g:pandoc#syntax#conceal#use = 0
+
+" Visibility of invisible chars set list. low|normal|high
+let g:solarized_visibility= "low"
+
+"}}}2
+
+" Minimalist foldtext
+set foldtext=getline(v:foldstart)
+set fillchars=fold:\ "(there's a space after that \)
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
     set macmeta
 endif
-
-" enable connection with google calendar with calendar.vim
-let g:calendar_google_calendar = 1
 
 
 
@@ -55,53 +116,7 @@ let g:netrw_banner=0 " supress banner
 " Read docx through pandoc
 autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
 
-" Don't let pandoc-syntax plugin use conceal. Why would a vim user want WYSIWYG?
-let g:pandoc#syntax#conceal#use = 0
 
-
-" {{{1 settings
-
-set whichwrap+=<,>,h,l,[,] " Makes h and l and arrow keyes wrap to pre/next line.
-set path+=**                                 " make file-based commans search in subfolders
-set belloff=all                              " turn off all warnings bells
-set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
-set nowrapscan                               " No wraparournd end of file in normal searches
-set nohlsearch                               " No high-light search hits
-set incsearch                                " Search while typing
-set ignorecase                               " Ignore case when searching
-set smartcase                                " Case-sensitive when upper case is used in search string
-set complete +=s~/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
-set wildmenu                                 " Show command completion alternatives
-set autoread                                 " autoread when a file is changed from the outside
-set backspace=indent,eol,start               " backspace over everything in insert mode
-set hidden                                   " Allow unsaved buffers to be hidden.
-set virtualedit=block                        " Allow block selection over empty lines.
-if has("gui_running")
-    set termguicolors                            " 24-bit colors in terminal  
-endif
-set scrolloff=4                               " When scrolling, keep the cursor 8 lines from the top and 8 lines from the bottom
-
-
-
-" DISPLAY
-set number                                    " Display line numbers
-set foldcolumn=0                              " No columns to show folds
-set guifont=Source\ Code\ Pro\ ExtraLight:h16
-set linespace=5
-set cpoptions+=|                              " | at end of changed (<c>) object
-set linebreak               " Soft-wrap between words
-set autoindent
-set listchars=tab:▸\ ,eol:¬ " Representation of invisible characters with set list
-set splitright              " Open vsplit window to the right
-set shortmess+=A            " No swapfile exists warning
-set expandtab               " tab key inserts spaces. Needed for indentation with <
-set shiftwidth=2            " Length of tab-character for indention 4 spaces for markdown syntax
-set spell                   " check spelling by default
-set spelllang=en_us
-set formatoptions=rj        " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
-                            " j=Where it makes sense, remove a comment leader when joining lines.
-
-" }}}1
 
 "{{{2 display & color
 
@@ -109,9 +124,6 @@ set formatoptions=rj        " r=automatically insert the current comment leader 
 set lcs+=nbsp:_
 
 colorscheme solarized
-
-" Visibility of invisible chars set list. low|normal|high
-let g:solarized_visibility= "normal"
 
 syntax on
 
@@ -180,8 +192,11 @@ inoremap <S-Tab> <Tab>
 "}}}
 
 " {{{1 Statusline
-set statusline=%f " filenamre relative to current folder
-set statusline+=%=  " separator between left and right alignmet
+set statusline=%F " path and filename
+set statusline+=%m " Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
+set statusline+=%= " separator between left and right alignmet
+set statusline+=%y
+set statusline+=\ 
 set statusline+=%k " current keymap
 " }}}1
 " {{{1 ctrlp
@@ -195,7 +210,7 @@ let g:ctrlp_max_files = 0
 
 " Don't use ^ in regex here. Deosn't work
 let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v(Downloads|Library|Trash)$',
+    \ 'dir': '\v(Applications|Downloads|Library|Trash)$',
     \ }
 
 " let g:ctrlp_show_hidden = 1 " include dotfiles in search
@@ -238,7 +253,8 @@ nmap <Leader>nn :lne<CR>
 nnoremap <Leader>m :e $MYVIMRC<CR>
 " run last command
 nnoremap <CR> @:
-
+" toggle wrap
+nnoremap <Leader>r :set wrap!<CR>
 
 " {{{2 Markdown compilation  
 
@@ -253,7 +269,7 @@ autocmd Filetype pandoc
 "  to pdf  
 autocmd Filetype pandoc 
             \ nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f
-            \ markdown+implicit_figures+table_captions %
+            \ markdown+implicit_figures+table_captions+multiline_tables %
             \ --latex-engine=xelatex
             \ --columns=200
             \ -N

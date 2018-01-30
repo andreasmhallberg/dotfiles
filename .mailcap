@@ -8,7 +8,6 @@ application/pdf; open %s ;
 
 # mvim -v opens in terminal
 application/vnd.ms-word.document.12;  pandoc -f docx %s -t markdown | mvim - ;
-application/vnd.ms-word.document.12;  open %s ;
 application/vnd.openxmlformats-officedocument.wordprocessingml.document; pandoc -f docx %s -t markdown | mvim -v - ;
 application/vnd.openxmlformats-officedocument.wordprocessingml.document; open %s ;
 
