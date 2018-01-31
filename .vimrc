@@ -34,6 +34,7 @@ call vundle#end()            " required
 
 " {{{1 settings
 
+set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                    " Dir for backup files
 set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keyes wrap to pre/next line.
@@ -139,7 +140,6 @@ set guioptions-=L
 " Italic comments.
 highlight Comment cterm=italic
 "}}}2
-"
 
 " No wiggly line in terminal 
 if has('terminal')
@@ -201,12 +201,11 @@ set statusline+=%k " current keymap
 " }}}1
 " {{{1 ctrlp
 " leader find to fuzzy find from home directory
-
-" save ctrlp chache between sessoins
-let g:ctrlp_clear_cache_on_exit = 0
-
-" unlimited cashe
-let g:ctrlp_max_files = 0
+ 
+let g:ctrlp_follow_symlinks = 2 " follow symlinks
+let g:ctrlp_show_hidden = 1 " seach for hidden files/dirs
+let g:ctrlp_clear_cache_on_exit = 0 " save ctrlp chache between sessoins
+let g:ctrlp_max_files = 0 " unlimited cashe
 
 " Don't use ^ in regex here. Deosn't work
 let g:ctrlp_custom_ignore = {
@@ -260,7 +259,7 @@ nnoremap <Leader>r :set wrap!<CR>
 
 "  to tex
 autocmd Filetype pandoc 
-            \ nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --latex-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
+            \ nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --pdf-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
 
 " to txt
 autocmd Filetype pandoc 
@@ -270,29 +269,29 @@ autocmd Filetype pandoc
 autocmd Filetype pandoc 
             \ nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f
             \ markdown+implicit_figures+table_captions+multiline_tables %
-            \ --latex-engine=xelatex
+            \ --pdf-engine=xelatex
             \ --columns=200
             \ -N
             \ --bibliography ~/mylatexstuff/bibliotek.bib
-            \ -S -o '%'.pdf 
+            \ -smar -o '%'.pdf 
             \ && open '%'.pdf<CR>
 
-"  to docx. -S needed for parsing of daises in non TeX.
+"  to docx. -smart needed for parsing of daises in non TeX.
 autocmd Filetype pandoc
-    \ nmap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+    \ nmap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 "  to beamer 
 autocmd Filetype pandoc
     \ nmap <Leader>pb :w<CR>:!pandoc -t beamer -f
     \ markdown+implicit_figures+table_captions %
-    \ --latex-engine=xelatex
+    \ --pdf-engine=xelatex
     \ --bibliography ~/mylatexstuff/bibliotek.bib
-    \ -S -o '%'.pdf
+    \ -smart -o '%'.pdf
     \ && open '%'.pdf<CR>
 
 "  to html. -S needed for parsing of daises in non TeX.
 autocmd Filetype pandoc
-    \ nmap <Leader>ph :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -S --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+    \ nmap <Leader>ph :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
 
 
 
@@ -449,6 +448,32 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 " {{{2 CHARACTER INPUT
 
+" Like numpad
+nmap <A-j> 1
+nmap <A-k> 2
+nmap <A-l> 3
+nmap <A-u> 4
+nmap <A-i> 5
+nmap <A-o> 6
+nmap <A-7> 7
+nmap <A-8> 8
+nmap <A-9> 9
+" Alt-,
+nmap ¬ 0
+
+imap <A-j> 1
+imap <A-k> 2
+imap <A-l> 3
+imap <A-u> 4
+imap <A-i> 5
+imap <A-o> 6
+imap <A-7> 7
+imap <A-8> 8
+imap <A-9> 9
+" Alt-,
+imap ¬ 0
+
+ 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 

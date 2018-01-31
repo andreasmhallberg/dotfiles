@@ -13,10 +13,10 @@ export CLICOLOR=1
 alias ls='ls -Fa'
 alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
-alias mutt='LC_MESSAGES="en_US.UTF-8" mutt' # mutt with english menues.
+alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt' # mutt with english menues.
 alias date='date +%y%m%d' # date with file-type format yymmdd 
 
-# cs to cd and ls
+# cd to cd and ls
 function cs () {
     cd "$@" && ls
         }
