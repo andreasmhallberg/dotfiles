@@ -1,0 +1,23 @@
+- GUI
+  - Karabiner-Elements
+    - ~/.config/karabiner/karabiner.json -> ~/dotfiles/karabiner.json
+  - Zotero
+  - ~/Zotero
+  - MacVim
+  - VLC
+  - Quicksilver
+  - Spectacle
+
+- Terminal
+  - Mutt
+    - ~/.muttrc -> ~/dotfiles/.muttrc
+    - w3m
+    - urlview
+  - git
+  - homebrew
+  - MacTeX
+  - pandoc
+  - jekyll
+    - ruby
+    - ruby-gems
+

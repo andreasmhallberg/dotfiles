@@ -94,8 +94,8 @@ let g:solarized_visibility= "low"
 
 "}}}2
 
-" Minimalist foldtext
-set foldtext=getline(v:foldstart)
+" Always use minimalist foldtext
+autocmd BufEnter * set foldtext=getline(v:foldstart)
 set fillchars=fold:\ "(there's a space after that \)
 
 " Enable ALT-key in vim. (Only on Mac)
