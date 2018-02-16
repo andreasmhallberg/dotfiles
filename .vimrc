@@ -14,12 +14,13 @@ Plugin 'jalvesaq/Nvim-R'                       " Successor of R-vimplugin. Requi
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-repeat'
-Plugin 'vim-pandoc/vim-pandoc'                 " needed for folding
-Plugin 'vim-pandoc/vim-pandoc-syntax'
+" Plugin 'vim-pandoc/vim-pandoc'                 " needed for folding
+" Plugin 'vim-pandoc/vim-pandoc-syntax'
 " Plugin 'vim-scripts/textutil.vim' " Use pandoc instead.
 " Plugin 'chrisbra/csv.vim'                    " not very good. use sc-im in the Terminal instead.
 Plugin 'sjl/gundo.vim'
 Plugin 'godlygeek/tabular'                     " :Tabular command to align stuff
+Plugin 'plasticboy/vim-markdown'                     " Markdown syntax and folding
 Plugin 'lervag/vimtex'
 Plugin 'vim-scripts/directionalWindowResizer'  " c-<hjkl> to resize window
 " Plugin 'vim-scripts/LanguageTool' " Spell and grammar checking. Not very useful in files with markup.
@@ -32,8 +33,13 @@ Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focu
 call vundle#end()            " required
 
 
+set grepprg=grep\ -lHn
+" set grepprg+=internal
+
 " {{{1 settings
 
+set clipboard=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
+set gdefault                                 " Flag g[lobal] as default on searches.
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                    " Dir for backup files
@@ -81,18 +87,6 @@ set formatoptions=rj        " r=automatically insert the current comment leader 
 " }}}1
 " {{{1 General stuff
 
-" {{{2 plugin tweeks
-" Don't use vim-pandoc's elaborate foldtext
-let g:pandoc#folding#use_foldext = 0
-" Don't use vim-pandoc's keymaps
-let g:pandoc#keyboard#use_default_mappings = 0
-" Don't let pandoc-syntax plugin use conceal. Why would a vim user want WYSIWYG?
-let g:pandoc#syntax#conceal#use = 0
-
-" Visibility of invisible chars set list. low|normal|high
-let g:solarized_visibility= "low"
-
-"}}}2
 
 " Always use minimalist foldtext
 autocmd BufEnter * set foldtext=getline(v:foldstart)
@@ -103,10 +97,21 @@ if has('macunix')
     set macmeta
 endif
 
+"{{{1 vim-markdown
+" no mappings. We only want folding
+let g:vim_markdown_no_default_key_mappings = 1
 
+" Fold at the title line
+let g:vim_markdown_folding_style_pythonic = 1
+
+" list levels are indented by 2 space
+let g:vim_markdown_new_list_item_indent = 2
+
+"}}}1
 
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
+
 
 " Set wd for current file
 autocmd BufEnter * silent! lcd %:p:h
@@ -158,12 +163,6 @@ nmap <Leader>x :Explore<cr>
  let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
  let g:pandoc#completion#bib#mode = 'fallback'
 
-
-
-" LanguageTool
-let g:languagetool_jar='/Applications/LanguageTool-3.6/languagetool-commandline.jar'
-let g:languagetool_disable_rules='WHITESPACE_RULE,EN_QUOTES,'
-    \ . 'COMMA_PARENTHESIS_WHITESPACE,CURRENCY'
 
 " Override conceal applied by varies packages. No pseudo wysywyg here!
 autocmd BufEnter * silent! set cole=0
@@ -219,7 +218,8 @@ let g:ctrlp_custom_ignore = {
 " ÖVERFET!!!!!
 
 function! PdfOpenFunc(action, line)
-        if fnamemodify(a:line, ':e') =~? '^\(pdf\|ma4\|mp3\|jpeg\|png\)\?$'
+        if fnamemodify(a:line, ':e') =~?
+              \ '^\(rtf\|pdf\|ma4\|mp3\|jpeg\|png\|pptx\)\?$'
             " Get the filename
             let filename = fnameescape(fnamemodify(a:line, ':p'))
 
@@ -241,33 +241,31 @@ let g:ctrlp_open_func = { 'files': 'PdfOpenFunc' }
 " {{{1 Leader commands
 
 " Window command prefix
-nmap <Leader>w <C-w>
+nnoremap <Leader>w <C-w>
 " Gundo toggle window
 nnoremap <Leader>u :GundoToggle<CR>
 " Execute last command
-nmap <Leader>c :<Up><CR>
+nnoremap <Leader>c :<Up><CR>
 " Next item in location list window
-nmap <Leader>nn :lne<CR>
+nnoremap <Leader>nn :lne<CR>
 " open vimrc
 nnoremap <Leader>m :e $MYVIMRC<CR>
-" run last command
-nnoremap <CR> @:
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
 
 " {{{2 Markdown compilation  
 
 "  to tex
-autocmd Filetype pandoc 
-            \ nmap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --pdf-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
+autocmd Filetype markdown 
+            \ nnoremap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --pdf-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
 
 " to txt
-autocmd Filetype pandoc 
-            \ nmap <Leader>px :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions %  --bibliography ~/mylatexstuff/bibliotek.bib -Ss -o '%'.txt<CR>
+autocmd Filetype markdown 
+            \ nnoremap <Leader>px :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions %  --bibliography ~/mylatexstuff/bibliotek.bib -Ss -o '%'.txt<CR>
 
 "  to pdf  
-autocmd Filetype pandoc 
-            \ nmap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f
+autocmd Filetype markdown 
+            \ nnoremap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f
             \ markdown+implicit_figures+table_captions+multiline_tables %
             \ --pdf-engine=xelatex
             \ --columns=200
@@ -277,33 +275,33 @@ autocmd Filetype pandoc
             \ && open '%'.pdf<CR>
 
 "  to docx. -smart needed for parsing of daises in non TeX.
-autocmd Filetype pandoc
-    \ nmap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+autocmd Filetype markdown
+    \ nnoremap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 "  to beamer 
-autocmd Filetype pandoc
-    \ nmap <Leader>pb :w<CR>:!pandoc -t beamer -f
+autocmd Filetype markdown
+    \ nnoremap <Leader>pb :w<CR>:!pandoc -t beamer -f
     \ markdown+implicit_figures+table_captions %
-    \ --pdf-engine=xelatex
+    \ --pdf-engine=pdflatex
     \ --bibliography ~/mylatexstuff/bibliotek.bib
     \ -smart -o '%'.pdf
     \ && open '%'.pdf<CR>
 
 "  to html. -S needed for parsing of daises in non TeX.
-autocmd Filetype pandoc
-    \ nmap <Leader>ph :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+autocmd Filetype markdown
+    \ nnoremap <Leader>ph :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
 
 
 
 " {{{2 TeX compilation
 autocmd Filetype tex
-  \ nmap <Leader>pp  :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
+  \ nnoremap <Leader>pp  :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
   \ && mv '%<'.pdf '%<'.tex.pdf
   \ && open '%'.pdf<CR> 
 
 " Bibtex run
 " %< "gives current filename without extension
-autocmd Filetype tex nmap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
+autocmd Filetype tex nnoremap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
 " OBS!!! Run
 "      rm -rf `biber --cache`
 " to fix bug crash bug.
@@ -312,11 +310,11 @@ autocmd Filetype tex nmap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
 " {{{2 Language switching
 "
 " Switch to Swedish typing
-nmap <Leader>s :<C-U>call SweType()<CR>
+nnoremap <Leader>s :<C-U>call SweType()<CR>
 " Switch to English typing
-nmap <Leader>e :<C-U>call EngType()<CR>
+nnoremap <Leader>e :<C-U>call EngType()<CR>
 " Switch to Arabic typing
-nmap <Leader>a :<C-U>call AraType()<CR>
+nnoremap <Leader>a :<C-U>call AraType()<CR>
 
 
 "  Switch to Swedish
@@ -348,20 +346,20 @@ autocmd Filetype tex call LaTeXmaps()
 
 function! LaTeXmaps()
 
-  nmap <Leader>sc <ESC>bi\textsc<ESC>lyse}e
-  nmap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
-  nmap <Leader>it <ESC>bi\textit<ESC>lyse}e
-  nmap <Leader>bf <ESC>bi\textbf<ESC>lyse}e
-  nmap <Leader>em <ESC>bi\emph<ESC>lyse}e
-  nmap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
-  nmap <Leader>i "iyiwea\index<ESC>lyse}e
+  nnoremap <Leader>sc <ESC>bi\textsc<ESC>lyse}e
+  nnoremap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
+  nnoremap <Leader>it <ESC>bi\textit<ESC>lyse}e
+  nnoremap <Leader>bf <ESC>bi\textbf<ESC>lyse}e
+  nnoremap <Leader>em <ESC>bi\emph<ESC>lyse}e
+  nnoremap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
+  nnoremap <Leader>i "iyiwea\index<ESC>lyse}e
 
   " Input covington example frame.
-  nmap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
+  nnoremap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
 
   " Input yanked rcode in comment.
   " Requires vim-latex-textobj plugin.
-  nmap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
+  nnoremap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
 
   " Key mapping to Tabularize LaTeX tabular
@@ -407,11 +405,10 @@ let g:DiffModeSync = 1
 " }}}
 " {{{1 MOVEMENT & EDITING
 
-nmap Y yg_
-
+nnoremap Y yg_
 
 " Choose first word in spellinglist
-nmap zz 1z=e
+nnoremap zz 1z=e
 
 " Command to find and replace repeated word, word duplet or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
@@ -428,8 +425,8 @@ vnoremap j gj
 
 
 " Move to win horizontally
-nmap HH <C-w>h
-nmap LL <C-w>l
+nnoremap HH <C-w>h
+nnoremap LL <C-w>l
 
 " Set undo points at end of sentence.
 inoremap . .<C-g>u
@@ -449,17 +446,17 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 " {{{2 CHARACTER INPUT
 
 " Like numpad
-nmap <A-j> 1
-nmap <A-k> 2
-nmap <A-l> 3
-nmap <A-u> 4
-nmap <A-i> 5
-nmap <A-o> 6
-nmap <A-7> 7
-nmap <A-8> 8
-nmap <A-9> 9
+nnoremap <A-j> 1
+nnoremap <A-k> 2
+nnoremap <A-l> 3
+nnoremap <A-u> 4
+nnoremap <A-i> 5
+nnoremap <A-o> 6
+nnoremap <A-7> 7
+nnoremap <A-8> 8
+nnoremap <A-9> 9
 " Alt-,
-nmap ¬ 0
+nnoremap ¬ 0
 
 imap <A-j> 1
 imap <A-k> 2
@@ -483,6 +480,8 @@ ab teh the
 ab Andras Andreas
 ab ruel rule
 ab ARabic Arabic
+ab arabic Arabic
+
 
 " Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
@@ -490,11 +489,11 @@ inoremap jj <Esc>ciw
 
 " When inserting empty line, return to cursor position
 nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
-nmap O<ESC> <Plug>EmptyLineAbove
+nmap O<Esc> <Plug>EmptyLineAbove
 
 " Insert empty line below, repeatable
 nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyLineBelow")<CR>
-nmap o<ESC> <Plug>EmptyLineBelow
+nmap o<Esc> <Plug>EmptyLineBelow
 
 " {{{2 Delimiters
 
@@ -581,3 +580,28 @@ let g:vimtex_complete_close_braces = 1
 
 " vimtex folding
 let g:vimtex_fold_enabled=1
+
+"{{{1 Reading notes
+
+" Don't fold 
+autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
+
+" Filter location list to get one hit per file
+" https://vi.stackexchange.com/a/15171/3316
+
+function! FilterLocList()
+  let a=getloclist(0)
+  let file={}
+  let result=[]
+  for entry in a
+    if !has_key(file, entry.bufnr)
+      call add(result, entry)
+      let file[entry.bufnr]=1
+    endif
+  endfor
+  if !empty(result)
+    call setloclist(0, result, 'r')
+  endif
+endfu
+
+com! -nargs=0 FilterLocList :call FilterLocList()
