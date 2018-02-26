@@ -10,41 +10,40 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'klapheke/vim-chat'                     " syntax highlighting for CHAT-transcriptions
+Plugin 'morhetz/gruvbox'                       " colorsheme
 Plugin 'jalvesaq/Nvim-R'                       " Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-repeat'
-" Plugin 'vim-pandoc/vim-pandoc'                 " needed for folding
-" Plugin 'vim-pandoc/vim-pandoc-syntax'
-" Plugin 'vim-scripts/textutil.vim' " Use pandoc instead.
+Plugin 'tpope/vim-commentary'                  " gc<movement> to comment
+Plugin 'tpope/vim-repeat'                      " make mappings repeatable
+" Plugin 'vim-pandoc/vim-pandoc'               " needed for folding
+Plugin 'vim-pandoc/vim-pandoc-syntax'          " good syntax, nested HTML, yaml, etc.
+" Plugin 'vim-scripts/textutil.vim'            " Use pandoc instead.
 " Plugin 'chrisbra/csv.vim'                    " not very good. use sc-im in the Terminal instead.
-Plugin 'sjl/gundo.vim'
+Plugin 'sjl/gundo.vim'                         " visual undo tree
 Plugin 'godlygeek/tabular'                     " :Tabular command to align stuff
-Plugin 'plasticboy/vim-markdown'                     " Markdown syntax and folding
-Plugin 'lervag/vimtex'
+" Plugin 'plasticboy/vim-markdown'             " Use vim-pandoc-syntax instead
+Plugin 'lervag/vimtex'                         " tex stuff
 Plugin 'vim-scripts/directionalWindowResizer'  " c-<hjkl> to resize window
-" Plugin 'vim-scripts/LanguageTool' " Spell and grammar checking. Not very useful in files with markup.
+" Plugin 'vim-scripts/LanguageTool'            " Spell and grammar checking. Not very useful in files with markup.
 Plugin 'qpkorr/vim-renamer'                    " Batch rename files vim-style.
 Plugin 'kien/ctrlp.vim'                        " Fuzzy file finder.
 Plugin 'vim-scripts/YankRing.vim'              " after ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focus
 
-" All of your Plugins must be added before the following line
+" All Plugins must be added before the following line
 call vundle#end()            " required
-
-
-set grepprg=grep\ -lHn
-" set grepprg+=internal
 
 " {{{1 settings
 
 set clipboard=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
-set gdefault                                 " Flag g[lobal] as default on searches.
+" set gdefault                                 " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                    " Dir for backup files
 set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keyes wrap to pre/next line.
 set path+=**                                 " make file-based commans search in subfolders
+" set complete +=kspell " Complete from dictionary when spell is on. Mostly annoying. Technical words will be written more than once and that way added to completion list.
 set belloff=all                              " turn off all warnings bells
 set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
 set nowrapscan                               " No wraparournd end of file in normal searches
@@ -67,9 +66,21 @@ set sidescrolloff=4                          " When scrolling, keep the cursor 4
 
 
 " DISPLAY
+
+" Statusline
+set statusline=%F " path and filename
+set statusline+=%m " Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
+set statusline+=%= " separator between left and right alignmet
+set statusline+=%y
+set statusline+=\ 
+set statusline+=%k " current keymap
+set guioptions-=r " Remove left and right scrollbar
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
 set number                                    " Display line numbers
 set foldcolumn=0                              " No columns to show folds
-set guifont=Source\ Code\ Pro\ ExtraLight:h18
+set guifont=Source\ Code\ Pro\ Light:h16
 set linespace=5
 set cpoptions=|                              " | at end of changed (<c>) object
 set linebreak               " Soft-wrap between words
@@ -87,6 +98,8 @@ set formatoptions=rj        " r=automatically insert the current comment leader 
 " }}}1
 " {{{1 General stuff
 
+" Foldmethod for .vimrc
+autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
 " Always use minimalist foldtext
 autocmd BufEnter * set foldtext=getline(v:foldstart)
@@ -97,108 +110,84 @@ if has('macunix')
     set macmeta
 endif
 
-"{{{1 vim-markdown
-" no mappings. We only want folding
-let g:vim_markdown_no_default_key_mappings = 1
-
-" Fold at the title line
-let g:vim_markdown_folding_style_pythonic = 1
-
-" list levels are indented by 2 space
-let g:vim_markdown_new_list_item_indent = 2
-
-"}}}1
-
-" Foldmethod for .vimrc
-autocmd BufRead ~/.vimrc setlocal fdm=marker 
-
-
 " Set wd for current file
 autocmd BufEnter * silent! lcd %:p:h
-" netrw list style
-" let g:netrw_liststyle=3 " tree style listing
-let g:netrw_banner=0 " supress banner
 
 " Read docx through pandoc
 autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
 
+let g:netrw_banner=0 " supress banner
+
+"{{{1 plugin configs
+"{{{2 vimtex 
+" See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
+
+" Vimtex settings
+let g:vimtex_complete_close_braces = 1
 
 
-"{{{2 display & color
+" From vimtex help
+            let g:vimtex_view_general_viewer
+                  \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+            let g:vimtex_view_general_options = '-r @line @pdf @tex'
 
-" list characters
-set lcs+=nbsp:_
+            " This adds a callback hook that updates Skim after compilation
+            let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+            function! UpdateSkim(status)
+              if !a:status | return | endif
 
-colorscheme solarized
+              let l:out = b:vimtex.out()
+              let l:tex = expand('%:p')
+              let l:cmd = [g:vimtex_view_general_viewer, '-r']
+              if !empty(system('pgrep Skim'))
+                call extend(l:cmd, ['-g'])
+              endif
+              if has('nvim')
+                call jobstart(l:cmd + [line('.'), l:out, l:tex])
+              elseif has('job')
+                call job_start(l:cmd + [line('.'), l:out, l:tex])
+              else
+                call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+              endif
+            endfunction
 
-syntax on
+"  folding
+let g:vimtex_fold_enabled=1
+" {{{2 DiffChar
+" Set wrap in diff
+au FilterWritePre * if &diff | set wrap | endif
 
-set bg=dark " Dark background
+let g:DiffUpdate = 1
+let g:DiffUnit = 'Word3'
+let g:DiffModeSync = 1
 
-" Remove left and right scrollbar
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
-
-
-" Italic comments.
-highlight Comment cterm=italic
-"}}}2
-
-" No wiggly line in terminal 
-if has('terminal')
-  hi SpellBad cterm=underline
+" Reduce error reports
+" autocmd InsertEnter * :RDCha
+" autocmd InsertLeave * :TDCha
+"{{{2 netrw
+let g:netrw_banner=0 " supress banner
+"{{{2 diminiactive
+" The following drastically improves dimming over long wrapped lines.
+" https://github.com/blueyed/vim-diminactive/issues/2
+if exists('+colorcolumn')
+    function! InactivateWindow(inactivate)
+        if a:inactivate == 1
+            " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
+            let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
+        else
+            if exists("w:inactiveWindowMatchId")
+                call matchdelete(w:inactiveWindowMatchId)
+            endif
+        endif
+    endfunction
+    augroup DimInactiveWindows
+        au!
+        "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
+        au WinLeave * call InactivateWindow(1)
+        au WinEnter * call InactivateWindow(0)
+    augroup END
 endif
-
-nmap <Leader>f :CtrlP<Space>~/<CR>
-nmap <Leader>x :Explore<cr>
-
-" Regard markdown extension variants as pandoc
-" autocmd Filetype mkd set ft=pandoc
-" autocmd Filetype md  set ft=pandoc
-" autocmd Filetype markdown  set ft=pandoc
-
-" Vim Pandoc. Add .bib to completion
- let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
- let g:pandoc#completion#bib#mode = 'fallback'
-
-
-" Override conceal applied by varies packages. No pseudo wysywyg here!
-autocmd BufEnter * silent! set cole=0
-
-
-
-" Soft wrap gundo preview
-augroup MyGundo
-    au!
-    au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
-augroup end
-
-" List characters opaque
-let g:solarized_visibility='low'
-
-"{{{ completion
-" Use TAB for completions
-inoremap <Tab> <c-n>
-inoremap <S-Tab> <Tab>
-
-" set complete +=kspell " Complete from dictionary when spell is on. Mostly
-" annoying. Technical words will be written more than once and that way added
-" to completion list.
-
-
-"}}}
-
-" {{{1 Statusline
-set statusline=%F " path and filename
-set statusline+=%m " Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
-set statusline+=%= " separator between left and right alignmet
-set statusline+=%y
-set statusline+=\ 
-set statusline+=%k " current keymap
-" }}}1
-" {{{1 ctrlp
+" {{{2 ctrlp
 " leader find to fuzzy find from home directory
  
 let g:ctrlp_follow_symlinks = 2 " follow symlinks
@@ -213,33 +202,103 @@ let g:ctrlp_custom_ignore = {
 
 " let g:ctrlp_show_hidden = 1 " include dotfiles in search
 
-" {{{2 Open non-text files in external program with '!open'
+" {{{ Open non-text files in external program with '!open'
 " https://github.com/kien/ctrlp.vim/issues/232
 " ÖVERFET!!!!!
 
 function! PdfOpenFunc(action, line)
-        if fnamemodify(a:line, ':e') =~?
-              \ '^\(rtf\|pdf\|ma4\|mp3\|jpeg\|png\|pptx\)\?$'
-            " Get the filename
-            let filename = fnameescape(fnamemodify(a:line, ':p'))
+  if fnamemodify(a:line, ':e') =~?
+      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|png\|pptx\)\?$'
+    " Get the filename
+    let filename = fnameescape(fnamemodify(a:line, ':p'))
 
-            " Close CtrlP
-            call ctrlp#exit()
+    " Close CtrlP
+    call ctrlp#exit()
 
-            " Open the file
-            silent! execute '!open' filename
-        else
-            " Not a HTML file, simulate pressing <c-o>r to replace current buffer
-            call feedkeys("\<c-o>r")
-        endif
+    " Open the file
+    silent! execute '!open' filename
+  else
+    " Not a HTML file, simulate pressing <c-o>r to replace current buffer
+    call feedkeys("\<c-o>r")
+  endif
 endfunction
 
 let g:ctrlp_open_func = { 'files': 'PdfOpenFunc' }
 
 " }}}
-" }}}1
+" }}}2
+"{{{2 gundo
+" Soft wrap gundo preview
+augroup MyGundo
+    au!
+    au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
+augroup end
+
+" Wider gundo window
+    let g:gundo_width = 60
+" Auto-close gundo window on revert.
+    let g:gundo_close_on_revert=1
+
+"{{{2 vim-pandoc
+" symlink ~/.vim/after/syntax/markdown.vim -> ~/.vim/bundle/vim-pandoc-syntsax/pandoc.vim
+" to get pandoc syntax in markdown file type.
+
+" Add .bib to completion
+ let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
+ let g:pandoc#completion#bib#mode = 'fallback'
+"{{{2 vim-markdown
+" no mappings. We only want folding
+let g:vim_markdown_no_default_key_mappings = 1
+
+" Fold at the title line
+let g:vim_markdown_folding_style_pythonic = 1
+
+" list levels are indented by 2 space
+let g:vim_markdown_new_list_item_indent = 2
+
+" Highlighting for YAML header
+let g:vim_markdown_frontmatter = 1
+"}}}1
+"{{{2 display & color
+
+" colorscheme solarized
+colorscheme gruvbox
+syntax on
+set bg=dark " Dark background
+
+
+" Italic comments.
+highlight Comment cterm=italic
+"}}}2
+
+" No wiggly line in terminal 
+if has('terminal')
+  hi SpellBad cterm=underline
+endif
+
+" Override conceal applied by varies packages. No pseudo wysywyg here!
+autocmd BufEnter * silent! set cole=0
+
+
+
+
+" List characters opaque
+let g:solarized_visibility='low'
+
+"{{{1 completion
+" Use TAB for completions
+inoremap <Tab> <c-n>
+inoremap <S-Tab> <Tab>
+
+
+
+"}}}1
 " {{{1 Leader commands
 
+" open ctrlp fuzzy file finder
+nmap <Leader>f :CtrlP<Space>~/<CR>
+" open netrw
+nmap <Leader>x :Explore<cr>
 " Window command prefix
 nnoremap <Leader>w <C-w>
 " Gundo toggle window
@@ -294,6 +353,7 @@ autocmd Filetype markdown
 
 
 " {{{2 TeX compilation
+" run xelatex and rename output to .tex.pdf 
 autocmd Filetype tex
   \ nnoremap <Leader>pp  :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
   \ && mv '%<'.pdf '%<'.tex.pdf
@@ -301,14 +361,15 @@ autocmd Filetype tex
 
 " Bibtex run
 " %< "gives current filename without extension
-autocmd Filetype tex nnoremap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
+autocmd Filetype tex
+  \ nnoremap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
 " OBS!!! Run
 "      rm -rf `biber --cache`
 " to fix bug crash bug.
 
 
 " {{{2 Language switching
-"
+
 " Switch to Swedish typing
 nnoremap <Leader>s :<C-U>call SweType()<CR>
 " Switch to English typing
@@ -346,17 +407,6 @@ autocmd Filetype tex call LaTeXmaps()
 
 function! LaTeXmaps()
 
-  nnoremap <Leader>sc <ESC>bi\textsc<ESC>lyse}e
-  nnoremap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
-  nnoremap <Leader>it <ESC>bi\textit<ESC>lyse}e
-  nnoremap <Leader>bf <ESC>bi\textbf<ESC>lyse}e
-  nnoremap <Leader>em <ESC>bi\emph<ESC>lyse}e
-  nnoremap <Leader>ar <ESC>bi\textarabic<ESC>lyse}e
-  nnoremap <Leader>i "iyiwea\index<ESC>lyse}e
-
-  " Input covington example frame.
-  nnoremap <Leader>ce i\begin{example} \label{ex:}<ESC>o\gll <ESC>o<ESC>o\glt `'<ESC>o\speaker{}{}<ESC>o\lineno{}<ESC>o\glend<ESC>o\end{example}<ESC>
-
   " Input yanked rcode in comment.
   " Requires vim-latex-textobj plugin.
   nnoremap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
@@ -368,7 +418,7 @@ function! LaTeXmaps()
   map <Leader>t vip:Tabularize /\\\@<!&<CR>
 
   " Tabularize gloss (by spaces)
-  map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
+  " map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
 
 endfunction
 
@@ -376,10 +426,13 @@ endfunction
 " {{{1 Markdown mappings and function
 " Mappings only used in markdown files 
 
-autocmd Filetype pandoc call MarkdownMaps()
 
+" Clearly highlight LaTeX if-stantements for use in documents with multiple
+" output versions. 
+autocmd Filetype markdown syn match Underlined "\v^\\(if\S+|else|fi)$"
+
+autocmd Filetype markdown call MarkdownMaps()
 function! MarkdownMaps()
-
 
     " Do comments in Markdown as suggested here http://stackoverflow.com/a/20885980/3210474
     " No comment in HTML or TeX output.
@@ -389,20 +442,35 @@ function! MarkdownMaps()
     nnoremap <Leader>t vip:Tabularize /\|<CR>
 
 endfunction
+
+" Folding
+autocmd Filetype markdown call MarkdownLevel()
+autocmd Filetype markdown setlocal foldexpr=MarkdownLevel()  
+autocmd Filetype markdown setlocal foldmethod=expr    
+
+function! MarkdownLevel()
+    if getline(v:lnum) =~ '^# .*$'
+        return ">1"
+    endif
+    if getline(v:lnum) =~ '^## .*$'
+        return ">2"
+    endif
+    if getline(v:lnum) =~ '^### .*$'
+        return ">3"
+    endif
+    if getline(v:lnum) =~ '^#### .*$'
+        return ">4"
+    endif
+    if getline(v:lnum) =~ '^##### .*$'
+        return ">5"
+    endif
+    if getline(v:lnum) =~ '^###### .*$'
+        return ">6"
+    endif
+    return "=" 
+endfunction
+
 " }}}1
-" {{{1 DiffChar
-" Set wrap in diff
-au FilterWritePre * if &diff | set wrap | endif
-
-let g:DiffUpdate = 1
-let g:DiffUnit = 'Word3'
-let g:DiffModeSync = 1
-
-" Reduce error reports
-" autocmd InsertEnter * :RDCha
-" autocmd InsertLeave * :TDCha
-
-" }}}
 " {{{1 MOVEMENT & EDITING
 
 nnoremap Y yg_
@@ -412,10 +480,10 @@ nnoremap zz 1z=e
 
 " Command to find and replace repeated word, word duplet or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
-" Move to previous buffer
 
+" Move to previous buffer
 nnoremap ## :b#<CR>
- 
+nnoremap <bs> :b#<CR>
 
 " Move visually on soft-wrapped lines
 nnoremap k gk
@@ -435,15 +503,16 @@ inoremap ? ?<C-g>u
 inoremap : :<C-g>u
 inoremap ; ;<C-g>u
 
-" gundo plugin
-" Wider gundo window
-    let g:gundo_width = 60
-" Auto-close gundo window on revert.
-    let g:gundo_close_on_revert=1
-
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 " {{{2 CHARACTER INPUT
+
+" increment numbers
+noremap + <c-a>
+noremap - <c-x>
+
+" Indent without leaving insert mode
+inoremap >> <ESC>me>>`ella
 
 " Like numpad
 nnoremap <A-j> 1
@@ -458,36 +527,40 @@ nnoremap <A-9> 9
 " Alt-,
 nnoremap ¬ 0
 
-imap <A-j> 1
-imap <A-k> 2
-imap <A-l> 3
-imap <A-u> 4
-imap <A-i> 5
-imap <A-o> 6
-imap <A-7> 7
-imap <A-8> 8
-imap <A-9> 9
+inoremap <A-j> 1
+inoremap <A-k> 2
+inoremap <A-l> 3
+inoremap <A-u> 4
+inoremap <A-i> 5
+inoremap <A-o> 6
+inoremap <A-7> 7
+inoremap <A-8> 8
+inoremap <A-9> 9
 " Alt-,
-imap ¬ 0
+inoremap ¬ 0
 
- 
+
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
 " abbreviation command for common misspellings
-ab tow two
-ab teh the
-ab Andras Andreas
-ab ruel rule
-ab ARabic Arabic
-ab arabic Arabic
-
+iab tow two
+iab teh the
+iab Andras Andreas
+iab ruel rule
+iab ARabic Arabic
+iab arabic Arabic
+iab widht width
+iab lenght length
+iab fo of
 
 " Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
-" imap <BS><BS> <NOP> " to train above
+" imap <BS><BS> <NOP> " To learn the above
 
 " When inserting empty line, return to cursor position
+" Note careful placement of nmap/nnoremap.
+" Insert empty line above, repeatable
 nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
 nmap O<Esc> <Plug>EmptyLineAbove
 
@@ -496,14 +569,12 @@ nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyL
 nmap o<Esc> <Plug>EmptyLineBelow
 
 " {{{2 Delimiters
-
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
 inoremap () ()<Left>
 inoremap [] []<Left>
 inoremap <> <><Left>
 inoremap ** **<Left>
-inoremap **** ****<Left><Left>
 inoremap "" ""<Left>
 inoremap '' ''<Left>
 inoremap '' ''<Left>
@@ -545,46 +616,15 @@ inoremap '', '',
 inoremap ''. ''.
 
 
-"{{{1 LATEX 
-"
-" See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 
-" Vimtex settings
-let g:vimtex_complete_close_braces = 1
-
-
-" From vimtex help
-            let g:vimtex_view_general_viewer
-                  \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-            let g:vimtex_view_general_options = '-r @line @pdf @tex'
-
-            " This adds a callback hook that updates Skim after compilation
-            let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-            function! UpdateSkim(status)
-              if !a:status | return | endif
-
-              let l:out = b:vimtex.out()
-              let l:tex = expand('%:p')
-              let l:cmd = [g:vimtex_view_general_viewer, '-r']
-              if !empty(system('pgrep Skim'))
-                call extend(l:cmd, ['-g'])
-              endif
-              if has('nvim')
-                call jobstart(l:cmd + [line('.'), l:out, l:tex])
-              elseif has('job')
-                call job_start(l:cmd + [line('.'), l:out, l:tex])
-              else
-                call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-              endif
-            endfunction
-
-" vimtex folding
-let g:vimtex_fold_enabled=1
-
-"{{{1 Reading notes
+"{{{1 Readingnotes
 
 " Don't fold 
 autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
+autocmd BufRead ~/jobb/readingnotes/* call EngType()
+
+" Highligt page refs at end of line
+autocmd BufRead ~/jobb/readingnotes/* syn match Constant "\d\+$" containedin=ALL
 
 " Filter location list to get one hit per file
 " https://vi.stackexchange.com/a/15171/3316
@@ -605,3 +645,4 @@ function! FilterLocList()
 endfu
 
 com! -nargs=0 FilterLocList :call FilterLocList()
+"}}}1
