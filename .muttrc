@@ -62,11 +62,13 @@ set index_format="%3C %S %?X?A& ? %{%y%m%d} %-12.12L %?M?(#%03M)&(%4c)? %?y?(%.2
 
 # {{{ Bindings
 # bind <mode> <key> <action>
-bind pager h noop # Often hit by mistake
-bind index h noop # Often hit by mistake
+
+bind index,pager h noop # Often hit by mistake
 bind pager j next-line # vim-like
 bind pager k previous-line # vim-like
-bind index G imap-fetch-mail
-bind index g group-reply # vim-like
-bind generic,index,pager    \Cf next-page # vim-like
+bind index,pager g noop # because of next line
+bind index gg first-entry
+bind index,pager gg top
+bind index G group-reply # vim-like
+bind generic,index,pager \Cf next-page # vim-like
 bind generic,index,pager \Cb previous-page # vim-like

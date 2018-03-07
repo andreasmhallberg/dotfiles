@@ -1,9 +1,8 @@
 set nocompatible " don't pretend to be VI
 filetype plugin on
 filetype indent on
-
-" {{{1 Plugin management
- " set the runtime path to include Vundle and initialize
+"{{{1 Plugins
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -19,7 +18,7 @@ Plugin 'tpope/vim-repeat'                      " make mappings repeatable
 " Plugin 'vim-pandoc/vim-pandoc'               " needed for folding
 Plugin 'vim-pandoc/vim-pandoc-syntax'          " good syntax, nested HTML, yaml, etc.
 " Plugin 'vim-scripts/textutil.vim'            " Use pandoc instead.
-" Plugin 'chrisbra/csv.vim'                    " not very good. use sc-im in the Terminal instead.
+Plugin 'chrisbra/csv.vim'                    " not very good. use sc-im in the Terminal instead.
 Plugin 'sjl/gundo.vim'                         " visual undo tree
 Plugin 'godlygeek/tabular'                     " :Tabular command to align stuff
 " Plugin 'plasticboy/vim-markdown'             " Use vim-pandoc-syntax instead
@@ -34,7 +33,7 @@ Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focu
 " All Plugins must be added before the following line
 call vundle#end()            " required
 
-" {{{1 settings
+"{{{1 Settings
 
 set clipboard=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
 " set gdefault                                 " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
@@ -96,7 +95,7 @@ set formatoptions=rj        " r=automatically insert the current comment leader 
                             " j=Where it makes sense, remove a comment leader when joining lines.
 
 " }}}1
-" {{{1 General stuff
+"{{{1 General stuff
 
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
@@ -116,9 +115,15 @@ autocmd BufEnter * silent! lcd %:p:h
 " Read docx through pandoc
 autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
 
-let g:netrw_banner=0 " supress banner
 
-"{{{1 plugin configs
+" Different cursor shapes in Iterm2
+" http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
+
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+"{{{1 Plugin configs
 "{{{2 vimtex 
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 
@@ -153,7 +158,7 @@ let g:vimtex_complete_close_braces = 1
 
 "  folding
 let g:vimtex_fold_enabled=1
-" {{{2 DiffChar
+"{{{2 DiffChar
 " Set wrap in diff
 au FilterWritePre * if &diff | set wrap | endif
 
@@ -187,7 +192,7 @@ if exists('+colorcolumn')
         au WinEnter * call InactivateWindow(0)
     augroup END
 endif
-" {{{2 ctrlp
+"{{{2 ctrlp
 " leader find to fuzzy find from home directory
  
 let g:ctrlp_follow_symlinks = 2 " follow symlinks
@@ -202,7 +207,7 @@ let g:ctrlp_custom_ignore = {
 
 " let g:ctrlp_show_hidden = 1 " include dotfiles in search
 
-" {{{ Open non-text files in external program with '!open'
+"{{{ Open non-text files in external program with '!open'
 " https://github.com/kien/ctrlp.vim/issues/232
 " ÖVERFET!!!!!
 
@@ -212,12 +217,28 @@ function! PdfOpenFunc(action, line)
     " Get the filename
     let filename = fnameescape(fnamemodify(a:line, ':p'))
 
-    " Close CtrlP
     call ctrlp#exit()
 
     " Open the file
     silent! execute '!open' filename
+
+  " Open docx via pandoc
+
+  elseif fnamemodify(a:line, ':e') =~?
+      \ '^docx\?$'
+    " Get the filename
+    let filename = fnameescape(fnamemodify(a:line, ':p'))
+
+    call ctrlp#exit()
+
+    " Open the file
+    silent! execute ' r!pandoc -t markdown -f docx' filename
+    setlocal ft=markdown
+
   else
+
+
+
     " Not a HTML file, simulate pressing <c-o>r to replace current buffer
     call feedkeys("\<c-o>r")
   endif
@@ -258,8 +279,12 @@ let g:vim_markdown_new_list_item_indent = 2
 
 " Highlighting for YAML header
 let g:vim_markdown_frontmatter = 1
+
+"{{{2 nvim-r
+" Don't type <- with _
+   let R_assign = 0
 "}}}1
-"{{{2 display & color
+"{{{2 Display & Color
 
 " colorscheme solarized
 colorscheme gruvbox
@@ -285,7 +310,7 @@ autocmd BufEnter * silent! set cole=0
 " List characters opaque
 let g:solarized_visibility='low'
 
-"{{{1 completion
+"{{{1 Completion
 " Use TAB for completions
 inoremap <Tab> <c-n>
 inoremap <S-Tab> <Tab>
@@ -293,7 +318,7 @@ inoremap <S-Tab> <Tab>
 
 
 "}}}1
-" {{{1 Leader commands
+"{{{1 Leader commands
 
 " open ctrlp fuzzy file finder
 nmap <Leader>f :CtrlP<Space>~/<CR>
@@ -312,7 +337,8 @@ nnoremap <Leader>m :e $MYVIMRC<CR>
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
 
-" {{{2 Markdown compilation  
+
+"{{{2 Markdown compilation  
 
 "  to tex
 autocmd Filetype markdown 
@@ -341,7 +367,7 @@ autocmd Filetype markdown
 autocmd Filetype markdown
     \ nnoremap <Leader>pb :w<CR>:!pandoc -t beamer -f
     \ markdown+implicit_figures+table_captions %
-    \ --pdf-engine=pdflatex
+    \ --pdf-engine=xelatex
     \ --bibliography ~/mylatexstuff/bibliotek.bib
     \ -smart -o '%'.pdf
     \ && open '%'.pdf<CR>
@@ -352,7 +378,7 @@ autocmd Filetype markdown
 
 
 
-" {{{2 TeX compilation
+"{{{2 TeX compilation
 " run xelatex and rename output to .tex.pdf 
 autocmd Filetype tex
   \ nnoremap <Leader>pp  :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
@@ -368,7 +394,7 @@ autocmd Filetype tex
 " to fix bug crash bug.
 
 
-" {{{2 Language switching
+"{{{2 Language switching
 
 " Switch to Swedish typing
 nnoremap <Leader>s :<C-U>call SweType()<CR>
@@ -400,7 +426,7 @@ function! AraType()
     set rightleft
 endfunction
 
-" {{{1 LaTeX mappings
+"{{{1 LaTeX mappings
 " Mappings only used in .tex files 
 
 autocmd Filetype tex call LaTeXmaps()
@@ -411,6 +437,8 @@ function! LaTeXmaps()
   " Requires vim-latex-textobj plugin.
   nnoremap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
+  " get documentation for package under cursor
+  nnoremap <leader>d :!texdoc . <cword><cr>
 
   " Key mapping to Tabularize LaTeX tabular
   " Tabularize by & unless escaped
@@ -423,23 +451,28 @@ function! LaTeXmaps()
 endfunction
 
 " }}1
-" {{{1 Markdown mappings and function
+"{{{1 Markdown mappings and function
 " Mappings only used in markdown files 
 
 
 " Clearly highlight LaTeX if-stantements for use in documents with multiple
 " output versions. 
 autocmd Filetype markdown syn match Underlined "\v^\\(if\S+|else|fi)$"
-
+autocmd Filetype markdown syn match Statement "\\[a-zA-Z]\+"
 autocmd Filetype markdown call MarkdownMaps()
+
 function! MarkdownMaps()
 
-    " Do comments in Markdown as suggested here http://stackoverflow.com/a/20885980/3210474
-    " No comment in HTML or TeX output.
-    set commentstring=<!--%s-->
+  " Do comments in Markdown as suggested here http://stackoverflow.com/a/20885980/3210474
+  " No comment in HTML or TeX output.
+  set commentstring=<!--%s-->
 
-    " Let Tabularize do pipe tables 
-    nnoremap <Leader>t vip:Tabularize /\|<CR>
+  " Let Tabularize do pipe tables 
+  nnoremap <Leader>t vip:Tabularize /\|<CR>
+
+  " Move section wise
+  nnoremap ]] /^#<CR>
+  nnoremap [[ ?^#<CR>
 
 endfunction
 
@@ -471,7 +504,7 @@ function! MarkdownLevel()
 endfunction
 
 " }}}1
-" {{{1 MOVEMENT & EDITING
+"{{{1 Movement & Editing
 
 nnoremap Y yg_
 
@@ -481,8 +514,7 @@ nnoremap zz 1z=e
 " Command to find and replace repeated word, word duplet or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
 
-" Move to previous buffer
-nnoremap ## :b#<CR>
+" Back space to alternate buffer
 nnoremap <bs> :b#<CR>
 
 " Move visually on soft-wrapped lines
@@ -505,7 +537,7 @@ inoremap ; ;<C-g>u
 
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
-" {{{2 CHARACTER INPUT
+"{{{2 CHARACTER INPUT
 
 " increment numbers
 noremap + <c-a>
@@ -553,6 +585,7 @@ iab arabic Arabic
 iab widht width
 iab lenght length
 iab fo of
+iab ot to
 
 " Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
@@ -568,7 +601,7 @@ nmap O<Esc> <Plug>EmptyLineAbove
 nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyLineBelow")<CR>
 nmap o<Esc> <Plug>EmptyLineBelow
 
-" {{{2 Delimiters
+"{{{2 Delimiters
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
 inoremap () ()<Left>
@@ -624,7 +657,7 @@ autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
 autocmd BufRead ~/jobb/readingnotes/* call EngType()
 
 " Highligt page refs at end of line
-autocmd BufRead ~/jobb/readingnotes/* syn match Constant "\d\+$" containedin=ALL
+autocmd BufRead ~/jobb/readingnotes/* syn match Constant " \d\+\(-\{1,2}\d\+\)\?$" containedin=ALL
 
 " Filter location list to get one hit per file
 " https://vi.stackexchange.com/a/15171/3316
@@ -646,3 +679,4 @@ endfu
 
 com! -nargs=0 FilterLocList :call FilterLocList()
 "}}}1
+"{{{ Test
