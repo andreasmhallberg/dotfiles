@@ -7,9 +7,9 @@ application/pdf; open %s ;
 
 # mvim -v opens in terminal
 application/vnd.ms-word.document.12;  pandoc -f docx %s -t markdown | mvim - -v "+set ft=markdown";
-application/vnd.openxmlformats-officedocument.wordprocessingml.document; pandoc -f docx %s -t markdown | mvim - -v "+set ft=pandoc" ;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; pandoc -f docx %s -t markdown | mvim - -v "+set ft=markdown" ;
 
-application/msword; pandoc -f docx %s -t markdown | mvim -v - ;
+application/msword; pandoc -f docx %s -t markdown | mvim - -v "+set ft=markdown" ;
 
 # Third party application to open other formats
 

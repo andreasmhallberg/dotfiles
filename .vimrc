@@ -15,10 +15,11 @@ Plugin 'jalvesaq/Nvim-R'                       " Successor of R-vimplugin. Requi
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'                  " gc<movement> to comment
 Plugin 'tpope/vim-repeat'                      " make mappings repeatable
+Plugin 'tpope/vim-vinegar'
 " Plugin 'vim-pandoc/vim-pandoc'               " needed for folding
 Plugin 'vim-pandoc/vim-pandoc-syntax'          " good syntax, nested HTML, yaml, etc.
 " Plugin 'vim-scripts/textutil.vim'            " Use pandoc instead.
-Plugin 'chrisbra/csv.vim'                    " not very good. use sc-im in the Terminal instead.
+Plugin 'chrisbra/csv.vim'                      " use sc-im for ascii stuff. Better.
 Plugin 'sjl/gundo.vim'                         " visual undo tree
 Plugin 'godlygeek/tabular'                     " :Tabular command to align stuff
 " Plugin 'plasticboy/vim-markdown'             " Use vim-pandoc-syntax instead
@@ -67,38 +68,47 @@ set sidescrolloff=4                          " When scrolling, keep the cursor 4
 " DISPLAY
 
 " Statusline
-set statusline=%F " path and filename
+set statusline=%F  " Full path and file name.
 set statusline+=%m " Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
-set statusline+=%= " separator between left and right alignmet
-set statusline+=%y
+set statusline+=%= " Separator between left and right alignmet
+set statusline+=%l " Line number
+set statusline+=/
+set statusline+=%L " Lines in buffer
 set statusline+=\ 
-set statusline+=%k " current keymap
-set guioptions-=r " Remove left and right scrollbar
+set statusline+=%y " Filetype
+set statusline+=\ 
+set statusline+=%k " Current keymap
+
+set guioptions-=r                        " Remove left and right scrollbar
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
-set number                                    " Display line numbers
-set foldcolumn=0                              " No columns to show folds
+
+set number                               " Display line numbers
+set foldcolumn=0                         " No columns to show folds
 set guifont=Source\ Code\ Pro\ Light:h16
-set linespace=5
-set cpoptions=|                              " | at end of changed (<c>) object
-set linebreak               " Soft-wrap between words
+set linespace=5 " More space between lines. Default=0
+set cpoptions=|                          " | at end of changed (<c>) object
+set linebreak                            " Soft-wrap between words
 set autoindent
-set listchars=tab:▸\ ,eol:¬,nbsp:_ " Representation of invisible characters with set list
-set splitright              " Open vsplit window to the right
-set shortmess+=A            " No swapfile exists warning
-set expandtab               " tab key inserts spaces. Needed for indentation with <
-set shiftwidth=2            " Length of tab-character for indention 4 spaces for markdown syntax
-set spell                   " check spelling by default
+set listchars=tab:▸\ ,eol:¬,nbsp:_       " Representation of invisible characters with set list
+set splitright                           " Open vsplit window to the right
+set shortmess+=A                         " No swapfile exists warning
+set expandtab                            " tab key inserts spaces. Needed for indentation with <
+set shiftwidth=2                         " Length of tab-character for indention 4 spaces for markdown syntax
+set spell                                " check spelling by default
 set spelllang=en_us
-set formatoptions=rj        " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
-                            " j=Where it makes sense, remove a comment leader when joining lines.
+set formatoptions=rj                     " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
+                                         " j=Where it makes sense, remove a comment leader when joining lines.
 
 " }}}1
 "{{{1 General stuff
 
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
+
+" Enter to run last macro
+nnoremap <CR> @@
 
 " Always use minimalist foldtext
 autocmd BufEnter * set foldtext=getline(v:foldstart)
@@ -192,7 +202,19 @@ if exists('+colorcolumn')
         au WinEnter * call InactivateWindow(0)
     augroup END
 endif
+"{{{2 csv
+
+autocmd BufRead,BufEnter *.csv set filetype=csv
+autocmd BufRead,BufEnter *.dat set filetype=csv
+
 "{{{2 ctrlp
+" Speed up with gipgrep
+" https://bluz71.github.io/2017/10/26/turbocharge-the-ctrlp-vim-plugin.html
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+
+  " So quick that caching is not necessary
+  let g:ctrlp_use_caching = 0
+
 " leader find to fuzzy find from home directory
  
 let g:ctrlp_follow_symlinks = 2 " follow symlinks
@@ -213,7 +235,7 @@ let g:ctrlp_custom_ignore = {
 
 function! PdfOpenFunc(action, line)
   if fnamemodify(a:line, ':e') =~?
-      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|png\|pptx\)\?$'
+      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\)\?$'
     " Get the filename
     let filename = fnameescape(fnamemodify(a:line, ':p'))
 
@@ -284,38 +306,29 @@ let g:vim_markdown_frontmatter = 1
 " Don't type <- with _
    let R_assign = 0
 "}}}1
-"{{{2 Display & Color
+"{{{1 Display & Color
 
 " colorscheme solarized
-colorscheme gruvbox
 syntax on
+colorscheme gruvbox " super sexy
 set bg=dark " Dark background
 
 
 " Italic comments.
 highlight Comment cterm=italic
-"}}}2
 
 " No wiggly line in terminal 
 if has('terminal')
   hi SpellBad cterm=underline
 endif
 
-" Override conceal applied by varies packages. No pseudo wysywyg here!
+" Override conceal applied by varies packages. No pseudo WYSYWYG here!
 autocmd BufEnter * silent! set cole=0
-
-
-
-
-" List characters opaque
-let g:solarized_visibility='low'
-
+"}}}1
 "{{{1 Completion
 " Use TAB for completions
 inoremap <Tab> <c-n>
 inoremap <S-Tab> <Tab>
-
-
 
 "}}}1
 "{{{1 Leader commands
@@ -459,6 +472,9 @@ endfunction
 " output versions. 
 autocmd Filetype markdown syn match Underlined "\v^\\(if\S+|else|fi)$"
 autocmd Filetype markdown syn match Statement "\\[a-zA-Z]\+"
+autocmd Filetype markdown syn match Constant "`[^`]\{-}`"
+
+" Mappings
 autocmd Filetype markdown call MarkdownMaps()
 
 function! MarkdownMaps()
@@ -506,6 +522,40 @@ endfunction
 " }}}1
 "{{{1 Movement & Editing
 
+" {{{2 Calculate equation
+" http://vim.wikia.com/wiki/VimTip216
+
+vnoremap <Leader>bc "ey:call CalcBC()<CR>
+function! CalcBC()
+  let has_equal = 0
+  " remove newlines and trailing spaces
+  let @e = substitute (@e, "\n", "", "g")
+  let @e = substitute (@e, '\s*$', "", "g")
+  " if we end with an equal, strip, and remember for output
+  if @e =~ "=$"
+    let @e = substitute (@e, '=$', "", "")
+    let has_equal = 1
+  endif
+  " sub common func names for bc equivalent
+  let @e = substitute (@e, '\csin\s*(', "s (", "")
+  let @e = substitute (@e, '\ccos\s*(', "c (", "")
+  let @e = substitute (@e, '\catan\s*(', "a (", "")
+  let @e = substitute (@e, "\cln\s*(", "l (", "")
+  " escape chars for shell
+  let @e = escape (@e, '*()')
+  " run bc, strip newline
+  let answer = substitute (system ("echo " . @e . " \| bc -l"), "\n", "", "")
+  " append answer or echo
+  if has_equal == 1
+    normal `>
+    exec "normal a" . answer
+  else
+    echo "answer = " . answer
+  endif
+endfunction
+" }}}2
+
+" Make Y behave like D and C
 nnoremap Y yg_
 
 " Choose first word in spellinglist
@@ -515,7 +565,7 @@ nnoremap zz 1z=e
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
 
 " Back space to alternate buffer
-nnoremap <bs> :b#<CR>
+nnoremap <BS> :b#<CR>
 
 " Move visually on soft-wrapped lines
 nnoremap k gk
@@ -542,6 +592,12 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 " increment numbers
 noremap + <c-a>
 noremap - <c-x>
+
+" Angular brackets
+"〈 U+2329
+" 〉U+232A
+inoremap <A-<> 〈
+inoremap <A->> 〉
 
 " Indent without leaving insert mode
 inoremap >> <ESC>me>>`ella
@@ -575,7 +631,7 @@ inoremap ¬ 0
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
-" abbreviation command for common misspellings
+" Abbreviations for common misspellings because I'm stupid.
 iab tow two
 iab teh the
 iab Andras Andreas
@@ -606,7 +662,7 @@ nmap o<Esc> <Plug>EmptyLineBelow
 inoremap {} {}<Left>
 inoremap () ()<Left>
 inoremap [] []<Left>
-inoremap <> <><Left>
+inoremap <lt>> <><Left>
 inoremap ** **<Left>
 inoremap "" ""<Left>
 inoremap '' ''<Left>
@@ -651,6 +707,7 @@ inoremap ''. ''.
 
 
 "{{{1 Readingnotes
+" https://github.com/andreasmhallberg/readingnotes
 
 " Don't fold 
 autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
@@ -659,7 +716,7 @@ autocmd BufRead ~/jobb/readingnotes/* call EngType()
 " Highligt page refs at end of line
 autocmd BufRead ~/jobb/readingnotes/* syn match Constant " \d\+\(-\{1,2}\d\+\)\?$" containedin=ALL
 
-" Filter location list to get one hit per file
+" Filter location list to get one hit per file 
 " https://vi.stackexchange.com/a/15171/3316
 
 function! FilterLocList()
@@ -678,5 +735,8 @@ function! FilterLocList()
 endfu
 
 com! -nargs=0 FilterLocList :call FilterLocList()
+"}}}1
+"{{{1 Mutt related
+autocmd BufRead ~/.mutt/* setlocal filetype=muttrc
 "}}}1
 "{{{ Test

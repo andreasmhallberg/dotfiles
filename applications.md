@@ -20,4 +20,5 @@
   - jekyll
     - ruby
     - ruby-gems
+  - ripgrep # Used to speed up ctrlp plugin in vim.
 

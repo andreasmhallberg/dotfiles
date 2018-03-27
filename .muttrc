@@ -37,7 +37,6 @@ set reverse_alias=yes
 # source $alias_file
 source ~/.mutt/aliases.jobb
 source ~/.mutt/aliases.privat
-source ~/.mutt/aliases.lists
 
 
 # html rendering
