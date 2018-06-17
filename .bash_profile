@@ -15,7 +15,8 @@ alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
-alias vim='mvim -v'                                     # Because MacVim has better display of Arabic chars.
+# alias vim='mvim -v'                                     # Because MacVim has better display of Arabic chars.
+alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 
 # cd to cd and ls
 function cs () {
@@ -32,3 +33,10 @@ PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 export PATH
 
  
+
+# Setting PATH for Python 3.6
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
+export PATH
+
+bind "set completion-ignore-case on"

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Transliterate from Alif Baa to EALL.
+
+# Long vowels
+ sed -E  's/aa/ā/g' |\
+ sed -E  's/ii/ī/g' |\
+ sed -E  's/uu/ū/g' |\
+
+# Digraphs
+ sed -E  's/kh/x/g' |\
+ sed -E  's/sh/š/g' |\
+ sed -E  's/dh/ḏ/g' |\
+ sed -E  's/DH/ẓ/g' |\
+ sed -E  's/th/ṭ/g' |\
+
+# Capial letters
+ sed -E  's/H/ḥ/g' |\
+ sed -E  's/S/ṣ/g' |\
+ sed -E  's/T/ṭ/g' |\
+ sed -E  's/D/ḍ/g'

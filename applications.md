@@ -7,6 +7,14 @@
   - VLC
   - Quicksilver
   - Spectacle
+  - Firefox
+    - vimperator
+    - Adblock Plus
+    - Adobe Acrobat
+    - Google Analytics Blocker
+    - Keybinder # to map SHIFT-ESC to address bar
+    - Vimperator
+    - Zotero Connector
 
 - Terminal
   - Mutt

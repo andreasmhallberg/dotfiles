@@ -5,8 +5,8 @@ TIME=`date +%y%m%d`
 mkdir /Volumes/BACKUP1/jobb.$TIME
 
 for F in \
-.git \
 .vim \
+.mutt \
 blog \
 dotfiles \
 jobb \
@@ -16,7 +16,7 @@ mypandocstuff \
 prosa
 do
     echo Backar upp ${F}.
-    tar -cpzf /Volumes/BACKUP1/jobb.$TIME/${F}.tar ~/$F
+    cp -R ~/$F /Volumes/BACKUP1/jobb.$TIME/
     echo Klar med ${F}.
 done
 

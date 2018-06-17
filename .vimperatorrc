@@ -1,0 +1,9 @@
+" Hint characters 
+set hintchars=jfkdls;a
+
+" No background color for hints
+highlight HintElem color: black;
+
+
+" no noise
+set visualbell

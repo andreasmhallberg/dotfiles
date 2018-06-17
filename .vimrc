@@ -30,6 +30,7 @@ Plugin 'qpkorr/vim-renamer'                    " Batch rename files vim-style.
 Plugin 'kien/ctrlp.vim'                        " Fuzzy file finder.
 Plugin 'vim-scripts/YankRing.vim'              " after ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focus
+Plugin 'skywind3000/vim-keysound'
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -37,24 +38,28 @@ call vundle#end()            " required
 "{{{1 Settings
 
 set clipboard=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
-" set gdefault                                 " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
+" set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                    " Dir for backup files
-set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keyes wrap to pre/next line.
-set path+=**                                 " make file-based commans search in subfolders
-" set complete +=kspell " Complete from dictionary when spell is on. Mostly annoying. Technical words will be written more than once and that way added to completion list.
+set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keys wrap to pre/next line.
+set path+=**                                 " make file-based commands search in subfolders
+" set complete +=kspell                      " Complete from dictionary when spell is on.
+                                             " Mostly annoying. Technical words will be
+                                             " written more than once and that way added
+                                             " to completion list.
 set belloff=all                              " turn off all warnings bells
 set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
-set nowrapscan                               " No wraparournd end of file in normal searches
+set nowrapscan                               " No wraparound end of file in normal searches
 set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 set smartcase                                " Case-sensitive when upper case is used in search string
 set complete +=s~/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
+set complete +=s~/.mutt/aliases.jobb         " Load bibtex dumpfile to completion files
 set wildmenu                                 " Show command completion alternatives
 set autoread                                 " autoread when a file is changed from the outside
-set backspace=indent,eol,start               " backspace over everything in insert mode
+" set backspace=indent,eol,start             " backspace over everything in insert mode
 set hidden                                   " Allow unsaved buffers to be hidden.
 set virtualedit=block                        " Allow block selection over empty lines.
 if has("gui_running" )
@@ -62,6 +67,7 @@ if has("gui_running" )
 endif
 set scrolloff=4                              " When scrolling, keep the cursor 4 lines from the top/bottom
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
+set display+=lastline                        " Display as much as possible of last line rather than @s
 
 
 
@@ -100,15 +106,20 @@ set spell                                " check spelling by default
 set spelllang=en_us
 set formatoptions=rj                     " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
                                          " j=Where it makes sense, remove a comment leader when joining lines.
-
+set ttimeoutlen=1                        " fixes delay on cursor shape in terminal 
 " }}}1
 "{{{1 General stuff
+
+" Move to next tab
+nnoremap tt :tabNext<CR>
+nnoremap tn :tabnew<CR>
 
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
-" Enter to run last macro
-nnoremap <CR> @@
+" Enter to run last  macro.  Not a good idea. Breaks file opening in quickfix
+" list
+" nnoremap <CR> @@
 
 " Always use minimalist foldtext
 autocmd BufEnter * set foldtext=getline(v:foldstart)
@@ -210,32 +221,39 @@ autocmd BufRead,BufEnter *.dat set filetype=csv
 "{{{2 ctrlp
 " Speed up with gipgrep
 " https://bluz71.github.io/2017/10/26/turbocharge-the-ctrlp-vim-plugin.html
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+" Cant use custom ignore with this
+  " let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
 
-  " So quick that caching is not necessary
-  let g:ctrlp_use_caching = 0
 
-" leader find to fuzzy find from home directory
  
-let g:ctrlp_follow_symlinks = 2 " follow symlinks
-let g:ctrlp_show_hidden = 1 " seach for hidden files/dirs
-let g:ctrlp_clear_cache_on_exit = 0 " save ctrlp chache between sessoins
-let g:ctrlp_max_files = 0 " unlimited cashe
+let g:ctrlp_use_caching = 1          "  Save cache  between searches. Dafault 1
+let g:ctrlp_follow_symlinks = 2      "  follow symlinks. 2 - follow all symlinks indiscriminately.
+let g:ctrlp_show_hidden = 1          "  Search also for hidden files/dirs
+let g:ctrlp_clear_cache_on_exit = 1  "  Default 1
+let g:ctrlp_max_files = 0            "  Unlimited Cashe
+let g:ctrlp_show_hidden = 1          "  include dotfiles in search
 
+" Things to ignore.
 " Don't use ^ in regex here. Deosn't work
 let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v(Applications|Downloads|Library|Trash)$',
+    \ 'dir': '\v(Applications|Downloads|Library|Trash|mmpr)$',
     \ }
 
-" let g:ctrlp_show_hidden = 1 " include dotfiles in search
-
-"{{{ Open non-text files in external program with '!open'
+" Define new function to do different operations depending on filetype.
 " https://github.com/kien/ctrlp.vim/issues/232
-" ÖVERFET!!!!!
 
-function! PdfOpenFunc(action, line)
+" In ctrlp-window
+"   - <CR> will 
+"     - open text files in vim
+"     - open file externally if not a text file
+"     - open docx via pandoc as markdown in vim
+"   - Ctrl-v will insert the path and file
+"     name (useful for attaching files in mutt)   
+
+function! NewOpenFunc(action, line)
+  " Open pdf/sound/image files in external program with '!open'
   if fnamemodify(a:line, ':e') =~?
-      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\)\?$'
+      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\|doc\)\?$'
     " Get the filename
     let filename = fnameescape(fnamemodify(a:line, ':p'))
 
@@ -245,7 +263,6 @@ function! PdfOpenFunc(action, line)
     silent! execute '!open' filename
 
   " Open docx via pandoc
-
   elseif fnamemodify(a:line, ':e') =~?
       \ '^docx\?$'
     " Get the filename
@@ -254,21 +271,31 @@ function! PdfOpenFunc(action, line)
     call ctrlp#exit()
 
     " Open the file
-    silent! execute ' r!pandoc -t markdown -f docx' filename
+    silent! execute 'ene'
+    silent! execute 'r!pandoc -t markdown -f docx' filename
     setlocal ft=markdown
 
+   " ctrl-x to insert filepath in buffer
+   " https://vi.stackexchange.com/questions/8976/is-there-a-way-to-insert-a-path-of-the-file-instead-of-opening-it-with-ctrlp-plu
+   elseif a:action =~ 'v'    
+      " Get the filename
+      let filename = fnameescape(fnamemodify(a:line, ':p'))
+
+      " Close CtrlP
+      call ctrlp#exit()
+
+      " insert the contents of filename into the buffer
+      put =filename
   else
 
-
-
-    " Not a HTML file, simulate pressing <c-o>r to replace current buffer
+    " For textfile, simulate pressing <c-o>r to replace current buffer
     call feedkeys("\<c-o>r")
+    
   endif
 endfunction
 
-let g:ctrlp_open_func = { 'files': 'PdfOpenFunc' }
+let g:ctrlp_open_func = { 'files': 'NewOpenFunc' }
 
-" }}}
 " }}}2
 "{{{2 gundo
 " Soft wrap gundo preview
@@ -308,6 +335,9 @@ let g:vim_markdown_frontmatter = 1
 "}}}1
 "{{{1 Display & Color
 
+" Make the cursor not blink
+set guicursor=a:blinkoff0
+
 " colorscheme solarized
 syntax on
 colorscheme gruvbox " super sexy
@@ -317,7 +347,7 @@ set bg=dark " Dark background
 " Italic comments.
 highlight Comment cterm=italic
 
-" No wiggly line in terminal 
+" No wiggly line in terminal. Use underline instead. 
 if has('terminal')
   hi SpellBad cterm=underline
 endif
@@ -328,15 +358,16 @@ autocmd BufEnter * silent! set cole=0
 "{{{1 Completion
 " Use TAB for completions
 inoremap <Tab> <c-n>
-inoremap <S-Tab> <Tab>
-
+" Shift TAB to inser tab character
+inoremap <S-Tab> <Cv>u0009
 "}}}1
 "{{{1 Leader commands
 
 " open ctrlp fuzzy file finder
-nmap <Leader>f :CtrlP<Space>~/<CR>
-" open netrw
-nmap <Leader>x :Explore<cr>
+nnoremap <Leader>f :CtrlP<Space>~/<CR>
+" open netrw. `-` also goes to parent directory inside netrw
+nnoremap - :Explore<CR>
+nnoremap <Leader>x :Explore<CR>
 " Window command prefix
 nnoremap <Leader>w <C-w>
 " Gundo toggle window
@@ -382,6 +413,7 @@ autocmd Filetype markdown
     \ markdown+implicit_figures+table_captions %
     \ --pdf-engine=xelatex
     \ --bibliography ~/mylatexstuff/bibliotek.bib
+    \ --slide-level 1
     \ -smart -o '%'.pdf
     \ && open '%'.pdf<CR>
 
@@ -423,6 +455,7 @@ function! SweType()
   set keymap=swe-us "Modified keymap. File in .vim/keymap
   set norightleft
   set spelllang=sv
+  set spell
 endfunction
 
 " Switch to English
@@ -431,12 +464,14 @@ function! EngType()
   set keymap=us-altlatin "Modified keymap. File in .vim/keymap
   set norightleft
   set spelllang=en_us
+  set spell
 endfunction
 
 " Switch to Arabic
 function! AraType()
     set keymap=arabic-pc "Modified keymap. File in .vim/keymap
     set rightleft
+    set nospell
 endfunction
 
 "{{{1 LaTeX mappings
@@ -493,9 +528,9 @@ function! MarkdownMaps()
 endfunction
 
 " Folding
-autocmd Filetype markdown call MarkdownLevel()
-autocmd Filetype markdown setlocal foldexpr=MarkdownLevel()  
-autocmd Filetype markdown setlocal foldmethod=expr    
+autocmd Filetype markdown,r call MarkdownLevel()
+autocmd Filetype markdown,r setlocal foldexpr=MarkdownLevel()  
+autocmd Filetype markdown,r setlocal foldmethod=expr    
 
 function! MarkdownLevel()
     if getline(v:lnum) =~ '^# .*$'
@@ -517,6 +552,7 @@ function! MarkdownLevel()
         return ">6"
     endif
     return "=" 
+
 endfunction
 
 " }}}1
@@ -560,6 +596,9 @@ nnoremap Y yg_
 
 " Choose first word in spellinglist
 nnoremap zz 1z=e
+
+" In insert mode, press ZZ to correct previous misspelled word.
+inoremap ZZ <Esc>mz[s1z=e`za
 
 " Command to find and replace repeated word, word duplet or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
@@ -637,6 +676,7 @@ iab teh the
 iab Andras Andreas
 iab ruel rule
 iab ARabic Arabic
+iab ARab Arab
 iab arabic Arabic
 iab widht width
 iab lenght length
@@ -712,7 +752,6 @@ inoremap ''. ''.
 " Don't fold 
 autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
 autocmd BufRead ~/jobb/readingnotes/* call EngType()
-
 " Highligt page refs at end of line
 autocmd BufRead ~/jobb/readingnotes/* syn match Constant " \d\+\(-\{1,2}\d\+\)\?$" containedin=ALL
 

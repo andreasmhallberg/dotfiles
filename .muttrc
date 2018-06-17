@@ -27,8 +27,10 @@ set include # Always include original message in reply. Don't ask.
 set recall=no # Don't ask to recall postponed messages.
 set editor='mvim -v +"call SweType()" +"norm }o"' # Since vanilla Vim does not have all features.
 set smtp_authenticators = 'gssapi:login'
-set sort = reverse-date-received
 
+set sort = reverse-date-received
+# set sort=threads
+# set sort_aux=reverse-last-date-received
 
 # aliases
 # set alias_file= ~/.mutt/aliases
@@ -67,7 +69,9 @@ bind pager j next-line # vim-like
 bind pager k previous-line # vim-like
 bind index,pager g noop # because of next line
 bind index gg first-entry
-bind index,pager gg top
-bind index G group-reply # vim-like
-bind generic,index,pager \Cf next-page # vim-like
-bind generic,index,pager \Cb previous-page # vim-like
+bind pager gg top
+bind index,pager G bottom # vim-like
+bind index,pager \Cf next-page # vim-like
+bind index,pager \Cb previous-page # vim-like
+bind index,pager N search-opposite
+
