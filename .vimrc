@@ -9,6 +9,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'skywind3000/asyncrun.vim'                     " syntax highlighting for CHAT-transcriptions
 Plugin 'klapheke/vim-chat'                     " syntax highlighting for CHAT-transcriptions
 Plugin 'morhetz/gruvbox'                       " colorsheme
 Plugin 'jalvesaq/Nvim-R'                       " Successor of R-vimplugin. Requires tmux.
@@ -16,13 +17,11 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'                  " gc<movement> to comment
 Plugin 'tpope/vim-repeat'                      " make mappings repeatable
 Plugin 'tpope/vim-vinegar'
-" Plugin 'vim-pandoc/vim-pandoc'               " needed for folding
 Plugin 'vim-pandoc/vim-pandoc-syntax'          " good syntax, nested HTML, yaml, etc.
 " Plugin 'vim-scripts/textutil.vim'            " Use pandoc instead.
 Plugin 'chrisbra/csv.vim'                      " use sc-im for ascii stuff. Better.
 Plugin 'sjl/gundo.vim'                         " visual undo tree
 Plugin 'godlygeek/tabular'                     " :Tabular command to align stuff
-" Plugin 'plasticboy/vim-markdown'             " Use vim-pandoc-syntax instead
 Plugin 'lervag/vimtex'                         " tex stuff
 Plugin 'vim-scripts/directionalWindowResizer'  " c-<hjkl> to resize window
 " Plugin 'vim-scripts/LanguageTool'            " Spell and grammar checking. Not very useful in files with markup.
@@ -77,6 +76,8 @@ set display+=lastline                        " Display as much as possible of la
 set statusline=%F  " Full path and file name.
 set statusline+=%m " Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
 set statusline+=%= " Separator between left and right alignmet
+set statusline+=\ 
+set statusline+=\ 
 set statusline+=%l " Line number
 set statusline+=/
 set statusline+=%L " Lines in buffer
@@ -218,11 +219,13 @@ endif
 autocmd BufRead,BufEnter *.csv set filetype=csv
 autocmd BufRead,BufEnter *.dat set filetype=csv
 
+"{{{2 vim-pandox-syntax
+" don't use conceal
+let g:pandoc#syntax#conceal#use = 0
 "{{{2 ctrlp
-" Speed up with gipgrep
+" Speed up with ripgrep
 " https://bluz71.github.io/2017/10/26/turbocharge-the-ctrlp-vim-plugin.html
-" Cant use custom ignore with this
-  " let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+ " let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
 
 
  
@@ -236,7 +239,7 @@ let g:ctrlp_show_hidden = 1          "  include dotfiles in search
 " Things to ignore.
 " Don't use ^ in regex here. Deosn't work
 let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v(Applications|Downloads|Library|Trash|mmpr)$',
+    \ 'dir': '\v(ovrigt|Applications|Downloads|Library|Trash|mmpr)$',
     \ }
 
 " Define new function to do different operations depending on filetype.
@@ -253,7 +256,7 @@ let g:ctrlp_custom_ignore = {
 function! NewOpenFunc(action, line)
   " Open pdf/sound/image files in external program with '!open'
   if fnamemodify(a:line, ':e') =~?
-      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\|doc\)\?$'
+      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\|doc\|docx\)\?$'
     " Get the filename
     let filename = fnameescape(fnamemodify(a:line, ':p'))
 
@@ -263,17 +266,17 @@ function! NewOpenFunc(action, line)
     silent! execute '!open' filename
 
   " Open docx via pandoc
-  elseif fnamemodify(a:line, ':e') =~?
-      \ '^docx\?$'
-    " Get the filename
-    let filename = fnameescape(fnamemodify(a:line, ':p'))
+  " elseif fnamemodify(a:line, ':e') =~?
+  "     \ '^docx\?$'
+  "   " Get the filename
+  "   let filename = fnameescape(fnamemodify(a:line, ':p'))
 
-    call ctrlp#exit()
+  "   call ctrlp#exit()
 
-    " Open the file
-    silent! execute 'ene'
-    silent! execute 'r!pandoc -t markdown -f docx' filename
-    setlocal ft=markdown
+  "   " Open the file
+  "   silent! execute 'ene'
+  "   silent! execute 'r!pandoc -t markdown -f docx' filename
+  "   setlocal ft=markdown
 
    " ctrl-x to insert filepath in buffer
    " https://vi.stackexchange.com/questions/8976/is-there-a-way-to-insert-a-path-of-the-file-instead-of-opening-it-with-ctrlp-plu
@@ -372,54 +375,73 @@ nnoremap <Leader>x :Explore<CR>
 nnoremap <Leader>w <C-w>
 " Gundo toggle window
 nnoremap <Leader>u :GundoToggle<CR>
-" Execute last command
-nnoremap <Leader>c :<Up><CR>
 " Next item in location list window
 nnoremap <Leader>nn :lne<CR>
 " open vimrc
 nnoremap <Leader>m :e $MYVIMRC<CR>
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
+" Open quickfix window and go pack to previous window (useful for pandoc compilation)
+nnoremap <Leader>co :copen<CR><c-w>p
+" Close quickfix window
+nnoremap <Leader>cc :cclose<CR><c-w>p
 
-
-"{{{2 Markdown compilation  
+"{{{2 Markdown compilation  (with asyncrun plugin)
 
 "  to tex
 autocmd Filetype markdown 
-            \ nnoremap <Leader>pt :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % --pdf-engine=xelatex --biblatex --bibliography ~/mylatexstuff/bibliotek.bib -s -o '%'.tex<CR>
+            \ nnoremap <Leader>pt :w<CR>
+            \ :AsyncRun pandoc
+            \ -f markdown+implicit_figures+table_captions %
+            \ --pdf-engine=xelatex
+            \ --biblatex
+            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ -s -o '%'.tex<CR>
 
 " to txt
 autocmd Filetype markdown 
-            \ nnoremap <Leader>px :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions %  --bibliography ~/mylatexstuff/bibliotek.bib -Ss -o '%'.txt<CR>
+            \ nnoremap <Leader>px
+            \ :w<CR>
+            \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions %  --bibliography ~/mylatexstuff/bibliotek.bib -Ss -o '%'.txt<CR>
 
-"  to pdf  
+"  to pdf 
 autocmd Filetype markdown 
-            \ nnoremap <Leader>pp :w<CR>:cd %:p:h<CR>:!pandoc -f
+            \ nnoremap <Leader>pp 
+            \ :w<CR>
+            \ :AsyncRun pandoc -f
             \ markdown+implicit_figures+table_captions+multiline_tables %
             \ --pdf-engine=xelatex
             \ --columns=200
             \ -N
             \ --bibliography ~/mylatexstuff/bibliotek.bib
-            \ -smar -o '%'.pdf 
-            \ && open '%'.pdf<CR>
+            \ -smar -o '%'.pdf<CR>
+
+" run biber
+autocmd Filetype markdown
+  \ nnoremap <Leader>b :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
 
 "  to docx. -smart needed for parsing of daises in non TeX.
 autocmd Filetype markdown
-    \ nnoremap <Leader>pd :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+    \ nnoremap <Leader>pd
+    \ :w<CR>
+    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 "  to beamer 
 autocmd Filetype markdown
-    \ nnoremap <Leader>pb :w<CR>:!pandoc -t beamer -f
+    \ nnoremap <Leader>pb 
+    \ :w<CR>
+    \ :AsyncRun pandoc -t beamer -f
     \ markdown+implicit_figures+table_captions %
     \ --pdf-engine=xelatex
     \ --bibliography ~/mylatexstuff/bibliotek.bib
     \ --slide-level 1
-    \ -smart -o '%'.pdf
-    \ && open '%'.pdf<CR>
+    \ -smart -o '%'.pdf<CR>
 
 "  to html. -S needed for parsing of daises in non TeX.
 autocmd Filetype markdown
-    \ nnoremap <Leader>ph :w<CR>:cd %:p:h<CR>:!pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+    \ nnoremap <Leader>ph
+    \ :w<CR>
+    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
 
 
 
@@ -483,15 +505,15 @@ function! LaTeXmaps()
 
   " Input yanked rcode in comment.
   " Requires vim-latex-textobj plugin.
-  nnoremap <Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
+  nnoremap <buffer><Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
 
   " get documentation for package under cursor
-  nnoremap <leader>d :!texdoc . <cword><cr>
+  nnoremap <buffer><leader>d :!texdoc . <cword><cr>
 
   " Key mapping to Tabularize LaTeX tabular
   " Tabularize by & unless escaped
   " Requires vimtex for `vie` operation  
-  map <Leader>t vip:Tabularize /\\\@<!&<CR>
+  map <buffer><Leader>t vip:Tabularize /\\\@<!&<CR>
 
   " Tabularize gloss (by spaces)
   " map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
@@ -519,11 +541,11 @@ function! MarkdownMaps()
   set commentstring=<!--%s-->
 
   " Let Tabularize do pipe tables 
-  nnoremap <Leader>t vip:Tabularize /\|<CR>
+  nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
 
   " Move section wise
-  nnoremap ]] /^#<CR>
-  nnoremap [[ ?^#<CR>
+  nnoremap <buffer>]] /^#<CR>
+  nnoremap <buffer>[[ ?^#<CR>
 
 endfunction
 
@@ -597,9 +619,6 @@ nnoremap Y yg_
 " Choose first word in spellinglist
 nnoremap zz 1z=e
 
-" In insert mode, press ZZ to correct previous misspelled word.
-inoremap ZZ <Esc>mz[s1z=e`za
-
 " Command to find and replace repeated word, word duplet or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
 
@@ -640,6 +659,7 @@ inoremap <A->> 〉
 
 " Indent without leaving insert mode
 inoremap >> <ESC>me>>`ella
+inoremap << <ESC>me<<`ehha
 
 " Like numpad
 nnoremap <A-j> 1
@@ -745,7 +765,6 @@ inoremap '', '',
 inoremap ''. ''.
 
 
-
 "{{{1 Readingnotes
 " https://github.com/andreasmhallberg/readingnotes
 
@@ -754,6 +773,9 @@ autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
 autocmd BufRead ~/jobb/readingnotes/* call EngType()
 " Highligt page refs at end of line
 autocmd BufRead ~/jobb/readingnotes/* syn match Constant " \d\+\(-\{1,2}\d\+\)\?$" containedin=ALL
+autocmd BufRead ~/jobb/readingnotes/* nnoremap <Leader>v
+   \ maggW"ayiw/\\d\\d\\d\\d<cr>"byiw`a
+   \ :CtrlP<Space>~/jobb/articuli/<CR><C-R>a<C-R>b<CR> 
 
 " Filter location list to get one hit per file 
 " https://vi.stackexchange.com/a/15171/3316

@@ -15,7 +15,11 @@ alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
-# alias vim='mvim -v'                                     # Because MacVim has better display of Arabic chars.
+
+# MacVim has better display of Arabic characters, also when run in ITerm.
+# Fuzzy file finding with ctrl-p is much slower from inside ITerm than in MacVim.
+# There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
+# alias vim='mvim -v'                                   # Because MacVim has better display of Arabic chars.
 alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 
 # cd to cd and ls
