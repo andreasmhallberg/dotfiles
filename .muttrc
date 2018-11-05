@@ -70,8 +70,9 @@ bind pager k previous-line # vim-like
 bind index,pager g noop # because of next line
 bind index gg first-entry
 bind pager gg top
-bind index,pager G bottom # vim-like
+bind index U toggle-new
+bind pager G bottom # vim-like
+bind index G group-reply # vim-like
 bind index,pager \Cf next-page # vim-like
 bind index,pager \Cb previous-page # vim-like
 bind index,pager N search-opposite
-

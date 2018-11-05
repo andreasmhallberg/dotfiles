@@ -9,11 +9,11 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'skywind3000/asyncrun.vim'                     " syntax highlighting for CHAT-transcriptions
+Plugin 'skywind3000/asyncrun.vim'              " syntax highlighting for CHAT-transcriptions
 Plugin 'klapheke/vim-chat'                     " syntax highlighting for CHAT-transcriptions
 Plugin 'morhetz/gruvbox'                       " colorsheme
 Plugin 'jalvesaq/Nvim-R'                       " Successor of R-vimplugin. Requires tmux.
-Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'                    " Useful mappings for netrw
 Plugin 'tpope/vim-commentary'                  " gc<movement> to comment
 Plugin 'tpope/vim-repeat'                      " make mappings repeatable
 Plugin 'tpope/vim-vinegar'
@@ -27,9 +27,8 @@ Plugin 'vim-scripts/directionalWindowResizer'  " c-<hjkl> to resize window
 " Plugin 'vim-scripts/LanguageTool'            " Spell and grammar checking. Not very useful in files with markup.
 Plugin 'qpkorr/vim-renamer'                    " Batch rename files vim-style.
 Plugin 'kien/ctrlp.vim'                        " Fuzzy file finder.
-Plugin 'vim-scripts/YankRing.vim'              " after ctrlp to remap <c-p>
+Plugin 'vim-scripts/YankRing.vim'              " After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focus
-Plugin 'skywind3000/vim-keysound'
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -43,8 +42,7 @@ set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                    " Dir for backup files
 set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keys wrap to pre/next line.
 set path+=**                                 " make file-based commands search in subfolders
-" set complete +=kspell                      " Complete from dictionary when spell is on.
-                                             " Mostly annoying. Technical words will be
+" set complete +=kspell                      " Complete from dictionary when spell is on. Mostly annoying. Technical words will be
                                              " written more than once and that way added
                                              " to completion list.
 set belloff=all                              " turn off all warnings bells
@@ -90,24 +88,23 @@ set guioptions-=r                        " Remove left and right scrollbar
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
-
-set number                               " Display line numbers
-set foldcolumn=0                         " No columns to show folds
-set guifont=Source\ Code\ Pro\ Light:h16
-set linespace=5 " More space between lines. Default=0
-set cpoptions=|                          " | at end of changed (<c>) object
-set linebreak                            " Soft-wrap between words
+set number                                "  Display line numbers
+set foldcolumn=0                          "  No columns to show folds
+set guifont=Source\ Code\ Pro\ Light:h14
+set linespace=5                           "  More space between lines. Default=0
+set cpoptions=|                           "  | at end of changed (<c>) object
+set linebreak                             "  Soft-wrap between words
 set autoindent
-set listchars=tab:▸\ ,eol:¬,nbsp:_       " Representation of invisible characters with set list
-set splitright                           " Open vsplit window to the right
-set shortmess+=A                         " No swapfile exists warning
-set expandtab                            " tab key inserts spaces. Needed for indentation with <
-set shiftwidth=2                         " Length of tab-character for indention 4 spaces for markdown syntax
-set spell                                " check spelling by default
+set listchars=tab:▸\ ,eol:¬,nbsp:_        "  Representation of invisible characters with set list
+set splitright                            "  Open vsplit window to the right
+set shortmess+=A                          "  No swapfile exists warning
+set expandtab                             "  tab key inserts spaces. Needed for indentation with <
+set shiftwidth=2                          "  Length of tab-character for indention 4 spaces for markdown syntax
+set spell                                 "  check spelling by default
 set spelllang=en_us
-set formatoptions=rj                     " r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
-                                         " j=Where it makes sense, remove a comment leader when joining lines.
-set ttimeoutlen=1                        " fixes delay on cursor shape in terminal 
+set formatoptions=rj                      "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
+                                          "  j=Where it makes sense, remove a comment leader when joining lines.
+set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
 " }}}1
 "{{{1 General stuff
 
@@ -146,6 +143,8 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
+"{{{ mediummode
+  let g:mediummode_motion_keys = ['gj','gk','h', 'j', 'k', 'l', '<Left>', '<Right>', '<Up>', '<Down>']
 "{{{2 vimtex 
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 
@@ -193,6 +192,7 @@ let g:DiffModeSync = 1
 " autocmd InsertLeave * :TDCha
 "{{{2 netrw
 let g:netrw_banner=0 " supress banner
+let g:netrw_sort_options = "i" " sort caseinsensitive
 "{{{2 diminiactive
 " The following drastically improves dimming over long wrapped lines.
 " https://github.com/blueyed/vim-diminactive/issues/2
@@ -219,6 +219,12 @@ endif
 autocmd BufRead,BufEnter *.csv set filetype=csv
 autocmd BufRead,BufEnter *.dat set filetype=csv
 
+" Highlight column under cursor. Is not effected in insert mode
+let g:csv_highlight_column = 'y'
+
+" Don't conceal delimiter
+let g:csv_no_conceal = 1
+
 "{{{2 vim-pandox-syntax
 " don't use conceal
 let g:pandoc#syntax#conceal#use = 0
@@ -232,14 +238,14 @@ let g:pandoc#syntax#conceal#use = 0
 let g:ctrlp_use_caching = 1          "  Save cache  between searches. Dafault 1
 let g:ctrlp_follow_symlinks = 2      "  follow symlinks. 2 - follow all symlinks indiscriminately.
 let g:ctrlp_show_hidden = 1          "  Search also for hidden files/dirs
-let g:ctrlp_clear_cache_on_exit = 1  "  Default 1
+let g:ctrlp_clear_cache_on_exit = 0  "  Default 1
 let g:ctrlp_max_files = 0            "  Unlimited Cashe
-let g:ctrlp_show_hidden = 1          "  include dotfiles in search
+let g:ctrlp_show_hidden = 1          "  Include dotfiles in search
 
 " Things to ignore.
 " Don't use ^ in regex here. Deosn't work
 let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v(ovrigt|Applications|Downloads|Library|Trash|mmpr)$',
+    \ 'dir': '\v(Applications|Downloads|Library|Trash|mmpr)$',
     \ }
 
 " Define new function to do different operations depending on filetype.
@@ -250,7 +256,7 @@ let g:ctrlp_custom_ignore = {
 "     - open text files in vim
 "     - open file externally if not a text file
 "     - open docx via pandoc as markdown in vim
-"   - Ctrl-v will insert the path and file
+"   - Ctrl-x will insert the path and file
 "     name (useful for attaching files in mutt)   
 
 function! NewOpenFunc(action, line)
@@ -359,17 +365,16 @@ endif
 autocmd BufEnter * silent! set cole=0
 "}}}1
 "{{{1 Completion
-" Use TAB for completions
-inoremap <Tab> <c-n>
-" Shift TAB to inser tab character
-inoremap <S-Tab> <Cv>u0009
+  " Use TAB for completions
+  inoremap <Tab> <c-n>
+  " Shift TAB to inser tab character
+  inoremap <S-Tab> <Cv>u0009
 "}}}1
 "{{{1 Leader commands
 
 " open ctrlp fuzzy file finder
 nnoremap <Leader>f :CtrlP<Space>~/<CR>
 " open netrw. `-` also goes to parent directory inside netrw
-nnoremap - :Explore<CR>
 nnoremap <Leader>x :Explore<CR>
 " Window command prefix
 nnoremap <Leader>w <C-w>
@@ -385,6 +390,8 @@ nnoremap <Leader>r :set wrap!<CR>
 nnoremap <Leader>co :copen<CR><c-w>p
 " Close quickfix window
 nnoremap <Leader>cc :cclose<CR><c-w>p
+" Open compiled pdf of this file
+nnoremap <silent> <Leader>po :!open '%'*.pdf<CR>
 
 "{{{2 Markdown compilation  (with asyncrun plugin)
 
@@ -412,7 +419,6 @@ autocmd Filetype markdown
             \ markdown+implicit_figures+table_captions+multiline_tables %
             \ --pdf-engine=xelatex
             \ --columns=200
-            \ -N
             \ --bibliography ~/mylatexstuff/bibliotek.bib
             \ -smar -o '%'.pdf<CR>
 
@@ -435,27 +441,31 @@ autocmd Filetype markdown
     \ --pdf-engine=xelatex
     \ --bibliography ~/mylatexstuff/bibliotek.bib
     \ --slide-level 1
-    \ -smart -o '%'.pdf<CR>
+    \ -smart
+    \ -o '%'.pdf<CR>
 
 "  to html. -S needed for parsing of daises in non TeX.
 autocmd Filetype markdown
     \ nnoremap <Leader>ph
     \ :w<CR>
-    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions+smart % --toc --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
 
 
 
 "{{{2 TeX compilation
 " run xelatex and rename output to .tex.pdf 
 autocmd Filetype tex
-  \ nnoremap <Leader>pp  :w<CR>:cd %:p:h<CR>:! xelatex --aux-directory=~/latexaux --synctex=1 --src-specials %
-  \ && mv '%<'.pdf '%<'.tex.pdf
-  \ && open '%'.pdf<CR> 
+  \ nnoremap <Leader>pp :w<CR>
+  \ :AsyncRun 
+  \ xelatex --aux-directory=~/temp --synctex=1 --src-specials %
+  \ && mv '%<'.pdf '%'.pdf<CR>
 
 " Bibtex run
 " %< "gives current filename without extension
 autocmd Filetype tex
-  \ nnoremap <Leader>b :w<CR>:cd %:p:h<CR>:! biber %<<CR>
+  \ nnoremap <Leader>b :w<CR>
+  \ :AsyncRun biber %<<CR>
+
 " OBS!!! Run
 "      rm -rf `biber --cache`
 " to fix bug crash bug.
@@ -496,7 +506,12 @@ function! AraType()
     set nospell
 endfunction
 
-"{{{1 LaTeX mappings
+
+"{{{1 csv mappings and functions
+"
+autocmd Filetype csv setlocal cursorline
+
+"{{{1 tex mappings and functions
 " Mappings only used in .tex files 
 
 autocmd Filetype tex call LaTeXmaps()
@@ -513,7 +528,7 @@ function! LaTeXmaps()
   " Key mapping to Tabularize LaTeX tabular
   " Tabularize by & unless escaped
   " Requires vimtex for `vie` operation  
-  map <buffer><Leader>t vip:Tabularize /\\\@<!&<CR>
+  map <buffer><Leader>t vip:Tabularize /&<CR>
 
   " Tabularize gloss (by spaces)
   " map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
@@ -580,6 +595,10 @@ endfunction
 " }}}1
 "{{{1 Movement & Editing
 
+" {{{2 insert date in format yymmdd
+
+nnoremap <Leader>d :pu =strftime('%y%m%d')<CR>kJ
+
 " {{{2 Calculate equation
 " http://vim.wikia.com/wiki/VimTip216
 
@@ -617,7 +636,11 @@ endfunction
 nnoremap Y yg_
 
 " Choose first word in spellinglist
-nnoremap zz 1z=e
+nnoremap zz <esc>mz[s1z=e`z
+
+" Move between windows horizontaly
+nnoremap HH <C-W>h
+nnoremap LL <C-W>l
 
 " Command to find and replace repeated word, word duplet or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
@@ -632,9 +655,6 @@ vnoremap k gk
 vnoremap j gj
 
 
-" Move to win horizontally
-nnoremap HH <C-w>h
-nnoremap LL <C-w>l
 
 " Set undo points at end of sentence.
 inoremap . .<C-g>u
@@ -702,7 +722,7 @@ iab widht width
 iab lenght length
 iab fo of
 iab ot to
-
+iab whcih which
 " Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
 " imap <BS><BS> <NOP> " To learn the above
