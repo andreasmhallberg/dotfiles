@@ -37,8 +37,7 @@ set sort = reverse-date-received
 set sort_alias= alias
 set reverse_alias=yes
 # source $alias_file
-source ~/.mutt/aliases.jobb
-source ~/.mutt/aliases.privat
+source ~/.mutt/aliases
 
 
 # html rendering
@@ -71,8 +70,13 @@ bind index,pager g noop # because of next line
 bind index gg first-entry
 bind pager gg top
 bind index U toggle-new
+bind index D delete-message # netrw-like
 bind pager G bottom # vim-like
-bind index G group-reply # vim-like
+bind index G group-reply
 bind index,pager \Cf next-page # vim-like
 bind index,pager \Cb previous-page # vim-like
-bind index,pager N search-opposite
+bind index,pager N search-opposite # vim-like
+
+# Convert mail written in markdown to html before sending
+macro compose H "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=utf-8\n"
+set wait_key=no

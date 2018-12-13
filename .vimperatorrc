@@ -7,3 +7,5 @@ highlight HintElem color: black;
 
 " no noise
 set visualbell
+
+set editor=vim

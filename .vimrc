@@ -9,30 +9,31 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'skywind3000/asyncrun.vim'              " syntax highlighting for CHAT-transcriptions
-Plugin 'klapheke/vim-chat'                     " syntax highlighting for CHAT-transcriptions
-Plugin 'morhetz/gruvbox'                       " colorsheme
-Plugin 'jalvesaq/Nvim-R'                       " Successor of R-vimplugin. Requires tmux.
-Plugin 'tpope/vim-surround'                    " Useful mappings for netrw
-Plugin 'tpope/vim-commentary'                  " gc<movement> to comment
-Plugin 'tpope/vim-repeat'                      " make mappings repeatable
+Plugin 'milkypostman/vim-togglelist'             "  toggle quickfix and location list on and off. \q and \l
+Plugin 'muttaliasescomplete.vim'                 "  autocompletion of mutts addressbook. ~/.mutt/aliases as default
+Plugin 'junegunn/goyo.vim'
+Plugin 'skywind3000/asyncrun.vim'                "  syntax highlighting for CHAT-transcriptions
+Plugin 'klapheke/vim-chat'                       "  syntax highlighting for CHAT-transcriptions
+Plugin 'morhetz/gruvbox'                         "  colorsheme
+Plugin 'jalvesaq/Nvim-R'                         "  Successor of R-vimplugin. Requires tmux.
+Plugin 'tpope/vim-surround'                      "  Useful mappings for netrw
+Plugin 'tpope/vim-commentary'                    "  gc<movement> to comment
+Plugin 'tpope/vim-repeat'                        "  make mappings repeatable
 Plugin 'tpope/vim-vinegar'
-Plugin 'vim-pandoc/vim-pandoc-syntax'          " good syntax, nested HTML, yaml, etc.
-" Plugin 'vim-scripts/textutil.vim'            " Use pandoc instead.
-Plugin 'chrisbra/csv.vim'                      " use sc-im for ascii stuff. Better.
-Plugin 'sjl/gundo.vim'                         " visual undo tree
-Plugin 'godlygeek/tabular'                     " :Tabular command to align stuff
-Plugin 'lervag/vimtex'                         " tex stuff
-Plugin 'vim-scripts/directionalWindowResizer'  " c-<hjkl> to resize window
-" Plugin 'vim-scripts/LanguageTool'            " Spell and grammar checking. Not very useful in files with markup.
-Plugin 'qpkorr/vim-renamer'                    " Batch rename files vim-style.
-Plugin 'kien/ctrlp.vim'                        " Fuzzy file finder.
-Plugin 'vim-scripts/YankRing.vim'              " After ctrlp to remap <c-p>
-Plugin 'blueyed/vim-diminactive'               " Dims window that is not in focus
+Plugin 'vim-pandoc/vim-pandoc-syntax'            "  good syntax, nested HTML, yaml, etc.
+Plugin 'chrisbra/csv.vim'                        "  use sc-im for ascii stuff. Better.
+Plugin 'sjl/gundo.vim'                           "  visual undo tree
+Plugin 'godlygeek/tabular'                       "  :Tabular command to align stuff
+Plugin 'lervag/vimtex'                           "  tex stuff
+" Plugin 'vim-scripts/directionalWindowResizer'  "  c-<hjkl> to resize window
+" Plugin 'vim-scripts/LanguageTool'              "  Spell and grammar checking. Not very useful in files with markup.
+Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style.
+Plugin 'kien/ctrlp.vim'                          "  Fuzzy file finder.
+Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
+Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
-
 "{{{1 Settings
 
 set clipboard=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
@@ -42,11 +43,11 @@ set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                    " Dir for backup files
 set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keys wrap to pre/next line.
 set path+=**                                 " make file-based commands search in subfolders
-" set complete +=kspell                      " Complete from dictionary when spell is on. Mostly annoying. Technical words will be
-                                             " written more than once and that way added
-                                             " to completion list.
+" set complete +=kspell                      " Complete from dictionary when spell is on. Mostly annoying. Technical words will be written more than once and that way added to completion list.
 set belloff=all                              " turn off all warnings bells
 set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
+set spell                                 "  check spelling by default
+set spelllang=en_us
 set nowrapscan                               " No wraparound end of file in normal searches
 set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
@@ -100,17 +101,42 @@ set splitright                            "  Open vsplit window to the right
 set shortmess+=A                          "  No swapfile exists warning
 set expandtab                             "  tab key inserts spaces. Needed for indentation with <
 set shiftwidth=2                          "  Length of tab-character for indention 4 spaces for markdown syntax
-set spell                                 "  check spelling by default
-set spelllang=en_us
 set formatoptions=rj                      "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
                                           "  j=Where it makes sense, remove a comment leader when joining lines.
 set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
 " }}}1
-"{{{1 General stuff
+"{{{1 General mappings
 
-" Move to next tab
-nnoremap tt :tabNext<CR>
+" Resize split
+nnoremap <Up> <c-w>+
+nnoremap <Down> <c-w>-
+nnoremap <Left> <c-w><
+nnoremap <Right> <c-w>>
+
+" Never go into xmode
+nnoremap Q <NOP>
+
+" Enlarge split vertically
+nnoremap + <C-w>+=
+
+" Go directly to bash
+nnoremap ! :!
+
+" gt go to next tab
 nnoremap tn :tabnew<CR>
+
+"{{{1 General stuff (passive)
+
+
+
+" Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
+autocmd VimResized * :wincmd =
+
+" Move between windows horizontaly
+" nnoremap HH <C-W>h
+" nnoremap LL <C-W>l
+
+
 
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
@@ -143,8 +169,6 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
-"{{{ mediummode
-  let g:mediummode_motion_keys = ['gj','gk','h', 'j', 'k', 'l', '<Left>', '<Right>', '<Up>', '<Down>']
 "{{{2 vimtex 
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 
@@ -220,7 +244,7 @@ autocmd BufRead,BufEnter *.csv set filetype=csv
 autocmd BufRead,BufEnter *.dat set filetype=csv
 
 " Highlight column under cursor. Is not effected in insert mode
-let g:csv_highlight_column = 'y'
+let g:csv_highlight_column = 'n'
 
 " Don't conceal delimiter
 let g:csv_no_conceal = 1
@@ -325,6 +349,7 @@ augroup end
 " Add .bib to completion
  let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
  let g:pandoc#completion#bib#mode = 'fallback'
+
 "{{{2 vim-markdown
 " no mappings. We only want folding
 let g:vim_markdown_no_default_key_mappings = 1
@@ -364,14 +389,10 @@ endif
 " Override conceal applied by varies packages. No pseudo WYSYWYG here!
 autocmd BufEnter * silent! set cole=0
 "}}}1
-"{{{1 Completion
-  " Use TAB for completions
-  inoremap <Tab> <c-n>
-  " Shift TAB to inser tab character
-  inoremap <S-Tab> <Cv>u0009
-"}}}1
 "{{{1 Leader commands
 
+" insert date in format yymmdd
+nnoremap <Leader>d :pu =strftime('%y%m%d')<CR>kJ
 " open ctrlp fuzzy file finder
 nnoremap <Leader>f :CtrlP<Space>~/<CR>
 " open netrw. `-` also goes to parent directory inside netrw
@@ -390,41 +411,62 @@ nnoremap <Leader>r :set wrap!<CR>
 nnoremap <Leader>co :copen<CR><c-w>p
 " Close quickfix window
 nnoremap <Leader>cc :cclose<CR><c-w>p
-" Open compiled pdf of this file
-nnoremap <silent> <Leader>po :!open '%'*.pdf<CR>
+" Close window
+nnoremap <Leader>c :q<cr>
+" Open compiled pdf of compiled from this file
+nnoremap <Leader>po :!open '%'*.pdf<CR>
 
 "{{{2 Markdown compilation  (with asyncrun plugin)
 
 "  to tex
 autocmd Filetype markdown 
-            \ nnoremap <Leader>pt :w<CR>
+            \ nnoremap <buffer> <Leader>pt :w<CR>
             \ :AsyncRun pandoc
             \ -f markdown+implicit_figures+table_captions %
             \ --pdf-engine=xelatex
             \ --biblatex
             \ --bibliography ~/mylatexstuff/bibliotek.bib
-            \ -s -o '%'.tex<CR>
+            \ --wrap=none
+            \ -smart 
+            \ -o '%'.tex<CR>
 
 " to txt
 autocmd Filetype markdown 
-            \ nnoremap <Leader>px
+            \ nnoremap <buffer> <Leader>px
             \ :w<CR>
-            \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions %  --bibliography ~/mylatexstuff/bibliotek.bib -Ss -o '%'.txt<CR>
+            \ :AsyncRun pandoc
+            \ -f markdown+implicit_figures+table_captions %
+            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ -smart
+            \ -o '%'.txt<CR>
 
 "  to pdf 
 autocmd Filetype markdown 
             \ nnoremap <Leader>pp 
             \ :w<CR>
-            \ :AsyncRun pandoc -f
+            \ :AsyncRun pandoc '%' -f
             \ markdown+implicit_figures+table_captions+multiline_tables %
             \ --pdf-engine=xelatex
             \ --columns=200
             \ --bibliography ~/mylatexstuff/bibliotek.bib
-            \ -smar -o '%'.pdf<CR>
+            \ -smart -o '%'.pdf<CR>
+
+" to pdf with numvers 
+autocmd Filetype markdown 
+            \ nnoremap <Leader>ppn 
+            \ :w<CR>
+            \ :AsyncRun pandoc -f
+            \ markdown+implicit_figures+table_captions+multiline_tables %
+            \ --pdf-engine=xelatex
+            \ --columns=200
+            \ -N
+            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ -smart -o '%'.pdf<CR>
+
 
 " run biber
 autocmd Filetype markdown
-  \ nnoremap <Leader>b :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
+  \ nnoremap <buffer> <Leader>b :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
 
 "  to docx. -smart needed for parsing of daises in non TeX.
 autocmd Filetype markdown
@@ -434,7 +476,7 @@ autocmd Filetype markdown
 
 "  to beamer 
 autocmd Filetype markdown
-    \ nnoremap <Leader>pb 
+    \ nnoremap <buffer> <Leader>pb 
     \ :w<CR>
     \ :AsyncRun pandoc -t beamer -f
     \ markdown+implicit_figures+table_captions %
@@ -446,16 +488,16 @@ autocmd Filetype markdown
 
 "  to html. -S needed for parsing of daises in non TeX.
 autocmd Filetype markdown
-    \ nnoremap <Leader>ph
+    \ nnoremap <buffer> <Leader>ph
     \ :w<CR>
-    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions+smart % --toc --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable % --toc --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
 
 
 
 "{{{2 TeX compilation
 " run xelatex and rename output to .tex.pdf 
 autocmd Filetype tex
-  \ nnoremap <Leader>pp :w<CR>
+  \ nnoremap <buffer> <Leader>pp :w<CR>
   \ :AsyncRun 
   \ xelatex --aux-directory=~/temp --synctex=1 --src-specials %
   \ && mv '%<'.pdf '%'.pdf<CR>
@@ -514,26 +556,20 @@ autocmd Filetype csv setlocal cursorline
 "{{{1 tex mappings and functions
 " Mappings only used in .tex files 
 
-autocmd Filetype tex call LaTeXmaps()
-
-function! LaTeXmaps()
-
+augroup LaTeXMaps
+  autocmd!
   " Input yanked rcode in comment.
   " Requires vim-latex-textobj plugin.
-  nnoremap <buffer><Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
-
-  " get documentation for package under cursor
-  nnoremap <buffer><leader>d :!texdoc . <cword><cr>
-
+  autocmd Filetype tex nnoremap <buffer><Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
   " Key mapping to Tabularize LaTeX tabular
   " Tabularize by & unless escaped
   " Requires vimtex for `vie` operation  
-  map <buffer><Leader>t vip:Tabularize /&<CR>
-
+  autocmd Filetype tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
   " Tabularize gloss (by spaces)
   " map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
-
-endfunction
+  " to autocomplete reference labels 
+  autocmd Filetype tex setlocal iskeyword+=:
+augroup end
 
 " }}1
 "{{{1 Markdown mappings and function
@@ -542,27 +578,33 @@ endfunction
 
 " Clearly highlight LaTeX if-stantements for use in documents with multiple
 " output versions. 
-autocmd Filetype markdown syn match Underlined "\v^\\(if\S+|else|fi)$"
-autocmd Filetype markdown syn match Statement "\\[a-zA-Z]\+"
-autocmd Filetype markdown syn match Constant "`[^`]\{-}`"
+
+augroup MarkdownSyntaxH
+  autocmd!
+  autocmd Filetype markdown syn match Statement "\\[a-zA-Z]\+"
+  autocmd Filetype markdown syn match Constant "`[^`]\{-}`"
+   " put this last to overried above 
+  autocmd Filetype markdown syn match Underlined "\v^\\(if\S+|else|fi)>"
+augroup END
+  
 
 " Mappings
-autocmd Filetype markdown call MarkdownMaps()
+" autocmd Filetype markdown call MarkdownMaps()
 
-function! MarkdownMaps()
-
-  " Do comments in Markdown as suggested here http://stackoverflow.com/a/20885980/3210474
-  " No comment in HTML or TeX output.
-  set commentstring=<!--%s-->
-
+augroup MarkdownMaps 
+  autocmd!
+  autocmd Filetype markdown setlocal commentstring=<!--%s-->
   " Let Tabularize do pipe tables 
-  nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
-
+  autocmd Filetype markdown nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
   " Move section wise
-  nnoremap <buffer>]] /^#<CR>
-  nnoremap <buffer>[[ ?^#<CR>
+  autocmd Filetype markdown nnoremap <buffer>]] /^#<CR>
+  autocmd Filetype markdown nnoremap <buffer>[[ ?^#<CR>
+  " surrounds (with surround plugin)
+  autocmd Filetype markdown nnoremap <buffer><Leader>8 ysiW*
+  autocmd Filetype markdown nnoremap <buffer><Leader>` ysiW`
+  autocmd Filetype markdown nnoremap <buffer><Leader>' ysiW'
+augroup end
 
-endfunction
 
 " Folding
 autocmd Filetype markdown,r call MarkdownLevel()
@@ -589,48 +631,28 @@ function! MarkdownLevel()
         return ">6"
     endif
     return "=" 
-
 endfunction
 
 " }}}1
+"{{{ Command line maopings
+cnoremap jj <c-w>
 "{{{1 Movement & Editing
 
-" {{{2 insert date in format yymmdd
+" {{{2 Completion
+  " Use TAB for completions
+  inoremap <Tab> <c-n>
+  " Shift TAB to inser tab character
+  inoremap <S-Tab> <Cv>u0009
+  " CTRL-f to complete file path
+  inoremap <C-f> <c-x><c-f>
 
-nnoremap <Leader>d :pu =strftime('%y%m%d')<CR>kJ
+"}}}1
 
-" {{{2 Calculate equation
-" http://vim.wikia.com/wiki/VimTip216
-
-vnoremap <Leader>bc "ey:call CalcBC()<CR>
-function! CalcBC()
-  let has_equal = 0
-  " remove newlines and trailing spaces
-  let @e = substitute (@e, "\n", "", "g")
-  let @e = substitute (@e, '\s*$', "", "g")
-  " if we end with an equal, strip, and remember for output
-  if @e =~ "=$"
-    let @e = substitute (@e, '=$', "", "")
-    let has_equal = 1
-  endif
-  " sub common func names for bc equivalent
-  let @e = substitute (@e, '\csin\s*(', "s (", "")
-  let @e = substitute (@e, '\ccos\s*(', "c (", "")
-  let @e = substitute (@e, '\catan\s*(', "a (", "")
-  let @e = substitute (@e, "\cln\s*(", "l (", "")
-  " escape chars for shell
-  let @e = escape (@e, '*()')
-  " run bc, strip newline
-  let answer = substitute (system ("echo " . @e . " \| bc -l"), "\n", "", "")
-  " append answer or echo
-  if has_equal == 1
-    normal `>
-    exec "normal a" . answer
-  else
-    echo "answer = " . answer
-  endif
-endfunction
-" }}}2
+" move around windows
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
 
 " Make Y behave like D and C
 nnoremap Y yg_
@@ -638,9 +660,6 @@ nnoremap Y yg_
 " Choose first word in spellinglist
 nnoremap zz <esc>mz[s1z=e`z
 
-" Move between windows horizontaly
-nnoremap HH <C-W>h
-nnoremap LL <C-W>l
 
 " Command to find and replace repeated word, word duplet or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
@@ -654,8 +673,6 @@ nnoremap j gj
 vnoremap k gk
 vnoremap j gj
 
-
-
 " Set undo points at end of sentence.
 inoremap . .<C-g>u
 inoremap ! !<C-g>u
@@ -663,13 +680,13 @@ inoremap ? ?<C-g>u
 inoremap : :<C-g>u
 inoremap ; ;<C-g>u
 
+" Redraw syntax highlight
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 "{{{2 CHARACTER INPUT
 
 " increment numbers
-noremap + <c-a>
-noremap - <c-x>
+noremap - :Ex<cr>
 
 " Angular brackets
 "〈 U+2329
@@ -711,18 +728,20 @@ inoremap ¬ 0
 nnoremap <Space> i<Space><ESC>
 
 " Abbreviations for common misspellings because I'm stupid.
-iab tow two
-iab teh the
-iab Andras Andreas
-iab ruel rule
-iab ARabic Arabic
 iab ARab Arab
+iab ARabic Arabic
+iab Andras Andreas
 iab arabic Arabic
-iab widht width
-iab lenght length
 iab fo of
+iab lenght length
+iab levles levels
 iab ot to
+iab ruel rule
+iab teh the
+iab tow two
 iab whcih which
+iab widht width
+
 " Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
 " imap <BS><BS> <NOP> " To learn the above
@@ -731,7 +750,7 @@ inoremap jj <Esc>ciw
 " Note careful placement of nmap/nnoremap.
 " Insert empty line above, repeatable
 nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
-nmap O<Esc> <Plug>EmptyLineAbove
+nnoremap O<Esc> <Plug>EmptyLineAbove
 
 " Insert empty line below, repeatable
 nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyLineBelow")<CR>
@@ -789,13 +808,13 @@ inoremap ''. ''.
 " https://github.com/andreasmhallberg/readingnotes
 
 " Don't fold 
-autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
-autocmd BufRead ~/jobb/readingnotes/* call EngType()
-" Highligt page refs at end of line
-autocmd BufRead ~/jobb/readingnotes/* syn match Constant " \d\+\(-\{1,2}\d\+\)\?$" containedin=ALL
-autocmd BufRead ~/jobb/readingnotes/* nnoremap <Leader>v
-   \ maggW"ayiw/\\d\\d\\d\\d<cr>"byiw`a
-   \ :CtrlP<Space>~/jobb/articuli/<CR><C-R>a<C-R>b<CR> 
+augroup readningnotes
+  autocmd!
+  autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
+  autocmd BufRead ~/jobb/readingnotes/* call EngType()
+  " Highligt page refs at end of line
+  autocmd BufRead ~/jobb/readingnotes/* syn match Constant " \d\+\(-\{1,2}\d\+\)\?$" containedin=ALL
+augroup END
 
 " Filter location list to get one hit per file 
 " https://vi.stackexchange.com/a/15171/3316
@@ -818,6 +837,13 @@ endfu
 com! -nargs=0 FilterLocList :call FilterLocList()
 "}}}1
 "{{{1 Mutt related
+
+" syntax for mutt files
 autocmd BufRead ~/.mutt/* setlocal filetype=muttrc
+
+" muttaliasescomplete
+autocmd FileType mail setlocal omnifunc=muttaliasescomplete#Complete 
+autocmd Filetype mail inoremap <buffer><leader>m <c-x><c-o>
+
 "}}}1
 "{{{ Test
