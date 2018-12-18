@@ -7,9 +7,23 @@ settings:
     global: gray
   colors.tabs.even.fg:
     global: white
+  fonts.tabs:
+    global: 15pt
+  messages.timeout:
+    global: 10000
+  tabs.indicator.width:
+    global: 0
   tabs.max_width:
     global: -1
   tabs.position:
     global: left
+  tabs.show:
+    global: always
+  tabs.title.format:
+    global: '{audio}{title}'
   tabs.width:
     global: 10%
+  url.searchengines:
+    global:
+      DEFAULT: https://duckduckgo.com/?q={}
+      y: https://www.youtube.com/results?search_query={}

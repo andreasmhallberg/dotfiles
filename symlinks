@@ -1,0 +1,23 @@
+#!/bin/bash
+#creates dotfile symlinks in home
+
+mkdir -p ~/.config/karabiner/karabiner.json
+ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
+ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
+mkdir -p ~/Library/Preferences/qutebrowser/
+ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
+ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
+
+# mutt
+ln -sf ~/dotfiles/.muttrc ~/.muttrc
+ln -sf ~/dotfiles/.mailcap ~/.mailcap
+
+# vim
+ln -sf ~/dotfiles/.vimrc ~/.vimrc
+mkdir -p ~/.vim/keymap/
+ln -sf ~/dotfiles/swe-us_utf-8.vim ~/.vim/keymap/swe-us_utf-8.vim
+ln -sf ~/dotfiles/arabic-pc_utf-8.vim ~/.vim/keymap/arabic-pc_utf-8.vim
+ln -sf ~/dotfiles/us-altlatin_utf-8.vim ~/.vim/keymap/us-altlatin_utf-8.vim
+mkdir -p ~/.vim/spell/
+ln -sf ~/dotfiles/sv.utf-8.add ~/.vim/spell/sv.utf-8.add
+ln -sf ~/dotfiles/en.utf-8.add ~/.vim/spell/en.utf-8.add

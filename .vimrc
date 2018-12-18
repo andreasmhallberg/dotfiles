@@ -63,7 +63,7 @@ set virtualedit=block                        " Allow block selection over empty 
 if has("gui_running" )
   set termguicolors                          " 24-bit colors in terminal
 endif
-set scrolloff=4                              " When scrolling, keep the cursor 4 lines from the top/bottom
+set scrolloff=10                              " When scrolling, keep the cursor 4 lines from the top/bottom
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
 set display+=lastline                        " Display as much as possible of last line rather than @s
 

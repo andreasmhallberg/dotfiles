@@ -44,7 +44,6 @@ source ~/.mutt/aliases
 auto_view text/html                                  # View html automatically.
 alternative_order text/plain text/enriched text/html # Save html for last.
 
-macro pager l |urlview\n
 unset markers # Remove ugly markers at linebreaks.
 set text_flowed=yes # Let reciever reflow text.
 set timeout=30
