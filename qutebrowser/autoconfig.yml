@@ -3,6 +3,12 @@
 
 config_version: 2
 settings:
+  auto_save.session:
+    global: true
+  bindings.commands:
+    global:
+      normal:
+        cm: clear-messages
   colors.tabs.even.bg:
     global: gray
   colors.tabs.even.fg:

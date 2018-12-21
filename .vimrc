@@ -414,7 +414,7 @@ nnoremap <Leader>cc :cclose<CR><c-w>p
 " Close window
 nnoremap <Leader>c :q<cr>
 " Open compiled pdf of compiled from this file
-nnoremap <Leader>po :!open '%'*.pdf<CR>
+nnoremap <silent> <Leader>po :!open '%'*.pdf<CR>
 
 "{{{2 Markdown compilation  (with asyncrun plugin)
 
@@ -444,8 +444,8 @@ autocmd Filetype markdown
 autocmd Filetype markdown 
             \ nnoremap <Leader>pp 
             \ :w<CR>
-            \ :AsyncRun pandoc '%' -f
-            \ markdown+implicit_figures+table_captions+multiline_tables %
+            \ :AsyncRun pandoc '%'
+            \ -f markdown+implicit_figures+table_captions+multiline_tables
             \ --pdf-engine=xelatex
             \ --columns=200
             \ --bibliography ~/mylatexstuff/bibliotek.bib

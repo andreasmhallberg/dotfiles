@@ -1,3 +1,4 @@
+# add bin folder in ~/dotfiles/ to available commands
 export PATH=$PATH:~/dotfiles/bin
 
 ##
