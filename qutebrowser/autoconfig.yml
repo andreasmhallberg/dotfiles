@@ -3,6 +3,12 @@
 
 config_version: 2
 settings:
+  aliases:
+    global:
+      q: quit
+      w: session-save
+      wq: quit --save
+      zotero: spawn --userscript zotero
   auto_save.session:
     global: true
   bindings.commands:
@@ -32,4 +38,5 @@ settings:
   url.searchengines:
     global:
       DEFAULT: https://duckduckgo.com/?q={}
+      w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}

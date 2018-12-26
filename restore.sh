@@ -50,6 +50,7 @@ ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
 mkdir -p ~/Library/Preferences/qutebrowser/
 ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/dotfiles/.qutebrowser ~/.qutebrowser/
 
 # mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc

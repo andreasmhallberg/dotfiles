@@ -31,6 +31,7 @@ Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style
 Plugin 'kien/ctrlp.vim'                          "  Fuzzy file finder.
 Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
+Plugin 'rickhowe/diffchar.vim'
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -217,6 +218,7 @@ let g:DiffModeSync = 1
 "{{{2 netrw
 let g:netrw_banner=0 " supress banner
 let g:netrw_sort_options = "i" " sort caseinsensitive
+
 "{{{2 diminiactive
 " The following drastically improves dimming over long wrapped lines.
 " https://github.com/blueyed/vim-diminactive/issues/2
@@ -369,8 +371,14 @@ let g:vim_markdown_frontmatter = 1
 "}}}1
 "{{{1 Display & Color
 
+" Function to highlight pdfs in file lists (netrw, qmv, etc.)
+
 " Make the cursor not blink
 set guicursor=a:blinkoff0
+
+function! HiPdf()
+   syn match Constant "\v.+\.pdf$" containedin=ALL
+endfunction
 
 " colorscheme solarized
 syntax on
@@ -633,6 +641,12 @@ function! MarkdownLevel()
     return "=" 
 endfunction
 
+" {{{2 r mappings
+
+augroup rsettings
+  autocmd!
+  autocmd Filetype r setlocal showbreak=-->
+augroup end
 " }}}1
 "{{{ Command line maopings
 cnoremap jj <c-w>
@@ -646,7 +660,6 @@ cnoremap jj <c-w>
   " CTRL-f to complete file path
   inoremap <C-f> <c-x><c-f>
 
-"}}}1
 
 " move around windows
 nnoremap <c-h> <c-w>h
@@ -804,16 +817,17 @@ inoremap '', '',
 inoremap ''. ''.
 
 
+"}}}1
 "{{{1 Readingnotes
 " https://github.com/andreasmhallberg/readingnotes
 
 " Don't fold 
 augroup readningnotes
   autocmd!
-  autocmd BufRead ~/jobb/readingnotes/* setlocal nofoldenable
-  autocmd BufRead ~/jobb/readingnotes/* call EngType()
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal nofoldenable
+  autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
   " Highligt page refs at end of line
-  autocmd BufRead ~/jobb/readingnotes/* syn match Constant " \d\+\(-\{1,2}\d\+\)\?$" containedin=ALL
+  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant " \d\+\(\-\{1,2}\d\+\)\?$" containedin=ALL
 augroup END
 
 " Filter location list to get one hit per file 
