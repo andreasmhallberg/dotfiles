@@ -520,6 +520,12 @@ autocmd Filetype tex
 "      rm -rf `biber --cache`
 " to fix bug crash bug.
 
+" tex do docx
+autocmd Filetype tex
+    \ nnoremap <Leader>pd
+    \ :w<CR>
+    \ :AsyncRun pandoc % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+
 
 "{{{2 Language switching
 
