@@ -1,7 +1,13 @@
 #!/bin/bash
 
-echo "Adding all and committing to github the message \"minor edit\""
+echo 'Type a commit message'
+
+read mess
+
+echo "Adding all and committing to GitHub the message \"$mess\""
 
   git add -A
-  git commit -m "minor edit"
+  git commit -m "$mess"
   git push
+
+echo "Done"
