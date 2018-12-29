@@ -1,0 +1,79 @@
+\NeedsTeXFormat{LaTeX2e}[2017/09/21]
+\ProvidesPackage{kashidajustification}
+
+%%% UNDER CONSTRUCTION!!!! %%%%
+
+\RequirePackage{polyglossia}
+
+\XeTeXinterchartokenstate=1
+\newXeTeXintercharclass\confb % connect back
+\newXeTeXintercharclass\conb  % connect front back
+\newXeTeXintercharclass\alif  % alif
+\newXeTeXintercharclass\lam   % lam
+
+\XeTeXcharclass `\ي=\confb 
+\XeTeXcharclass `\ئ=\confb
+\XeTeXcharclass `\ه=\confb
+\XeTeXcharclass `\ش=\confb
+\XeTeXcharclass `\س=\confb
+\XeTeXcharclass `\ق=\confb
+\XeTeXcharclass `\ف=\confb
+\XeTeXcharclass `\غ=\confb
+\XeTeXcharclass `\ع=\confb
+\XeTeXcharclass `\ض=\confb
+\XeTeXcharclass `\ص=\confb
+\XeTeXcharclass `\ن=\confb
+\XeTeXcharclass `\م=\confb
+\XeTeXcharclass `\ك=\confb
+\XeTeXcharclass `\ظ=\confb
+\XeTeXcharclass `\ط=\confb
+\XeTeXcharclass `\خ=\confb
+\XeTeXcharclass `\ح=\confb
+\XeTeXcharclass `\ج=\confb
+\XeTeXcharclass `\ث=\confb
+\XeTeXcharclass `\ت=\confb
+\XeTeXcharclass `\ب=\confb
+
+\XeTeXcharclass `\ل=\lam
+
+\XeTeXcharclass `\ا=\alif
+\XeTeXcharclass `\أ=\alif
+\XeTeXcharclass `\إ=\alif
+\XeTeXcharclass `\آ=\alif
+
+\XeTeXcharclass `\و=\conb
+\XeTeXcharclass `\ؤ=\conb
+\XeTeXcharclass `\ذ=\conb
+\XeTeXcharclass `\د=\conb
+\XeTeXcharclass `\ز=\conb
+\XeTeXcharclass `\ر=\conb
+\XeTeXcharclass `\ة=\conb
+
+ \XeTeXinterchartoks \confb \confb = {\kashida{}}
+ \XeTeXinterchartoks \lam   \lam   = {\kashida{}}
+ \XeTeXinterchartoks \confb \alif  = {\kashida{}}
+ \XeTeXinterchartoks \confb \lam   = {\kashida{}}
+ \XeTeXinterchartoks \lam   \confb = {\kashida{}}
+ \XeTeXinterchartoks \lam   \conb  = {\kashida{}}
+ \XeTeXinterchartoks \confb \conb  = {\kashida{}}
+
+ % Set lengths to the match the kashida of the typeface
+\newlength\kashidaheight
+\setlength\kashidaheight{\heightof{\textarabic{ـ}}}
+\newlength\kashidadepth
+\setlength\kashidadepth{\depthof{\textarabic{ـ}}}
+
+\newcommand\kashida[1]{\char"200D
+	    \nobreak\leaders
+		\hrule height \kashidaheight depth \kashidadepth
+		\hskip 0pt plus 100 pt
+	    \nobreak\char"200D}
+
+	   % \renewcommand\kashida{\char"200D} % turn off kashida
+
+\newcommand{\renewkashida}{
+    \setlength\kashidaheight{\heightof{\textarabic{ـ}}}
+    \setlength\kashidadepth{\depthof{\textarabic{ـ}}}
+}
+
+\endinput

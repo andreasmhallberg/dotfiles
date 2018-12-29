@@ -1,0 +1,81 @@
+\documentclass[a4paper]{article}
+
+\usepackage{multicol}
+\usepackage[a4paper]{geometry}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{polyglossia}
+\usepackage{amssymb} % provides $\square$ for checkboxes
+\setmainfont{Linux Libertine O}
+\setmainlanguage{swedish}
+\setotherlanguage[numerals=mashriq]{arabic}
+
+% Fix bid bug
+% http://tex.stackexchange.com/questions/312874/polyglossia-or-bidi-bug-d-gets-inverted-to-d
+% \makeatletter\@Latintrue\makeatother
+
+
+\newfontfamily\arabicfont[
+   Script=Arabic
+   % ,Scale=1.3
+]{Amiri}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx} % X som columntyp anpassar bredd efter sida och innehåll. Kräver argument {wdt}{coltypes}
+
+\setlength{\tabcolsep}{3pt}
+
+% \renewcommand\baselinestretch{1.5}
+
+\newcommand{\sq}{$\square$~}
+
+\usepackage{enumitem}
+
+ \setlist[enumerate]{
+       %Fixed phrasesitemindent=\parindent+labelwidth
+       before=\raggedright
+       , topsep=0pt
+       , partopsep=0pt
+       , parsep=0pt
+       , bottomsep==0pt
+       , nosep
+     , midpenalty=9000
+     , ref=\textit{\arabic*}
+     ,label=(\arabic*)
+     %,leftmargin=*
+     %,align=CenterWithParen
+     %,labelindent=\parindent+1em
+     %,labelwidth=.85em
+     %,labelsep*=.5em
+     , leftmargin=*
+     , rightmargin=0pt
+       }
+
+
+% Checklist for at-home preparation
+
+       \newlist{dolist}{itemize}{2}
+       \setlist[dolist]{
+       %Fixed phrasesitemindent=\parindent+labelwidth
+           before=\raggedright
+       , nosep
+     , midpenalty=9000
+     ,label=$\square$
+     , after=\strut
+     %,leftmargin=*
+     %,align=CenterWithParen
+     %,labelindent=\parindent+1em
+     %,labelwidth=.85em
+     %,labelsep*=.5em
+     , leftmargin=*
+     , rightmargin=0pt
+       }
+
+ \setlength\parindent{0pt}
+ \setlength\parskip{\bigskipamount}
+
+ \newif\ifnotes
+ \newcommand{\notes}[1]{\ifnotes\texttt{[#1]}\else{}\fi}
+ \notesfalse

@@ -35,6 +35,11 @@ function cs () {
         }
 alias cd='cs'
 
+function xpdfdisown () {
+    xpdf "$@" & disown
+}
+alias xpdf='xpdfdisown'
+
 # vim editing in command line
 set -o vi
 

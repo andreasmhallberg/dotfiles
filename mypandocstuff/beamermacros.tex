@@ -1,0 +1,25 @@
+% Inputted in YAML-header with `header-includes: \input{\string <path to this file>}
+
+
+\renewcommand{\textbf}[1]{\structure{#1}} 
+
+% Column environments that avoid \begin commands.
+\newcommand{\columnsbeginT}{\begin{columns}[T]} % Align with top baseline
+\newcommand{\columnsbegint}{\begin{columns}[t]} % Align with top.
+\newcommand{\columnsbegin} {\begin{columns}} % Default c.
+
+\newcommand{\columnsend}   {\end{columns}}
+
+
+     \addtobeamertemplate{navigation symbols}{}{%
+       \usebeamerfont{footline}%
+       \usebeamercolor[fg]{footline}%
+       \hspace{1em}%
+       \insertframenumber/\inserttotalframenumber
+     }
+
+  % Start column within env
+  \newcommand{\col}{\column{.5\textwidth}}
+  \newcommand{\colthird}{\column{.33333\textwidth}}
+  \newcommand{\coltwothirds}{\column{.666666\textwidth}}
+  \newcommand{\colfourth}{\column{.25\textwidth}}

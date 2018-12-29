@@ -1,0 +1,10 @@
+% Makes blockquotes italic
+% Placed in ~/mypandocstuff/itquotes.tex
+% Called in markdown YAML with
+    % header-includes:
+        % - \input{\string~/mypandocstuff/texttt-to-textarabic.tex}
+        % - \input{\string~/mypandocstuff/itquotes.tex}
+
+\let\oldquote\quote
+\let\oldendquote\endquote
+\renewenvironment{quote}{\oldquote\itshape}{\oldendquote}

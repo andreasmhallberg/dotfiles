@@ -288,7 +288,7 @@ let g:ctrlp_custom_ignore = {
 function! NewOpenFunc(action, line)
   " Open pdf/sound/image files in external program with '!open'
   if fnamemodify(a:line, ':e') =~?
-      \ '^\(rtf\|pdf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\|doc\|docx\)\?$'
+      \ '^\(rtf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\|doc\|docx\)\?$'
     " Get the filename
     let filename = fnameescape(fnamemodify(a:line, ':p'))
 
@@ -296,6 +296,16 @@ function! NewOpenFunc(action, line)
 
     " Open the file
     silent! execute '!open' filename
+
+  elseif fnamemodify(a:line, ':e') =~?
+      \ '^pdf\?$'
+    " Get the filename
+    let filename = fnameescape(fnamemodify(a:line, ':p'))
+
+    call ctrlp#exit()
+
+    " Open the file
+    silent! execute 'AsyncRun xpdf' filename
 
   " Open docx via pandoc
   " elseif fnamemodify(a:line, ':e') =~?
@@ -433,7 +443,7 @@ autocmd Filetype markdown
             \ -f markdown+implicit_figures+table_captions %
             \ --pdf-engine=xelatex
             \ --biblatex
-            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ --wrap=none
             \ -smart 
             \ -o '%'.tex<CR>
@@ -444,7 +454,7 @@ autocmd Filetype markdown
             \ :w<CR>
             \ :AsyncRun pandoc
             \ -f markdown+implicit_figures+table_captions %
-            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ -smart
             \ -o '%'.txt<CR>
 
@@ -456,7 +466,7 @@ autocmd Filetype markdown
             \ -f markdown+implicit_figures+table_captions+multiline_tables
             \ --pdf-engine=xelatex
             \ --columns=200
-            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ -smart -o '%'.pdf<CR>
 
 " to pdf with numvers 
@@ -468,7 +478,7 @@ autocmd Filetype markdown
             \ --pdf-engine=xelatex
             \ --columns=200
             \ -N
-            \ --bibliography ~/mylatexstuff/bibliotek.bib
+            \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ -smart -o '%'.pdf<CR>
 
 
@@ -480,7 +490,7 @@ autocmd Filetype markdown
 autocmd Filetype markdown
     \ nnoremap <Leader>pd
     \ :w<CR>
-    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 "  to beamer 
 autocmd Filetype markdown
@@ -489,7 +499,7 @@ autocmd Filetype markdown
     \ :AsyncRun pandoc -t beamer -f
     \ markdown+implicit_figures+table_captions %
     \ --pdf-engine=xelatex
-    \ --bibliography ~/mylatexstuff/bibliotek.bib
+    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --slide-level 1
     \ -smart
     \ -o '%'.pdf<CR>
@@ -498,7 +508,7 @@ autocmd Filetype markdown
 autocmd Filetype markdown
     \ nnoremap <buffer> <Leader>ph
     \ :w<CR>
-    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable % --toc --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable % --toc --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.html<CR>
 
 
 
@@ -524,7 +534,7 @@ autocmd Filetype tex
 autocmd Filetype tex
     \ nnoremap <Leader>pd
     \ :w<CR>
-    \ :AsyncRun pandoc % -smart --bibliography ~/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+    \ :AsyncRun pandoc % -smart --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 
 "{{{2 Language switching

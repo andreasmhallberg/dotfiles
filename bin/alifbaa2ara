@@ -14,7 +14,9 @@
     # - hamza. Transliterates all as hamza on alif
     # - shadda.
 
-# final -a shuuld always be interpreted to ta marbuuta 
+# final -a should always be interpreted to ta marbuuta 
+
+# First do prefixes, suffixes and long vowels, then plain transliteration
 
 # Prefixed conjunctions
  sed -E  's/wa-/وِ-/g' |\
