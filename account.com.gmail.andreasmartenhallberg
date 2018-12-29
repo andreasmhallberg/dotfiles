@@ -1,0 +1,16 @@
+source "gpg -d ~/.mutt/password.gmail.gpg |"
+# https://unix.stackexchange.com/questions/20570/mutt-how-to-safely-store-password?newreg=58de9732acfd47d185a07547919667d0
+# Encrypted file '~/.mutt/passord.gu.gpg' contains 
+#    set imap_pass = '<pass>'
+#    set smtp_pass = '<pass>'
+
+set from = "andreasmartenhallberg@gmail.com"
+set imap_user = 'andreasmartenhallberg@gmail.com'
+set folder = imaps://imap.gmail.com:993
+set spoolfile = "+INBOX"
+set smtp_url = "smtps://andreasmartenhallberg@smtp.gmail.com:465/"
+mailboxes "+[Gmail]/Sent Mail" +INBOX
+set record = "+[Gmail]/Sent Mail"
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = ~/.mutt/certificates

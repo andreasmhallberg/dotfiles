@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Make linux compatible
+    # https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script
+
+# if [[ "$OSTYPE" == "linux-gnu" ]]; then # linux
+#         pkgmanager=apt-get
+# elif [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
+#         pkgmanager=brew
+# fi
+
 # Install manually first
 # - Zotero
 # - Quicksilver
@@ -55,6 +64,7 @@ ln -s ~/dotfiles/.qutebrowser ~/.qutebrowser/
 # mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
+ln -sf ~/jobb/aliases ~/.mutt/aliases
 
 # vim
 ln -sf ~/dotfiles/.vimrc ~/.vimrc

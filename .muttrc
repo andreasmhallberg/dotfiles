@@ -10,15 +10,15 @@ set ssl_force_tls=yes
 # {{{ Accounts
 
 # Folder hooks
-folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/.mutt/account.com.gmail.andreasmartenhallberg'
-folder-hook 'account.gu.se.andreas.hallberg' 'source ~/.mutt/account.gu.se.andreas.hallberg'
+folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/.dotfiles/account.com.gmail.andreasmartenhallberg'
+folder-hook 'account.gu.se.andreas.hallberg' 'source ~/.dotfiles/account.gu.se.andreas.hallberg'
 
 # Default account
-source ~/.mutt/account.com.gmail.andreasmartenhallberg  
+source ~/dotfiles/account.com.gmail.andreasmartenhallberg  
 
 # Macros for switching accounts
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.gu.se.andreas.hallberg<enter><change-folder>!<enter>'
+macro index <f2> '<sync-mailbox><enter-command>source ~/.dotfiles/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.dotfiles/account.gu.se.andreas.hallberg<enter><change-folder>!<enter>'
 
 set use_from=yes
 
@@ -36,6 +36,7 @@ set sort = reverse-date-received
 # set alias_file= ~/.mutt/aliases
 set sort_alias= alias
 set reverse_alias=yes
+
 # source $alias_file
 source ~/.mutt/aliases
 

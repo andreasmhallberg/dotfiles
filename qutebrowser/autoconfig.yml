@@ -19,6 +19,10 @@ settings:
     global: gray
   colors.tabs.even.fg:
     global: white
+  downloads.position:
+    global: bottom
+  downloads.remove_finished:
+    global: 5000
   fonts.tabs:
     global: 15pt
   messages.timeout:

@@ -1,0 +1,17 @@
+source "gpg -d ~/.mutt/password.gu.gpg |"
+# https://unix.stackexchange.com/questions/20570/mutt-how-to-safely-store-password?newreg=58de9732acfd47d185a07547919667d0
+# Encrypted file '.mutt/passord.gu.gpg' contains 
+#    set imap_pass = '<pass>'
+#    set smtp_pass = '<pass>'
+#    set smtp_url=smtp://xhalaa:<pass>@smtpgw.gu.se:587/
+#    set imap_user = '<x-konto utan @gu.se>'
+
+set from = "andreas.hallberg@sprak.gu.se"
+set folder = "imaps://owa.gu.se:993"
+set spoolfile = +INBOX
+# set smtp_url = "smtps://smtpgw.gu.se:587/"
+mailboxes +Skickat +INBOX
+set record="+Skickat"
+set header_cache="~/.mutt/cache/headers"
+set message_cachedir="~/.mutt/cache/bodies"
+set certificate_file=~/.mutt/certificates

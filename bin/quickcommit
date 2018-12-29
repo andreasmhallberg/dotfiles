@@ -2,12 +2,11 @@
 
 echo 'Type a commit message'
 
+# keyboard input to variable $mess
 read mess
 
-echo "Adding all and committing to GitHub the message \"$mess\""
+echo "Adding all new files and committing to GitHub with the message \"$mess\""
 
-  git add -A
-  git commit -m "$mess"
-  git push
-
-echo "Done"
+git add -A
+git commit -m "$mess"
+git push
