@@ -34,7 +34,9 @@ settings:
   tabs.position:
     global: left
   tabs.show:
-    global: always
+    global: multiple
+  tabs.show_switching_delay:
+    global: 2000
   tabs.title.format:
     global: '{audio}{title}'
   tabs.width:

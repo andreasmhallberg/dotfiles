@@ -6,7 +6,7 @@ echo "Type a commit message. Hit <Enter> for \"minor edit\""
 read mess
 
 # if no input is give, only enter is pressed
-if [ -z mess ]
+if [[ -z $mess ]]
 then
   mess="Minor edit"
 fi

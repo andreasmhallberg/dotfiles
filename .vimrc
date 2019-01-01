@@ -4,11 +4,14 @@ filetype indent on
 "{{{1 Plugins
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=/usr/local/opt/fzf
 call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 Plugin 'milkypostman/vim-togglelist'             "  toggle quickfix and location list on and off. \q and \l
 Plugin 'muttaliasescomplete.vim'                 "  autocompletion of mutts addressbook. ~/.mutt/aliases as default
 Plugin 'junegunn/goyo.vim'
@@ -170,6 +173,17 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
+"{{{ fzf
+
+
+" keymaps in prompt
+    let g:fzf_action = {
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': '!launch',
+      \ 'ctrl-v': 'vsplit'
+      \  }
+
+
 "{{{2 vimtex 
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 
@@ -412,7 +426,7 @@ autocmd BufEnter * silent! set cole=0
 " insert date in format yymmdd
 nnoremap <Leader>d :pu =strftime('%y%m%d')<CR>kJ
 " open ctrlp fuzzy file finder
-nnoremap <Leader>f :CtrlP<Space>~/<CR>
+nnoremap <Leader>f :FZF<Space>~/<CR>
 " open netrw. `-` also goes to parent directory inside netrw
 nnoremap <Leader>x :Explore<CR>
 " Window command prefix
@@ -836,6 +850,7 @@ inoremap ''. ''.
 "}}}1
 "{{{1 Readingnotes
 " https://github.com/andreasmhallberg/readingnotes
+
 
 " Don't fold 
 augroup readningnotes

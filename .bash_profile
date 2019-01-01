@@ -1,8 +1,23 @@
+[[ -s ~/.bashrc ]] && source ~/.bashrc
+
 # add bin folder in ~/dotfiles/ to available commands
 export PATH=$PATH:~/dotfiles/bin
 
+source ~/.fzf.bash
+
 export VISUAL="/Applications/MacVim.app/Contents/MacOS/Vim"
 export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
+
+# Prompt shape
+# See man bash > PROMTING
+
+# abbreviate wd in promt with `..`
+export PROMPT_DIRTRIM=2 # does not work with bash 3 that ships with OSX
+
+GREEN="$(tput setaf 2)"
+RESET="$(tput sgr0)"
+
+PS1='${GREEN}[\A \w] ${RESET}'
 
 ##
 # Your previous /Users/andy/.bash_profile file was backed up as /Users/andy/.bash_profile.macports-saved_2016-08-03_at_10:37:22
@@ -14,14 +29,20 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 
 export CLICOLOR=1
 
-alias ls='ls -Fa'
+# Aliases
+
+alias ls='ls -Fa' # ls with directory/symlink indocators (-F) and hidden files (-a)
 alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
 alias qmv='qmv -f do' # only show output column when using qmv
-alias :e 'vim' # because vim
-
+alias :e='vim' # because vim
+# git
+alias gco='git checkout'
+alias gcob='git checkout -b' #checkout and create new branch
+alias gb='git branch'
+alias gs='git status'
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # Fuzzy file finding with ctrl-p is much slower from inside ITerm than in MacVim.
@@ -35,10 +56,10 @@ function cs () {
         }
 alias cd='cs'
 
-function xpdfdisown () {
-    xpdf "$@" & disown
-}
-alias xpdf='xpdfdisown'
+# function xpdfdisown () {
+#     xpdf "$@" & disown
+# }
+# alias xpdf='xpdfdisown'
 
 # vim editing in command line
 set -o vi
@@ -47,8 +68,6 @@ set -o vi
 # The original version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 export PATH
-
- 
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave

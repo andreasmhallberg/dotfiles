@@ -49,6 +49,8 @@ brew install pandoc-citeproc
 brew install jekyll
 brew install ruby # in jekyll
 brew install ruby-gems # in jekyll
+brew install fzf
+/usr/local/opt/fzf/install # script to setup keybindings etc.
 
 
 #creates dotfile symlinks in home
@@ -56,6 +58,8 @@ brew install ruby-gems # in jekyll
 mkdir -p ~/.config/karabiner/karabiner.json
 ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
+ln -sf ~/dotfiles/.bashrc ~/.bashrc
+ln -sf ~/dotfiles/.fzf.bash ~/.fzf.bash
 mkdir -p ~/Library/Preferences/qutebrowser/
 ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
