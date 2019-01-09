@@ -15,6 +15,7 @@ settings:
     global:
       normal:
         cm: clear-messages
+        q: tab-close
   colors.tabs.even.bg:
     global: gray
   colors.tabs.even.fg:
@@ -29,6 +30,8 @@ settings:
     global: 10000
   tabs.indicator.width:
     global: 0
+  tabs.last_close:
+    global: close
   tabs.max_width:
     global: -1
   tabs.position:
@@ -44,5 +47,6 @@ settings:
   url.searchengines:
     global:
       DEFAULT: https://duckduckgo.com/?q={}
+      sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}

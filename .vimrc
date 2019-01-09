@@ -18,6 +18,7 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'skywind3000/asyncrun.vim'                "  syntax highlighting for CHAT-transcriptions
 Plugin 'klapheke/vim-chat'                       "  syntax highlighting for CHAT-transcriptions
 Plugin 'morhetz/gruvbox'                         "  colorsheme
+Plugin 'vim-syntastic/syntastic'                         "  colorsheme
 Plugin 'jalvesaq/Nvim-R'                         "  Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'                      "  Useful mappings for netrw
 Plugin 'tpope/vim-commentary'                    "  gc<movement> to comment
@@ -31,7 +32,7 @@ Plugin 'lervag/vimtex'                           "  tex stuff
 " Plugin 'vim-scripts/directionalWindowResizer'  "  c-<hjkl> to resize window
 " Plugin 'vim-scripts/LanguageTool'              "  Spell and grammar checking. Not very useful in files with markup.
 Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style.
-Plugin 'kien/ctrlp.vim'                          "  Fuzzy file finder.
+" Plugin 'kien/ctrlp.vim'                        "  Fuzzy file finder. Replaced by fzf
 Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
 Plugin 'rickhowe/diffchar.vim'
@@ -53,7 +54,7 @@ set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/d
 set spell                                 "  check spelling by default
 set spelllang=en_us
 set nowrapscan                               " No wraparound end of file in normal searches
-set nohlsearch                               " No high-light search hits
+set hlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 set smartcase                                " Case-sensitive when upper case is used in search string
@@ -75,19 +76,21 @@ set display+=lastline                        " Display as much as possible of la
 
 " DISPLAY
 
+
+set guicursor=a:blinkoff0  "  Make the cursor not blink
 " Statusline
-set statusline=%F  " Full path and file name.
-set statusline+=%m " Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
-set statusline+=%= " Separator between left and right alignmet
-set statusline+=\ 
-set statusline+=\ 
-set statusline+=%l " Line number
+set statusline=%F          "  Full path and file name.
+set statusline+=%m         "  Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
+set statusline+=%=         "  Separator between left and right alignmet
+set statusline+=\
+set statusline+=\
+set statusline+=%l         "  Line number
 set statusline+=/
-set statusline+=%L " Lines in buffer
-set statusline+=\ 
-set statusline+=%y " Filetype
-set statusline+=\ 
-set statusline+=%k " Current keymap
+set statusline+=%L         "  Lines in buffer
+set statusline+=\
+set statusline+=%y         "  Filetype
+set statusline+=\
+set statusline+=%k         "  Current keymap
 
 set guioptions-=r                        " Remove left and right scrollbar
 set guioptions-=R
@@ -102,12 +105,14 @@ set linebreak                             "  Soft-wrap between words
 set autoindent
 set listchars=tab:▸\ ,eol:¬,nbsp:_        "  Representation of invisible characters with set list
 set splitright                            "  Open vsplit window to the right
+set splitbelow                            "  Open split window opens below
 set shortmess+=A                          "  No swapfile exists warning
 set expandtab                             "  tab key inserts spaces. Needed for indentation with <
 set shiftwidth=2                          "  Length of tab-character for indention 4 spaces for markdown syntax
-set formatoptions=rj                      "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
-                                          "  j=Where it makes sense, remove a comment leader when joining lines.
+set formatoptions=r                      "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
+set formatoptions+=j                                         "  j=Where it makes sense, remove a comment leader when joining lines.
 set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
+
 " }}}1
 "{{{1 General mappings
 
@@ -131,6 +136,27 @@ nnoremap tn :tabnew<CR>
 
 "{{{1 General stuff (passive)
 
+" end hlsearch on onsert
+" hlsearch cannot be wrapped in autocmd
+
+nnoremap i  :noh<cr>i
+nnoremap I  :noh<cr>I
+nnoremap a  :noh<cr>a
+nnoremap A  :noh<cr>A
+nnoremap o  :noh<cr>o
+nnoremap O  :noh<cr>O
+nnoremap c  :noh<cr>c
+nnoremap cc :noh<cr>cc
+nnoremap s  :noh<cr>s
+nnoremap S  :noh<cr>S
+
+
+" Open no text file externally
+augroup openExternally
+  autocmd!
+  autocmd BufRead,BufNewFile *.pdf silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
+  autocmd BufRead,BufNewFile *.mp4,*.mp3,*.flac silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
+augroup END
 
 
 " Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
@@ -145,13 +171,9 @@ autocmd VimResized * :wincmd =
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
-" Enter to run last  macro.  Not a good idea. Breaks file opening in quickfix
-" list
-" nnoremap <CR> @@
-
 " Always use minimalist foldtext
 autocmd BufEnter * set foldtext=getline(v:foldstart)
-set fillchars=fold:\ "(there's a space after that \)
+set fillchars=fold:\ 
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
@@ -180,9 +202,8 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-x': '!launch',
-      \ 'ctrl-v': 'vsplit'
+      \ 'ctrl-v': 'vsplit' ,
       \  }
-
 
 "{{{2 vimtex 
 " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
@@ -268,94 +289,6 @@ let g:csv_no_conceal = 1
 "{{{2 vim-pandox-syntax
 " don't use conceal
 let g:pandoc#syntax#conceal#use = 0
-"{{{2 ctrlp
-" Speed up with ripgrep
-" https://bluz71.github.io/2017/10/26/turbocharge-the-ctrlp-vim-plugin.html
- " let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-
-
- 
-let g:ctrlp_use_caching = 1          "  Save cache  between searches. Dafault 1
-let g:ctrlp_follow_symlinks = 2      "  follow symlinks. 2 - follow all symlinks indiscriminately.
-let g:ctrlp_show_hidden = 1          "  Search also for hidden files/dirs
-let g:ctrlp_clear_cache_on_exit = 0  "  Default 1
-let g:ctrlp_max_files = 0            "  Unlimited Cashe
-let g:ctrlp_show_hidden = 1          "  Include dotfiles in search
-
-" Things to ignore.
-" Don't use ^ in regex here. Deosn't work
-let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v(Applications|Downloads|Library|Trash|mmpr)$',
-    \ }
-
-" Define new function to do different operations depending on filetype.
-" https://github.com/kien/ctrlp.vim/issues/232
-
-" In ctrlp-window
-"   - <CR> will 
-"     - open text files in vim
-"     - open file externally if not a text file
-"     - open docx via pandoc as markdown in vim
-"   - Ctrl-x will insert the path and file
-"     name (useful for attaching files in mutt)   
-
-function! NewOpenFunc(action, line)
-  " Open pdf/sound/image files in external program with '!open'
-  if fnamemodify(a:line, ':e') =~?
-      \ '^\(rtf\|ma4\|mp3\|mp4\|jpeg\|jpg\|png\|pptx\|doc\|docx\)\?$'
-    " Get the filename
-    let filename = fnameescape(fnamemodify(a:line, ':p'))
-
-    call ctrlp#exit()
-
-    " Open the file
-    silent! execute '!open' filename
-
-  elseif fnamemodify(a:line, ':e') =~?
-      \ '^pdf\?$'
-    " Get the filename
-    let filename = fnameescape(fnamemodify(a:line, ':p'))
-
-    call ctrlp#exit()
-
-    " Open the file
-    silent! execute 'AsyncRun xpdf' filename
-
-  " Open docx via pandoc
-  " elseif fnamemodify(a:line, ':e') =~?
-  "     \ '^docx\?$'
-  "   " Get the filename
-  "   let filename = fnameescape(fnamemodify(a:line, ':p'))
-
-  "   call ctrlp#exit()
-
-  "   " Open the file
-  "   silent! execute 'ene'
-  "   silent! execute 'r!pandoc -t markdown -f docx' filename
-  "   setlocal ft=markdown
-
-   " ctrl-x to insert filepath in buffer
-   " https://vi.stackexchange.com/questions/8976/is-there-a-way-to-insert-a-path-of-the-file-instead-of-opening-it-with-ctrlp-plu
-   elseif a:action =~ 'v'    
-      " Get the filename
-      let filename = fnameescape(fnamemodify(a:line, ':p'))
-
-      " Close CtrlP
-      call ctrlp#exit()
-
-      " insert the contents of filename into the buffer
-      put =filename
-  else
-
-    " For textfile, simulate pressing <c-o>r to replace current buffer
-    call feedkeys("\<c-o>r")
-    
-  endif
-endfunction
-
-let g:ctrlp_open_func = { 'files': 'NewOpenFunc' }
-
-" }}}2
 "{{{2 gundo
 " Soft wrap gundo preview
 augroup MyGundo
@@ -395,20 +328,14 @@ let g:vim_markdown_frontmatter = 1
 "}}}1
 "{{{1 Display & Color
 
-" Function to highlight pdfs in file lists (netrw, qmv, etc.)
-
-" Make the cursor not blink
-set guicursor=a:blinkoff0
-
-function! HiPdf()
-   syn match Constant "\v.+\.pdf$" containedin=ALL
-endfunction
-
-" colorscheme solarized
 syntax on
 colorscheme gruvbox " super sexy
 set bg=dark " Dark background
 
+" Less glaring search highlight
+hi Search cterm=NONE ctermfg=White ctermbg=DarkGreen
+hi Search guifg=White guibg=DarkGreen
+" hi Search ctermfg=Black
 
 " Italic comments.
 highlight Comment cterm=italic
@@ -422,7 +349,7 @@ endif
 autocmd BufEnter * silent! set cole=0
 "}}}1
 "{{{1 Leader commands
-
+"{{{2 general
 " insert date in format yymmdd
 nnoremap <Leader>d :pu =strftime('%y%m%d')<CR>kJ
 " open ctrlp fuzzy file finder
@@ -439,14 +366,9 @@ nnoremap <Leader>nn :lne<CR>
 nnoremap <Leader>m :e $MYVIMRC<CR>
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
-" Open quickfix window and go pack to previous window (useful for pandoc compilation)
-nnoremap <Leader>co :copen<CR><c-w>p
-" Close quickfix window
-nnoremap <Leader>cc :cclose<CR><c-w>p
-" Close window
-nnoremap <Leader>c :q<cr>
-" Open compiled pdf of compiled from this file
+" Open pdf compiled from this file
 nnoremap <silent> <Leader>po :!open '%'*.pdf<CR>
+
 
 "{{{2 Markdown compilation  (with asyncrun plugin)
 
@@ -454,12 +376,11 @@ nnoremap <silent> <Leader>po :!open '%'*.pdf<CR>
 autocmd Filetype markdown 
             \ nnoremap <buffer> <Leader>pt :w<CR>
             \ :AsyncRun pandoc
-            \ -f markdown+implicit_figures+table_captions %
+            \ -f markdown+implicit_figures+table_captions+smart %
             \ --pdf-engine=xelatex
             \ --biblatex
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ --wrap=none
-            \ -smart 
             \ -o '%'.tex<CR>
 
 " to txt
@@ -477,11 +398,11 @@ autocmd Filetype markdown
             \ nnoremap <Leader>pp 
             \ :w<CR>
             \ :AsyncRun pandoc '%'
-            \ -f markdown+implicit_figures+table_captions+multiline_tables
+            \ -f markdown+implicit_figures+table_captions+multiline_tables+smart
             \ --pdf-engine=xelatex
             \ --columns=200
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-            \ -smart -o '%'.pdf<CR>
+            \ -o '%'.pdf<CR>
 
 " to pdf with numvers 
 autocmd Filetype markdown 
@@ -508,21 +429,25 @@ autocmd Filetype markdown
 
 "  to beamer 
 autocmd Filetype markdown
-    \ nnoremap <buffer> <Leader>pb 
+    \ nnoremap <buffer><Leader>pb 
     \ :w<CR>
-    \ :AsyncRun pandoc -t beamer -f
-    \ markdown+implicit_figures+table_captions %
+    \ :AsyncRun pandoc
+    \ -t beamer
+    \ -f markdown+implicit_figures+table_captions+smart %
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --slide-level 1
-    \ -smart
     \ -o '%'.pdf<CR>
 
 "  to html. -S needed for parsing of daises in non TeX.
 autocmd Filetype markdown
     \ nnoremap <buffer> <Leader>ph
     \ :w<CR>
-    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable % --toc --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.html<CR>
+    \ :AsyncRun
+    \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable %
+    \ --toc
+    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+    \ -o '%'.html<CR>
 
 
 
@@ -592,7 +517,6 @@ endfunction
 autocmd Filetype csv setlocal cursorline
 
 "{{{1 tex mappings and functions
-" Mappings only used in .tex files 
 
 augroup LaTeXMaps
   autocmd!
@@ -601,7 +525,6 @@ augroup LaTeXMaps
   autocmd Filetype tex nnoremap <buffer><Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
   " Key mapping to Tabularize LaTeX tabular
   " Tabularize by & unless escaped
-  " Requires vimtex for `vie` operation  
   autocmd Filetype tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
   " Tabularize gloss (by spaces)
   " map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
@@ -789,16 +712,6 @@ iab widht width
 inoremap jj <Esc>ciw
 " imap <BS><BS> <NOP> " To learn the above
 
-" When inserting empty line, return to cursor position
-" Note careful placement of nmap/nnoremap.
-" Insert empty line above, repeatable
-nnoremap <silent> <Plug>EmptyLineAbove meO<ESC>`e:call repeat#set("\<Plug>EmptyLineAbove")<CR>
-nnoremap O<Esc> <Plug>EmptyLineAbove
-
-" Insert empty line below, repeatable
-nnoremap <silent> <Plug>EmptyLineBelow meo<ESC>`e:call repeat#set("\<Plug>EmptyLineBelow")<CR>
-nmap o<Esc> <Plug>EmptyLineBelow
-
 "{{{2 Delimiters
 " Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
 inoremap {} {}<Left>
@@ -858,7 +771,7 @@ augroup readningnotes
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal nofoldenable
   autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
   " Highligt page refs at end of line
-  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant " \d\+\(\-\{1,2}\d\+\)\?$" containedin=ALL
+  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?\s*$" containedin=ALL
 augroup END
 
 " Filter location list to get one hit per file 
