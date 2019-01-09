@@ -61,11 +61,13 @@ ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/dotfiles/.bashrc ~/.bashrc
 ln -sf ~/dotfiles/.fzf.bash ~/.fzf.bash
 mkdir -p ~/Library/Preferences/qutebrowser/
+mkdir -p ~/.qutebrowser/
 ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.qutebrowser ~/.qutebrowser/
 
 # mutt
+mkdir -p ~/.mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
 ln -sf ~/jobb/aliases ~/.mutt/aliases
