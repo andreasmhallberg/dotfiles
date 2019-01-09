@@ -1,4 +1,4 @@
-source "gpg -d ~/.mutt/password.gmail.gpg |"
+source "gpg -d ~/jobb/password.gmail.gpg |"
 # https://unix.stackexchange.com/questions/20570/mutt-how-to-safely-store-password?newreg=58de9732acfd47d185a07547919667d0
 # Encrypted file '~/.mutt/passord.gu.gpg' contains 
 #    set imap_pass = '<pass>'

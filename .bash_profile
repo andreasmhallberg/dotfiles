@@ -8,6 +8,9 @@ source ~/.fzf.bash
 export VISUAL="/Applications/MacVim.app/Contents/MacOS/Vim"
 export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
 
+# fzf default options
+export FZF_DEFAULT_COMMAND='find .'
+
 # Prompt shape
 # See man bash > PROMTING
 
@@ -17,7 +20,7 @@ export PROMPT_DIRTRIM=2 # does not work with bash 3 that ships with OSX
 GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
-PS1='${GREEN}[\A \w] ${RESET}'
+PS1='\[${GREEN}\][\A \w] \[${RESET}\]'
 
 ##
 # Your previous /Users/andy/.bash_profile file was backed up as /Users/andy/.bash_profile.macports-saved_2016-08-03_at_10:37:22
@@ -34,13 +37,14 @@ export CLICOLOR=1
 alias ls='ls -Fa' # ls with directory/symlink indocators (-F) and hidden files (-a)
 alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
-alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
+# alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
+alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
 alias qmv='qmv -f do' # only show output column when using qmv
 alias :e='vim' # because vim
 # git
-alias gco='git checkout'
-alias gcob='git checkout -b' #checkout and create new branch
+alias gc='git checkout'
+alias gcb='git checkout -b' #checkout and create new branch
 alias gb='git branch'
 alias gs='git status'
 
@@ -75,3 +79,5 @@ PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 export PATH
 
 bind "set completion-ignore-case on"
+
+

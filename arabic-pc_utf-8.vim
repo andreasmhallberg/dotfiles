@@ -9,7 +9,6 @@ let b:keymap_name = "arabic-pc"
 
 " Modified by Andreas to fit PC layout with THAL on paragraph character as
 " well as replacing لا on the B key.
-" Last modified 2017-08-07
 " To be symlinked in .vim/keymap.
 
 loadkeymap
@@ -32,6 +31,7 @@ f	<char-0x0628>			" (1576)	- BEH
 g	<char-0x0644>			" (1604)	- LAM
 h	<char-0x0627>			" (1575)	- ALEF
 <M-h>	<char-0x0670>			" (1575)	- ALEF
+<M-H>	<char-0x0671>			" (1575)	- ALEF with wasla ## MODIFIED
 j	<char-0x062a>			" (1578)	- TEH
 k	<char-0x0646>			" (1606)	- NOON
 l	<char-0x0645>			" (1605)	- MEEM

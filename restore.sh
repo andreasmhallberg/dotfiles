@@ -29,12 +29,18 @@ git config --global user.name "Andreas Hallberg"
 git config --global user.email andreasmartenhallberg@gmail.com
 git config --global credential.helper osxkeychain
 
+#get my dotfiles
+git clone https://github.com/andreasmhallberg/dotfiles.git ~/
+
+#get blog
+git clone https://github.com/andreasmhallberg/andreasmhallberg.github.io.git ~/blog/
+
 # vim
 brew install macvim
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
 brew install ripgrep # Used to speed up ctrlp plugin in vim.
-brew install neomutt
+brew install mutt
 brew install w3m # used in mutt
 brew install GnuPG # used in mutt
 brew install launch
@@ -52,7 +58,6 @@ brew install ruby-gems # in jekyll
 brew install fzf
 /usr/local/opt/fzf/install # script to setup keybindings etc.
 
-
 #creates dotfile symlinks in home
 
 mkdir -p ~/.config/karabiner/karabiner.json
@@ -64,6 +69,7 @@ mkdir -p ~/Library/Preferences/qutebrowser/
 ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.qutebrowser ~/.qutebrowser/
+ln -s ~/dotfiles/.Rprofile ~/.Rprofile
 
 # mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc

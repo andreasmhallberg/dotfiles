@@ -10,15 +10,15 @@ set ssl_force_tls=yes
 # {{{ Accounts
 
 # Folder hooks
-folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/.dotfiles/account.com.gmail.andreasmartenhallberg'
-folder-hook 'account.gu.se.andreas.hallberg' 'source ~/.dotfiles/account.gu.se.andreas.hallberg'
+folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/dotfiles/account.com.gmail.andreasmartenhallberg'
+folder-hook 'account.gu.se.andreas.hallberg' 'source ~/dotfiles/account.gu.se.andreas.hallberg'
 
 # Default account
 source ~/dotfiles/account.com.gmail.andreasmartenhallberg  
 
 # Macros for switching accounts
-macro index <f2> '<sync-mailbox><enter-command>source ~/.dotfiles/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.dotfiles/account.gu.se.andreas.hallberg<enter><change-folder>!<enter>'
+macro index <f2> '<sync-mailbox><enter-command>source ~/dotfiles/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/dotfiles/account.gu.se.andreas.hallberg<enter><change-folder>!<enter>'
 
 set use_from=yes
 
@@ -58,7 +58,14 @@ macro attach s <save-entry><kill-line>~/
 # mail indexing format
 # Indicate with A if email has attachment. 
 # See https://stackoverflow.com/questions/37080414/show-if-a-message-in-the-mutt-index-has-an-attachment
-set index_format="%3C %S %?X?A& ? %{%y%m%d} %-12.12L %?M?(#%03M)&(%4c)? %?y?(%.20Y) ?%s"
+# set index_format="%3C %S %?X?A& ? %{%y%m%d} %-12.12L %?M?(#%03M)&(%4c)? %?y?(%.20Y) ?%s"
+
+set index_format="%3C %S %?X?A& ? %-6@date@ %-15.15L  %?y?(%.20Y) ?%s"
+
+index-format-hook  date  "~d<1d"    "%[%H:%M]"
+index-format-hook  date  "~d<7d"    "%[%a %d]"
+index-format-hook  date  "~d<1m"    "%[%d/%m]"
+index-format-hook  date  "~A"       "%[%y%m%d]"
 
 # {{{ Bindings
 # bind <mode> <key> <action>
