@@ -35,7 +35,7 @@ Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style
 " Plugin 'kien/ctrlp.vim'                        "  Fuzzy file finder. Replaced by fzf
 Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
-Plugin 'rickhowe/diffchar.vim'
+" Plugin 'rickhowe/diffchar.vim'
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -241,11 +241,11 @@ let g:vimtex_complete_close_braces = 1
 let g:vimtex_fold_enabled=1
 "{{{2 DiffChar
 " Set wrap in diff
-au FilterWritePre * if &diff | set wrap | endif
+" au FilterWritePre * if &diff | set wrap | endif
 
-let g:DiffUpdate = 1
-let g:DiffUnit = 'Word3'
-let g:DiffModeSync = 1
+" let g:DiffUpdate = 1
+" let g:DiffUnit = 'Word3'
+" let g:DiffModeSync = 1
 
 " Reduce error reports
 " autocmd InsertEnter * :RDCha

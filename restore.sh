@@ -46,7 +46,6 @@ brew install GnuPG # used in mutt
 brew install launch
 brew install r 
 brew install vlc 
-brew install karabiner-elements 
 brew install unzip
 brew install unrar
 brew install mactex
@@ -66,10 +65,9 @@ ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/dotfiles/.bashrc ~/.bashrc
 ln -sf ~/dotfiles/.fzf.bash ~/.fzf.bash
 mkdir -p ~/Library/Preferences/qutebrowser/
-mkdir -p ~/.qutebrowser/
 ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
-ln -s ~/dotfiles/.qutebrowser ~/.qutebrowser/
+ln -s ~/dotfiles/.qutebrowser ~/.qutebrowser
 ln -s ~/dotfiles/.Rprofile ~/.Rprofile
 
 # mutt
