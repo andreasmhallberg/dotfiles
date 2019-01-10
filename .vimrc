@@ -18,7 +18,7 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'skywind3000/asyncrun.vim'                "  syntax highlighting for CHAT-transcriptions
 Plugin 'klapheke/vim-chat'                       "  syntax highlighting for CHAT-transcriptions
 Plugin 'morhetz/gruvbox'                         "  colorsheme
-Plugin 'vim-syntastic/syntastic'                         "  colorsheme
+Plugin 'vim-syntastic/syntastic'                 "  syntax checker. Used for TeX and R
 Plugin 'jalvesaq/Nvim-R'                         "  Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'                      "  Useful mappings for netrw
 Plugin 'tpope/vim-commentary'                    "  gc<movement> to comment
@@ -195,14 +195,26 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
-"{{{ fzf
+"{{{2 Syntastic
+" Recommended settings in help
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+
+    let g:syntastic_always_populate_loc_list = 0
+    let g:syntastic_auto_loc_list = 0
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+"{{{2 fzf
 
 
 " keymaps in prompt
     let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
+      \ 'ctrl-p': 'put',
       \ 'ctrl-x': '!launch',
       \ 'ctrl-v': 'vsplit' ,
+      \ 'ctrl-s': 'split'
       \  }
 
 "{{{2 vimtex 
