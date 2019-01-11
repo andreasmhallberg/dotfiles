@@ -1,0 +1,9 @@
+# https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2
+
+
+# run the following:
+#    tic -o ~/.terminfo xterm-256color.terminfo.txt
+
+xterm-256color|xterm with 256 colors and italic,
+  sitm=\E[3m, ritm=\E[23m,
+  use=xterm-256color,

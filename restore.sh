@@ -11,6 +11,7 @@
 
 # Install manually first
 # - Zotero
+#  - MacVim
 # - Quicksilver
 # - Spectacle
 # - Firefox
@@ -20,6 +21,7 @@
 #   - Tridactyl
 #   - Zotero Connector
 # - homebrew
+# MacTex http://tug.org/mactex/mactex-download.html
 
 # Install via script
 
@@ -35,8 +37,13 @@ git clone https://github.com/andreasmhallberg/dotfiles.git ~/
 #get blog
 git clone https://github.com/andreasmhallberg/andreasmhallberg.github.io.git ~/blog/
 
+# fonts
+brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
+
+
 # vim
-brew install macvim
+mkdir -p ~/.vim/temp # make directory for swap files
+# brew install macvim  # install manually instead
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
 brew install ripgrep # Used to speed up ctrlp plugin in vim.
@@ -45,7 +52,7 @@ brew install w3m # used in mutt
 brew install GnuPG # used in mutt
 brew install launch
 brew install r 
-brew install vlc 
+brew install ack
 brew install unzip
 brew install unrar
 brew install mactex
@@ -59,16 +66,16 @@ brew install fzf
 
 #creates dotfile symlinks in home
 
-mkdir -p ~/.config/karabiner/karabiner.json
-ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
+mkdir -p ~/.config/karabiner/
+ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/
 ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/dotfiles/.bashrc ~/.bashrc
 ln -sf ~/dotfiles/.fzf.bash ~/.fzf.bash
 mkdir -p ~/Library/Preferences/qutebrowser/
 ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
-ln -s ~/dotfiles/.qutebrowser ~/.qutebrowser
-ln -s ~/dotfiles/.Rprofile ~/.Rprofile
+ln -sf ~/dotfiles/.qutebrowser ~/.qutebrowser
+ln -sf ~/dotfiles/.Rprofile ~/.Rprofile
 
 # mutt
 mkdir -p ~/.mutt

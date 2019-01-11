@@ -198,7 +198,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 "{{{2 Syntastic
 " Recommended settings in help
     set statusline+=%#warningmsg#
-    set statusline+=%{SyntasticStatuslineFlag()}
+    " set statusline+=%{SyntasticStatuslineFlag()}
     set statusline+=%*
 
     let g:syntastic_always_populate_loc_list = 0
@@ -301,6 +301,10 @@ let g:csv_no_conceal = 1
 "{{{2 vim-pandox-syntax
 " don't use conceal
 let g:pandoc#syntax#conceal#use = 0
+
+" apply pandoc-syntax on .md files
+au! BufNewFile,BufFilePre,BufRead *.md,*.mkd set filetype=markdown.pandoc
+
 "{{{2 gundo
 " Soft wrap gundo preview
 augroup MyGundo
@@ -312,14 +316,6 @@ augroup end
     let g:gundo_width = 60
 " Auto-close gundo window on revert.
     let g:gundo_close_on_revert=1
-
-"{{{2 vim-pandoc
-" symlink ~/.vim/after/syntax/markdown.vim -> ~/.vim/bundle/vim-pandoc-syntsax/pandoc.vim
-" to get pandoc syntax in markdown file type.
-
-" Add .bib to completion
- let g:pandoc#biblio#bibs = ['/Users/xhalaa/mylatexstuff/bibliotek.bib']
- let g:pandoc#completion#bib#mode = 'fallback'
 
 "{{{2 vim-markdown
 " no mappings. We only want folding
