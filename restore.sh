@@ -11,17 +11,19 @@
 
 # Install manually first
 # - Zotero
-#  - MacVim
-# - Quicksilver
-# - Spectacle
+# - MacVim
+# - Quicksilver - fuzzy application launcher
+# - Spectacle - shortcuts for window management on multi-screens
 # - Firefox
 #   - Adblock Plus
 #   - Adobe Acrobat
 #   - Google Analytics Blocker
 #   - Tridactyl
 #   - Zotero Connector
-# - homebrew
-# MacTex http://tug.org/mactex/mactex-download.html
+# - Qutebrowser
+# - Homebrew
+# - MacTex  - http://tug.org/mactex/mactex-download.html
+#           - update texlive when installed to get most resent packages
 
 # Install via script
 
@@ -30,6 +32,7 @@ brew install git
 git config --global user.name "Andreas Hallberg"
 git config --global user.email andreasmartenhallberg@gmail.com
 git config --global credential.helper osxkeychain
+
 
 #get my dotfiles
 git clone https://github.com/andreasmhallberg/dotfiles.git ~/
@@ -41,20 +44,22 @@ git clone https://github.com/andreasmhallberg/andreasmhallberg.github.io.git ~/b
 brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
 
 
+# config symlinks
+
 # vim
 mkdir -p ~/.vim/temp # make directory for swap files
 # brew install macvim  # install manually instead
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
-brew install ripgrep # Used to speed up ctrlp plugin in vim.
 brew install mutt
 brew install w3m # used in mutt
 brew install GnuPG # used in mutt
 brew install launch
 brew install r 
-brew install ack
+brew install ack # grep alternative
 brew install unzip
 brew install unrar
+brew install tmux # needed for R integration in vim with nvim-r
 brew install mactex
 brew install pandoc
 brew install pandoc-citeproc
@@ -64,7 +69,9 @@ brew install ruby-gems # in jekyll
 brew install fzf
 /usr/local/opt/fzf/install # script to setup keybindings etc.
 
-#creates dotfile symlinks in home
+#misc
+
+xcode-select --install # xcode. Requiered by nvim-r
 
 mkdir -p ~/.config/karabiner/
 ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/

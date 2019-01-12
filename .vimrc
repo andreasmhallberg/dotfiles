@@ -82,14 +82,14 @@ set guicursor=a:blinkoff0  "  Make the cursor not blink
 set statusline=%F          "  Full path and file name.
 set statusline+=%m         "  Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
 set statusline+=%=         "  Separator between left and right alignmet
-set statusline+=\
-set statusline+=\
+set statusline+=\ 
+set statusline+=\ 
 set statusline+=%l         "  Line number
 set statusline+=/
 set statusline+=%L         "  Lines in buffer
-set statusline+=\
+set statusline+=\ 
 set statusline+=%y         "  Filetype
-set statusline+=\
+set statusline+=\ 
 set statusline+=%k         "  Current keymap
 
 set guioptions-=r                        " Remove left and right scrollbar
@@ -535,7 +535,7 @@ augroup LaTeXMaps
   " Tabularize by & unless escaped
   autocmd Filetype tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
   " Tabularize gloss (by spaces)
-  " map <Leader>tc vie:s/\v +/ /<CR>vie:Tabularize / <CR>
+  autocmd Filetype tex nnoremap <Leader>tc vip:s/\v +/ /<CR>vip:Tabularize / <CR>
   " to autocomplete reference labels 
   autocmd Filetype tex setlocal iskeyword+=:
 augroup end
