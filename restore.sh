@@ -14,12 +14,6 @@
 # - MacVim
 # - Quicksilver - fuzzy application launcher
 # - Spectacle - shortcuts for window management on multi-screens
-# - Firefox
-#   - Adblock Plus
-#   - Adobe Acrobat
-#   - Google Analytics Blocker
-#   - Tridactyl
-#   - Zotero Connector
 # - Qutebrowser
 # - Homebrew
 # - MacTex  - http://tug.org/mactex/mactex-download.html
@@ -99,6 +93,4 @@ ln -sf ~/dotfiles/us-altlatin_utf-8.vim ~/.vim/keymap/us-altlatin_utf-8.vim
 mkdir -p ~/.vim/spell/
 ln -sf ~/dotfiles/sv.utf-8.add ~/.vim/spell/sv.utf-8.add
 ln -sf ~/dotfiles/en.utf-8.add ~/.vim/spell/en.utf-8.add
-
 # run :VundleInstall
-

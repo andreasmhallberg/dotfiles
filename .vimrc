@@ -333,6 +333,8 @@ let g:vim_markdown_frontmatter = 1
 "{{{2 nvim-r
 " Don't type <- with _
    let R_assign = 0
+"{{{2 yankring
+  let g:yankring_history_dir = '$HOME/temp/'
 "}}}1
 "{{{1 Display & Color
 
