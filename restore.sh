@@ -99,3 +99,6 @@ ln -sf ~/dotfiles/us-altlatin_utf-8.vim ~/.vim/keymap/us-altlatin_utf-8.vim
 mkdir -p ~/.vim/spell/
 ln -sf ~/dotfiles/sv.utf-8.add ~/.vim/spell/sv.utf-8.add
 ln -sf ~/dotfiles/en.utf-8.add ~/.vim/spell/en.utf-8.add
+
+# run :VundleInstall
+
