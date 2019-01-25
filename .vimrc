@@ -18,7 +18,7 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'skywind3000/asyncrun.vim'                "  syntax highlighting for CHAT-transcriptions
 Plugin 'klapheke/vim-chat'                       "  syntax highlighting for CHAT-transcriptions
 Plugin 'morhetz/gruvbox'                         "  colorsheme
-Plugin 'vim-syntastic/syntastic'                 "  syntax checker. Used for TeX and R
+" Plugin 'vim-syntastic/syntastic'                 "  syntax checker. Used for TeX and R
 Plugin 'jalvesaq/Nvim-R'                         "  Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'                      "  Useful mappings for netrw
 Plugin 'tpope/vim-commentary'                    "  gc<movement> to comment
@@ -35,6 +35,7 @@ Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style
 " Plugin 'kien/ctrlp.vim'                        "  Fuzzy file finder. Replaced by fzf
 Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
+" Plugin 'TaDaa/vimade'
 " Plugin 'rickhowe/diffchar.vim'
 
 " All Plugins must be added before the following line
@@ -412,17 +413,17 @@ autocmd Filetype markdown
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ -o '%'.pdf<CR>
 
-" to pdf with numvers 
+" to pdf with numbers 
 autocmd Filetype markdown 
             \ nnoremap <Leader>ppn 
             \ :w<CR>
-            \ :AsyncRun pandoc -f
-            \ markdown+implicit_figures+table_captions+multiline_tables %
+            \ :AsyncRun pandoc '%'
+            \ -f markdown+implicit_figures+table_captions+multiline_tables
             \ --pdf-engine=xelatex
             \ --columns=200
-            \ -N
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-            \ -smart -o '%'.pdf<CR>
+            \ --number-sections
+            \ -o '%'.pdf<CR>
 
 
 " run biber
@@ -433,7 +434,7 @@ autocmd Filetype markdown
 autocmd Filetype markdown
     \ nnoremap <Leader>pd
     \ :w<CR>
-    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % -smart --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
 "  to beamer 
 autocmd Filetype markdown
@@ -603,11 +604,6 @@ function! MarkdownLevel()
 endfunction
 
 " {{{2 r mappings
-
-augroup rsettings
-  autocmd!
-  autocmd Filetype r setlocal showbreak=-->
-augroup end
 " }}}1
 "{{{ Command line maopings
 cnoremap jj <c-w>

@@ -1,6 +1,6 @@
 # symlink to ~/.muttrc
 # {{{ colorscheme
-source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+source ~/dotfiles/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
 
 set realname = "Andreas Hallberg"
 
@@ -14,7 +14,7 @@ folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/dotfiles/account.
 folder-hook 'account.gu.se.andreas.hallberg' 'source ~/dotfiles/account.gu.se.andreas.hallberg'
 
 # Default account
-source ~/dotfiles/account.com.gmail.andreasmartenhallberg  
+source ~/dotfiles/account.gu.se.andreas.hallberg
 
 # Macros for switching accounts
 macro index <f2> '<sync-mailbox><enter-command>source ~/dotfiles/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
