@@ -9,3 +9,6 @@ install.packages('reshape2') # new reshape
 install.packages('xtable')
 install.packages('Hmisc') # xtable to convert to latex
 install.packages('effects')
+install.packages("GGally")
+install.packages("network")
+install.packages("igraph")

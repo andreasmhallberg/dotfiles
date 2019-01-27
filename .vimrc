@@ -55,7 +55,7 @@ set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/d
 set spell                                 "  check spelling by default
 set spelllang=en_us
 set nowrapscan                               " No wraparound end of file in normal searches
-set hlsearch                               " No high-light search hits
+set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 set smartcase                                " Case-sensitive when upper case is used in search string
