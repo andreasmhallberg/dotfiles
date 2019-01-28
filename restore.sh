@@ -45,7 +45,6 @@ mkdir -p ~/.vim/temp # make directory for swap files
 # brew install macvim  # install manually instead
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
-brew install mutt
 brew install w3m # used in mutt
 brew install GnuPG # used in mutt
 brew install launch
@@ -80,6 +79,8 @@ ln -sf ~/dotfiles/.Rprofile ~/.Rprofile
 
 # mutt
 mkdir -p ~/.mutt
+git clione https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/
+brew install mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
 ln -sf ~/jobb/aliases ~/.mutt/aliases
