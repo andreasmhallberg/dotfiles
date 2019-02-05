@@ -1,0 +1,67 @@
+
+fontFile Times-Roman		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusRoman-Regular
+fontFile Times-Italic		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusRoman-Italic
+fontFile Times-Bold		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusRoman-Bold
+fontFile Times-BoldItalic	/usr/local/share/ghostscript/9.23/Resource/Font/NimbusRoman-BoldItalic
+fontFile Helvetica		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusSans-Regular
+fontFile Helvetica-Oblique	/usr/local/share/ghostscript/9.23/Resource/Font/NimbusSans-Italic
+fontFile Helvetica-Bold		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusSans-Bold
+fontFile Helvetica-BoldOblique	/usr/local/share/ghostscript/9.23/Resource/Font/NimbusSans-BoldItalic
+fontFile Courier		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusMonoPS-Regular
+fontFile Courier-Oblique	/usr/local/share/ghostscript/9.23/Resource/Font/NimbusMonoPS-Italic
+fontFile Courier-Bold		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusMonoPS-Bold
+fontFile Courier-BoldOblique	/usr/local/share/ghostscript/9.23/Resource/Font/NimbusMonoPS-BoldItalic
+fontFile Symbol			/usr/local/share/ghostscript/9.22/Resource/Font/StandardSymbolsPS
+fontFile ZapfDingbats		/usr/local/share/ghostscript/9.22/Resource/Font/D050000L
+
+fontDir /Users/xhalaa/Library/Fonts/
+fontDir /System/Library/Fonts/
+
+initialZoom page
+
+initialSidebarState no
+
+# Output options
+textEncoding UTF-8
+textEOL unix
+
+# read Arabic 
+# https://www.xpdfreader.com/download.html
+unicodeMap	ISO-8859-6	/usr/local/share/xpdf/arabic/ISO-8859-6.unicodeMap
+
+# Command for prining. Start with |. 
+# Print with skim
+# not working
+psFile "| launch -p"
+
+# BINDINGS
+
+bind         /               any     find
+bind         ?               any     find
+bind         n               any     findNext
+bind         N               any     findPrevious
+bind         G               any     gotoLastPage
+unbind       g               any
+bind         g               any     gotoPage(1)
+bind         s               any     openSidebar
+bind         r               any     rotateCW
+bind         r               any     reload
+bind         j               any     scrollDown(64)
+bind         k               any     scrollUp(64)
+bind         h               any     scrollLeft(64)
+bind         l               any     scrollRight(64)
+bind         s               any     toggleSidebar
+bind         ctrl-f          any     nextPage
+bind         ctrl-b          any     prevPage
+bind         f               any     toggleFullScreenMode
+bind         J               any     nextTab
+bind         K               any     prevTab
+bind         q               any     quit
+bind         ctrl-s          any     "run(launch -a skim %f)"
+unbind       ctrl-S          any
+bind         ctrl-S          any     saveAs
+bind         =               any     zoomFitWidth
+bind         +               any     zoomIn
+bind         -               any     zoomOut
+bind         p               any     focusToPageNum
+bind         ctrl-p          any     "run(launch -p %f)"

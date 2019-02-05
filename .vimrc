@@ -29,6 +29,7 @@ Plugin 'chrisbra/csv.vim'                        "  use sc-im for ascii stuff. B
 Plugin 'sjl/gundo.vim'                           "  visual undo tree
 Plugin 'godlygeek/tabular'                       "  :Tabular command to align stuff
 Plugin 'lervag/vimtex'                           "  tex stuff
+Plugin 'jiangmiao/auto-pairs'
 " Plugin 'vim-scripts/directionalWindowResizer'  "  c-<hjkl> to resize window
 " Plugin 'vim-scripts/LanguageTool'              "  Spell and grammar checking. Not very useful in files with markup.
 Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style.
@@ -155,7 +156,7 @@ nnoremap S  :noh<cr>S
 " Open no text file externally
 augroup openExternally
   autocmd!
-  autocmd BufRead,BufNewFile *.pdf silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
+  autocmd BufRead,BufNewFile *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
   autocmd BufRead,BufNewFile *.mp4,*.mp3,*.flac silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
 augroup END
 
@@ -304,7 +305,7 @@ let g:csv_no_conceal = 1
 let g:pandoc#syntax#conceal#use = 0
 
 " apply pandoc-syntax on .md files
-au! BufNewFile,BufFilePre,BufRead *.md,*.mkd set filetype=markdown.pandoc
+au! BufNewFile,BufFilePre,BufRead *.md,*.mkd,*.mkd set filetype=markdown.pandoc
 
 "{{{2 gundo
 " Soft wrap gundo preview
@@ -378,7 +379,7 @@ nnoremap <Leader>m :e $MYVIMRC<CR>
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
 " Open pdf compiled from this file
-nnoremap <silent> <Leader>po :!open '%'*.pdf<CR>
+nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
 
 
 "{{{2 Markdown compilation  (with asyncrun plugin)
@@ -393,6 +394,17 @@ autocmd Filetype markdown
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ --wrap=none
             \ -o '%'.tex<CR>
+
+"  to tex self contained
+autocmd Filetype markdown 
+            \ nnoremap <buffer> <Leader>pts :w<CR>
+            \ :AsyncRun pandoc
+            \ -f markdown+implicit_figures+table_captions+smart %
+            \ --pdf-engine=xelatex
+            \ --biblatex
+            \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+            \ --wrap=none
+            \ -so '%'.tex<CR>
 
 " to txt
 autocmd Filetype markdown 
@@ -605,12 +617,10 @@ function! MarkdownLevel()
     return "=" 
 endfunction
 
-" {{{2 r mappings
 " }}}1
-"{{{ Command line maopings
+"{{{1 Command line maopings
 cnoremap jj <c-w>
 "{{{1 Movement & Editing
-
 " {{{2 Completion
   " Use TAB for completions
   inoremap <Tab> <c-n>

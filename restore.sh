@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# run this with sudo
+
 # Make linux compatible
     # https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script
 
@@ -18,6 +20,13 @@
 # - Homebrew
 # - MacTex  - http://tug.org/mactex/mactex-download.html
 #           - update texlive when installed to get most resent packages
+
+# Install fonts
+  # LateefGR
+  # Linux Libertine O
+  # Amiri
+  # Source Code Pro
+  # Source Sans Pro
 
 # Install via script
 
@@ -54,6 +63,7 @@ brew install unzip
 brew install unrar
 brew install tmux # needed for R integration in vim with nvim-r
 brew install mactex
+brew install xpdf
 brew install pandoc
 brew install pandoc-citeproc
 brew install jekyll
@@ -76,6 +86,7 @@ ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/a
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/.qutebrowser ~/.qutebrowser
 ln -sf ~/dotfiles/.Rprofile ~/.Rprofile
+ln -sf ~/dotfiles/.xpdfrc ~/.xpdfrc
 
 # mutt
 mkdir -p ~/.mutt
@@ -84,6 +95,7 @@ brew install mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
 ln -sf ~/jobb/aliases ~/.mutt/aliases
+# transfer gpg-keyes
 
 # vim
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
@@ -95,3 +107,18 @@ mkdir -p ~/.vim/spell/
 ln -sf ~/dotfiles/sv.utf-8.add ~/.vim/spell/sv.utf-8.add
 ln -sf ~/dotfiles/en.utf-8.add ~/.vim/spell/en.utf-8.add
 # run :VundleInstall
+
+# make ITerm2 do italics
+# https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
+tic -o ~/.terminfo xterm-256color.terminfo.txt
+
+# install R-packages
+Rscript r-packages.r
+
+# Jekyll stuff
+gem install --user-install bundler jekyll # Install jekyll
+gem install bundler jekyll
+gem install jekyll-sitemap
+gem install jekyll-seo-tag
+
+

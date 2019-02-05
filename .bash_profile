@@ -48,6 +48,9 @@ alias gc='git checkout'
 alias gcb='git checkout -b' #checkout and create new branch
 alias gb='git branch'
 alias gs='git status'
+alias xpdf='xpdf &' # open in background
+
+alias renamer="vim -c 'Renamer $1"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # Fuzzy file finding with ctrl-p is much slower from inside ITerm than in MacVim.
@@ -82,3 +85,4 @@ export PATH
 bind "set completion-ignore-case on"
 
 
+export PATH="/usr/local/opt/qt/bin:$PATH"

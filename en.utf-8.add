@@ -1,3 +1,10 @@
+# - A "/" may follow the word with the following items:
+#    =		Case must match exactly.
+#    ?		Rare word.
+#    !		Bad (wrong) word.
+#    1 to 9	A region in which the word is valid.  If no regions are
+		specified the word is valid in all regions.
+
 ANOVA
 AOI
 AOIs
@@ -105,3 +112,4 @@ morphosyntactic
 slop/!
 interpretable
 invariance
+triptote
