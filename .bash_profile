@@ -39,7 +39,7 @@ export CLICOLOR=1
 
 # Aliases
 
-alias ls='ls -Fa' # ls with directory/symlink indocators (-F) and hidden files (-a)
+alias ls='ls -F' # ls with directory/symlink indocators (-F) and hidden files (-a)
 # alias "-"='cd ..' # doesnt work
 # alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
