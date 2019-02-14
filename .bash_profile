@@ -21,10 +21,10 @@ GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
   
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-PS1='\[${GREEN}\][\h \w] \[${RESET}\]'
-else 
+if [[ "$OSTYPE" == "darwin"* ]]; then
 PS1='\[${GREEN}\][\A \w] \[${RESET}\]'
+else # not macOS
+PS1='\[${GREEN}\][\h \w] \[${RESET}\]'
 fi
 
 ##
