@@ -22,9 +22,9 @@ RESET="$(tput sgr0)"
 
   
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-PS1='\[${GREEN}\][\A \w] \[${RESET}\]'
-else 
 PS1='\[${GREEN}\][\h \w] \[${RESET}\]'
+else 
+PS1='\[${GREEN}\][\A \w] \[${RESET}\]'
 fi
 
 ##
