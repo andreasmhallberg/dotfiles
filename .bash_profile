@@ -5,8 +5,8 @@ export PATH=$PATH:~/dotfiles/bin
 
 source ~/.fzf.bash
 
-export VISUAL="/Applications/MacVim.app/Contents/MacOS/Vim"
-export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
+export VISUAL="vim"
+export EDITOR="vim"
 
 # fzf default options
 export FZF_DEFAULT_COMMAND='find .'
@@ -20,7 +20,12 @@ export PROMPT_DIRTRIM=2 # does not work with bash 3 that ships with OSX
 GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
+  
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
 PS1='\[${GREEN}\][\A \w] \[${RESET}\]'
+else 
+PS1='\[${GREEN}\][\h \w] \[${RESET}\]'
+fi
 
 ##
 # Your previous /Users/andy/.bash_profile file was backed up as /Users/andy/.bash_profile.macports-saved_2016-08-03_at_10:37:22
@@ -35,8 +40,6 @@ export CLICOLOR=1
 # Aliases
 
 alias ls='ls -Fa' # ls with directory/symlink indocators (-F) and hidden files (-a)
-alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
-alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 # alias "-"='cd ..' # doesnt work
 # alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
@@ -48,15 +51,19 @@ alias gc='git checkout'
 alias gcb='git checkout -b' #checkout and create new branch
 alias gb='git branch'
 alias gs='git status'
-alias xpdf='xpdf &' # open in background
 
-alias renamer="vim -c 'Renamer $1"
+alias renamer="vim -c 'Renamer"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # Fuzzy file finding with ctrl-p is much slower from inside ITerm than in MacVim.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
-# alias vim='mvim -v'                                   # Because MacVim has better display of Arabic chars.
+
+# OSX only
+if [[ "$OSTYPE" == "darwin"* ]]; then
 alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+fi
 
 # cd to cd and ls
 function cs () {

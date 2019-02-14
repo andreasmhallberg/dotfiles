@@ -21,7 +21,7 @@ Plugin 'morhetz/gruvbox'                         "  colorsheme
 " Plugin 'vim-syntastic/syntastic'                 "  syntax checker. Used for TeX and R
 Plugin 'jalvesaq/Nvim-R'                         "  Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'                      "  Useful mappings for netrw
-Plugin 'tpope/vim-commentary'                    "  gc<movement> to comment
+Plugin 'tpope/vim-commentary'                    "  gc<range> to comment
 Plugin 'tpope/vim-repeat'                        "  make mappings repeatable
 Plugin 'tpope/vim-vinegar'
 Plugin 'vim-pandoc/vim-pandoc-syntax'            "  good syntax, nested HTML, yaml, etc.
@@ -60,7 +60,7 @@ set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 set smartcase                                " Case-sensitive when upper case is used in search string
-set complete +=s~/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
+set complete +=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
 set complete +=s~/.mutt/aliases.jobb         " Load bibtex dumpfile to completion files
 set wildmenu                                 " Show command completion alternatives
 set autoread                                 " autoread when a file is changed from the outside
@@ -197,6 +197,9 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
+"{{{2 Autopairs
+
+
 "{{{2 Syntastic
 " Recommended settings in help
     set statusline+=%#warningmsg#
@@ -380,7 +383,8 @@ nnoremap <Leader>m :e $MYVIMRC<CR>
 nnoremap <Leader>r :set wrap!<CR>
 " Open pdf compiled from this file
 nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
-
+" Toggle GoYo
+nnoremap <Leader>g :Goyo<cr>
 
 "{{{2 Markdown compilation  (with asyncrun plugin)
 
@@ -628,7 +632,7 @@ cnoremap jj <c-w>
   inoremap <S-Tab> <Cv>u0009
   " CTRL-f to complete file path
   inoremap <C-f> <c-x><c-f>
-
+  inoremap xx <c-x><c-n>
 
 " move around windows
 nnoremap <c-h> <c-w>h
@@ -728,52 +732,52 @@ iab widht width
 inoremap jj <Esc>ciw
 " imap <BS><BS> <NOP> " To learn the above
 
-"{{{2 Delimiters
-" Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
-inoremap {} {}<Left>
-inoremap () ()<Left>
-inoremap [] []<Left>
-inoremap <lt>> <><Left>
-inoremap ** **<Left>
-inoremap "" ""<Left>
-inoremap '' ''<Left>
-inoremap '' ''<Left>
+""{{{2 Delimiters
+"" Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
+"inoremap {} {}<Left>
+"inoremap () ()<Left>
+"inoremap [] []<Left>
+"inoremap <lt>> <><Left>
+"inoremap ** **<Left>
+"inoremap "" ""<Left>
+"inoremap '' ''<Left>
+"inoremap '' ''<Left>
 
-" Normal behaviour if folowed by space, enter, comma, full stop
-inoremap {}<Space> {}<Space>
-inoremap {}<CR> {}<CR>
-inoremap {}, {},
-inoremap {}. {}.
+" " Normal behaviour if folowed by space, enter, comma, full stop
+" inoremap {}<Space> {}<Space>
+" inoremap {}<CR> {}<CR>
+" inoremap {}, {},
+" inoremap {}. {}.
 
-inoremap ()<Space> ()<Space>
-inoremap ()<CR> ()<CR>
-inoremap (), (),
-inoremap (). ().
+" inoremap ()<Space> ()<Space>
+" inoremap ()<CR> ()<CR>
+" inoremap (), (),
+" inoremap (). ().
        
-inoremap []<Space> []<Space>
-inoremap []<CR> []<CR>
-inoremap [], [],
-inoremap []. [].
+" inoremap []<Space> []<Space>
+" inoremap []<CR> []<CR>
+" inoremap [], [],
+" inoremap []. [].
 
-inoremap **<Space> **<Space>
-inoremap **<CR> **<CR>
-inoremap **, **,
-inoremap **. **.
+" inoremap **<Space> **<Space>
+" inoremap **<CR> **<CR>
+" inoremap **, **,
+" inoremap **. **.
 
-inoremap <><Space> <><Space>
-inoremap <><CR> <><CR>
-inoremap <>, <>,
-inoremap <>. <>.
+" inoremap <><Space> <><Space>
+" inoremap <><CR> <><CR>
+" inoremap <>, <>,
+" inoremap <>. <>.
 
-inoremap ""<Space> ""<Space>
-inoremap ""<CR> ""<CR>
-inoremap "", "",
-inoremap "". "".
+" inoremap ""<Space> ""<Space>
+" inoremap ""<CR> ""<CR>
+" inoremap "", "",
+" inoremap "". "".
 
-inoremap ''<Space> ''<Space>
-inoremap ''<CR> ''<CR>
-inoremap '', '',
-inoremap ''. ''.
+" inoremap ''<Space> ''<Space>
+" inoremap ''<CR> ''<CR>
+" inoremap '', '',
+" inoremap ''. ''.
 
 
 "}}}1
@@ -782,12 +786,14 @@ inoremap ''. ''.
 
 
 " Don't fold 
-augroup readningnotes
+augroup readingnotes
   autocmd!
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal nofoldenable
   autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
   " Highligt page refs at end of line
   autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?\s*$" containedin=ALL
+  autocmd BufRead ~/Box\ Sync/readingnotes/* set iskeyword+=@-@ " @ for completion keywords 
+  autocmd BufRead ~/Box\ Sync/readingnotes/* set iskeyword+=-
 augroup END
 
 " Filter location list to get one hit per file 
@@ -818,6 +824,7 @@ autocmd BufRead ~/.mutt/* setlocal filetype=muttrc
 " muttaliasescomplete
 autocmd FileType mail setlocal omnifunc=muttaliasescomplete#Complete 
 autocmd Filetype mail inoremap <buffer><leader>m <c-x><c-o>
+
 
 "}}}1
 "{{{ Test

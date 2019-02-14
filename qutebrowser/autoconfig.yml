@@ -50,6 +50,8 @@ settings:
   url.searchengines:
     global:
       DEFAULT: https://duckduckgo.com/?q={}
+      adlibris: http://www.adlibris.com/se/sok?q={}
+      libris: http://libris.kb.se/hitlist?d=libris&q={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}
