@@ -2,8 +2,7 @@
 #    =		Case must match exactly.
 #    ?		Rare word.
 #    !		Bad (wrong) word.
-#    1 to 9	A region in which the word is valid.  If no regions are
-		specified the word is valid in all regions.
+#    1 to 9	A region in which the word is valid.  If no regions are specified the word is valid in all regions.
 
 ANOVA
 AOI
@@ -100,7 +99,6 @@ vs.
 combinatory
 distractor
 postilions/!
-backbackpacking
 cenemic
 pleremic
 sociolinguistic
@@ -115,3 +113,6 @@ invariance
 triptote
 descoverable
 macrosociological
+disambiguating
+garden pathed
+frequentist

@@ -30,10 +30,7 @@ Plugin 'sjl/gundo.vim'                           "  visual undo tree
 Plugin 'godlygeek/tabular'                       "  :Tabular command to align stuff
 Plugin 'lervag/vimtex'                           "  tex stuff
 Plugin 'jiangmiao/auto-pairs'
-" Plugin 'vim-scripts/directionalWindowResizer'  "  c-<hjkl> to resize window
-" Plugin 'vim-scripts/LanguageTool'              "  Spell and grammar checking. Not very useful in files with markup.
 Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style.
-" Plugin 'kien/ctrlp.vim'                        "  Fuzzy file finder. Replaced by fzf
 Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
 " Plugin 'TaDaa/vimade'
@@ -42,7 +39,6 @@ Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in f
 " All Plugins must be added before the following line
 call vundle#end()            " required
 "{{{1 Settings
-
 set clipboard=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
@@ -53,7 +49,7 @@ set path+=**                                 " make file-based commands search i
 " set complete +=kspell                      " Complete from dictionary when spell is on. Mostly annoying. Technical words will be written more than once and that way added to completion list.
 set belloff=all                              " turn off all warnings bells
 set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/dotfiles
-set spell                                 "  check spelling by default
+set spell                                    "  check spelling by default
 set spelllang=en_us
 set nowrapscan                               " No wraparound end of file in normal searches
 set nohlsearch                               " No high-light search hits
@@ -61,24 +57,20 @@ set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 set smartcase                                " Case-sensitive when upper case is used in search string
 set complete +=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
-set complete +=s~/.mutt/aliases.jobb         " Load bibtex dumpfile to completion files
 set wildmenu                                 " Show command completion alternatives
 set autoread                                 " autoread when a file is changed from the outside
 " set backspace=indent,eol,start             " backspace over everything in insert mode
 set hidden                                   " Allow unsaved buffers to be hidden.
 set virtualedit=block                        " Allow block selection over empty lines.
-if has("gui_running" )
-  set termguicolors                          " 24-bit colors in terminal
-endif
 set scrolloff=10                              " When scrolling, keep the cursor 4 lines from the top/bottom
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
 set display+=lastline                        " Display as much as possible of last line rather than @s
 
-
-
 " DISPLAY
 
-
+if has("gui_running" )
+  set termguicolors                          " 24-bit colors in terminal
+endif
 set guicursor=a:blinkoff0  "  Make the cursor not blink
 " Statusline
 set statusline=%F          "  Full path and file name.
@@ -111,8 +103,8 @@ set splitbelow                            "  Open split window opens below
 set shortmess+=A                          "  No swapfile exists warning
 set expandtab                             "  tab key inserts spaces. Needed for indentation with <
 set shiftwidth=2                          "  Length of tab-character for indention 4 spaces for markdown syntax
-set formatoptions=r                      "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
-set formatoptions+=j                                         "  j=Where it makes sense, remove a comment leader when joining lines.
+set formatoptions=r                       "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
+set formatoptions+=j                      "  j=Where it makes sense, remove a comment leader when joining lines.
 set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
 
 " }}}1
@@ -124,8 +116,10 @@ nnoremap <Down> <c-w>-
 nnoremap <Left> <c-w><
 nnoremap <Right> <c-w>>
 
-" Never go into xmode
-nnoremap Q <NOP>
+" q to quit. consistency with mutt, xpdf, qute
+nnoremap q :q<CR>
+" Q to record macro
+nnoremap Q q
 
 " Enlarge split vertically
 nnoremap + <C-w>+=
@@ -138,37 +132,23 @@ nnoremap tn :tabnew<CR>
 
 "{{{1 General stuff (passive)
 
-" end hlsearch on onsert
-" hlsearch cannot be wrapped in autocmd
-
-nnoremap i  :noh<cr>i
-nnoremap I  :noh<cr>I
-nnoremap a  :noh<cr>a
-nnoremap A  :noh<cr>A
-nnoremap o  :noh<cr>o
-nnoremap O  :noh<cr>O
-nnoremap c  :noh<cr>c
-nnoremap cc :noh<cr>cc
-nnoremap s  :noh<cr>s
-nnoremap S  :noh<cr>S
-
+" No wrapping in quickfix or location list buffer
+autocmd BufEnter,BufRead quickfix setlocal nowrap
 
 " Open no text file externally
+" Sub-optimal because it removes the # buffer
 augroup openExternally
   autocmd!
   autocmd BufRead,BufNewFile *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
-  autocmd BufRead,BufNewFile *.mp4,*.mp3,*.flac silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
+  autocmd BufRead,BufNewFile *.mp4,*.mp3,*.flac,*.png,*.jpg silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
 augroup END
 
 
 " Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
 autocmd VimResized * :wincmd =
 
-" Move between windows horizontaly
-" nnoremap HH <C-W>h
-" nnoremap LL <C-W>l
-
-
+" Mac command+p to cycle panes. Consistency with iTerm settings
+nnoremap <D-p> <c-w>w 
 
 " Foldmethod for .vimrc
 autocmd BufRead ~/.vimrc setlocal fdm=marker 
@@ -189,7 +169,7 @@ autocmd BufEnter * silent! lcd %:p:h
 autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
 
 
-" Different cursor shapes in Iterm2
+" Different cursor shapes in Iterm
 " http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
 
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -197,8 +177,6 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
-"{{{2 Autopairs
-
 
 "{{{2 Syntastic
 " Recommended settings in help
@@ -211,8 +189,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
 "{{{2 fzf
-
-
 " keymaps in prompt
     let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
@@ -221,15 +197,14 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
       \ 'ctrl-v': 'vsplit' ,
       \ 'ctrl-s': 'split'
       \  }
-
 "{{{2 vimtex 
-" See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
+  " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 
-" Vimtex settings
-let g:vimtex_complete_close_braces = 1
+  " Vimtex settings
+  let g:vimtex_complete_close_braces = 1
 
 
-" From vimtex help
+  " From vimtex help
             let g:vimtex_view_general_viewer
                   \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
             let g:vimtex_view_general_options = '-r @line @pdf @tex'
@@ -253,74 +228,73 @@ let g:vimtex_complete_close_braces = 1
                 call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
               endif
             endfunction
-
-"  folding
-let g:vimtex_fold_enabled=1
+  "  folding
+  let g:vimtex_fold_enabled=1
 "{{{2 DiffChar
-" Set wrap in diff
-" au FilterWritePre * if &diff | set wrap | endif
+  " Set wrap in diff
+  " au FilterWritePre * if &diff | set wrap | endif
 
-" let g:DiffUpdate = 1
-" let g:DiffUnit = 'Word3'
-" let g:DiffModeSync = 1
+  " let g:DiffUpdate = 1
+  " let g:DiffUnit = 'Word3'
+  " let g:DiffModeSync = 1
 
-" Reduce error reports
-" autocmd InsertEnter * :RDCha
-" autocmd InsertLeave * :TDCha
+  " Reduce error reports
+  " autocmd InsertEnter * :RDCha
+  " autocmd InsertLeave * :TDCha
 "{{{2 netrw
-let g:netrw_banner=0 " supress banner
-let g:netrw_sort_options = "i" " sort caseinsensitive
+  let g:netrw_banner=0 " supress banner
+  let g:netrw_sort_options = "i" " sort caseinsensitive
 
 "{{{2 diminiactive
-" The following drastically improves dimming over long wrapped lines.
-" https://github.com/blueyed/vim-diminactive/issues/2
-if exists('+colorcolumn')
-    function! InactivateWindow(inactivate)
-        if a:inactivate == 1
-            " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
-            let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
-        else
-            if exists("w:inactiveWindowMatchId")
-                call matchdelete(w:inactiveWindowMatchId)
-            endif
-        endif
-    endfunction
-    augroup DimInactiveWindows
-        au!
-        "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
-        au WinLeave * call InactivateWindow(1)
-        au WinEnter * call InactivateWindow(0)
-    augroup END
-endif
+  " The following drastically improves dimming over long wrapped lines.
+  " https://github.com/blueyed/vim-diminactive/issues/2
+  if exists('+colorcolumn')
+      function! InactivateWindow(inactivate)
+          if a:inactivate == 1
+              " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
+              let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
+          else
+              if exists("w:inactiveWindowMatchId")
+                  call matchdelete(w:inactiveWindowMatchId)
+              endif
+          endif
+      endfunction
+      augroup DimInactiveWindows
+          au!
+          "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
+          au WinLeave * call InactivateWindow(1)
+          au WinEnter * call InactivateWindow(0)
+      augroup END
+  endif
 "{{{2 csv
 
-autocmd BufRead,BufEnter *.csv set filetype=csv
-autocmd BufRead,BufEnter *.dat set filetype=csv
+  autocmd BufRead,BufEnter *.csv set filetype=csv
+  autocmd BufRead,BufEnter *.dat set filetype=csv
 
-" Highlight column under cursor. Is not effected in insert mode
-let g:csv_highlight_column = 'n'
+  " Highlight column under cursor. Is not effected in insert mode
+  let g:csv_highlight_column = 'n'
 
-" Don't conceal delimiter
-let g:csv_no_conceal = 1
+  " Don't conceal delimiter
+  let g:csv_no_conceal = 1
 
-"{{{2 vim-pandox-syntax
-" don't use conceal
-let g:pandoc#syntax#conceal#use = 0
+"{{{2 vim-pandoc-syntax
+  " don't use conceal
+  let g:pandoc#syntax#conceal#use = 0
 
-" apply pandoc-syntax on .md files
-au! BufNewFile,BufFilePre,BufRead *.md,*.mkd,*.mkd set filetype=markdown.pandoc
+  " apply pandoc-syntax on .md files
+  au BufNewFile,BufFilePre,BufRead *.md,*.mkd,*.mkd set filetype=markdown.pandoc
 
 "{{{2 gundo
-" Soft wrap gundo preview
-augroup MyGundo
-    au!
-    au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
-augroup end
+  " Soft wrap gundo preview
+  augroup MyGundo
+      au!
+      au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
+  augroup end
 
-" Wider gundo window
-    let g:gundo_width = 60
-" Auto-close gundo window on revert.
-    let g:gundo_close_on_revert=1
+  " Wider gundo window
+      let g:gundo_width = 60
+  " Auto-close gundo window on revert.
+      let g:gundo_close_on_revert=1
 
 "{{{2 vim-markdown
 " no mappings. We only want folding
@@ -422,7 +396,7 @@ autocmd Filetype markdown
 
 "  to pdf 
 autocmd Filetype markdown 
-            \ nnoremap <Leader>pp 
+            \ nnoremap <buffer> <Leader>pp 
             \ :w<CR>
             \ :AsyncRun pandoc '%'
             \ -f markdown+implicit_figures+table_captions+multiline_tables+smart
@@ -433,7 +407,7 @@ autocmd Filetype markdown
 
 " to pdf with numbers 
 autocmd Filetype markdown 
-            \ nnoremap <Leader>ppn 
+            \ nnoremap <buffer> <Leader>ppn 
             \ :w<CR>
             \ :AsyncRun pandoc '%'
             \ -f markdown+implicit_figures+table_captions+multiline_tables
@@ -450,7 +424,7 @@ autocmd Filetype markdown
 
 "  to docx. -smart needed for parsing of daises in non TeX.
 autocmd Filetype markdown
-    \ nnoremap <Leader>pd
+    \ nnoremap <buffer> <Leader>pd
     \ :w<CR>
     \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
@@ -489,7 +463,7 @@ autocmd Filetype tex
 " Bibtex run
 " %< "gives current filename without extension
 autocmd Filetype tex
-  \ nnoremap <Leader>b :w<CR>
+  \ nnoremap <buffer> <Leader>b :w<CR>
   \ :AsyncRun biber %<<CR>
 
 " OBS!!! Run
@@ -498,7 +472,7 @@ autocmd Filetype tex
 
 " tex do docx
 autocmd Filetype tex
-    \ nnoremap <Leader>pd
+    \ nnoremap <buffer> <Leader>pd
     \ :w<CR>
     \ :AsyncRun pandoc % -smart --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
@@ -557,6 +531,7 @@ augroup LaTeXMaps
   autocmd Filetype tex nnoremap <Leader>tc vip:s/\v +/ /<CR>vip:Tabularize / <CR>
   " to autocomplete reference labels 
   autocmd Filetype tex setlocal iskeyword+=:
+  autocmd Filetype tex setlocal iskeyword+=-
 augroup end
 
 " }}1
@@ -643,11 +618,11 @@ nnoremap <c-l> <c-w>l
 " Make Y behave like D and C
 nnoremap Y yg_
 
-" Choose first word in spellinglist
+" Choose first word in spelling list preceding misspelled word
 nnoremap zz <esc>mz[s1z=e`z
 
 
-" Command to find and replace repeated word, word duplet or triplet.
+" Command to find and replace repeated word, word double or triplet.
 command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
 
 " Back space to alternate buffer
@@ -676,7 +651,7 @@ noremap - :Ex<cr>
 
 " Angular brackets
 "〈 U+2329
-" 〉U+232A
+" 〉U+232
 inoremap <A-<> 〈
 inoremap <A->> 〉
 
@@ -685,18 +660,6 @@ inoremap >> <ESC>me>>`ella
 inoremap << <ESC>me<<`ehha
 
 " Like numpad
-nnoremap <A-j> 1
-nnoremap <A-k> 2
-nnoremap <A-l> 3
-nnoremap <A-u> 4
-nnoremap <A-i> 5
-nnoremap <A-o> 6
-nnoremap <A-7> 7
-nnoremap <A-8> 8
-nnoremap <A-9> 9
-" Alt-,
-nnoremap ¬ 0
-
 inoremap <A-j> 1
 inoremap <A-k> 2
 inoremap <A-l> 3
@@ -732,53 +695,6 @@ iab widht width
 inoremap jj <Esc>ciw
 " imap <BS><BS> <NOP> " To learn the above
 
-""{{{2 Delimiters
-"" Type delimiters in input withing them. The following space, comma or dot  makes it possible to write '{}' and keep typing
-"inoremap {} {}<Left>
-"inoremap () ()<Left>
-"inoremap [] []<Left>
-"inoremap <lt>> <><Left>
-"inoremap ** **<Left>
-"inoremap "" ""<Left>
-"inoremap '' ''<Left>
-"inoremap '' ''<Left>
-
-" " Normal behaviour if folowed by space, enter, comma, full stop
-" inoremap {}<Space> {}<Space>
-" inoremap {}<CR> {}<CR>
-" inoremap {}, {},
-" inoremap {}. {}.
-
-" inoremap ()<Space> ()<Space>
-" inoremap ()<CR> ()<CR>
-" inoremap (), (),
-" inoremap (). ().
-       
-" inoremap []<Space> []<Space>
-" inoremap []<CR> []<CR>
-" inoremap [], [],
-" inoremap []. [].
-
-" inoremap **<Space> **<Space>
-" inoremap **<CR> **<CR>
-" inoremap **, **,
-" inoremap **. **.
-
-" inoremap <><Space> <><Space>
-" inoremap <><CR> <><CR>
-" inoremap <>, <>,
-" inoremap <>. <>.
-
-" inoremap ""<Space> ""<Space>
-" inoremap ""<CR> ""<CR>
-" inoremap "", "",
-" inoremap "". "".
-
-" inoremap ''<Space> ''<Space>
-" inoremap ''<CR> ''<CR>
-" inoremap '', '',
-" inoremap ''. ''.
-
 
 "}}}1
 "{{{1 Readingnotes
@@ -792,8 +708,8 @@ augroup readingnotes
   autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
   " Highligt page refs at end of line
   autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?\s*$" containedin=ALL
-  autocmd BufRead ~/Box\ Sync/readingnotes/* set iskeyword+=@-@ " @ for completion keywords 
-  autocmd BufRead ~/Box\ Sync/readingnotes/* set iskeyword+=-
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@ " @ for completion keywords 
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=-
 augroup END
 
 " Filter location list to get one hit per file 
@@ -823,7 +739,7 @@ autocmd BufRead ~/.mutt/* setlocal filetype=muttrc
 
 " muttaliasescomplete
 autocmd FileType mail setlocal omnifunc=muttaliasescomplete#Complete 
-autocmd Filetype mail inoremap <buffer><leader>m <c-x><c-o>
+autocmd Filetype mail inoremap <buffer><c-x><c-m> <c-x><c-o>
 
 
 "}}}1
