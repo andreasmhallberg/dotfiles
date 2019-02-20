@@ -54,24 +54,24 @@ mkdir -p ~/.vim/temp # make directory for swap files
 # brew install macvim  # install manually instead
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
-pkman install w3m # used in mutt
-pkman install GnuPG # used in mutt
-pkman install launch
-pkman install r 
-pkman install ack # grep alternative
-pkman install unzip
-pkman install unrar
-pkman install tmux # needed for R integration in vim with nvim-r
-pkman install mactex
-pkman install xpdf
-pkman install pandoc
-pkman install pandoc-citeproc
-pkman install jekyll
-pkman install ruby # in jekyll
-pkman install ruby-gems # in jekyll
-pkman install fzf
+$pkman install w3m # used in mutt
+$pkman install GnuPG # used in mutt
+$pkman install launch
+$pkman install r 
+$pkman install ack # grep alternative
+$pkman install unzip
+$pkman install unrar
+$pkman install tmux # needed for R integration in vim with nvim-r
+$pkman install mactex
+$pkman install xpdf
+$pkman install pandoc
+$pkman install pandoc-citeproc
+$pkman install jekyll
+$pkman install ruby # in jekyll
+$pkman install ruby-gems # in jekyll
+$pkman install fzf
 /usr/local/opt/fzf/install # script to setup keybindings etc.
-pkman install lftp # for syncing with Box Sync on Linux. https://uisapp2.iu.edu/confluence-prd/display/SOICKB/Using+Box+under+Linux
+$pkman install lftp # for syncing with Box Sync on Linux. https://uisapp2.iu.edu/confluence-prd/display/SOICKB/Using+Box+under+Linux
 
 #misc
 
@@ -91,8 +91,8 @@ ln -sf ~/dotfiles/.xpdfrc ~/.xpdfrc
 
 # mutt
 mkdir -p ~/.mutt
-git clione https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/
-pkman install mutt
+git clone https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/
+$pkman install mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
 ln -sf ~/jobb/aliases ~/.mutt/aliases
