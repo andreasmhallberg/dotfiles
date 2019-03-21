@@ -10,8 +10,6 @@ header-includes:
     - \input{/Users/xhalaa/dotfiles/mypandocstuff/texttt-to-textarabic.tex}
     - \input{/Users/xhalaa/dotfiles/mypandocstuff/standard-settings.tex}
     - \input{/Users/xhalaa/dotfiles/mypandocstuff/beamermacros.tex}
-    - \usepackage{colortbl}
-    - \newcommand{\rc}{\rowcolor{black!10}}
   # allows bemermacros in non-beamer
 beamerarticle: true 
 #classoption: handout

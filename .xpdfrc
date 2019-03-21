@@ -1,4 +1,3 @@
-
 fontFile Times-Roman		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusRoman-Regular
 fontFile Times-Italic		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusRoman-Italic
 fontFile Times-Bold		/usr/local/share/ghostscript/9.23/Resource/Font/NimbusRoman-Bold
@@ -37,6 +36,7 @@ psFile "| launch -p"
 # BINDINGS
 
 bind	/	any	find
+bind	return	any	focusToDocWin
 bind	?	any	find
 bind	n	any	findNext
 bind	N	any	findPrevious
@@ -49,12 +49,12 @@ bind    d       continuous     sideBySideSingleMode
 bind    d       singlePage     continuousMode
 #
 unbind  j       any
-bind	j	continuous	scrollDown(64)
+bind	j	continuous	scrollDown(128)
 bind	j	singlePage	nextPage
-bind	k	continuous	scrollUp(64)
+bind	k	continuous	scrollUp(128)
 bind	k	singlePage	prevPage
-bind	h	any	scrollLeft(64)
-bind	l	any	scrollRight(64)
+bind	h	any	scrollLeft(128)
+bind	l	any	scrollRight(128)
 #
 bind	ctrl-f	any	nextPage
 bind	ctrl-b	any	prevPage
@@ -62,14 +62,14 @@ bind	f	any	toggleFullScreenMode
 bind	J	any	nextTab
 bind	K	any	prevTab
 bind	q	any	quit
-#unbind	ctrl-s	any
-unbind  s       any
-bind	s	any	"run(launch -a skim %f)"
-# bind	s	any	toggleSidebar
-unbind	ctrl-S	any
-bind	ctrl-S	any	saveAs
+# Note quoting to handle file names with spaces
+bind	s	any	'run(open "%f")'
+bind    S       any     toggleSidebar
 bind	=	any	zoomFitWidth
 bind	+	any	zoomIn
-bind	-	any	zoomOut
+# bind	ctrl-+	any	zoomIn
+bind	-	any	zoomOut # Default
+# bind	ctrl--	any	zoomOut # Default
 bind	p	any	focusToPageNum
-bind	ctrl-p	any	"run(launch -p %f)"
+# Note quoting to handle file names with spaces
+bind	ctrl-p	any	'run(launch -p "%f")'

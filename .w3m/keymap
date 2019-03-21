@@ -1,0 +1,8 @@
+keymap H PREV
+keymap L NEXT
+keymap C-f NEXT_PAGE
+keymap C-b PREV_PAGE
+keymab b PREV_WORD
+keymap O TAB_GOTO
+keymap gt NEXT_TAB
+keymap C-h HELP

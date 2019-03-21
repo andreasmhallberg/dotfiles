@@ -62,7 +62,9 @@ $pkman install ack # grep alternative
 $pkman install unzip
 $pkman install unrar
 $pkman install tmux # needed for R integration in vim with nvim-r
-$pkman install mactex
+if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
+  $pkman install mactex
+fi
 $pkman install xpdf
 $pkman install pandoc
 $pkman install pandoc-citeproc
@@ -70,8 +72,18 @@ $pkman install jekyll
 $pkman install ruby # in jekyll
 $pkman install ruby-gems # in jekyll
 $pkman install fzf
-/usr/local/opt/fzf/install # script to setup keybindings etc.
-$pkman install lftp # for syncing with Box Sync on Linux. https://uisapp2.iu.edu/confluence-prd/display/SOICKB/Using+Box+under+Linux
+/usr/local/opt/fzf/install # script to setup fzf keybindings etc.
+
+
+if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
+  # https://github.com/zegervdv/homebrew-zathura
+  brew tap zegervdv/zathura
+  brew cask install xquartz
+  brew install zathura
+  brew install zathura-pdf-poppler
+  mkdir -p $(brew --prefix zathura)/lib/zathura
+  ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+fi
 
 #misc
 

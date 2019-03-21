@@ -17,10 +17,18 @@ settings:
         <Meta+Ctrl+f>: fullscreen
         cm: clear-messages
         q: tab-close
+  colors.tabs.bar.bg:
+    global: black
   colors.tabs.even.bg:
-    global: gray
+    global: black
   colors.tabs.even.fg:
     global: white
+  colors.tabs.odd.bg:
+    global: black
+  colors.tabs.selected.even.bg:
+    global: gray
+  colors.tabs.selected.odd.bg:
+    global: gray
   downloads.position:
     global: bottom
   downloads.remove_finished:
@@ -51,6 +59,7 @@ settings:
     global:
       DEFAULT: https://duckduckgo.com/?q={}
       adlibris: http://www.adlibris.com/se/sok?q={}
+      eall: https://referenceworks.brillonline.com/entries/encyclopedia-of-arabic-language-and-linguistics/transcription-EALL_COM_0348?s.num=1&s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       w: https://en.wikipedia.org/wiki/Special:Search?search={}

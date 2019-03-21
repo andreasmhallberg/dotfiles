@@ -86,4 +86,6 @@ bind index,pager N search-opposite # vim-like
 
 # Convert mail written in markdown to html before sending
 macro compose H "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=utf-8\n"
+# macro compose H "F pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable --toc --bibliography=~/dotfiles/mylatexstuff/bibliotek.bib -t html \ny^T^Utext/html; charset=utf-8\n"
+
 set wait_key=no

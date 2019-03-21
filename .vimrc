@@ -12,9 +12,11 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
+Plugin 'segeljakt/vim-isotope'
 Plugin 'milkypostman/vim-togglelist'             "  toggle quickfix and location list on and off. \q and \l
 Plugin 'muttaliasescomplete.vim'                 "  autocompletion of mutts addressbook. ~/.mutt/aliases as default
 Plugin 'junegunn/goyo.vim'
+Plugin 'will133/vim-dirdiff'
 Plugin 'skywind3000/asyncrun.vim'                "  syntax highlighting for CHAT-transcriptions
 Plugin 'klapheke/vim-chat'                       "  syntax highlighting for CHAT-transcriptions
 Plugin 'morhetz/gruvbox'                         "  colorsheme
@@ -92,7 +94,8 @@ set guioptions-=l
 set guioptions-=L
 set number                                "  Display line numbers
 set foldcolumn=0                          "  No columns to show folds
-set guifont=Source\ Code\ Pro\ Light:h14
+set guifont=Source\ Code\ Pro\ Light:h16
+" set guifont=NimbusMono-Regular:h16
 set linespace=5                           "  More space between lines. Default=0
 set cpoptions=|                           "  | at end of changed (<c>) object
 set linebreak                             "  Soft-wrap between words
@@ -116,10 +119,6 @@ nnoremap <Down> <c-w>-
 nnoremap <Left> <c-w><
 nnoremap <Right> <c-w>>
 
-" q to quit. consistency with mutt, xpdf, qute
-nnoremap q :q<CR>
-" Q to record macro
-nnoremap Q q
 
 " Enlarge split vertically
 nnoremap + <C-w>+=
@@ -130,10 +129,31 @@ nnoremap ! :!
 " gt go to next tab
 nnoremap tn :tabnew<CR>
 
+" close with just q.
+nnoremap q :wq<CR>
+" Q to record macro
+nnoremap Q q
+
 "{{{1 General stuff (passive)
 
-" No wrapping in quickfix or location list buffer
-autocmd BufEnter,BufRead quickfix setlocal nowrap
+augroup PassiveAutos
+    autocmd!
+    autocmd InsertLeave * silent s/\.\.$/./e
+  " Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
+  autocmd VimResized * :wincmd =
+  " Foldmethod for .vimrc
+  autocmd BufRead ~/.vimrc setlocal fdm=marker 
+  " Always use minimalist foldtext
+  autocmd BufEnter * set foldtext=getline(v:foldstart)
+  set fillchars=fold:\ 
+  " Set wd for current file
+  autocmd BufEnter * silent! lcd %:p:h
+  " Read docx through pandoc
+  autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
+  " No wrapping in quickfix or location list buffer
+  autocmd BufEnter,BufRead quickfix setlocal nowrap
+augroup end
+
 
 " Open no text file externally
 " Sub-optimal because it removes the # buffer
@@ -143,30 +163,11 @@ augroup openExternally
   autocmd BufRead,BufNewFile *.mp4,*.mp3,*.flac,*.png,*.jpg silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
 augroup END
 
-
-" Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
-autocmd VimResized * :wincmd =
-
-" Mac command+p to cycle panes. Consistency with iTerm settings
-nnoremap <D-p> <c-w>w 
-
-" Foldmethod for .vimrc
-autocmd BufRead ~/.vimrc setlocal fdm=marker 
-
-" Always use minimalist foldtext
-autocmd BufEnter * set foldtext=getline(v:foldstart)
-set fillchars=fold:\ 
-
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
     set macmeta
 endif
 
-" Set wd for current file
-autocmd BufEnter * silent! lcd %:p:h
-
-" Read docx through pandoc
-autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
 
 
 " Different cursor shapes in Iterm
@@ -177,7 +178,6 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
-
 "{{{2 Syntastic
 " Recommended settings in help
     set statusline+=%#warningmsg#
@@ -192,12 +192,19 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 " keymaps in prompt
     let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
-      \ 'ctrl-p': 'put',
       \ 'ctrl-x': '!launch',
       \ 'ctrl-v': 'vsplit' ,
       \ 'ctrl-s': 'split'
       \  }
+ " toggle Gundo of when fzf'ing 
+" autocmd! FileType fzf :Goyo!<CR>
+
 "{{{2 vimtex 
+
+" Use low-tech completion method with set complete
+let g:vimte_complete_enabled = 0
+
+
   " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
 
   " Vimtex settings
@@ -337,10 +344,10 @@ endif
 " Override conceal applied by varies packages. No pseudo WYSYWYG here!
 autocmd BufEnter * silent! set cole=0
 "}}}1
-"{{{1 Leader commands
+"{{{1 Leader mappings
 "{{{2 general
 " insert date in format yymmdd
-nnoremap <Leader>d :pu =strftime('%y%m%d')<CR>kJ
+nnoremap <Leader>d :pu =strftime('%Y-%m-%d')<CR>kJ
 " open ctrlp fuzzy file finder
 nnoremap <Leader>f :FZF<Space>~/<CR>
 " open netrw. `-` also goes to parent directory inside netrw
@@ -349,10 +356,12 @@ nnoremap <Leader>x :Explore<CR>
 nnoremap <Leader>w <C-w>
 " Gundo toggle window
 nnoremap <Leader>u :GundoToggle<CR>
-" Next item in location list window
-nnoremap <Leader>nn :lne<CR>
+" fzf in reading notes
+nnoremap <Leader>n :FZF<Space>~/jobb/readingnotes/<CR>
 " open vimrc
 nnoremap <Leader>m :e $MYVIMRC<CR>
+" list and chose open buffer 
+" nnoremap <leader>l :ls<CR>:b<space>
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
 " Open pdf compiled from this file
@@ -360,7 +369,8 @@ nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
 " Toggle GoYo
 nnoremap <Leader>g :Goyo<cr>
 
-"{{{2 Markdown compilation  (with asyncrun plugin)
+"{{{2 Markdown compilation <leader>p and variants
+" with asyncrun plugin
 
 "  to tex
 autocmd Filetype markdown 
@@ -440,19 +450,31 @@ autocmd Filetype markdown
     \ --slide-level 1
     \ -o '%'.pdf<CR>
 
-"  to html. -S needed for parsing of daises in non TeX.
+"  to html.
 autocmd Filetype markdown
     \ nnoremap <buffer> <Leader>ph
+    \ :w<CR>
+    \ :AsyncRun
+    \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html %
+    \ --toc
+    \ --columns=80
+    \ --css ~/dotfiles/standard.css
+    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+    \ -o '%'.html<CR>
+
+"  to html, self contained
+autocmd Filetype markdown
+    \ nnoremap <buffer> <Leader>phs
     \ :w<CR>
     \ :AsyncRun
     \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable %
     \ --toc
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ -o '%'.html<CR>
+    \ -so '%'.html<CR>
 
 
 
-"{{{2 TeX compilation
+"{{{2 TeX compilation 
 " run xelatex and rename output to .tex.pdf 
 autocmd Filetype tex
   \ nnoremap <buffer> <Leader>pp :w<CR>
@@ -532,6 +554,7 @@ augroup LaTeXMaps
   " to autocomplete reference labels 
   autocmd Filetype tex setlocal iskeyword+=:
   autocmd Filetype tex setlocal iskeyword+=-
+  autocmd Filetype tex syn match Statement "_" containedin=ALL " Stop _ being an error
 augroup end
 
 " }}1
@@ -548,7 +571,7 @@ augroup MarkdownSyntaxH
   autocmd Filetype markdown syn match Constant "`[^`]\{-}`"
    " put this last to overried above 
   autocmd Filetype markdown syn match Underlined "\v^\\(if\S+|else|fi)>"
-augroup END
+augroup end
   
 
 " Mappings
@@ -556,23 +579,23 @@ augroup END
 
 augroup MarkdownMaps 
   autocmd!
-  autocmd Filetype markdown setlocal commentstring=<!--%s-->
+  autocmd Filetype markdown,markdown.pandoc setlocal commentstring=<!--\ %s\ -->
   " Let Tabularize do pipe tables 
-  autocmd Filetype markdown nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
   " Move section wise
-  autocmd Filetype markdown nnoremap <buffer>]] /^#<CR>
-  autocmd Filetype markdown nnoremap <buffer>[[ ?^#<CR>
-  " surrounds (with surround plugin)
-  autocmd Filetype markdown nnoremap <buffer><Leader>8 ysiW*
-  autocmd Filetype markdown nnoremap <buffer><Leader>` ysiW`
-  autocmd Filetype markdown nnoremap <buffer><Leader>' ysiW'
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>]] /^#<CR>
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>[[ ?^#<CR>
 augroup end
 
+augroup MardownSettings
+  autocmd!
+  autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
+augroup end
 
 " Folding
-autocmd Filetype markdown,r call MarkdownLevel()
-autocmd Filetype markdown,r setlocal foldexpr=MarkdownLevel()  
-autocmd Filetype markdown,r setlocal foldmethod=expr    
+autocmd Filetype markdown,markdown.pandoc,r call MarkdownLevel()
+autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
+autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
 
 function! MarkdownLevel()
     if getline(v:lnum) =~ '^# .*$'
@@ -623,7 +646,7 @@ nnoremap zz <esc>mz[s1z=e`z
 
 
 " Command to find and replace repeated word, word double or triplet.
-command! DoubleWordsCorr %s/\v\c<(\w+(\s|\w)+(\s|\w)+)\s+\1>/\1/gc
+" command! DoubleWordsCorr "%s/\v(\w+) \1 /\1 /gc"
 
 " Back space to alternate buffer
 nnoremap <BS> :b#<CR>
@@ -708,8 +731,9 @@ augroup readingnotes
   autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
   " Highligt page refs at end of line
   autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?\s*$" containedin=ALL
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@ " @ for completion keywords 
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=-
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@ " for completion of keywords 
+  autocmd BufRead ~/Box\ Sync/readingnotes/* set iskeyword+=- " for completion of keywords
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=sKeywords.md " for completion of keywords
 augroup END
 
 " Filter location list to get one hit per file 
