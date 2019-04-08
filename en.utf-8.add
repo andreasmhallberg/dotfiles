@@ -4,14 +4,44 @@
 #    !		Bad (wrong) word.
 #    1 to 9	A region in which the word is valid.  If no regions are specified the word is valid in all regions.
 
+# Common transcibed words in EALL
+
+tāʾ marbūṭa
+al-ʿarabiyya
+iʿrāb
+ʿāmmiyya
+
+# BAD!
+
+postilions/!
+slop/!
+proffered/!
+specif/!
+
+# Acronyms
+
 ANOVA
 AOI
 AOIs
+
+# Abbreviations
+
+e.g.
+etc.
+s.
+pl.
+part.
+m.pl.
+i.e.
+fs.
+ms.
+vs.
+p.
+
 Andreas
 Gothenburg
 Hallberg
 Mekka
-Ta
 arabophone
 axe
 aya
@@ -28,19 +58,15 @@ directionality
 disambiguated
 duals
 durations
-e.g.
 enclitic
 endogram
 endograms
-etc.
 extralinguistic
 fovea
 foveal
-fs.
 fuṣḥā
 grapheme
 homographic
-i.e.
 impressionistically
 incommensurabelity
 incongruency
@@ -51,25 +77,20 @@ kashida
 kashidas
 lexeme
 lexemes
-m.pl.
 markedness
 meeting
 microsaccade
 morphologically
 morphosyntactic
-ms.
 nominal
 nominals
 nunation
 parafoveal
-part.
 pausal
-pl.
 posttarget
 prescriptivist
 psycholinguistic
 resampling
-s.
 saccade
 saccades
 selfregulated
@@ -91,10 +112,8 @@ optionality
 graphemes
 graphemically
 shadda
-vs.
 combinatory
 distractor
-postilions/!
 cenemic
 pleremic
 sociolinguistic
@@ -103,7 +122,6 @@ logographs
 Akkadian
 natively
 morphosyntactic
-slop/!
 interpretable
 invariance
 triptote
@@ -113,12 +131,10 @@ disambiguating
 garden pathed
 frequentist
 generalizable
-p.
 ocularmotor
 phonotactics
 graphotactics
 graphotactic
-15
 allophones
 underrepresentation
 Clitics
@@ -134,4 +150,4 @@ communicatively
 lektionsplanering
 equational
 verbless
-proffered/!
+indefinites

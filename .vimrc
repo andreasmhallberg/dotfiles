@@ -68,6 +68,7 @@ set scrolloff=10                              " When scrolling, keep the cursor 
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
 set display+=lastline                        " Display as much as possible of last line rather than @s
 
+
 " DISPLAY
 
 if has("gui_running" )
@@ -113,12 +114,14 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 " }}}1
 "{{{1 General mappings
 
+" Correct mistake CAPS-LOCK ;
+nnoremap <CR>; :
+
 " Resize split
 nnoremap <Up> <c-w>+
 nnoremap <Down> <c-w>-
 nnoremap <Left> <c-w><
 nnoremap <Right> <c-w>>
-
 
 " Enlarge split vertically
 nnoremap + <C-w>+=
@@ -129,17 +132,17 @@ nnoremap ! :!
 " gt go to next tab
 nnoremap tn :tabnew<CR>
 
-" close with just q.
-nnoremap q :wq<CR>
-" Q to record macro
-nnoremap Q q
-
 "{{{1 General stuff (passive)
 
 augroup PassiveAutos
     autocmd!
-    autocmd InsertLeave * silent s/\.\.$/./e
-  " Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
+    " Remove one dot if one extra is added at end of sentence.
+    " Happens when performing 'ct.' inside a sentence.
+    " Marker used to go back.
+    autocmd InsertLeave * execute "normal md"
+          \| silent s/\.\.$/./e
+          \| execute "normal `d"
+  "  Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
   autocmd VimResized * :wincmd =
   " Foldmethod for .vimrc
   autocmd BufRead ~/.vimrc setlocal fdm=marker 
@@ -154,13 +157,12 @@ augroup PassiveAutos
   autocmd BufEnter,BufRead quickfix setlocal nowrap
 augroup end
 
-
 " Open no text file externally
 " Sub-optimal because it removes the # buffer
 augroup openExternally
   autocmd!
-  autocmd BufRead,BufNewFile *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
-  autocmd BufRead,BufNewFile *.mp4,*.mp3,*.flac,*.png,*.jpg silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
+  autocmd BufRead *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
+  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
 augroup END
 
 " Enable ALT-key in vim. (Only on Mac)
@@ -189,15 +191,18 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
 "{{{2 fzf
+
 " keymaps in prompt
     let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-x': '!launch',
       \ 'ctrl-v': 'vsplit' ,
-      \ 'ctrl-s': 'split'
+      \ 'ctrl-s': 'split' ,
       \  }
+
+
  " toggle Gundo of when fzf'ing 
-" autocmd! FileType fzf :Goyo!<CR>
+" autocmd! BufReadPre *.fzf :Goyo!
 
 "{{{2 vimtex 
 
@@ -567,10 +572,15 @@ augroup end
 
 augroup MarkdownSyntaxH
   autocmd!
-  autocmd Filetype markdown syn match Statement "\\[a-zA-Z]\+"
-  autocmd Filetype markdown syn match Constant "`[^`]\{-}`"
+  " LaTeX commands
+  autocmd Filetype markdown,markdown.pandoc syn match Statement "\\[a-zA-Z]\+"
+  " material within ``
+  autocmd Filetype markdown,markdown.pandoc syn match Constant "`[^`]\{-}`"
+  " Enumeration in prose
+  autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth),"
+  autocmd Filetype markdown,markdown.pandoc syn match Constant "\v\([a-z]\)"
    " put this last to overried above 
-  autocmd Filetype markdown syn match Underlined "\v^\\(if\S+|else|fi)>"
+  autocmd Filetype markdown,markdown.pandoc syn match Underlined "\v^\\(if\S+|else|fi)>"
 augroup end
   
 
@@ -625,12 +635,15 @@ cnoremap jj <c-w>
 "{{{1 Movement & Editing
 " {{{2 Completion
   " Use TAB for completions
-  inoremap <Tab> <c-n>
-  " Shift TAB to inser tab character
-  inoremap <S-Tab> <Cv>u0009
-  " CTRL-f to complete file path
-  inoremap <C-f> <c-x><c-f>
-  inoremap xx <c-x><c-n>
+
+
+inoremap <Tab> <c-n>
+" Shift TAB to inser tab character
+inoremap <S-Tab> <Cv>u0009
+" CTRL-f to complete file path
+inoremap <C-f> <c-x><c-f>
+inoremap xx <c-x><c-n>
+"}}}2
 
 " move around windows
 nnoremap <c-h> <c-w>h
@@ -643,10 +656,6 @@ nnoremap Y yg_
 
 " Choose first word in spelling list preceding misspelled word
 nnoremap zz <esc>mz[s1z=e`z
-
-
-" Command to find and replace repeated word, word double or triplet.
-" command! DoubleWordsCorr "%s/\v(\w+) \1 /\1 /gc"
 
 " Back space to alternate buffer
 nnoremap <BS> :b#<CR>
@@ -714,6 +723,10 @@ iab tow two
 iab whcih which
 iab widht width
 
+" Abbreviations for common cumbersome words
+iab ext extemporaneous
+iab Ext Extemporaneous
+
 " Remove word in input mode. Best mapping ever.
 inoremap jj <Esc>ciw
 " imap <BS><BS> <NOP> " To learn the above
@@ -724,15 +737,17 @@ inoremap jj <Esc>ciw
 " https://github.com/andreasmhallberg/readingnotes
 
 
-" Don't fold 
 augroup readingnotes
   autocmd!
+  " Don't fold 
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal nofoldenable
   autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
   " Highligt page refs at end of line
-  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?\s*$" containedin=ALL
+  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
+  " Allow comments to be indented indefinitely
+  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Comment "\v^\s*\>.*$"
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@ " for completion of keywords 
-  autocmd BufRead ~/Box\ Sync/readingnotes/* set iskeyword+=- " for completion of keywords
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=- " for completion of keywords
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=sKeywords.md " for completion of keywords
 augroup END
 

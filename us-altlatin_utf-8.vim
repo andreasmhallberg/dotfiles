@@ -47,6 +47,9 @@ loadkeymap
 <M-v>s š
 <M-v>S Š
 
+<M-]> ‘
+<M-}> ’
+
 " EALLx
 <M-e> ´
 <M-w> ẇ
