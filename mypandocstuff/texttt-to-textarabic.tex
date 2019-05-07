@@ -10,11 +10,11 @@
 % Also in beamer.
 % https://tex.stackexchange.com/a/97/44517
 \makeatletter
-\@ifclassloaded{beamer}{% true
-    \renewcommand{\texttt}[1]{{\RL{\A#1}}}
-
-}
-{% false. for article etc
+\@ifclassloaded{beamer}
+  {% true
+    \renewcommand{\texttt}[1]{{\RL{\A#1}}} 
+  }
+  {% false. for article etc
     \renewcommand{\texttt}[1]{\textarabic{#1}}
-}
+  }
 \makeatother

@@ -11,6 +11,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'junegunn/fzf'
+Plugin 'sk1418/HowMuch' " calculate visually marked math
 Plugin 'junegunn/fzf.vim'
 Plugin 'segeljakt/vim-isotope'
 Plugin 'milkypostman/vim-togglelist'             "  toggle quickfix and location list on and off. \q and \l
@@ -114,6 +115,16 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 " }}}1
 "{{{1 General mappings
 
+augroup MoveSectionWhise
+autocmd!
+  " Move forwards
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>]] /^#<CR>
+  autocmd Filetype tex nnoremap <buffer>]] "/\b^\\(chapter\|section\|paragraph)<CR>"
+  " Move backwards
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>[[ ?^#<CR>
+  autocmd Filetype tex nnoremap <buffer>[[ "?^\v\\(chapter\|section\|paragraph)<CR>"
+augroup end
+
 " Correct mistake CAPS-LOCK ;
 nnoremap <CR>; :
 
@@ -157,6 +168,13 @@ augroup PassiveAutos
   autocmd BufEnter,BufRead quickfix setlocal nowrap
 augroup end
 
+augroup ProseHighLighting
+  autocmd!
+  " Enumeration in prose
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v(First|Second|Third|Fourth),"
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant "\v\(?<[a-z0-9]\)"
+augroup end
+
 " Open no text file externally
 " Sub-optimal because it removes the # buffer
 augroup openExternally
@@ -190,6 +208,13 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     let g:syntastic_auto_loc_list = 0
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
+"{{{2 auto-pairs
+" NOT WORKING
+" add <> to default
+    " let g:AutoPairs['<']='>'
+
+    " au! Filetype markdown,markdown.pandoc let b:AutoPairs['*']='*' 
+
 "{{{2 fzf
 
 " keymaps in prompt
@@ -256,6 +281,9 @@ let g:vimte_complete_enabled = 0
 "{{{2 netrw
   let g:netrw_banner=0 " supress banner
   let g:netrw_sort_options = "i" " sort caseinsensitive
+
+  autocmd FileType netrw setlocal cursorline
+  autocmd BufHidden netrw bd
 
 "{{{2 diminiactive
   " The following drastically improves dimming over long wrapped lines.
@@ -378,6 +406,8 @@ nnoremap <Leader>g :Goyo<cr>
 " with asyncrun plugin
 
 "  to tex
+augroup PandocCompilation
+  autocmd!
 autocmd Filetype markdown 
             \ nnoremap <buffer> <Leader>pt :w<CR>
             \ :AsyncRun pandoc
@@ -386,6 +416,7 @@ autocmd Filetype markdown
             \ --biblatex
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
             \ --wrap=none
+            \ --verbose
             \ -o '%'.tex<CR>
 
 "  to tex self contained
@@ -477,6 +508,7 @@ autocmd Filetype markdown
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ -so '%'.html<CR>
 
+augroup end
 
 
 "{{{2 TeX compilation 
@@ -550,19 +582,25 @@ augroup LaTeXMaps
   autocmd!
   " Input yanked rcode in comment.
   " Requires vim-latex-textobj plugin.
-  autocmd Filetype tex nnoremap <buffer><Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
+  autocmd FileType tex nnoremap <buffer><Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
   " Key mapping to Tabularize LaTeX tabular
   " Tabularize by & unless escaped
-  autocmd Filetype tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
+  autocmd FileType tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
   " Tabularize gloss (by spaces)
-  autocmd Filetype tex nnoremap <Leader>tc vip:s/\v +/ /<CR>vip:Tabularize / <CR>
+  autocmd FileType tex nnoremap <Leader>tc vip:s/\v +/ /<CR>vip:Tabularize / <CR>
   " to autocomplete reference labels 
-  autocmd Filetype tex setlocal iskeyword+=:
-  autocmd Filetype tex setlocal iskeyword+=-
-  autocmd Filetype tex syn match Statement "_" containedin=ALL " Stop _ being an error
+  autocmd FileType tex setlocal iskeyword+=:
+  autocmd FileType tex setlocal iskeyword+=-
+augroup end
+
+augroup LaTeXHighlight
+  autocmd!
+  " autocmd FileType tex syn match Statement "_" containedin=ALL " Stop _ being an error
+  " autocmd FileType tex highlight link footnote Comment
 augroup end
 
 " }}1
+
 "{{{1 Markdown mappings and function
 " Mappings only used in markdown files 
 
@@ -576,9 +614,6 @@ augroup MarkdownSyntaxH
   autocmd Filetype markdown,markdown.pandoc syn match Statement "\\[a-zA-Z]\+"
   " material within ``
   autocmd Filetype markdown,markdown.pandoc syn match Constant "`[^`]\{-}`"
-  " Enumeration in prose
-  autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth),"
-  autocmd Filetype markdown,markdown.pandoc syn match Constant "\v\([a-z]\)"
    " put this last to overried above 
   autocmd Filetype markdown,markdown.pandoc syn match Underlined "\v^\\(if\S+|else|fi)>"
 augroup end
@@ -592,9 +627,6 @@ augroup MarkdownMaps
   autocmd Filetype markdown,markdown.pandoc setlocal commentstring=<!--\ %s\ -->
   " Let Tabularize do pipe tables 
   autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
-  " Move section wise
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>]] /^#<CR>
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>[[ ?^#<CR>
 augroup end
 
 augroup MardownSettings

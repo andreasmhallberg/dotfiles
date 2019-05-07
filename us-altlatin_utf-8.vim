@@ -49,6 +49,9 @@ loadkeymap
 
 <M-]> ‘
 <M-}> ’
+<M-{> “
+<M-}> ”
+
 
 " EALLx
 <M-e> ´

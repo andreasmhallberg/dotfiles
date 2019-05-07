@@ -69,8 +69,10 @@ bind    S       any     toggleSidebar
 bind	=	any	zoomFitWidth
 bind	+	any	zoomIn
 # bind	ctrl-+	any	zoomIn
-bind	-	any	zoomOut # Default
-# bind	ctrl--	any	zoomOut # Default
+bind	-	any	zoomOut
+# Default
+# bind	ctrl--	any	zoomOut
+# # Default
 bind	p	any	focusToPageNum
 # Note quoting to handle file names with spaces
 bind	ctrl-p	any	'run(launch -p "%f")'
