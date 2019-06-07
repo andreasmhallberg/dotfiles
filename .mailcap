@@ -2,7 +2,7 @@ text/html; open %s; >/dev/null 2>&1; needsterminal;
 text/html; w3m -I %{charset} -T text/html; copiousoutput;
 
 application/docx; panodoc %s -t markdown | mvim - -v "+set ft=pandoc";
-application/pdf; launch %s ; 
+application/pdf; xpdf %s; 
 # application/msword; panodoc %s -t markdown | vim;
 
 # mvim -v opens in terminal

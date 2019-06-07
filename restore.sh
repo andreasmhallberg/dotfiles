@@ -58,6 +58,7 @@ $pkman install w3m # used in mutt
 $pkman install GnuPG # used in mutt
 $pkman install launch
 $pkman install r 
+$pkman install fd 
 $pkman install ack # grep alternative
 $pkman install unzip
 $pkman install unrar
@@ -100,6 +101,7 @@ ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/.qutebrowser ~/.qutebrowser
 ln -sf ~/dotfiles/.Rprofile ~/.Rprofile
 ln -sf ~/dotfiles/.xpdfrc ~/.xpdfrc
+ln -sf ~/dotfiles/.inputrc ~/.inputrc
 
 # mutt
 mkdir -p ~/.mutt

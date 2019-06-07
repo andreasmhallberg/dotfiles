@@ -1,5 +1,6 @@
-\frenchspacing
 
+\usepackage{etoolbox}
+\frenchspacing
 
 % Command to imitate/end table env. Blocks pandocs stupid pagebreaking in tables
 \newcommand{\tablebegin}{\begin{table}}
@@ -7,3 +8,11 @@
 
 % Font in ursl 
 \renewcommand\UrlFont{\itshape}
+
+% space before block quotes
+\BeforeBeginEnvironment{quote}{\medskip}
+\AfterEndEnvironment{quote}{\medskip}
+
+% Keep exe environment together
+\preto{\exe}{\bigskip\noindent\begin{minipage}{\linewidth}}
+\appto{\endexe}{\end{minipage}\bigskip}

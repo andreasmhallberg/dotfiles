@@ -1,7 +1,4 @@
-source ~/Box\ Sync/.gmailpass
-# https://unix.stackexchange.com/questions/20570/mutt-how-to-safely-store-password?newreg=58de9732acfd47d185a07547919667d0
-# Encrypted file '~/.mutt/passord.gu.gpg' contains 
-#    set imap_pass = '<pass>'
+source ~/jobb/.gmailpass
 #    set smtp_pass = '<pass>'
 
 set from = "andreasmartenhallberg@gmail.com"

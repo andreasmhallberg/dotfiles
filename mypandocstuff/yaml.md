@@ -4,6 +4,7 @@ lang:
 author: Andreas Hallberg
 institute: University of Gothenburg
 mainfont: Linux Libertine O
+mainfontoptions: Numbers=OldStyle
 header-includes:
     - \frenchspacing
     - \input{/Users/xhalaa/dotfiles/mypandocstuff/bettertables.tex}

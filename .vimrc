@@ -9,7 +9,6 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
 Plugin 'junegunn/fzf'
 Plugin 'sk1418/HowMuch' " calculate visually marked math
 Plugin 'junegunn/fzf.vim'
@@ -18,7 +17,7 @@ Plugin 'milkypostman/vim-togglelist'             "  toggle quickfix and location
 Plugin 'muttaliasescomplete.vim'                 "  autocompletion of mutts addressbook. ~/.mutt/aliases as default
 Plugin 'junegunn/goyo.vim'
 Plugin 'will133/vim-dirdiff'
-Plugin 'skywind3000/asyncrun.vim'                "  syntax highlighting for CHAT-transcriptions
+Plugin 'skywind3000/asyncrun.vim'
 Plugin 'klapheke/vim-chat'                       "  syntax highlighting for CHAT-transcriptions
 Plugin 'morhetz/gruvbox'                         "  colorsheme
 " Plugin 'vim-syntastic/syntastic'                 "  syntax checker. Used for TeX and R
@@ -26,13 +25,12 @@ Plugin 'jalvesaq/Nvim-R'                         "  Successor of R-vimplugin. Re
 Plugin 'tpope/vim-surround'                      "  Useful mappings for netrw
 Plugin 'tpope/vim-commentary'                    "  gc<range> to comment
 Plugin 'tpope/vim-repeat'                        "  make mappings repeatable
-Plugin 'tpope/vim-vinegar'
+Plugin 'tpope/vim-vinegar'                       "  useful mappings for netrw
 Plugin 'vim-pandoc/vim-pandoc-syntax'            "  good syntax, nested HTML, yaml, etc.
-Plugin 'chrisbra/csv.vim'                        "  use sc-im for ascii stuff. Better.
+Plugin 'chrisbra/csv.vim'
 Plugin 'sjl/gundo.vim'                           "  visual undo tree
 Plugin 'godlygeek/tabular'                       "  :Tabular command to align stuff
 Plugin 'lervag/vimtex'                           "  tex stuff
-Plugin 'jiangmiao/auto-pairs'
 Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style.
 Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
@@ -80,11 +78,13 @@ set guicursor=a:blinkoff0  "  Make the cursor not blink
 set statusline=%F          "  Full path and file name.
 set statusline+=%m         "  Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
 set statusline+=%=         "  Separator between left and right alignmet
-set statusline+=\ 
-set statusline+=\ 
-set statusline+=%l         "  Line number
-set statusline+=/
-set statusline+=%L         "  Lines in buffer
+set statusline+=\ \ \ \ 
+" set statusline+=%l         "  Line number
+" set statusline+=/ي
+" set statusline+=%L         "  Lines in buffer
+set statusline+=%n 
+set statusline+=\|
+set statusline+=%B 
 set statusline+=\ 
 set statusline+=%y         "  Filetype
 set statusline+=\ 
@@ -125,8 +125,12 @@ autocmd!
   autocmd Filetype tex nnoremap <buffer>[[ "?^\v\\(chapter\|section\|paragraph)<CR>"
 augroup end
 
+" cycle buffers
+nnoremap <TAB> :bn<CR>
+nnoremap <s-TAB> :bp<CR>
+
 " Correct mistake CAPS-LOCK ;
-nnoremap <CR>; :
+nnoremap <C-;> :
 
 " Resize split
 nnoremap <Up> <c-w>+
@@ -145,21 +149,39 @@ nnoremap tn :tabnew<CR>
 
 "{{{1 General stuff (passive)
 
-augroup PassiveAutos
+" Longer scrolloff on vertical window
+function! ConditionalScrolloff()
+  if winheight(0) > 70
+    set scrolloff=15
+  else
+    set scrolloff=10
+  endif
+endfunction
+autocmd WinEnter,BufEnter,VimResized * call ConditionalScrolloff()
+
+" Dont list function buffers in :ls and ignore in :bn and friends
+augroup termIgnore
     autocmd!
-    " Remove one dot if one extra is added at end of sentence.
-    " Happens when performing 'ct.' inside a sentence.
-    " Marker used to go back.
-    autocmd InsertLeave * execute "normal md"
-          \| silent s/\.\.$/./e
-          \| execute "normal `d"
+    autocmd BufEnter qf,netrw set nobuflisted
+    autocmd TerminalOpen * set nobuflisted
+augroup END 
+
+" Foldmethod for .vimrc
+autocmd BufRead ~/.vimrc setlocal fdm=marker 
+
+augroup PassiveAutos
+  autocmd!
+  " Remove one dot if one extra is added at end of sentence.
+  " Happens when performing 'ct.' inside a sentence.
+  " Marker used to go back.
+  autocmd InsertLeave * execute "normal md"
+        \| silent s/\.\.$/./e
+        \| execute "normal `d"
   "  Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
   autocmd VimResized * :wincmd =
-  " Foldmethod for .vimrc
-  autocmd BufRead ~/.vimrc setlocal fdm=marker 
   " Always use minimalist foldtext
   autocmd BufEnter * set foldtext=getline(v:foldstart)
-  set fillchars=fold:\ 
+  set fillchars=fold:-
   " Set wd for current file
   autocmd BufEnter * silent! lcd %:p:h
   " Read docx through pandoc
@@ -171,7 +193,7 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v(First|Second|Third|Fourth),"
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant "\v(First|Second|Third|Fourth),"
   autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant "\v\(?<[a-z0-9]\)"
 augroup end
 
@@ -213,7 +235,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 " add <> to default
     " let g:AutoPairs['<']='>'
 
-    " au! Filetype markdown,markdown.pandoc let b:AutoPairs['*']='*' 
 
 "{{{2 fzf
 
@@ -225,9 +246,13 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
       \ 'ctrl-s': 'split' ,
       \  }
 
+    let g:fzf_layout = { 'down': '~40%' }
 
  " toggle Gundo of when fzf'ing 
 " autocmd! BufReadPre *.fzf :Goyo!
+"{{{2 Goyo
+
+autocmd WinNew * Goyo!
 
 "{{{2 vimtex 
 
@@ -283,7 +308,7 @@ let g:vimte_complete_enabled = 0
   let g:netrw_sort_options = "i" " sort caseinsensitive
 
   autocmd FileType netrw setlocal cursorline
-  autocmd BufHidden netrw bd
+
 
 "{{{2 diminiactive
   " The following drastically improves dimming over long wrapped lines.
@@ -525,6 +550,9 @@ autocmd Filetype tex
   \ nnoremap <buffer> <Leader>b :w<CR>
   \ :AsyncRun biber %<<CR>
 
+autocmd Filetype tex
+  \ nnoremap <buffer> <Leader>bi :w<CR>
+  \ :AsyncRun bibtex %<<CR>
 " OBS!!! Run
 "      rm -rf `biber --cache`
 " to fix bug crash bug.
@@ -759,9 +787,28 @@ iab widht width
 iab ext extemporaneous
 iab Ext Extemporaneous
 
-" Remove word in input mode. Best mapping ever.
-inoremap jj <Esc>ciw
+" Remove word in input mode.
+inoremap jj <c-w>
 " imap <BS><BS> <NOP> " To learn the above
+
+" delimiters
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+inoremap ` ``<Left>
+inoremap ' ''<Left>
+inoremap " ""<Left>
+inoremap < \<><Left>
+autocmd Filetype markdown,markdown.pandoc inoremap * **<Left>
+
+" to move out of delimiter
+inoremap <C-l> <Right>
+inoremap <C-h> <Left>
+
+" Move to eol in Normal, Visual, Select, Operator-pending
+noremap L $
+noremap H ^
+
 
 
 "}}}1
@@ -803,15 +850,28 @@ endfu
 
 com! -nargs=0 FilterLocList :call FilterLocList()
 "}}}1
-"{{{1 Mutt related
+"{{{1 Mutt/mail related
 
 " syntax for mutt files
 autocmd BufRead ~/.mutt/* setlocal filetype=muttrc
 
 " muttaliasescomplete
-autocmd FileType mail setlocal omnifunc=muttaliasescomplete#Complete 
-autocmd Filetype mail inoremap <buffer><c-x><c-m> <c-x><c-o>
+augroup MailStuff
+  autocmd!
+  autocmd FileType mail setlocal omnifunc=muttaliasescomplete#Complete 
+  autocmd Filetype mail inoremap <buffer><c-x><c-m> <c-x><c-o>
+  " for completion of email addresses 
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@
+  " for completion of email addresses
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=s~/jobb/aliases 
+augroup end
 
 
 "}}}1
+"{{{1 CHAT
+augroup Chat
+  autocmd!
+  autocmd BufEnter *.cha syn match Statement "\v\$(HED|ATT)\S+"
+  autocmd BufEnter *.cha syn match Constant "\v\$[123]\S+"
+augroup end
 "{{{ Test

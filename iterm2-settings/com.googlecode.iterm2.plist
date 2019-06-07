@@ -129,6 +129,8 @@
 	</dict>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
+	<key>JobName</key>
+	<false/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSNavLastRootDirectory</key>
@@ -166,12 +168,21 @@
 	</data>
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
+	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
+	<dict>
+		<key>TB Is Shown</key>
+		<integer>1</integer>
+	</dict>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>650 588 620 392 0 0 1920 1177 </string>
+	<key>NSWindow Frame SessionsPreferences</key>
+	<string>-1651 126 606 469 -1920 0 1920 1200 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>276 226 1016 512 0 0 1440 900 </string>
+	<string>83 411 770 429 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>-1920 0 1920 1057 -1920 0 1920 1200 </string>
+	<string>375 325 825 552 0 0 1200 1920 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>176 70 650 477 0 0 1920 1080 </string>
+	<string>176 84 650 477 0 0 1920 1177 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -441,6 +452,8 @@
 				<key>Red Component</key>
 				<real>0.027450980392156862</real>
 			</dict>
+			<key>Cursor Type</key>
+			<integer>1</integer>
 			<key>Custom Command</key>
 			<string>No</string>
 			<key>Custom Directory</key>
@@ -489,16 +502,37 @@
 				<key>0x68-0x40000</key>
 				<dict>
 					<key>Action</key>
-					<integer>30</integer>
+					<integer>18</integer>
+					<key>Text</key>
+					<string></string>
+				</dict>
+				<key>0x6a-0x40000</key>
+				<dict>
+					<key>Action</key>
+					<integer>21</integer>
+					<key>Text</key>
+					<string></string>
+				</dict>
+				<key>0x6b-0x40000</key>
+				<dict>
+					<key>Action</key>
+					<integer>20</integer>
 					<key>Text</key>
 					<string></string>
 				</dict>
 				<key>0x6c-0x40000</key>
 				<dict>
 					<key>Action</key>
-					<integer>30</integer>
+					<integer>19</integer>
 					<key>Text</key>
 					<string></string>
+				</dict>
+				<key>0x73-0x100000</key>
+				<dict>
+					<key>Action</key>
+					<integer>28</integer>
+					<key>Text</key>
+					<string>D2D93291-C955-4FD7-BACC-48A19FFCC89D</string>
 				</dict>
 			</dict>
 			<key>Link Color</key>
@@ -523,7 +557,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>SourceCodePro-Light 14</string>
+			<string>SourceCodePro-Light 16</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -654,12 +688,20 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-03-07T04:57:58Z</date>
+	<date>2019-06-03T17:28:39Z</date>
 	<key>SUSendProfileInfo</key>
+	<false/>
+	<key>ShowFullScreenTabBar</key>
+	<false/>
+	<key>ShowPaneTitles</key>
+	<false/>
+	<key>TabStyleWithAutomaticOption</key>
+	<integer>0</integer>
+	<key>WindowNumber</key>
 	<false/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
-	<string>3.2.7</string>
+	<string>3.2.9</string>
 </dict>
 </plist>

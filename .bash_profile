@@ -1,3 +1,6 @@
+# Must come before fzf-stuff are sourced
+set -o vi
+
 [[ -s ~/.bashrc ]] && source ~/.bashrc
 
 # add bin folder in ~/dotfiles/ to available commands
@@ -9,7 +12,8 @@ export VISUAL="vim"
 export EDITOR="vim"
 
 # fzf default options
-export FZF_DEFAULT_COMMAND='find .'
+export FZF_DEFAULT_COMMAND='fd -H . $HOME'
+# ctrl-t to insert path
 
 # Prompt shape
 # See man bash > PROMTING
@@ -22,14 +26,10 @@ RESET="$(tput sgr0)"
 
   
 if [[ "$OSTYPE" == "darwin"* ]]; then
-PS1='\[${GREEN}\][\A \w] \[${RESET}\]'
+PS1='\[${GREEN}\][\w] \[${RESET}\]'
 else # not macOS
-PS1='\[${GREEN}\][\h \w] \[${RESET}\]'
+PS1='\[${GREEN}\][\w] \[${RESET}\]'
 fi
-
-##
-# Your previous /Users/andy/.bash_profile file was backed up as /Users/andy/.bash_profile.macports-saved_2016-08-03_at_10:37:22
-##
 
 # MacPorts Installer addition on 2016-08-03_at_10:37:22: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
@@ -55,14 +55,13 @@ alias gs='git status'
 alias renamer="vim -c 'Renamer"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
-# Fuzzy file finding with ctrl-p is much slower from inside ITerm than in MacVim.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
 
 # OSX only
 if [[ "$OSTYPE" == "darwin"* ]]; then
-alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
-alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
-alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+  alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+  alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
+  alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 fi
 
 # cd to cd and ls
@@ -71,13 +70,6 @@ function cs () {
         }
 alias cd='cs'
 
-# function xpdfdisown () {
-#     xpdf "$@" & disown
-# }
-# alias xpdf='xpdfdisown'
-
-# vim editing in command line
-set -o vi
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave
