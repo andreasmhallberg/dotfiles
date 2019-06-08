@@ -119,10 +119,10 @@ augroup MoveSectionWhise
 autocmd!
   " Move forwards
   autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>]] /^#<CR>
-  autocmd Filetype tex nnoremap <buffer>]] "/\b^\\(chapter\|section\|paragraph)<CR>"
+  autocmd Filetype tex nnoremap <buffer>]] /^\\\(chapter\|section\|paragraph\)<CR>
   " Move backwards
   autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>[[ ?^#<CR>
-  autocmd Filetype tex nnoremap <buffer>[[ "?^\v\\(chapter\|section\|paragraph)<CR>"
+  autocmd Filetype tex nnoremap <buffer>[[ ?^\\\(chapter\|section\|paragraph\)<CR>
 augroup end
 
 " cycle buffers
