@@ -7,8 +7,11 @@
 
 if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
         pkgman=brew
-elif [[ "$OSTYPE" == "linux-gnu" ]]; then # linux
+# elif [[ "$OSTYPE" == "linux-gnu" ]]; then # linux
+        # pkgman=apt-get
+      else
         pkgman=apt-get
+
 fi
 
 # Install manually first
@@ -28,10 +31,12 @@ fi
   # Source Code Pro
   # Source Sans Pro
 
-# Install via script
+  # Installations for all *nix systems
+
 
 # git
-pkman install git
+
+$pkman install git-all
 git config --global user.name "Andreas Hallberg"
 git config --global user.email andreasmartenhallberg@gmail.com
 git config --global credential.helper osxkeychain
@@ -55,8 +60,6 @@ mkdir -p ~/.vim/temp # make directory for swap files
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
 $pkman install w3m # used in mutt
-$pkman install GnuPG # used in mutt
-$pkman install launch
 $pkman install r 
 $pkman install fd 
 $pkman install ack # grep alternative
@@ -76,22 +79,23 @@ $pkman install fzf
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
 
 
+# installations for OSX
 if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
-  # https://github.com/zegervdv/homebrew-zathura
-  brew tap zegervdv/zathura
-  brew cask install xquartz
-  brew install zathura
-  brew install zathura-pdf-poppler
-  mkdir -p $(brew --prefix zathura)/lib/zathura
-  ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+
+  mkdir -p ~/.config/karabiner/
+  ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/
+
+  $pkman install launch
+
+  xcode-select --install # xcode. Requiered by nvim-r
+
+  # make ITerm2 do italics
+  # https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
+  tic -o ~/.terminfo xterm-256color.terminfo.txt
 fi
 
 #misc
 
-xcode-select --install # xcode. Requiered by nvim-r
-
-mkdir -p ~/.config/karabiner/
-ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/
 ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/dotfiles/.bashrc ~/.bashrc
 ln -sf ~/dotfiles/.fzf.bash ~/.fzf.bash
@@ -110,7 +114,6 @@ $pkman install mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
 ln -sf ~/jobb/aliases ~/.mutt/aliases
-# transfer gpg-keyes
 
 # vim
 ln -sf ~/dotfiles/.vimrc ~/.vimrc
@@ -123,9 +126,6 @@ ln -sf ~/dotfiles/sv.utf-8.add ~/.vim/spell/sv.utf-8.add
 ln -sf ~/dotfiles/en.utf-8.add ~/.vim/spell/en.utf-8.add
 # run :VundleInstall
 
-# make ITerm2 do italics
-# https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
-tic -o ~/.terminfo xterm-256color.terminfo.txt
 
 # install R-packages
 Rscript r-packages.r
