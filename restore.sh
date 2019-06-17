@@ -39,7 +39,9 @@ fi
 $pkman install git-all
 git config --global user.name "Andreas Hallberg"
 git config --global user.email andreasmartenhallberg@gmail.com
-git config --global credential.helper osxkeychain
+if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
+  git config --global credential.helper osxkeychain
+fi
 
 
 #get my dotfiles
@@ -47,9 +49,6 @@ git clone https://github.com/andreasmhallberg/dotfiles.git ~/
 
 #get blog
 git clone https://github.com/andreasmhallberg/andreasmhallberg.github.io.git ~/blog/
-
-# fonts
-brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
 
 
 # config symlinks
@@ -92,6 +91,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
   # make ITerm2 do italics
   # https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
   tic -o ~/.terminfo xterm-256color.terminfo.txt
+
+  # fonts
+  brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
+
 fi
 
 #misc
