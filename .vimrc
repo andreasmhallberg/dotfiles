@@ -193,7 +193,7 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant "\v(First|Second|Third|Fourth),"
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant '\v(First|Second|Third|Fourth),'
   autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant "\v\(?<[a-z0-9]\)"
 augroup end
 
@@ -246,7 +246,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
       \ 'ctrl-s': 'split' ,
       \  }
 
-    let g:fzf_layout = { 'down': '~40%' }
+    let g:fzf_layout = { 'down': '~50%' }
 
  " toggle Gundo of when fzf'ing 
 " autocmd! BufReadPre *.fzf :Goyo!
@@ -815,19 +815,26 @@ noremap H ^
 "{{{1 Readingnotes
 " https://github.com/andreasmhallberg/readingnotes
 
+function! ReadingnotesNetrwSyntax()
+  syn match Constant '^.\{2,}, \d\d\d\d\zs\. \zs.\{5,}\ze\.md$' containedin=ALL
+endfunction
 
 augroup readingnotes
   autocmd!
-  " Don't fold 
+  " Don't fold
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal nofoldenable
+  " Write in English
   autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
   " Highligt page refs at end of line
   autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
   " Allow comments to be indented indefinitely
   autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Comment "\v^\s*\>.*$"
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@ " for completion of keywords 
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=- " for completion of keywords
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=sKeywords.md " for completion of keywords
+  " for completion of keywords 
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=-
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=sKeywords.md
+  " ke
+  autocmd FileType netrw syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{5,}\ze\.(md|pdf)$' containedin=ALL
 augroup END
 
 " Filter location list to get one hit per file 
@@ -871,7 +878,8 @@ augroup end
 "{{{1 CHAT
 augroup Chat
   autocmd!
-  autocmd BufEnter *.cha syn match Statement "\v\$(HED|ATT)\S+"
-  autocmd BufEnter *.cha syn match Constant "\v\$[123]\S+"
+  autocmd BufEnter *.cha,*.cex syn match Statement '\v\$(HED|ATT)\S+'
+  autocmd BufEnter *.cha,*.cex syn match Constant '\v\$[123]\S+'
+  autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
 augroup end
 "{{{ Test
