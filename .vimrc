@@ -30,7 +30,7 @@ Plugin 'vim-pandoc/vim-pandoc-syntax'            "  good syntax, nested HTML, ya
 Plugin 'chrisbra/csv.vim'
 Plugin 'sjl/gundo.vim'                           "  visual undo tree
 Plugin 'godlygeek/tabular'                       "  :Tabular command to align stuff
-Plugin 'lervag/vimtex'                           "  tex stuff
+" Plugin 'lervag/vimtex'                           "  tex stuff
 Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style.
 Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
 Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
@@ -40,7 +40,7 @@ Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in f
 " All Plugins must be added before the following line
 call vundle#end()            " required
 "{{{1 Settings
-set clipboard=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
+set clipboard^=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
@@ -53,6 +53,7 @@ set keymap=us-altlatin                       " Load US-alt-latin keymap. See ~/d
 set spell                                    "  check spelling by default
 set spelllang=en_us
 set nowrapscan                               " No wraparound end of file in normal searches
+set fillchars=fold:-                         " Fold linefill
 set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
@@ -82,9 +83,9 @@ set statusline+=\ \ \ \
 " set statusline+=%l         "  Line number
 " set statusline+=/ي
 " set statusline+=%L         "  Lines in buffer
-set statusline+=%n 
+set statusline+=%n  " buffer number
 set statusline+=\|
-set statusline+=%B 
+set statusline+=%B  " character code
 set statusline+=\ 
 set statusline+=%y         "  Filetype
 set statusline+=\ 
@@ -97,7 +98,6 @@ set guioptions-=L
 set number                                "  Display line numbers
 set foldcolumn=0                          "  No columns to show folds
 set guifont=Source\ Code\ Pro\ Light:h16
-" set guifont=NimbusMono-Regular:h16
 set linespace=5                           "  More space between lines. Default=0
 set cpoptions=|                           "  | at end of changed (<c>) object
 set linebreak                             "  Soft-wrap between words
@@ -129,17 +129,11 @@ augroup end
 nnoremap <TAB> :bn<CR>
 nnoremap <s-TAB> :bp<CR>
 
-" Correct mistake CAPS-LOCK ;
-nnoremap <C-;> :
-
 " Resize split
 nnoremap <Up> <c-w>+
 nnoremap <Down> <c-w>-
 nnoremap <Left> <c-w><
 nnoremap <Right> <c-w>>
-
-" Enlarge split vertically
-nnoremap + <C-w>+=
 
 " Go directly to bash
 nnoremap ! :!
@@ -181,7 +175,6 @@ augroup PassiveAutos
   autocmd VimResized * :wincmd =
   " Always use minimalist foldtext
   autocmd BufEnter * set foldtext=getline(v:foldstart)
-  set fillchars=fold:-
   " Set wd for current file
   autocmd BufEnter * silent! lcd %:p:h
   " Read docx through pandoc
@@ -193,8 +186,8 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant '\v(First|Second|Third|Fourth),'
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail match Constant "\v\(?<[a-z0-9]\)"
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant '\v(First|Second|Third|Fourth),'
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v\(?<[a-z0-9]\)"
 augroup end
 
 " Open no text file externally
@@ -254,44 +247,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 autocmd WinNew * Goyo!
 
-"{{{2 vimtex 
-
-" Use low-tech completion method with set complete
-let g:vimte_complete_enabled = 0
-
-
-  " See ~/vim/after/syntax/tex.vim for disabling of spellcheck in rcode and
-
-  " Vimtex settings
-  let g:vimtex_complete_close_braces = 1
-
-
-  " From vimtex help
-            let g:vimtex_view_general_viewer
-                  \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-            let g:vimtex_view_general_options = '-r @line @pdf @tex'
-
-            " This adds a callback hook that updates Skim after compilation
-            let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-            function! UpdateSkim(status)
-              if !a:status | return | endif
-
-              let l:out = b:vimtex.out()
-              let l:tex = expand('%:p')
-              let l:cmd = [g:vimtex_view_general_viewer, '-r']
-              if !empty(system('pgrep Skim'))
-                call extend(l:cmd, ['-g'])
-              endif
-              if has('nvim')
-                call jobstart(l:cmd + [line('.'), l:out, l:tex])
-              elseif has('job')
-                call job_start(l:cmd + [line('.'), l:out, l:tex])
-              else
-                call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-              endif
-            endfunction
-  "  folding
-  let g:vimtex_fold_enabled=1
 "{{{2 DiffChar
   " Set wrap in diff
   " au FilterWritePre * if &diff | set wrap | endif
@@ -335,6 +290,8 @@ let g:vimte_complete_enabled = 0
 
   autocmd BufRead,BufEnter *.csv set filetype=csv
   autocmd BufRead,BufEnter *.dat set filetype=csv
+  autocmd BufRead,BufEnter *.dat set filetype=csv
+  autocmd FileType csv set cursorline
 
   " Highlight column under cursor. Is not effected in insert mode
   let g:csv_highlight_column = 'n'
@@ -362,17 +319,17 @@ let g:vimte_complete_enabled = 0
       let g:gundo_close_on_revert=1
 
 "{{{2 vim-markdown
-" no mappings. We only want folding
-let g:vim_markdown_no_default_key_mappings = 1
+  " no mappings. We only want folding
+  let g:vim_markdown_no_default_key_mappings = 1
 
-" Fold at the title line
-let g:vim_markdown_folding_style_pythonic = 1
+  " Fold at the title line
+  let g:vim_markdown_folding_style_pythonic = 1
 
-" list levels are indented by 2 space
-let g:vim_markdown_new_list_item_indent = 2
+  " list levels are indented by 2 space
+  let g:vim_markdown_new_list_item_indent = 2
 
-" Highlighting for YAML header
-let g:vim_markdown_frontmatter = 1
+  " Highlighting for YAML header
+  let g:vim_markdown_frontmatter = 1
 
 "{{{2 nvim-r
 " Don't type <- with _
@@ -406,10 +363,10 @@ autocmd BufEnter * silent! set cole=0
 "{{{2 general
 " insert date in format yymmdd
 nnoremap <Leader>d :pu =strftime('%Y-%m-%d')<CR>kJ
-" open ctrlp fuzzy file finder
+" Fuzzy find files with FZF
 nnoremap <Leader>f :FZF<Space>~/<CR>
-" open netrw. `-` also goes to parent directory inside netrw
-nnoremap <Leader>x :Explore<CR>
+" Fuzzy find buffers with FZF
+nnoremap <Leader>b :Buffers<CR>
 " Window command prefix
 nnoremap <Leader>w <C-w>
 " Gundo toggle window
@@ -426,6 +383,13 @@ nnoremap <Leader>r :set wrap!<CR>
 nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
 " Toggle GoYo
 nnoremap <Leader>g :Goyo<cr>
+
+" Tabularize
+augroup Tabular
+  autocmd!
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
+  autocmd FileType tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
+augroup end
 
 "{{{2 Markdown compilation <leader>p and variants
 " with asyncrun plugin
@@ -491,16 +455,24 @@ autocmd Filetype markdown
 
 " run biber
 autocmd Filetype markdown
-  \ nnoremap <buffer> <Leader>b :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
+  \ nnoremap <buffer> <Leader>bi :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
 
 "  to docx. -smart needed for parsing of daises in non TeX.
+    " \ % --bibliography manuscript.bib
+    " \ --csl ~/jobb/styles/apa-5th-edition.csl
 autocmd Filetype markdown
     \ nnoremap <buffer> <Leader>pd
     \ :w<CR>
-    \ :AsyncRun pandoc -f markdown+implicit_figures+table_captions % --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
+    \ :AsyncRun pandoc
+    \ -f markdown+implicit_figures+table_captions+example_lists
+    \ % --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+    \ --csl ~/jobb/styles/al-ʿarabiyya.csl
+    \ -N
+    \ -o '%'.docx<CR>
+
 
 "  to beamer 
-autocmd Filetype markdown
+autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer><Leader>pb 
     \ :w<CR>
     \ :AsyncRun pandoc
@@ -544,6 +516,12 @@ autocmd Filetype tex
   \ xelatex --aux-directory=~/temp --synctex=1 --src-specials %
   \ && mv '%<'.pdf '%'.pdf<CR>
 
+autocmd Filetype tex
+  \ nnoremap <buffer> <Leader>yy :w<CR>
+  \ :AsyncRun 
+  \ pdflatex %
+  \ && mv '%<'.pdf '%'.pdf<CR>
+
 " Bibtex run
 " %< "gives current filename without extension
 autocmd Filetype tex
@@ -562,7 +540,6 @@ autocmd Filetype tex
     \ nnoremap <buffer> <Leader>pd
     \ :w<CR>
     \ :AsyncRun pandoc % -smart --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
-
 
 "{{{2 Language switching
 
@@ -612,8 +589,6 @@ augroup LaTeXMaps
   " Requires vim-latex-textobj plugin.
   autocmd FileType tex nnoremap <buffer><Leader>rc i\begin{rcode}<CR>\end{rcode}<ESC>"0Pvae3>
   " Key mapping to Tabularize LaTeX tabular
-  " Tabularize by & unless escaped
-  autocmd FileType tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
   " Tabularize gloss (by spaces)
   autocmd FileType tex nnoremap <Leader>tc vip:s/\v +/ /<CR>vip:Tabularize / <CR>
   " to autocomplete reference labels 
@@ -653,8 +628,6 @@ augroup end
 augroup MarkdownMaps 
   autocmd!
   autocmd Filetype markdown,markdown.pandoc setlocal commentstring=<!--\ %s\ -->
-  " Let Tabularize do pipe tables 
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
 augroup end
 
 augroup MardownSettings
@@ -702,6 +675,7 @@ inoremap <Tab> <c-n>
 inoremap <S-Tab> <Cv>u0009
 " CTRL-f to complete file path
 inoremap <C-f> <c-x><c-f>
+" completion of following word
 inoremap xx <c-x><c-n>
 "}}}2
 
@@ -726,20 +700,13 @@ nnoremap j gj
 vnoremap k gk
 vnoremap j gj
 
-" Set undo points at end of sentence.
-inoremap . .<C-g>u
-inoremap ! !<C-g>u
-inoremap ? ?<C-g>u
-inoremap : :<C-g>u
-inoremap ; ;<C-g>u
-
 " Redraw syntax highlight
 nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 "{{{2 CHARACTER INPUT
 
 " increment numbers
-noremap - :Ex<cr>
+noremap - :Explore<cr>
 
 " Angular brackets
 "〈 U+2329
@@ -763,12 +730,12 @@ inoremap <A-8> 8
 inoremap <A-9> 9
 " Alt-,
 inoremap ¬ 0
-
+ 
 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
-" Abbreviations for common misspellings because I'm stupid.
+" Abbreviations for common misspellings
 iab ARab Arab
 iab ARabic Arabic
 iab Andras Andreas
@@ -790,13 +757,13 @@ iab Ext Extemporaneous
 " Remove word in input mode.
 inoremap jj <c-w>
 " imap <BS><BS> <NOP> " To learn the above
-
 " delimiters
 inoremap ( ()<Left>
 inoremap [ []<Left>
 inoremap { {}<Left>
 inoremap ` ``<Left>
-inoremap ' ''<Left>
+" Don't use this mapping for normal English prose where it is used in possessives.
+autocmd FileType r inoremap ' ''<Left>
 inoremap " ""<Left>
 inoremap < \<><Left>
 autocmd Filetype markdown,markdown.pandoc inoremap * **<Left>
@@ -806,7 +773,7 @@ inoremap <C-l> <Right>
 inoremap <C-h> <Left>
 
 " Move to eol in Normal, Visual, Select, Operator-pending
-noremap L $
+noremap L g_
 noremap H ^
 
 
@@ -825,16 +792,16 @@ augroup readingnotes
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal nofoldenable
   " Write in English
   autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
-  " Highligt page refs at end of line
+  " Highlight page refs at end of line
   autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
-  " Allow comments to be indented indefinitely
+  " Highlight indefinitely indented comments
   autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Comment "\v^\s*\>.*$"
-  " for completion of keywords 
+  " For completion of keywords 
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=-
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=sKeywords.md
-  " ke
-  autocmd FileType netrw syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{5,}\ze\.(md|pdf)$' containedin=ALL
+  " Highlight when listing radingnotes
+  autocmd FileType netrw syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
 augroup END
 
 " Filter location list to get one hit per file 
@@ -881,5 +848,7 @@ augroup Chat
   autocmd BufEnter *.cha,*.cex syn match Statement '\v\$(HED|ATT)\S+'
   autocmd BufEnter *.cha,*.cex syn match Constant '\v\$[123]\S+'
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
+  autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
+  autocmd BufEnter *.cha,*.cex set list
 augroup end
 "{{{ Test
