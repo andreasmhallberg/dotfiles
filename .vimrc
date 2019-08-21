@@ -10,31 +10,30 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'junegunn/fzf'
-Plugin 'sk1418/HowMuch' " calculate visually marked math
-Plugin 'junegunn/fzf.vim'
+Plugin 'sk1418/HowMuch'                " calculate visually marked math
+Plugin 'junegunn/fzf.vim'              " heaven
 Plugin 'segeljakt/vim-isotope'
-Plugin 'milkypostman/vim-togglelist'             "  toggle quickfix and location list on and off. \q and \l
-Plugin 'muttaliasescomplete.vim'                 "  autocompletion of mutts addressbook. ~/.mutt/aliases as default
+Plugin 'milkypostman/vim-togglelist'   " toggle quickfix and location list on and off. \q and \l
+Plugin 'muttaliasescomplete.vim'       " autocompletion of mutts addressbook. ~/.mutt/aliases as default
 Plugin 'junegunn/goyo.vim'
 Plugin 'will133/vim-dirdiff'
 Plugin 'skywind3000/asyncrun.vim'
-Plugin 'klapheke/vim-chat'                       "  syntax highlighting for CHAT-transcriptions
-Plugin 'morhetz/gruvbox'                         "  colorsheme
-" Plugin 'vim-syntastic/syntastic'                 "  syntax checker. Used for TeX and R
-Plugin 'jalvesaq/Nvim-R'                         "  Successor of R-vimplugin. Requires tmux.
-Plugin 'tpope/vim-surround'                      "  Useful mappings for netrw
-Plugin 'tpope/vim-commentary'                    "  gc<range> to comment
-Plugin 'tpope/vim-repeat'                        "  make mappings repeatable
-Plugin 'tpope/vim-vinegar'                       "  useful mappings for netrw
-Plugin 'vim-pandoc/vim-pandoc-syntax'            "  good syntax, nested HTML, yaml, etc.
+Plugin 'klapheke/vim-chat'             " syntax highlighting for CHAT-transcriptions
+Plugin 'morhetz/gruvbox'               " colorsheme
+" Plugin 'vim-syntastic/syntastic'     " syntax checker. Used for TeX and R
+Plugin 'jalvesaq/Nvim-R'               " Successor of R-vimplugin. Requires tmux.
+Plugin 'tpope/vim-surround'            " Useful mappings for netrw
+Plugin 'tpope/vim-commentary'          " gc<range> to comment
+Plugin 'tpope/vim-repeat'              " make mappings repeatable
+Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
+Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
-Plugin 'sjl/gundo.vim'                           "  visual undo tree
-Plugin 'godlygeek/tabular'                       "  :Tabular command to align stuff
-" Plugin 'lervag/vimtex'                           "  tex stuff
-Plugin 'qpkorr/vim-renamer'                      "  Batch rename files vim-style.
-Plugin 'vim-scripts/YankRing.vim'                "  After ctrlp to remap <c-p>
-Plugin 'blueyed/vim-diminactive'                 "  Dims window that is not in focus
-" Plugin 'TaDaa/vimade'
+Plugin 'sjl/gundo.vim'                 " visual undo tree
+Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
+" Plugin 'lervag/vimtex'               " tex stuff
+Plugin 'qpkorr/vim-renamer'            " Batch rename files vim-style.
+Plugin 'vim-scripts/YankRing.vim'      " After ctrlp to remap <c-p>
+" Plugin 'blueyed/vim-diminactive'     " Dims window that is not in focus. Clashes with FZF in netrw
 " Plugin 'rickhowe/diffchar.vim'
 
 " All Plugins must be added before the following line
@@ -371,8 +370,6 @@ nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>w <C-w>
 " Gundo toggle window
 nnoremap <Leader>u :GundoToggle<CR>
-" fzf in reading notes
-nnoremap <Leader>n :FZF<Space>~/jobb/readingnotes/<CR>
 " open vimrc
 nnoremap <Leader>m :e $MYVIMRC<CR>
 " list and chose open buffer 
@@ -383,6 +380,8 @@ nnoremap <Leader>r :set wrap!<CR>
 nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
 " Toggle GoYo
 nnoremap <Leader>g :Goyo<cr>
+" next in location list
+nnoremap <Leader>n :lnext<cr>
 
 " Tabularize
 augroup Tabular
@@ -453,9 +452,9 @@ autocmd Filetype markdown
             \ -o '%'.pdf<CR>
 
 
-" run biber
-autocmd Filetype markdown
-  \ nnoremap <buffer> <Leader>bi :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
+" " run biber
+" autocmd Filetype markdown
+"   \ nnoremap <buffer> <Leader>bi :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
 
 "  to docx. -smart needed for parsing of daises in non TeX.
     " \ % --bibliography manuscript.bib
@@ -800,6 +799,7 @@ augroup readingnotes
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=-
   autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=sKeywords.md
+  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal breakindent
   " Highlight when listing radingnotes
   autocmd FileType netrw syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
 augroup END
