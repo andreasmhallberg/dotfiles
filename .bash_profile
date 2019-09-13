@@ -1,6 +1,9 @@
 # Must come before fzf-stuff are sourced
 set -o vi
 
+# Set pbcopy to use Unicode
+export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
+
 [[ -s ~/.bashrc ]] && source ~/.bashrc
 
 # add bin folder in ~/dotfiles/ to available commands
@@ -13,7 +16,8 @@ export EDITOR="vim"
 
 # fzf default options
 export FZF_DEFAULT_COMMAND='fd -H . $HOME'
-# ctrl-t to insert path
+# ctrl-t to insert path from home
+export FZF_CTRL_T_COMMAND='fd -H . $HOME'
 
 # Prompt shape
 # See man bash > PROMTING

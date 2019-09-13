@@ -28,7 +28,7 @@ Plugin 'tpope/vim-repeat'              " make mappings repeatable
 Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
 Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
-Plugin 'sjl/gundo.vim'                 " visual undo tree
+" Plugin 'sjl/gundo.vim'                 " visual undo tree
 Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
 " Plugin 'lervag/vimtex'               " tex stuff
 Plugin 'qpkorr/vim-renamer'            " Batch rename files vim-style.
@@ -41,6 +41,7 @@ call vundle#end()            " required
 "{{{1 Settings
 set clipboard^=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
+set nostartofline                            " remember cursor position when switching buffers
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                    " Dir for backup files
@@ -82,8 +83,8 @@ set statusline+=\ \ \ \
 " set statusline+=%l         "  Line number
 " set statusline+=/ي
 " set statusline+=%L         "  Lines in buffer
-set statusline+=%n  " buffer number
-set statusline+=\|
+" set statusline+=%n  " buffer number
+" set statusline+=\|
 set statusline+=%B  " character code
 set statusline+=\ 
 set statusline+=%y         "  Filetype
@@ -113,6 +114,23 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 
 " }}}1
 "{{{1 General mappings
+
+" <Hello> *you*. 
+" TTS WTF
+" https://www.reddit.com/r/vim/comments/2odq4l/osx_texttospeech_in_vim/
+         " Filter markdown citations. Replace author names (that will be lettered, with 'author')
+         " Filter markdown markup
+         " Read footnotes as ['footnote <label>']
+   vnoremap <silent>z "xy:call system('echo '. shellescape(@x) .'
+         \ <bar> sed -E "s/[<>**]//g"
+         \ <bar> sed -E "s/@([a-z-]+)_[a-z-]+_([0-9]{4,4})/citation: \\2/g"
+         \ <bar> sed -E "s/\\[\\^([a-z]+)\\]/ footnote: \\1./g"
+         \ <bar> sed -E "s/http:\\/\\/.* /URL /g"
+         \ <bar> sed -E "s/[ʿʾ]//g"
+         \ <bar> sed -E "s/&nbsp;//g"
+         \ <bar> sed -E "s/\\[([^\\]]+)\\]\\([^)]+\\)/\\1/g"
+         \ <bar> say &')<CR>
+
 
 augroup MoveSectionWhise
 autocmd!
@@ -185,8 +203,8 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant '\v(First|Second|Third|Fourth),'
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v\(?<[a-z0-9]\)"
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v(First|Second|Third|Fourth),"
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v<\(?[a-z0-9]\)"
 augroup end
 
 " Open no text file externally
@@ -241,10 +259,10 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     let g:fzf_layout = { 'down': '~50%' }
 
  " toggle Gundo of when fzf'ing 
-" autocmd! BufReadPre *.fzf :Goyo!
 "{{{2 Goyo
 
-autocmd WinNew * Goyo!
+autocmd BufLeave * Goyo!
+
 
 "{{{2 DiffChar
   " Set wrap in diff
@@ -258,33 +276,36 @@ autocmd WinNew * Goyo!
   " autocmd InsertEnter * :RDCha
   " autocmd InsertLeave * :TDCha
 "{{{2 netrw
-  let g:netrw_banner=0 " supress banner
-  let g:netrw_sort_options = "i" " sort caseinsensitive
-
-  autocmd FileType netrw setlocal cursorline
+ " supress banner
+ let g:netrw_banner=0
+ " sort caseinsensitive
+ let g:netrw_sort_options = "i"
+ " keep the current directory the same as the browsing directory.
+ let g:netrw_keepdir = 0
+ autocmd FileType netrw setlocal cursorline
 
 
 "{{{2 diminiactive
   " The following drastically improves dimming over long wrapped lines.
   " https://github.com/blueyed/vim-diminactive/issues/2
-  if exists('+colorcolumn')
-      function! InactivateWindow(inactivate)
-          if a:inactivate == 1
-              " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
-              let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
-          else
-              if exists("w:inactiveWindowMatchId")
-                  call matchdelete(w:inactiveWindowMatchId)
-              endif
-          endif
-      endfunction
-      augroup DimInactiveWindows
-          au!
-          "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
-          au WinLeave * call InactivateWindow(1)
-          au WinEnter * call InactivateWindow(0)
-      augroup END
-  endif
+    "if exists('+colorcolumn')
+    "    function! InactivateWindow(inactivate)
+    "        if a:inactivate == 1
+    "            " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
+    "            let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
+    "        else
+    "            if exists("w:inactiveWindowMatchId")
+    "                call matchdelete(w:inactiveWindowMatchId)
+    "            endif
+    "        endif
+    "    endfunction
+    "    augroup DimInactiveWindows
+    "        au!
+    "        "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
+    "        au WinLeave * call InactivateWindow(1)
+    "        au WinEnter * call InactivateWindow(0)
+    "    augroup END
+    "endif
 "{{{2 csv
 
   autocmd BufRead,BufEnter *.csv set filetype=csv
@@ -366,6 +387,8 @@ nnoremap <Leader>d :pu =strftime('%Y-%m-%d')<CR>kJ
 nnoremap <Leader>f :FZF<Space>~/<CR>
 " Fuzzy find buffers with FZF
 nnoremap <Leader>b :Buffers<CR>
+" Fuzzy help find with FZF
+nnoremap <Leader>h :Help<CR>
 " Window command prefix
 nnoremap <Leader>w <C-w>
 " Gundo toggle window
@@ -437,6 +460,7 @@ autocmd Filetype markdown
             \ --pdf-engine=xelatex
             \ --columns=200
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+            \ --csl ~/jobb/styles/brill.csl
             \ -o '%'.pdf<CR>
 
 " to pdf with numbers 
@@ -456,16 +480,19 @@ autocmd Filetype markdown
 " autocmd Filetype markdown
 "   \ nnoremap <buffer> <Leader>bi :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
 
-"  to docx. -smart needed for parsing of daises in non TeX.
+"  to docx.
+    "  -smart needed for parsing of daises in non TeX.
     " \ % --bibliography manuscript.bib
-    " \ --csl ~/jobb/styles/apa-5th-edition.csl
+    " \ --csl ~/jobb/styles/apa-6th-edition.csl (MLJ)
 autocmd Filetype markdown
     \ nnoremap <buffer> <Leader>pd
     \ :w<CR>
     \ :AsyncRun pandoc
     \ -f markdown+implicit_figures+table_captions+example_lists
-    \ % --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/styles/al-ʿarabiyya.csl
+    \ %
+    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+    \ --csl ~/jobb/styles/brill.csl
+    \ --data-dir=$HOME/dotfiles/pandoc-data-dir
     \ -N
     \ -o '%'.docx<CR>
 
@@ -479,8 +506,9 @@ autocmd Filetype markdown,pandoc.markdown
     \ -f markdown+implicit_figures+table_captions+smart %
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+    \ --csl ~/jobb/styles/apa-6th-edition.csl
     \ --slide-level 1
-    \ -o '%'.pdf<CR>
+    \ -o '%'.beamer.pdf<CR>
 
 "  to html.
 autocmd Filetype markdown
@@ -492,7 +520,8 @@ autocmd Filetype markdown
     \ --columns=80
     \ --css ~/dotfiles/standard.css
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ -o '%'.html<CR>
+    \ -o '%'.html
+    \ && pbcopy < '%'.html <CR>
 
 "  to html, self contained
 autocmd Filetype markdown
@@ -522,10 +551,6 @@ autocmd Filetype tex
   \ && mv '%<'.pdf '%'.pdf<CR>
 
 " Bibtex run
-" %< "gives current filename without extension
-autocmd Filetype tex
-  \ nnoremap <buffer> <Leader>b :w<CR>
-  \ :AsyncRun biber %<<CR>
 
 autocmd Filetype tex
   \ nnoremap <buffer> <Leader>bi :w<CR>
@@ -632,6 +657,7 @@ augroup end
 augroup MardownSettings
   autocmd!
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
+  autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=-
 augroup end
 
 " Folding
@@ -664,7 +690,7 @@ endfunction
 " }}}1
 "{{{1 Command line maopings
 cnoremap jj <c-w>
-"{{{1 Movement & Editing
+"{'{{1 Movement & Editing
 " {{{2 Completion
   " Use TAB for completions
 
@@ -706,6 +732,8 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 
 " increment numbers
 noremap - :Explore<cr>
+inoremap <m-e> ə
+inoremap <m-E> Ə
 
 " Angular brackets
 "〈 U+2329
@@ -734,11 +762,10 @@ inoremap ¬ 0
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
-" Abbreviations for common misspellings
+" Abbreviations for common typoes
 iab ARab Arab
 iab ARabic Arabic
 iab Andras Andreas
-iab arabic Arabic
 iab fo of
 iab lenght length
 iab levles levels
@@ -748,10 +775,13 @@ iab teh the
 iab tow two
 iab whcih which
 iab widht width
+" Capitalized nationalities in English
+iab arabic Arabic
+iab egyptian Egyptian
+iab english English
+iab german German
+iab french French
 
-" Abbreviations for common cumbersome words
-iab ext extemporaneous
-iab Ext Extemporaneous
 
 " Remove word in input mode.
 inoremap jj <c-w>
@@ -761,6 +791,9 @@ inoremap ( ()<Left>
 inoremap [ []<Left>
 inoremap { {}<Left>
 inoremap ` ``<Left>
+inoremap ' ''<Left>
+" When only one for English possessive 's etc.
+inoremap '' '<Left>
 " Don't use this mapping for normal English prose where it is used in possessives.
 autocmd FileType r inoremap ' ''<Left>
 inoremap " ""<Left>
@@ -832,12 +865,11 @@ autocmd BufRead ~/.mutt/* setlocal filetype=muttrc
 " muttaliasescomplete
 augroup MailStuff
   autocmd!
-  autocmd FileType mail setlocal omnifunc=muttaliasescomplete#Complete 
-  autocmd Filetype mail inoremap <buffer><c-x><c-m> <c-x><c-o>
   " for completion of email addresses 
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@
-  " for completion of email addresses
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=s~/jobb/aliases 
+  autocmd FileType mail setlocal complete +=s~/jobb/aliases 
+  autocmd FileType mail setlocal iskeyword+=@-@
+  autocmd FileType mail setlocal iskeyword+=.
+  autocmd FileType mail setlocal iskeyword+=_
 augroup end
 
 

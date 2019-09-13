@@ -2,12 +2,14 @@ set imap_user = 'xhalaa'
 # osx keychain
 set imap_pass = `security find-generic-password -w -s mutt -a xhalaa`
 
+
+
 set from = "andreas.hallberg@sprak.gu.se"
 set folder = "imaps://owa.gu.se:993"
 set spoolfile = +INBOX
 # set smtp_url = "smtps://smtpgw.gu.se:587/"
 mailboxes +Skickat +INBOX
 set record="+Skickat"
-set header_cache="~/.mutt/cache/headers"
-set message_cachedir="~/.mutt/cache/bodies"
+# set header_cache="~/.mutt/gu/cache/headers"
+# set message_cachedir="~/gu/.mutt/cache/bodies"
 set certificate_file=~/.mutt/certificates

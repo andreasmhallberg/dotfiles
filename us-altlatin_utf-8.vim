@@ -40,6 +40,8 @@ loadkeymap
 <M-.>H Ḥ
 <M-w>g ġ
 <M-w>G Ġ
+<M-v>G Ǧ
+<M-v>g ǧ
 <M-x>d ḏ
 <M-x>D Ḏ
 <M-x>t ṯ

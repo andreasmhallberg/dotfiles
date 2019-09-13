@@ -10,6 +10,6 @@ set spoolfile = "+INBOX"
 set smtp_url = "smtps://andreasmartenhallberg@smtp.gmail.com:465/"
 mailboxes "+[Gmail]/Sent Mail" +INBOX
 set record = "+[Gmail]/Sent Mail"
-set header_cache = "~/.mutt/cache/headers"
-set message_cachedir = "~/.mutt/cache/bodies"
+# set header_cache = "~/.mutt/gmail/cache/headers"
+# set message_cachedir = "~/.mutt/gmail/cache/bodies"
 set certificate_file = ~/.mutt/certificates
