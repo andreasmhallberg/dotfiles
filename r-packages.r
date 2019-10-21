@@ -13,5 +13,6 @@ install.packages(
   ,"GGally"
   ,"network"
   ,"igraph"
+  ,"pander" # converts stuff to pandoc markdown
   ,'ggcorrplot'
 )

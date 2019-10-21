@@ -15,6 +15,7 @@ settings:
     global:
       normal:
         <Meta+Ctrl+f>: fullscreen
+        D: null
         cm: clear-messages
         d: null
         q: tab-close
@@ -60,9 +61,8 @@ settings:
     global:
       DEFAULT: https://duckduckgo.com/?q={}
       adlibris: http://www.adlibris.com/se/sok?q={}
-      eall: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&search-go=&s.q={}
+      eall: https://referenceworks-brillonline-com.ezproxy.ub.gu.se/search?s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&search-go=&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
-      r: https://www.reddit.com/search/?q={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}

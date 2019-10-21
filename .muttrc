@@ -1,12 +1,17 @@
 # symlink to ~/.muttrc
-# {{{ colorscheme
-
-source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
-
-set realname = "Andreas Hallberg"
 
 set ssl_starttls=yes
 set ssl_force_tls=yes
+set use_from=yes
+set smtp_authenticators = 'gssapi:login'
+
+source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+
+# Default account
+source ~/dotfiles/account.gu.se.andreas.hallberg
+
+set realname = "Andreas Hallberg"
+
 
 # {{{ Accounts
 
@@ -14,28 +19,23 @@ set ssl_force_tls=yes
 folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/dotfiles/account.com.gmail.andreasmartenhallberg'
 folder-hook 'account.gu.se.andreas.hallberg' 'source ~/dotfiles/account.gu.se.andreas.hallberg'
 
-# Default account
-source ~/dotfiles/account.gu.se.andreas.hallberg
 
 # Macros for switching accounts
 macro index <f2> '<sync-mailbox><enter-command>source ~/dotfiles/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
 macro index <f3> '<sync-mailbox><enter-command>source ~/dotfiles/account.gu.se.andreas.hallberg<enter><change-folder>!<enter>'
 
-set use_from=yes
 
 set fast_reply # Don't ask for reciever or subject when replying to email.
 set include # Always include original message in reply. Don't ask.
 set recall=no # Don't ask to recall postponed messages.
 set editor='mvim -v +"call SweType()" +"norm }o"' # Since vanilla Vim does not have all features.
-set smtp_authenticators = 'gssapi:login'
 
 set sort = reverse-date-received
 # set sort=threads
 # set sort_aux=reverse-last-date-received
 
 # aliases
-# set alias_file= ~/.mutt/aliases
-set sort_alias= alias
+set sort_alias=alias
 set reverse_alias=yes
 
 # source $alias_file
@@ -87,6 +87,5 @@ bind index,pager N search-opposite # vim-like
 
 # Convert mail written in markdown to html before sending
 macro compose H "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=utf-8\n"
-# macro compose H "F pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable --toc --bibliography=~/dotfiles/mylatexstuff/bibliotek.bib -t html \ny^T^Utext/html; charset=utf-8\n"
 
 set wait_key=no

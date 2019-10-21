@@ -1,4 +1,5 @@
-set nocompatible " don't pretend to be VI
+" vim: set fdm=marker
+
 filetype plugin on
 filetype indent on
 "{{{1 Plugins
@@ -26,13 +27,15 @@ Plugin 'tpope/vim-surround'            " Useful mappings for netrw
 Plugin 'tpope/vim-commentary'          " gc<range> to comment
 Plugin 'tpope/vim-repeat'              " make mappings repeatable
 Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
-Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
+" Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
-" Plugin 'sjl/gundo.vim'                 " visual undo tree
+Plugin 'mbbill/undotree'
 Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
 " Plugin 'lervag/vimtex'               " tex stuff
+Plugin 'gibiansky/vim-latex-objects'  " LaTeX text objectes. e=environments. % to jump begin/end
 Plugin 'qpkorr/vim-renamer'            " Batch rename files vim-style.
 Plugin 'vim-scripts/YankRing.vim'      " After ctrlp to remap <c-p>
+Plugin 'rhysd/vim-grammarous'          " LanguageTool intergration for grammar checking
 " Plugin 'blueyed/vim-diminactive'     " Dims window that is not in focus. Clashes with FZF in netrw
 " Plugin 'rickhowe/diffchar.vim'
 
@@ -68,6 +71,12 @@ set scrolloff=10                              " When scrolling, keep the cursor 
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
 set display+=lastline                        " Display as much as possible of last line rather than @s
 
+" save undo file
+if has("persistent_undo")
+  set undodir=~/.undodir
+  set undofile
+endif
+
 
 " DISPLAY
 
@@ -81,11 +90,12 @@ set statusline+=%m         "  Modified flag, text is "[+]"; "[-]" if 'modifiable
 set statusline+=%=         "  Separator between left and right alignmet
 set statusline+=\ \ \ \ 
 " set statusline+=%l         "  Line number
-" set statusline+=/ي
-" set statusline+=%L         "  Lines in buffer
+" set statusline+=/
+set statusline+=%L         "  Lines in buffer
+" set statusline+=\ 
 " set statusline+=%n  " buffer number
 " set statusline+=\|
-set statusline+=%B  " character code
+" set statusline+=%B  " character code
 set statusline+=\ 
 set statusline+=%y         "  Filetype
 set statusline+=\ 
@@ -113,6 +123,25 @@ set formatoptions+=j                      "  j=Where it makes sense, remove a co
 set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
 
 " }}}1
+"{{{1 Commands
+
+function WordCountPdf()
+  w
+  AsyncRun pandoc '%'
+    \ -f markdown+implicit_figures+table_captions+multiline_tables+smart
+    \ --pdf-engine=xelatex
+    \ --filter pandoc-crossref
+    \ --columns=200
+    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+    \ --csl ~/jobb/styles/apa-6th-edition.csl
+    \ -o wordcount.temp.pdf &&
+  AsyncRun pdftotext wordcount.temp.pdf wordcount.temp.txt
+  AsyncRun wc -w wrodcount.temp.txt
+endfunction
+
+command WordCountPdf call WrodCountPdf()
+
+
 "{{{1 General mappings
 
 " <Hello> *you*. 
@@ -160,6 +189,9 @@ nnoremap tn :tabnew<CR>
 
 "{{{1 General stuff (passive)
 
+" Skeletons
+  autocmd BufNewFile *.md,*.mkd,*.markdown 0r ~/dotfiles/skeletons/skeleton.md
+
 " Longer scrolloff on vertical window
 function! ConditionalScrolloff()
   if winheight(0) > 70
@@ -176,9 +208,6 @@ augroup termIgnore
     autocmd BufEnter qf,netrw set nobuflisted
     autocmd TerminalOpen * set nobuflisted
 augroup END 
-
-" Foldmethod for .vimrc
-autocmd BufRead ~/.vimrc setlocal fdm=marker 
 
 augroup PassiveAutos
   autocmd!
@@ -203,17 +232,19 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v(First|Second|Third|Fourth),"
+  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant '\v(First|Second|Third|Fourth),'
   autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v<\(?[a-z0-9]\)"
 augroup end
 
-" Open no text file externally
+" Open non-text file externally
 " Sub-optimal because it removes the # buffer
+" echo(bufname(@#))
 augroup openExternally
   autocmd!
   autocmd BufRead *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
   autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
 augroup END
+
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
@@ -230,132 +261,162 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
-"{{{2 Syntastic
-" Recommended settings in help
-    set statusline+=%#warningmsg#
-    " set statusline+=%{SyntasticStatuslineFlag()}
-    set statusline+=%*
+  "{{{2 Grammarous
+  let g:grammarous#disabled_rules = {
+            \ '*' : ['TYPOGRAPHY', 'PUNCTUATION'],
+            \ }
+nnoremap <F5> <Plug>(grammarous-open-info-window)
 
-    let g:syntastic_always_populate_loc_list = 0
-    let g:syntastic_auto_loc_list = 0
-    let g:syntastic_check_on_open = 1
-    let g:syntastic_check_on_wq = 0
-"{{{2 auto-pairs
-" NOT WORKING
-" add <> to default
-    " let g:AutoPairs['<']='>'
+  "{{{2 Syntastic
+  " Recommended settings in help
+      set statusline+=%#warningmsg#
+      " set statusline+=%{SyntasticStatuslineFlag()}
+      set statusline+=%*
 
-
-"{{{2 fzf
-
-" keymaps in prompt
-    let g:fzf_action = {
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-x': '!launch',
-      \ 'ctrl-v': 'vsplit' ,
-      \ 'ctrl-s': 'split' ,
-      \  }
-
-    let g:fzf_layout = { 'down': '~50%' }
-
- " toggle Gundo of when fzf'ing 
-"{{{2 Goyo
-
-autocmd BufLeave * Goyo!
+      let g:syntastic_always_populate_loc_list = 0
+      let g:syntastic_auto_loc_list = 0
+      let g:syntastic_check_on_open = 1
+      let g:syntastic_check_on_wq = 0
+  "{{{2 auto-pairs
+  " NOT WORKING
+  " add <> to default
+      " let g:AutoPairs['<']='>'
 
 
-"{{{2 DiffChar
-  " Set wrap in diff
-  " au FilterWritePre * if &diff | set wrap | endif
+  "{{{2 fzf
 
-  " let g:DiffUpdate = 1
-  " let g:DiffUnit = 'Word3'
-  " let g:DiffModeSync = 1
+  " keymaps in prompt
+      let g:fzf_action = {
+        \ 'ctrl-t': 'tab split',
+        \ 'ctrl-x': '!launch',
+        \ 'ctrl-v': 'vsplit' ,
+        \ 'ctrl-s': 'split' ,
+        \  }
 
-  " Reduce error reports
-  " autocmd InsertEnter * :RDCha
-  " autocmd InsertLeave * :TDCha
-"{{{2 netrw
- " supress banner
- let g:netrw_banner=0
- " sort caseinsensitive
- let g:netrw_sort_options = "i"
- " keep the current directory the same as the browsing directory.
- let g:netrw_keepdir = 0
- autocmd FileType netrw setlocal cursorline
+      let g:fzf_layout = { 'down': '~50%' }
+
+  "{{{2 undotree
+  
+  let g:undotree_SetFocusWhenToggle = 1
+ 
+  "{{{2 Goyo
+
+  " Quite goyo when leaving window
+  autocmd BufLeave * Goyo!
+
+  " Stuff that happen when entering goyo
+      function! s:goyo_enter()
+        set noshowmode
+        set wrap
+      endfunction
+
+  " Stuff that happen when exiting goyo
+      function! s:goyo_leave()
+        set number
+      endfunction
+
+      autocmd! User GoyoEnter nested call <SID>goyo_enter()
+      autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 
-"{{{2 diminiactive
-  " The following drastically improves dimming over long wrapped lines.
-  " https://github.com/blueyed/vim-diminactive/issues/2
-    "if exists('+colorcolumn')
-    "    function! InactivateWindow(inactivate)
-    "        if a:inactivate == 1
-    "            " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
-    "            let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
-    "        else
-    "            if exists("w:inactiveWindowMatchId")
-    "                call matchdelete(w:inactiveWindowMatchId)
-    "            endif
-    "        endif
-    "    endfunction
-    "    augroup DimInactiveWindows
-    "        au!
-    "        "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
-    "        au WinLeave * call InactivateWindow(1)
-    "        au WinEnter * call InactivateWindow(0)
-    "    augroup END
-    "endif
-"{{{2 csv
+  "{{{2 DiffChar
+    " Set wrap in diff
+    " au FilterWritePre * if &diff | set wrap | endif
 
-  autocmd BufRead,BufEnter *.csv set filetype=csv
-  autocmd BufRead,BufEnter *.dat set filetype=csv
-  autocmd BufRead,BufEnter *.dat set filetype=csv
-  autocmd FileType csv set cursorline
+    " let g:DiffUpdate = 1
+    " let g:DiffUnit = 'Word3'
+    " let g:DiffModeSync = 1
 
-  " Highlight column under cursor. Is not effected in insert mode
-  let g:csv_highlight_column = 'n'
+    " Reduce error reports
+    " autocmd InsertEnter * :RDCha
+    " autocmd InsertLeave * :TDCha
+  "{{{2 netrw
+   " supress banner
+   let g:netrw_banner=0
+   " sort caseinsensitive
+   let g:netrw_sort_options = "i"
+   " keep the current directory the same as the browsing directory.
+   let g:netrw_keepdir = 0
+   autocmd FileType netrw setlocal cursorline
 
-  " Don't conceal delimiter
-  let g:csv_no_conceal = 1
 
-"{{{2 vim-pandoc-syntax
-  " don't use conceal
-  let g:pandoc#syntax#conceal#use = 0
+  "{{{2 diminiactive
+    " The following drastically improves dimming over long wrapped lines.
+    " https://github.com/blueyed/vim-diminactive/issues/2
+      "if exists('+colorcolumn')
+      "    function! InactivateWindow(inactivate)
+      "        if a:inactivate == 1
+      "            " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
+      "            let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
+      "        else
+      "            if exists("w:inactiveWindowMatchId")
+      "                call matchdelete(w:inactiveWindowMatchId)
+      "            endif
+      "        endif
+      "    endfunction
+      "    augroup DimInactiveWindows
+      "        au!
+      "        "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
+      "        au WinLeave * call InactivateWindow(1)
+      "        au WinEnter * call InactivateWindow(0)
+      "    augroup END
+      "endif
+  "{{{2 csv
 
-  " apply pandoc-syntax on .md files
-  au BufNewFile,BufFilePre,BufRead *.md,*.mkd,*.mkd set filetype=markdown.pandoc
+    autocmd BufRead,BufEnter *.csv set filetype=csv
+    autocmd BufRead,BufEnter *.dat set filetype=csv
+    autocmd FileType csv set cursorline
 
-"{{{2 gundo
-  " Soft wrap gundo preview
-  augroup MyGundo
-      au!
-      au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
-  augroup end
+    " Highlight column under cursor. Is not effected in insert mode
+    let g:csv_highlight_column = 'n'
 
-  " Wider gundo window
-      let g:gundo_width = 60
-  " Auto-close gundo window on revert.
-      let g:gundo_close_on_revert=1
+    " Don't conceal delimiter
+    let g:csv_no_conceal = 1
 
-"{{{2 vim-markdown
-  " no mappings. We only want folding
-  let g:vim_markdown_no_default_key_mappings = 1
+  "{{{2 vim-pandoc-syntax
+    " don't use conceal
+    let g:pandoc#syntax#conceal#use = 0
 
-  " Fold at the title line
-  let g:vim_markdown_folding_style_pythonic = 1
+    " apply pandoc-syntax on .md files
+    " au BufNewFile,BufFilePre,BufRead *.md,*.mkd,*.mkd set filetype=markdown
 
-  " list levels are indented by 2 space
-  let g:vim_markdown_new_list_item_indent = 2
+  "{{{2 gundo
+    " Soft wrap gundo preview
+    augroup MyGundo
+        au!
+        au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
+    augroup end
 
-  " Highlighting for YAML header
-  let g:vim_markdown_frontmatter = 1
+    " Wider gundo window
+        let g:gundo_width = 60
+    " Auto-close gundo window on revert.
+        let g:gundo_close_on_revert=1
 
-"{{{2 nvim-r
-" Don't type <- with _
-   let R_assign = 0
-"{{{2 yankring
-  let g:yankring_history_dir = '$HOME/temp/'
+  "{{{2 vim-markdown
+    " no mappings. We only want folding
+    let g:vim_markdown_no_default_key_mappings = 1
+
+    " Fold at the title line
+    let g:vim_markdown_folding_style_pythonic = 1
+
+    " list levels are indented by 2 space
+    let g:vim_markdown_new_list_item_indent = 2
+
+    " Highlighting for YAML header
+    let g:vim_markdown_frontmatter = 1
+
+  "{{{2 nvim-r
+  " Don't type <- with _
+     let R_assign = 0
+  " Don't indent by yoursel
+   let R_indent_commented = 0
+  "{{{2 yankring
+    let g:yankring_history_dir = '$HOME/temp/'
+
+  "{{{2 HowMuch
+  " number of decimals
+  let g:HowMuch_scale = 4
+  "}}}2
 "}}}1
 "{{{1 Display & Color
 
@@ -431,7 +492,7 @@ autocmd Filetype markdown
             \ -o '%'.tex<CR>
 
 "  to tex self contained
-autocmd Filetype markdown 
+    autocmd Filetype markdown,pandoc.markdown
             \ nnoremap <buffer> <Leader>pts :w<CR>
             \ :AsyncRun pandoc
             \ -f markdown+implicit_figures+table_captions+smart %
@@ -442,7 +503,7 @@ autocmd Filetype markdown
             \ -so '%'.tex<CR>
 
 " to txt
-autocmd Filetype markdown 
+    autocmd Filetype markdown,pandoc.markdown
             \ nnoremap <buffer> <Leader>px
             \ :w<CR>
             \ :AsyncRun pandoc
@@ -452,19 +513,20 @@ autocmd Filetype markdown
             \ -o '%'.txt<CR>
 
 "  to pdf 
-autocmd Filetype markdown 
+    autocmd Filetype markdown,pandoc.markdown
             \ nnoremap <buffer> <Leader>pp 
             \ :w<CR>
             \ :AsyncRun pandoc '%'
             \ -f markdown+implicit_figures+table_captions+multiline_tables+smart
             \ --pdf-engine=xelatex
+            \ --filter pandoc-crossref
             \ --columns=200
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-            \ --csl ~/jobb/styles/brill.csl
+            \ --csl ~/jobb/styles/apa-6th-edition.csl
             \ -o '%'.pdf<CR>
 
 " to pdf with numbers 
-autocmd Filetype markdown 
+    autocmd Filetype markdown,pandoc.markdown
             \ nnoremap <buffer> <Leader>ppn 
             \ :w<CR>
             \ :AsyncRun pandoc '%'
@@ -484,14 +546,14 @@ autocmd Filetype markdown
     "  -smart needed for parsing of daises in non TeX.
     " \ % --bibliography manuscript.bib
     " \ --csl ~/jobb/styles/apa-6th-edition.csl (MLJ)
-autocmd Filetype markdown
-    \ nnoremap <buffer> <Leader>pd
+    autocmd Filetype markdown,pandoc.markdown
+    \ nnoremap <buffer><Leader>pd
     \ :w<CR>
     \ :AsyncRun pandoc
     \ -f markdown+implicit_figures+table_captions+example_lists
     \ %
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/styles/brill.csl
+    \ --csl ~/jobb/styles/apa-6th-edition.csl
     \ --data-dir=$HOME/dotfiles/pandoc-data-dir
     \ -N
     \ -o '%'.docx<CR>
@@ -511,20 +573,17 @@ autocmd Filetype markdown,pandoc.markdown
     \ -o '%'.beamer.pdf<CR>
 
 "  to html.
-autocmd Filetype markdown
-    \ nnoremap <buffer> <Leader>ph
+autocmd Filetype markdown,pandoc.markdown
+    \ nnoremap <buffer><Leader>ph
     \ :w<CR>
     \ :AsyncRun
     \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html %
-    \ --toc
     \ --columns=80
-    \ --css ~/dotfiles/standard.css
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ -o '%'.html
-    \ && pbcopy < '%'.html <CR>
+    \ -o '%'.html<CR>
 
 "  to html, self contained
-autocmd Filetype markdown
+autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer> <Leader>phs
     \ :w<CR>
     \ :AsyncRun
@@ -552,12 +611,10 @@ autocmd Filetype tex
 
 " Bibtex run
 
-autocmd Filetype tex
-  \ nnoremap <buffer> <Leader>bi :w<CR>
-  \ :AsyncRun bibtex %<<CR>
-" OBS!!! Run
-"      rm -rf `biber --cache`
-" to fix bug crash bug.
+" autocmd Filetype tex
+"   \ nnoremap <buffer> <Leader>bi :w<CR>
+"   \ :AsyncRun bibtex %<<CR>
+"   " OBS!!! Run ``rm -rf `biber --cache` to fix bug crash bug.
 
 " tex do docx
 autocmd Filetype tex
@@ -623,8 +680,8 @@ augroup end
 augroup LaTeXHighlight
   autocmd!
   " autocmd FileType tex syn match Statement "_" containedin=ALL " Stop _ being an error
-  " autocmd FileType tex highlight link footnote Comment
 augroup end
+
 
 " }}1
 
@@ -643,7 +700,21 @@ augroup MarkdownSyntaxH
   autocmd Filetype markdown,markdown.pandoc syn match Constant "`[^`]\{-}`"
    " put this last to overried above 
   autocmd Filetype markdown,markdown.pandoc syn match Underlined "\v^\\(if\S+|else|fi)>"
+  " fold html comments
+  autocmd Filetype markdown,markdown.pandoc,r call MarkdownLevel()
+  autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
+  autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
+  autocmd Filetype markdown,markdown.pandoc syn region HtmlFold start="^<!--" end="-->$" transparent keepend fold
+  " Pandoc citation
+  autocmd Filetype markdown,markdown.pandoc syn match PandocCitation '@[a-z0-9_]\+'
+  autocmd Filetype markdown,markdown.pandoc syn match PandocTblFigLab '[@#]\(tbl\|fig\):[a-z0-9_]\+'
+
+  " links
+  autocmd Filetype markdown,markdown.pandoc hi link PandocCitation Statement
+  autocmd Filetype markdown,markdown.pandoc hi link PandocTblFigTag Statement
+
 augroup end
+
   
 
 " Mappings
@@ -661,9 +732,6 @@ augroup MardownSettings
 augroup end
 
 " Folding
-autocmd Filetype markdown,markdown.pandoc,r call MarkdownLevel()
-autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
-autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
 
 function! MarkdownLevel()
     if getline(v:lnum) =~ '^# .*$'
@@ -694,12 +762,12 @@ cnoremap jj <c-w>
 " {{{2 Completion
   " Use TAB for completions
 
-
 inoremap <Tab> <c-n>
 " Shift TAB to inser tab character
-inoremap <S-Tab> <Cv>u0009
-" CTRL-f to complete file path
+inoremap <S-Tab> <Tab>
+" CTRL-f to complete file path with fsf
 inoremap <C-f> <c-x><c-f>
+" imap <c-f> <plug>(fzf-complete-path)
 " completion of following word
 inoremap xx <c-x><c-n>
 "}}}2
@@ -712,6 +780,9 @@ nnoremap <c-l> <c-w>l
 
 " Make Y behave like D and C
 nnoremap Y yg_
+
+" U to redo
+nnoremap U <C-r>
 
 " Choose first word in spelling list preceding misspelled word
 nnoremap zz <esc>mz[s1z=e`z
@@ -726,7 +797,7 @@ vnoremap k gk
 vnoremap j gj
 
 " Redraw syntax highlight
-nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
+nnoremap <leader>u :syntax sync fromstart<CR>:redraw!<CR>
 
 "{{{2 CHARACTER INPUT
 
@@ -734,16 +805,14 @@ nnoremap U :syntax sync fromstart<CR>:redraw!<CR>
 noremap - :Explore<cr>
 inoremap <m-e> ə
 inoremap <m-E> Ə
+" non-breaking hyphen
+inoremap <m--> ‑
 
 " Angular brackets
 "〈 U+2329
 " 〉U+232
 inoremap <A-<> 〈
 inoremap <A->> 〉
-
-" Indent without leaving insert mode
-inoremap >> <ESC>me>>`ella
-inoremap << <ESC>me<<`ehha
 
 " Like numpad
 inoremap <A-j> 1
@@ -788,26 +857,34 @@ inoremap jj <c-w>
 " imap <BS><BS> <NOP> " To learn the above
 " delimiters
 inoremap ( ()<Left>
+inoremap (( (
 inoremap [ []<Left>
+inoremap [[ [
 inoremap { {}<Left>
+inoremap {{ {
 inoremap ` ``<Left>
+inoremap `` `
 inoremap ' ''<Left>
+inoremap '' '
+autocmd Filetype markdown,markdown.pandoc inoremap * **<Left>
+autocmd Filetype markdown,markdown.pandoc inoremap ** *
 " When only one for English possessive 's etc.
-inoremap '' '<Left>
 " Don't use this mapping for normal English prose where it is used in possessives.
 autocmd FileType r inoremap ' ''<Left>
 inoremap " ""<Left>
+inoremap "" "
 inoremap < \<><Left>
-autocmd Filetype markdown,markdown.pandoc inoremap * **<Left>
+inoremap << \<
+autocmd Filetype r inoremap < <
+
 
 " to move out of delimiter
 inoremap <C-l> <Right>
 inoremap <C-h> <Left>
 
 " Move to eol in Normal, Visual, Select, Operator-pending
-noremap L g_
-noremap H ^
-
+noremap L $
+noremap H 0
 
 
 "}}}1
@@ -821,18 +898,18 @@ endfunction
 augroup readingnotes
   autocmd!
   " Don't fold
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal nofoldenable
+  autocmd BufRead ~/*/readingnotes/* setlocal nofoldenable
   " Write in English
-  autocmd BufRead ~/Box\ Sync/readingnotes/* call EngType()
+  autocmd BufRead ~/*/readingnotes/* call EngType()
   " Highlight page refs at end of line
-  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
+  autocmd BufRead ~/*/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
   " Highlight indefinitely indented comments
-  autocmd BufRead ~/Box\ Sync/readingnotes/* syn match Comment "\v^\s*\>.*$"
+  autocmd BufRead ~/*/readingnotes/* syn match Comment "\v^\s*\>.*$"
   " For completion of keywords 
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=@-@
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal iskeyword+=-
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal complete +=sKeywords.md
-  autocmd BufRead ~/Box\ Sync/readingnotes/* setlocal breakindent
+  autocmd BufRead ~/*/readingnotes/* setlocal iskeyword+=@-@
+  autocmd BufRead ~/*/readingnotes/* setlocal iskeyword+=-
+  autocmd BufRead ~/*/readingnotes/* setlocal complete +=sKeywords.md
+  autocmd BufRead ~/*/readingnotes/* setlocal breakindent
   " Highlight when listing radingnotes
   autocmd FileType netrw syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
 augroup END
