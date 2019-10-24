@@ -1,4 +1,5 @@
-" vim: set fdm=marker
+" foldmethod for vimrc
+autocmd BufRead ~/dotfiles/.vimrc set foldmethod=marker
 
 filetype plugin on
 filetype indent on
@@ -37,7 +38,7 @@ Plugin 'qpkorr/vim-renamer'            " Batch rename files vim-style.
 Plugin 'vim-scripts/YankRing.vim'      " After ctrlp to remap <c-p>
 Plugin 'rhysd/vim-grammarous'          " LanguageTool intergration for grammar checking
 " Plugin 'blueyed/vim-diminactive'     " Dims window that is not in focus. Clashes with FZF in netrw
-" Plugin 'rickhowe/diffchar.vim'
+Plugin 'rickhowe/diffchar.vim'
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -467,6 +468,9 @@ nnoremap <Leader>g :Goyo<cr>
 " next in location list
 nnoremap <Leader>n :lnext<cr>
 
+" Diffchar get text form other buffer
+nmap <leader>dg <Plug>GetDiffCharPair
+
 " Tabularize
 augroup Tabular
   autocmd!
@@ -522,7 +526,7 @@ autocmd Filetype markdown
             \ --filter pandoc-crossref
             \ --columns=200
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-            \ --csl ~/jobb/styles/apa-6th-edition.csl
+            \ --csl ~/jobb/styles/brill-ibid2.csl
             \ -o '%'.pdf<CR>
 
 " to pdf with numbers 
@@ -688,33 +692,6 @@ augroup end
 "{{{1 Markdown mappings and function
 " Mappings only used in markdown files 
 
-
-" Clearly highlight LaTeX if-stantements for use in documents with multiple
-" output versions. 
-
-augroup MarkdownSyntaxH
-  autocmd!
-  " LaTeX commands
-  autocmd Filetype markdown,markdown.pandoc syn match Statement "\\[a-zA-Z]\+"
-  " material within ``
-  autocmd Filetype markdown,markdown.pandoc syn match Constant "`[^`]\{-}`"
-   " put this last to overried above 
-  autocmd Filetype markdown,markdown.pandoc syn match Underlined "\v^\\(if\S+|else|fi)>"
-  " fold html comments
-  autocmd Filetype markdown,markdown.pandoc,r call MarkdownLevel()
-  autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
-  autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
-  autocmd Filetype markdown,markdown.pandoc syn region HtmlFold start="^<!--" end="-->$" transparent keepend fold
-  " Pandoc citation
-  autocmd Filetype markdown,markdown.pandoc syn match PandocCitation '@[a-z0-9_]\+'
-  autocmd Filetype markdown,markdown.pandoc syn match PandocTblFigLab '[@#]\(tbl\|fig\):[a-z0-9_]\+'
-
-  " links
-  autocmd Filetype markdown,markdown.pandoc hi link PandocCitation Statement
-  autocmd Filetype markdown,markdown.pandoc hi link PandocTblFigTag Statement
-
-augroup end
-
   
 
 " Mappings
@@ -727,6 +704,9 @@ augroup end
 
 augroup MardownSettings
   autocmd!
+  autocmd Filetype markdown,markdown.pandoc,r call MarkdownLevel()
+  autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
+  autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=-
 augroup end
@@ -779,7 +759,7 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
 
 " Make Y behave like D and C
-nnoremap Y yg_
+nnoremap Y y$
 
 " U to redo
 nnoremap U <C-r>
