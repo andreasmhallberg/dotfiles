@@ -56,7 +56,7 @@ alias gcb='git checkout -b' #checkout and create new branch
 alias gb='git branch'
 alias gs='git status'
 
-alias renamer="vim -c 'Renamer"
+alias renamer="vim -c 'Renamer .'"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
@@ -80,12 +80,6 @@ alias cd='cs'
 PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 export PATH
 
-# Setting PATH for Python 3.6
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
-export PATH
-
 bind "set completion-ignore-case on"
-
 
 export PATH="/usr/local/opt/qt/bin:$PATH"

@@ -17,12 +17,11 @@ syn match MDPandocTblFigLab '[@#]\zs\(tbl\|fig\):[a-z0-9]\+'
 " block quotes
 syn match MDCitation '^\s*>.\+$'
 
-" Table/Figure heading
-
-
+syn match Constant 'First\|Second\|Third\|Fourth,'
+syn match Constant '\<(\?[a-z0-9])'
 
 " links
 hi link MDPandocCitation Statement
 hi link MDPandocTblFigLab Statement
 hi link MDCitation Comment
-
+hi link MDInlineFootnote Type

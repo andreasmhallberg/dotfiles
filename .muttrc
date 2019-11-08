@@ -28,7 +28,7 @@ macro index <f3> '<sync-mailbox><enter-command>source ~/dotfiles/account.gu.se.a
 set fast_reply # Don't ask for reciever or subject when replying to email.
 set include # Always include original message in reply. Don't ask.
 set recall=no # Don't ask to recall postponed messages.
-set editor='mvim -v +"call SweType()" +"norm }o"' # Since vanilla Vim does not have all features.
+set editor='mvim -v +"call SweType()" +"norm }o"'
 
 set sort = reverse-date-received
 # set sort=threads

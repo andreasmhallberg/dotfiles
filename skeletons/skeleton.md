@@ -1,10 +1,8 @@
 ---
 title:
 lang:
-author: ar
+author:
 date:
 header-includes:
   # - \newfontfamily\arabicfont{Lateef}
-  - \frenchspacing
-  - \preto{\section}{\pagebreak}
 ---

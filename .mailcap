@@ -2,21 +2,18 @@
 text/html; launch %s >/dev/null 2>&1; needsterminal;
 text/html; w3m -I %{charset} -T text/html; copiousoutput;
 
-application/docx; panodoc %s -t markdown | mvim - -v "+set ft=pandoc";
 application/pdf; xpdf %s; 
+
+# office formats
+application/docx; open %s;
 application/vnd.openxm; open %s;
-# application/msword; panodoc %s -t markdown | vim;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; open %s;
+application/vnd.ms-word.document.12; open %s;
+application/msword; open %s;
+application/vnd.ms-excel; open %s;
 
-# mvim -v opens in terminal
-application/vnd.ms-word.document.12;  pandoc -f docx %s -t markdown | mvim - -v "+set ft=markdown";
-application/msword; pandoc -f docx %s -t markdown | mvim - -v "+set ft=markdown" ;
-# application/vnd.ms-excel; launch %s;
-application/vnd.openxmlformats-officedocument.wordprocessingml.document; pandoc -f docx %s -t markdown | mvim - -v "+set ft=markdown" ;
-
-
-# Third party application to open other formats
-
-image/gif; launch %s;
-image/jpeg; launch %s;
-image/png; launch %s;
-image/m4v; launch %s;
+# images etc.
+image/gif; open %s;
+image/jpeg; open %s;
+image/png; open %s;
+image/m4v; open %s;

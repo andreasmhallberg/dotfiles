@@ -1,8 +1,12 @@
 " foldmethod for vimrc
-autocmd BufRead ~/dotfiles/.vimrc set foldmethod=marker
 
 filetype plugin on
 filetype indent on
+
+" Settings for this file
+autocmd BufRead ~/.vimrc setlocal foldmethod=marker
+autocmd BufRead ~/.vimrc setlocal nospell
+
 "{{{1 Plugins
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -13,6 +17,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'junegunn/fzf'
 Plugin 'sk1418/HowMuch'                " calculate visually marked math
+Plugin 'dense-analysis/ale'
 Plugin 'junegunn/fzf.vim'              " heaven
 Plugin 'segeljakt/vim-isotope'
 Plugin 'milkypostman/vim-togglelist'   " toggle quickfix and location list on and off. \q and \l
@@ -21,14 +26,13 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'will133/vim-dirdiff'
 Plugin 'skywind3000/asyncrun.vim'
 Plugin 'klapheke/vim-chat'             " syntax highlighting for CHAT-transcriptions
-Plugin 'morhetz/gruvbox'               " colorsheme
 " Plugin 'vim-syntastic/syntastic'     " syntax checker. Used for TeX and R
 Plugin 'jalvesaq/Nvim-R'               " Successor of R-vimplugin. Requires tmux.
 Plugin 'tpope/vim-surround'            " Useful mappings for netrw
 Plugin 'tpope/vim-commentary'          " gc<range> to comment
 Plugin 'tpope/vim-repeat'              " make mappings repeatable
 Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
-" Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
+Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
 Plugin 'mbbill/undotree'
 Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
@@ -39,6 +43,11 @@ Plugin 'vim-scripts/YankRing.vim'      " After ctrlp to remap <c-p>
 Plugin 'rhysd/vim-grammarous'          " LanguageTool intergration for grammar checking
 " Plugin 'blueyed/vim-diminactive'     " Dims window that is not in focus. Clashes with FZF in netrw
 Plugin 'rickhowe/diffchar.vim'
+
+" Colorschemes
+Plugin 'morhetz/gruvbox'
+Plugin 'altercation/vim-colors-solarized'
+" Plugin 'davidosomething/vim-colors-meh'
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -90,13 +99,13 @@ set statusline=%F          "  Full path and file name.
 set statusline+=%m         "  Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
 set statusline+=%=         "  Separator between left and right alignmet
 set statusline+=\ \ \ \ 
-" set statusline+=%l         "  Line number
+set statusline+=%l         "  Line number
 " set statusline+=/
-set statusline+=%L         "  Lines in buffer
+" set statusline+=%L         "  Lines in buffer
 " set statusline+=\ 
 " set statusline+=%n  " buffer number
-" set statusline+=\|
-" set statusline+=%B  " character code
+set statusline+=\|
+set statusline+=%B  " character code
 set statusline+=\ 
 set statusline+=%y         "  Filetype
 set statusline+=\ 
@@ -145,22 +154,37 @@ command WordCountPdf call WrodCountPdf()
 
 "{{{1 General mappings
 
-" <Hello> *you*. 
-" TTS WTF
-" https://www.reddit.com/r/vim/comments/2odq4l/osx_texttospeech_in_vim/
-         " Filter markdown citations. Replace author names (that will be lettered, with 'author')
-         " Filter markdown markup
-         " Read footnotes as ['footnote <label>']
-   vnoremap <silent>z "xy:call system('echo '. shellescape(@x) .'
-         \ <bar> sed -E "s/[<>**]//g"
-         \ <bar> sed -E "s/@([a-z-]+)_[a-z-]+_([0-9]{4,4})/citation: \\2/g"
-         \ <bar> sed -E "s/\\[\\^([a-z]+)\\]/ footnote: \\1./g"
-         \ <bar> sed -E "s/http:\\/\\/.* /URL /g"
-         \ <bar> sed -E "s/[ʿʾ]//g"
-         \ <bar> sed -E "s/&nbsp;//g"
-         \ <bar> sed -E "s/\\[([^\\]]+)\\]\\([^)]+\\)/\\1/g"
-         \ <bar> say &')<CR>
+noremap - :Explore<cr>
 
+" Text to speech
+" Says whatever is in the x-register
+" Tested in OSX
+" https://www.reddit.com/r/vim/comments/2odq4l/osx_texttospeech_in_vim/
+" Filter markdown citations. Replace author names (that will be lettered, with 'author')
+" Filter markdown markup
+" Read footnotes as ['footnote <label>']
+function! TTS()
+    if &spelllang == 'sv'
+      let s:voice = 'Alva'
+    else
+      let s:voice = 'Allison'
+    endif
+    call system('echo '. shellescape(@x) .'
+         \ | sed -E "s/[<>**]//g"
+         \ | sed -E "s/@([a-z-]+)_[a-z-]+_([0-9]{4,4})/citation: \\2/g"
+         \ | sed -E "s/\\[\\^([a-z]+)\\]/ footnote: \\1./g"
+         \ | sed -E "s/http:\\/\\/.* /URL /g"
+         \ | sed -E "s/[ʿʾ]//g"
+         \ | sed -E "s/SA/S A/g"
+         \ | sed -E "s/&nbsp;/ /g"
+         \ | sed -E "s/\\[([^\\]]+)\\]\\([^)]+\\)/\\1/g"
+         \ | say --voice='. s:voice .' &')
+endfunction
+
+vnoremap z "xy:call TTS()<cr>
+
+" stop TTS
+nnoremap <ESC> :call system('killall say')<CR>
 
 augroup MoveSectionWhise
 autocmd!
@@ -191,7 +215,11 @@ nnoremap tn :tabnew<CR>
 "{{{1 General stuff (passive)
 
 " Skeletons
-  autocmd BufNewFile *.md,*.mkd,*.markdown 0r ~/dotfiles/skeletons/skeleton.md
+augroup Skeletons
+  autocmd!
+  autocmd BufNewFile *.md 0r ~/dotfiles/skeletons/skeleton.md
+  autocmd BufNewFile *.tex 0r ~/dotfiles/skeletons/skeleton.tex
+augroup END 
 
 " Longer scrolloff on vertical window
 function! ConditionalScrolloff()
@@ -222,10 +250,10 @@ augroup PassiveAutos
   autocmd VimResized * :wincmd =
   " Always use minimalist foldtext
   autocmd BufEnter * set foldtext=getline(v:foldstart)
-  " Set wd for current file
+  " Set working directory for current file
   autocmd BufEnter * silent! lcd %:p:h
   " Read docx through pandoc
-  autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
+  " autocmd BufReadPost *.docx :%!pandoc -f docx -t markdown -S
   " No wrapping in quickfix or location list buffer
   autocmd BufEnter,BufRead quickfix setlocal nowrap
 augroup end
@@ -233,19 +261,27 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant '\v(First|Second|Third|Fourth),'
-  autocmd Filetype markdown,markdown.pandoc,tex,txt,mail syn match Constant "\v<\(?[a-z0-9]\)"
+  autocmd FileType markdown,markdown.pandoc,tex,txt,mail syn match Constant 'First\|Second\|Third\|Fourth,'
+  autocmd FileType markdown,markdown.pandoc,tex,txt,mail syn match Constant '\<(\?[a-z0-9])'
 augroup end
 
 " Open non-text file externally
-" Sub-optimal because it removes the # buffer
-" echo(bufname(@#))
 augroup openExternally
   autocmd!
-  autocmd BufRead *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
-  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &" | buffer# | bdelete# | redraw! | syntax on
+  autocmd BufRead * let g:saved_altfile_external = @#
+  autocmd BufRead *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
+        \| buffer#
+        \| bdelete#
+        \| redraw!
+        \| syntax on
+        \| let @# = g:saved_altfile_external
+  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.doc,*.docx silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &"
+        \| buffer#
+        \| bdelete#
+        \| redraw!
+        \| syntax on
+        \| let @# = g:saved_altfile_external
 augroup END
-
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
@@ -264,7 +300,14 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 "{{{1 Plugin configs
   "{{{2 Grammarous
   let g:grammarous#disabled_rules = {
-            \ '*' : ['TYPOGRAPHY', 'PUNCTUATION'],
+            \ '*' : [
+            \ 'DASH_RULE'
+            \,'MULTIPLICATION_SIGN'
+            \,'ARROWS'
+            \,'EN_QUOTES'
+            \,'WHITESPACE_RULE'
+            \,'EN_UNPAIRED_BRACKETS'
+            \]
             \ }
 nnoremap <F5> <Plug>(grammarous-open-info-window)
 
@@ -339,29 +382,9 @@ nnoremap <F5> <Plug>(grammarous-open-info-window)
    " keep the current directory the same as the browsing directory.
    let g:netrw_keepdir = 0
    autocmd FileType netrw setlocal cursorline
+   " Disable mapping to hide files. Often performed by mistake
+   autocmd FileType netrw map <buffer> <nop>
 
-
-  "{{{2 diminiactive
-    " The following drastically improves dimming over long wrapped lines.
-    " https://github.com/blueyed/vim-diminactive/issues/2
-      "if exists('+colorcolumn')
-      "    function! InactivateWindow(inactivate)
-      "        if a:inactivate == 1
-      "            " using 0 as the third parameter lets me still see Search'd patterns in inactive windows.
-      "            let w:inactiveWindowMatchId = matchadd("ColorColumn", "\\%>0v", 0, 9999)
-      "        else
-      "            if exists("w:inactiveWindowMatchId")
-      "                call matchdelete(w:inactiveWindowMatchId)
-      "            endif
-      "        endif
-      "    endfunction
-      "    augroup DimInactiveWindows
-      "        au!
-      "        "This highlights text beyond the 256 char mark, but it only changes the background of areas WITH text...
-      "        au WinLeave * call InactivateWindow(1)
-      "        au WinEnter * call InactivateWindow(0)
-      "    augroup END
-      "endif
   "{{{2 csv
 
     autocmd BufRead,BufEnter *.csv set filetype=csv
@@ -418,6 +441,8 @@ nnoremap <F5> <Plug>(grammarous-open-info-window)
   " number of decimals
   let g:HowMuch_scale = 4
   "}}}2
+  "{{{2 Solarized
+  let g:solarized_termcolors=256
 "}}}1
 "{{{1 Display & Color
 
@@ -426,9 +451,6 @@ colorscheme gruvbox " super sexy
 set bg=dark " Dark background
 
 " Less glaring search highlight
-hi Search cterm=NONE ctermfg=White ctermbg=DarkGreen
-hi Search guifg=White guibg=DarkGreen
-" hi Search ctermfg=Black
 
 " Italic comments.
 highlight Comment cterm=italic
@@ -526,7 +548,7 @@ autocmd Filetype markdown
             \ --filter pandoc-crossref
             \ --columns=200
             \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-            \ --csl ~/jobb/styles/brill-ibid2.csl
+            \ --csl ~/jobb/styles/arabica.csl
             \ -o '%'.pdf<CR>
 
 " to pdf with numbers 
@@ -557,7 +579,7 @@ autocmd Filetype markdown
     \ -f markdown+implicit_figures+table_captions+example_lists
     \ %
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/styles/apa-6th-edition.csl
+    \ --csl ~/jobb/styles/arabica.csl
     \ --data-dir=$HOME/dotfiles/pandoc-data-dir
     \ -N
     \ -o '%'.docx<CR>
@@ -692,7 +714,8 @@ augroup end
 "{{{1 Markdown mappings and function
 " Mappings only used in markdown files 
 
-  
+" trigger markdown.pandoc syntax on all markdown files
+autocmd BufEnter *.md,*.mkd setlocal filetype=markdown.pandoc
 
 " Mappings
 " autocmd Filetype markdown call MarkdownMaps()
@@ -738,7 +761,7 @@ endfunction
 " }}}1
 "{{{1 Command line maopings
 cnoremap jj <c-w>
-"{'{{1 Movement & Editing
+"{{{1 Movement & Editing
 " {{{2 Completion
   " Use TAB for completions
 
@@ -779,10 +802,29 @@ vnoremap j gj
 " Redraw syntax highlight
 nnoremap <leader>u :syntax sync fromstart<CR>:redraw!<CR>
 
+" font markup
+" mapping combinations with g
+" <l> first to compensate in shift with inserted character
+  " boldface b
+autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gb lmflbi**<esc>ea**<esc>`f
+autocmd FileType tex nnoremap <buffer>gb lmflbi\textbf{<esc>ea}<esc>`f
+  " italic i
+autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gi lmfbi*<esc>ea*<esc>`f
+autocmd FileType tex nnoremap <buffer>gi lmfbi\textit{<esc>ea}<esc>`f
+  " smallcaps s
+autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gs lmfbi[<esc>ea]{.smallcaps}<esc>`f
+autocmd FileType tex nnoremap <buffer>gs lmfbi\textsc{<esc>ea}<esc>`f
+  " Arabic l (=language)
+autocmd FileType markdown,markdown.pandoc nnoremap <buffer>ga lmfbi[<esc>ea]{lang=ar}<esc>`f
+autocmd FileType markdown,markdown.pandoc vnoremap <buffer>ga mf<esc>`<i[<esc>`>a]{lang=ar}<esc>`f
+
+autocmd FileType tex nnoremap <buffer>ga lmfbi\textArabic{<esc>ea}<esc>`f
+
+ 
+
 "{{{2 CHARACTER INPUT
 
 " increment numbers
-noremap - :Explore<cr>
 inoremap <m-e> ə
 inoremap <m-E> Ə
 " non-breaking hyphen
@@ -846,8 +888,8 @@ inoremap ` ``<Left>
 inoremap `` `
 inoremap ' ''<Left>
 inoremap '' '
-autocmd Filetype markdown,markdown.pandoc inoremap * **<Left>
-autocmd Filetype markdown,markdown.pandoc inoremap ** *
+autocmd Filetype markdown,markdown.pandoc inoremap <buffer> * **<Left>
+autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ** *
 " When only one for English possessive 's etc.
 " Don't use this mapping for normal English prose where it is used in possessives.
 autocmd FileType r inoremap ' ''<Left>
@@ -855,7 +897,7 @@ inoremap " ""<Left>
 inoremap "" "
 inoremap < \<><Left>
 inoremap << \<
-autocmd Filetype r inoremap < <
+autocmd Filetype r inoremap <buffer> < <
 
 
 " to move out of delimiter
@@ -863,8 +905,8 @@ inoremap <C-l> <Right>
 inoremap <C-h> <Left>
 
 " Move to eol in Normal, Visual, Select, Operator-pending
-noremap L $
-noremap H 0
+map L $
+map H 0
 
 
 "}}}1
@@ -878,18 +920,18 @@ endfunction
 augroup readingnotes
   autocmd!
   " Don't fold
-  autocmd BufRead ~/*/readingnotes/* setlocal nofoldenable
+  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal nofoldenable
   " Write in English
-  autocmd BufRead ~/*/readingnotes/* call EngType()
+  autocmd BufRead,BufEnter ~/*/readingnotes/* call EngType()
   " Highlight page refs at end of line
-  autocmd BufRead ~/*/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
+  autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
   " Highlight indefinitely indented comments
-  autocmd BufRead ~/*/readingnotes/* syn match Comment "\v^\s*\>.*$"
+  autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Comment "\v^\s*\>.*$"
   " For completion of keywords 
-  autocmd BufRead ~/*/readingnotes/* setlocal iskeyword+=@-@
-  autocmd BufRead ~/*/readingnotes/* setlocal iskeyword+=-
-  autocmd BufRead ~/*/readingnotes/* setlocal complete +=sKeywords.md
-  autocmd BufRead ~/*/readingnotes/* setlocal breakindent
+  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal iskeyword+=@-@
+  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal iskeyword+=-
+  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal complete +=sKeywords.md
+  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal breakindent
   " Highlight when listing radingnotes
   autocmd FileType netrw syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
 augroup END
