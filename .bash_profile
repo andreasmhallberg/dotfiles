@@ -15,9 +15,9 @@ export VISUAL="vim"
 export EDITOR="vim"
 
 # fzf default options
-export FZF_DEFAULT_COMMAND='fd -H . $HOME'
+export FZF_DEFAULT_COMMAND='fd -H --no-ignore . $HOME'
 # ctrl-t to insert path from home
-export FZF_CTRL_T_COMMAND='fd -H . $HOME'
+export FZF_CTRL_T_COMMAND='fd -H --no-ignore . $HOME'
 
 # Prompt shape
 # See man bash > PROMTING

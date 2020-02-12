@@ -1,13 +1,15 @@
 # text/html; open %s; >/dev/null 2>&1; needsterminal;
 text/html; launch %s >/dev/null 2>&1; needsterminal;
+# text/html; open %s ; needsterminal; nametemplate=%s.html
 text/html; w3m -I %{charset} -T text/html; copiousoutput;
 
 application/pdf; xpdf %s; 
 
 # office formats
 application/docx; open %s;
-application/vnd.openxm; open %s;
+application/vnd.openxm; open '%s';
 application/vnd.openxmlformats-officedocument.wordprocessingml.document; open %s;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; open %s;
 application/vnd.ms-word.document.12; open %s;
 application/msword; open %s;
 application/vnd.ms-excel; open %s;

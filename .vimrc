@@ -1,5 +1,3 @@
-" foldmethod for vimrc
-
 filetype plugin on
 filetype indent on
 
@@ -14,18 +12,17 @@ set rtp+=/usr/local/opt/fzf
 call vundle#begin()
 
 " let Vundle manage Vundle, required
+" Plugin 'jlanzarotta/bufexplorer'     
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'junegunn/fzf'                  " general purpose fuzzy finder
 Plugin 'sk1418/HowMuch'                " calculate visually marked math
 Plugin 'junegunn/fzf.vim'              " heaven
-" Plugin 'segeljakt/vim-isotope'
 Plugin 'milkypostman/vim-togglelist'   " toggle quickfix and location list on and off with <leader>q and <leader>l
 Plugin 'muttaliasescomplete.vim'       " autocompletion of mutts addressbook. ~/.mutt/aliases as default
 Plugin 'junegunn/goyo.vim'
 Plugin 'will133/vim-dirdiff'
 Plugin 'skywind3000/asyncrun.vim'
 Plugin 'klapheke/vim-chat'             " syntax highlighting for CHAT-transcriptions
-" Plugin 'vim-syntastic/syntastic'     " syntax checker. Used for TeX and R
 Plugin 'jalvesaq/Nvim-R'               " R functionality and integration. Requires tmux.
 Plugin 'tpope/vim-surround'            " Useful mappings for netrw
 Plugin 'tpope/vim-commentary'          " gc<range> to comment
@@ -36,7 +33,6 @@ Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
 Plugin 'mbbill/undotree'
 Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
-" Plugin 'lervag/vimtex'               " tex stuff
 Plugin 'gibiansky/vim-latex-objects'  " LaTeX text objectes. e=environments. % to jump begin/end
 Plugin 'qpkorr/vim-renamer'            " Batch rename files vim-style.
 Plugin 'vim-scripts/YankRing.vim'      " After ctrlp to remap <c-p>
@@ -45,8 +41,10 @@ Plugin 'rhysd/vim-grammarous'          " LanguageTool integration for grammar ch
 Plugin 'rickhowe/diffchar.vim'         " Character wise diff
 
 " Colorschemes
+" Plugin 'Jorengarenar/vim-darkness'
 Plugin 'morhetz/gruvbox'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'kristiandupont/shades-of-teal'
+Plugin 'hauleth/blame.vim'
 " Plugin 'davidosomething/vim-colors-meh'
 
 " All Plugins must be added before the following line
@@ -71,8 +69,6 @@ set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 set smartcase                                " Case-sensitive when upper case is used in search string
-  au InsertEnter * set noignorecase          " Make insert completion case sensitive
-  au InsertLeave * set ignorecase
 set complete +=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
 set wildmenu                                 " Show command completion alternatives
 set autoread                                 " autoread when a file is changed from the outside
@@ -83,6 +79,7 @@ set scrolloff=10                              " When scrolling, keep the cursor 
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
 set display+=lastline                        " Display as much as possible of last line rather than @s
 set textwidth=0                              " Don't hard-wrap lines for me.
+set foldlevel=100                            " leave folds open on startup
 
 " save undo file
 if has("persistent_undo")
@@ -120,7 +117,8 @@ set guioptions-=l
 set guioptions-=L
 set number                                "  Display line numbers
 set foldcolumn=0                          "  No columns to show folds
-set guifont=Source\ Code\ Pro\ Light:h16
+set guifont=Source\ Code\ Pro\ Light:h15
+" set nt=ALM\ Fixed:h16
 set linespace=5                           "  More space between lines. Default=0
 set cpoptions=|                           "  | at end of changed (<c>) object
 set linebreak                             "  Soft-wrap between words
@@ -138,30 +136,93 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 " }}}1
 "{{{1 Commands
 
-function WordCountPdf()
-  w
-  AsyncRun pandoc '%'
-    \ -f markdown+implicit_figures+table_captions+multiline_tables+smart
-    \ --pdf-engine=xelatex
-    \ --filter pandoc-crossref
-    \ --columns=200
-    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/styles/apa-6th-edition.csl
-    \ -o wordcount.temp.pdf &&
-  AsyncRun pdftotext wordcount.temp.pdf wordcount.temp.txt
-  AsyncRun wc -w wrodcount.temp.txt
+" Easier Arabic transcription
+
+function MapEALL()
+  let g:eallmappings = 1
+  inoremap aa ā
+  inoremap ii ī
+  inoremap uu ū
+  inoremap AA Ā
+  inoremap II Ī
+  inoremap UU Ū
+  inoremap .d ḍ
+  inoremap .D Ḍ
+  inoremap .t ṭ
+  inoremap .T Ṭ
+  inoremap .s ṣ
+  inoremap .S Ṣ
+  inoremap .z ẓ
+  inoremap .Z Ẓ
+  inoremap .h ḥ
+  inoremap .H Ḥ
+  inoremap vs š
+  inoremap vS Š
 endfunction
 
-command WordCountPdf call WrodCountPdf()
+function UnmapEALL()
+  let g:eallmappings = 0
+  iunmap aa
+  iunmap ii
+  iunmap uu
+  iunmap AA
+  iunmap II
+  iunmap UU
+  iunmap .d
+  iunmap .D
+  iunmap .t
+  iunmap .T
+  iunmap .s
+  iunmap .S
+  iunmap .z
+  iunmap .Z
+  iunmap .h
+  iunmap .H
+  iunmap vs
+  iunmap vS
+endfunction
+
+command! Eall call MapEALL()
+command! NoEall call UnmapEALL()
 
 command Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
 
+" https://dhruvasagar.com/2013/12/17/vim-filter-quickfix-list
+function! s:FilterLocationList(bang, pattern)
+  let cmp = a:bang ? '!~#' : '=~#'
+  call setloclist(filter(getloclist(), "bufname(v:val['bufnr']) " . cmp . " a:pattern"))
+endfunction
+command! -bang -nargs=1 -complete=file LFilter call s:FilterLocationList(<bang>0, <q-args>)
+
+
 "{{{1 General mappings
 
-" close window
-nnoremap q <c-w>c
-" record macro
-nnoremap Q q
+
+" <Leader>o to toggle overview with small font
+let g:overview = 0
+
+function! OverveiwToggle()
+  " if has('gui')
+  if g:overview == 0
+    let g:overview = 1
+    " Save valuesq
+    let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
+    let g:oldtw = &tw | set tw=80 
+    let g:oldscolloff = &scrolloff | set scrolloff=999
+  else
+    let &guifont = g:oldfont
+    let &tw = g:oldtw
+    let &scrolloff = g:oldscolloff
+    let g:overview = 0
+  endif
+endfunction
+
+nnoremap <Leader>o :call OverveiwToggle()<CR>
+ 
+" complete all matches in command line
+" useful to delete multiple buffers
+" <c-a> is taken by Quicksilver
+cnoremap <c-c> <c-a>
 
 noremap - :Explore<cr>
 
@@ -173,6 +234,8 @@ noremap - :Explore<cr>
   " Filter markdown markup
   " Read footnotes as ['footnote <label>']
 function! TTS()
+    " kill any speech still playing
+    !killall say
     if &spelllang == 'sv'
       let s:voice = 'Alva'
     else
@@ -220,23 +283,30 @@ nnoremap <Right> <c-w>>
 nnoremap ! :!
 
 " gt go to next tab
-nnoremap tn :tabnew<CR>
+nnoremap gt :tabnew<CR>
 
 "{{{1 General stuff (passive)
+
+" Make insert completion case sensitive
+au InsertEnter * set noignorecase          
+au InsertLeave * set ignorecase
 
 " Skeletons
 augroup Skeletons
   autocmd!
   autocmd BufNewFile *.md 0r ~/dotfiles/skeletons/skeleton.md
   autocmd BufNewFile *.tex 0r ~/dotfiles/skeletons/skeleton.tex
+  autocmd BufNewFile **/blog/*/*.md 0r ~/dotfiles/skeletons/skeleton.blog.md
 augroup END 
 
 " Longer scrolloff on vertical window
 function! ConditionalScrolloff()
   if winheight(0) > 70
-    set scrolloff=15
-  else
-    set scrolloff=10
+    if g:overview == 0
+      set scrolloff=20
+    else
+      set scrolloff=10
+    endif
   endif
 endfunction
 autocmd WinEnter,BufEnter,VimResized * call ConditionalScrolloff()
@@ -270,8 +340,8 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd FileType markdown,markdown.pandoc,tex,txt,mail syn match Constant 'First\|Second\|Third\|Fourth,' containedin=ALL
-  autocmd FileType markdown,markdown.pandoc,tex,txt,mail syn match Constant '\<(\?[a-z0-9])' containedin=ALL
+  autocmd BufRead,BufEnter *md.,*tex,*.txt,*.mail syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>,"
+  autocmd BufRead,BufEnter *md.,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])"
 augroup end
 
 " Open non-text file externally
@@ -316,6 +386,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
             \,'EN_QUOTES'
             \,'WHITESPACE_RULE'
             \,'EN_UNPAIRED_BRACKETS'
+            \,'COMMA_PARENTHESIS_WHITESPACE'
             \]
             \ }
 nnoremap <F5> <Plug>(grammarous-open-info-window)
@@ -477,8 +548,8 @@ nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>h :Help<CR>
 " Window command prefix
 nnoremap <Leader>w <C-w>
-" Gundo toggle window
-nnoremap <Leader>u :GundoToggle<CR>
+" View undoo tree. Currently with undotree
+nnoremap <Leader>u :UndotreeToggle<CR>
 " Open vimrc
 nnoremap <Leader>m :e $MYVIMRC<CR>
 " list and chose open buffer 
@@ -522,6 +593,7 @@ let g:pandoc_output_dir = './'
 
 " citation styles for specific files
   autocmd BufEnter **/arabica/*.md let b:pandoc_citation_style = 'arabica.csl' | let b:pandoc_reference_docx = 'arabica.docx'
+  autocmd BufEnter ~/case/**/*.md let b:pandoc_citation_style = 'apa-6th-edition.csl' | let b:pandoc_reference_docx = 'reading-and-writing.docx'
 
 augroup PandocCompilation
 autocmd!
@@ -529,14 +601,14 @@ autocmd!
   "  to pdf 
   autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer> <Leader>pp 
-    \ :w<CR>
-    \ :execute 'AsyncRun pandoc ' . '%' .
+    \ :w <bar>
+    \ execute 'AsyncRun pandoc ' . '%' .
     \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
     \ --columns=200
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/styles/' . g:pandoc_citation_style .
+    \ --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
     \ ' -o ' . g:pandoc_output_dir . '%' . '.pdf'<cr>
 
 
@@ -549,10 +621,9 @@ autocmd!
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
     \ --columns=200
-    \ --verbose
     \ --number-sections
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/styles/' . g:pandoc_citation_style .
+    \ --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
     \ ' -o ' . '%' . '.pdf'<cr>
 
   "  to beamer 
@@ -565,8 +636,21 @@ autocmd!
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --slide-level 1
-    \ --csl ~/jobb/styles/' . g:pandoc_citation_style .
+    \ --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
     \ ' -o ' . '%' . '.beamer.pdf'<cr>
+
+  "  to beamer (LaTeX)
+  autocmd Filetype markdown,pandoc.markdown
+    \ nnoremap <buffer><Leader>pbt
+    \ :w<CR>
+    \ :execute 'AsyncRun pandoc ' . '%' .
+    \ ' -f markdown+implicit_figures+table_captions+smart
+    \ -t beamer
+    \ --pdf-engine=xelatex
+    \ --slide-level 1
+    \ --biblatex
+    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+    \ ' -so ' . '%' . '.beamer.tex'<cr>
 
   "  to docx.
       autocmd Filetype markdown,pandoc.markdown
@@ -577,7 +661,7 @@ autocmd!
       \ --filter pandoc-crossref
       \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
       \ --reference-doc=$HOME/dotfiles/pandoc-data-dir/' . g:pandoc_reference_docx .
-      \ ' --csl ~/jobb/styles/' . g:pandoc_citation_style .
+      \ ' --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
       \ ' -o ' . '%' . '.docx'<cr>
 
   " to tex
@@ -616,6 +700,7 @@ autocmd!
 
 
   "  to html.
+  "  adds table padding
   autocmd Filetype markdown,pandoc.markdown
       \ nnoremap <buffer><Leader>ph
       \ :w<CR>
@@ -623,7 +708,10 @@ autocmd!
       \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html %
       \ --columns=80
       \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-      \ -o '%'.html<CR>
+      \ --filter pandoc-crossref
+      \ -t html
+      \ <bar> sed 's/\<table\>/\<table cellspacing="10pt"\>/'
+      \ > '%'.html<cr>
 
   "  to html, self contained
   autocmd Filetype markdown,pandoc.markdown
@@ -664,6 +752,7 @@ nnoremap <Leader>a :<C-U>call AraType()<CR>
 
 "  Switch to Swedish
 function! SweType()
+  inoremap jj <c-w>
 " To switch back from Arabic
   set keymap=swe-us "Modified keymap. File in .vim/keymap
   set norightleft
@@ -673,6 +762,7 @@ endfunction
 
 " Switch to English
 function! EngType()
+  inoremap jj <c-w>
 " To switch back from Arabic
   set keymap=us-altlatin "Modified keymap. File in .vim/keymap
   set norightleft
@@ -685,12 +775,15 @@ function! AraType()
     set keymap=arabic-pc "Modified keymap. File in .vim/keymap
     set rightleft
     set nospell
+    iunmap jj
 endfunction
-
 
 "{{{1 csv mappings and functions
 "
 autocmd Filetype csv setlocal cursorline
+autocmd Filetype csv setlocal list
+
+
 
 "{{{1 tex mappings and functions
 
@@ -711,7 +804,7 @@ augroup LaTeXHighlight
 augroup end
 
 " " run biber
- autocmd Filetype tex nnoremap <buffer> <Leader>bi :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
+ " autocmd Filetype tex nnoremap <buffer> <Leader>bi :w<CR>:cd %:p:h<CR>:! biber '%'<CR>
 "   " OBS!!! Run ``rm -rf `biber --cache` to fix bug crash bug.
 
 " }}1
@@ -739,6 +832,15 @@ augroup MardownSettings
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=-
 augroup end
 
+
+augroup MardownHL
+  autocmd!
+  autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL 
+  autocmd Filetype markdown,markdown.pandoc syn match Constant "^\s*- "
+  autocmd Filetype markdown,markdown.pandoc syn match Constant "\s(\?[a-z0-9])"
+ syn match Constant "\<(\?[a-z-9])"
+augroup end
+
 " Folding
 
 function! MarkdownLevel()
@@ -760,6 +862,13 @@ function! MarkdownLevel()
     if getline(v:lnum) =~ '^###### .*$'
         return ">6"
     endif
+    " comments
+    if getline(v:lnum)=~'^<!--'
+        return ">7"
+    endif
+    if getline(v:lnum)=~'-->$'
+        return "<7"
+    endif
     return "=" 
 endfunction
 
@@ -770,11 +879,13 @@ cnoremap jj <c-w>
 " {{{2 Completion
   " Use TAB for completions
 
+" General completion, single or multiple words
 inoremap <Tab> <c-n>
 " Shift TAB to inser tab character
 inoremap <S-Tab> <Tab>
-" CTRL-f to complete file path with fsf
-inoremap <C-f> <c-x><c-f>
+" complete file path with fzf
+imap <C-f> <plug>(fzf-complete-path)
+
 " imap <c-f> <plug>(fzf-complete-path)
 " completion of following word
 inoremap xx <c-x><c-n>
@@ -804,28 +915,29 @@ nnoremap j gj
 vnoremap k gk
 vnoremap j gj
 
-" Redraw syntax highlight
-nnoremap <leader>u :syntax sync fromstart<CR>:redraw!<CR>
 
 " {{{2 font markup
 " mapping combinations with g
 
 " <l> first in normal mode mapping to compensate in shift with inserted character
 
+augroup FontMappings
+  autocmd!
+
 " Boldface b
   " normal mode
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gb lmflbi**<esc>ea**<esc>`f
-  autocmd FileType tex nnoremap <buffer>gb lmflbi\textbf{<esc>ea}<esc>`f
+  autocmd FileType tex nnoremap <buffer>gb lmflbi<Bslash>textbf{<esc>ea}<esc>`f
   " visual mode
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gb mf`<i**<esc>`>a**<esc>`f
 
 " Italic i
   " normal mode
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gi lmfbi*<esc>ea*<esc>`f
-  autocmd FileType tex nnoremap <buffer>gi lmfbi\textit{<esc>ea}<esc>`f
+  autocmd FileType tex nnoremap <buffer>gi lmfbi<Bslash>textit{<esc>ea}<esc>`f
   " visual mode
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gi mf<esc>`<i*<esc>`>a*<esc>`f
-  autocmd FileType tex vnoremap <buffer>gi mf`<esc>i\textit{<esc>`>a}<esc>`f
+  autocmd FileType tex vnoremap <buffer>gi mf`<esc>i<Bslash>textit{<esc>`>a}<esc>`f
   " remove
 
 " Smallcaps s
@@ -837,18 +949,20 @@ nnoremap <leader>u :syntax sync fromstart<CR>:redraw!<CR>
 " Arabic a
   " nomral mode
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>ga lmfbi[<esc>ea]{lang=ar}<esc>`f
-  autocmd FileType tex nnoremap <buffer>ga lmfbi\textarabic{<esc>ea}<esc>`f
+  autocmd FileType tex nnoremap <buffer>ga lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
   " visual mode 
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>ga mf<esc>`<i[<esc>`>a]{lang=ar}<esc>`f
-  autocmd FileType tex vnoremap <buffer>ga mf<esc>`<i\textarabic{<esc>`>a}<esc>`f
+  autocmd FileType tex vnoremap <buffer>ga mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
   " delete
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dga mf/]{lang=ar}<cr>df}?[<cr>x`f
-  autocmd FileType tex <buffer>dga mf/}><cr>x?\\textarabic<cr>df{`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gda mf/]{lang=ar}<cr>df}?[<cr>x`f
+  autocmd FileType tex nnoremap <buffer>dga mf/}<cr><Bslash>textarabic<cr>df{`f
+
+augroup end
 
 " }}}2
- 
-
 "{{{2 CHARACTER INPUT
+
 
 " increment numbers
 inoremap <m-e> ə
@@ -935,18 +1049,17 @@ noremap H 0
 "{{{1 Readingnotes
 " https://github.com/andreasmhallberg/readingnotes
 
-function! ReadingnotesNetrwSyntax()
-  syn match Constant '^.\{2,}, \d\d\d\d\zs\. \zs.\{5,}\ze\.md$' containedin=ALL
-endfunction
-
 augroup readingnotes
   autocmd!
+  " Prettier list indentation after line break
+  " Shift 2 characters after break
+  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal breakindentopt=shift:2
   " Don't fold
   autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal nofoldenable
   " Write in English
   autocmd BufRead,BufEnter ~/*/readingnotes/* call EngType()
   " Highlight page refs at end of line
-  autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Constant "\v \d+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
+  autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Constant "\v [xvi0-9]+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
   " Highlight indefinitely indented comments
   autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Comment "\v^\s*\>.*$"
   " For completion of keywords 

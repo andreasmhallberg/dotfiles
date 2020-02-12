@@ -14,6 +14,7 @@ settings:
   bindings.commands:
     global:
       normal:
+        <Ctrl+f>: spawn open -a Firefox {url}
         <Meta+Ctrl+f>: fullscreen
         D: null
         cm: clear-messages
@@ -62,6 +63,7 @@ settings:
       DEFAULT: https://duckduckgo.com/?q={}
       adlibris: http://www.adlibris.com/se/sok?q={}
       eall: https://referenceworks-brillonline-com.ezproxy.ub.gu.se/search?s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&search-go=&s.q={}
+      ei: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopaedia-of-islam-2&search-go=&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
