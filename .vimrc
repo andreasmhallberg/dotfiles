@@ -257,7 +257,7 @@ endfunction
 vnoremap z "xy:call TTS()<cr>
 
 " stop TTS
-nnoremap <ESC> :silent call system('killall say')<CR>
+" nnoremap <ESC> :silent call system('killall say')<CR>
 
 augroup MoveSectionWhise
 autocmd!
