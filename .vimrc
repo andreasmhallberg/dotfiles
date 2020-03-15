@@ -277,6 +277,7 @@ endfunction
 vnoremap z "xy:call TTS()<cr>
 
 " stop TTS
+<<<<<<< HEAD
 " <Enter> to kill say unless in qf/ql/netrw
   " fun! EnterKillSay()
   "     " Don't strip on these filetypes
@@ -286,6 +287,9 @@ vnoremap z "xy:call TTS()<cr>
 
   " autocmd BufEnter * call EnterKillSay()
 " }}}2
+=======
+" nnoremap <ESC> :silent call system('killall say')<CR>
+>>>>>>> a53d91a2f7eb90f234df764224962b05092fb5ce
 
 augroup MoveSectionWhise
 autocmd!
