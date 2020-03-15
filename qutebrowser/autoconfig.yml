@@ -68,3 +68,4 @@ settings:
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}
+      ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0

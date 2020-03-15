@@ -32,6 +32,7 @@ Plugin 'tpope/vim-characterize'        " display more character info with ga
 Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
 Plugin 'mbbill/undotree'
+Plugin 'lervag/vimtex'
 Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
 Plugin 'gibiansky/vim-latex-objects'  " LaTeX text objectes. e=environments. % to jump begin/end
 Plugin 'qpkorr/vim-renamer'            " Batch rename files vim-style.
@@ -69,7 +70,8 @@ set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 set smartcase                                " Case-sensitive when upper case is used in search string
-set complete +=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
+set complete+=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
+set complete+=s~/dotfiles/aratrans.utf-8.add " list of transliterated word to completion files
 set wildmenu                                 " Show command completion alternatives
 set autoread                                 " autoread when a file is changed from the outside
 " set backspace=indent,eol,start             " backspace over everything in insert mode
@@ -156,8 +158,15 @@ function MapEALL()
   inoremap .Z Ẓ
   inoremap .h ḥ
   inoremap .H Ḥ
+  inoremap .g ġ
+  inoremap .G Ġ
   inoremap vs š
   inoremap vS Š
+  inoremap xd ḏ
+  inoremap xD Ḏ
+  inoremap xt ṯ
+  inoremap xT Ṯ
+
 endfunction
 
 function UnmapEALL()
@@ -178,8 +187,14 @@ function UnmapEALL()
   iunmap .Z
   iunmap .h
   iunmap .H
+  iunmap .g
+  iunmap .G
   iunmap vs
   iunmap vS
+  iunmap xd
+  iunmap xD
+  iunmap xt
+  iunmap xT
 endfunction
 
 command! Eall call MapEALL()
@@ -197,6 +212,8 @@ command! -bang -nargs=1 -complete=file LFilter call s:FilterLocationList(<bang>0
 
 "{{{1 General mappings
 
+" toggle hlsearch
+nnoremap <f12> :set hlsearch!<CR>
 
 " <Leader>o to toggle overview with small font
 let g:overview = 0
@@ -226,7 +243,9 @@ cnoremap <c-c> <c-a>
 
 noremap - :Explore<cr>
 
-" Text to speech
+nnoremap <F5> <Plug>(grammarous-open-info-window)
+
+" {{{2  Text to speech
   " Says whatever is in the x-register
   " Tested in OSX
   " https://www.reddit.com/r/vim/comments/2odq4l/osx_texttospeech_in_vim/
@@ -235,7 +254,7 @@ noremap - :Explore<cr>
   " Read footnotes as ['footnote <label>']
 function! TTS()
     " kill any speech still playing
-    !killall say
+    " !killall say &>/dev/null
     if &spelllang == 'sv'
       let s:voice = 'Alva'
     else
@@ -252,12 +271,21 @@ function! TTS()
          \ | sed -E "s/&nbsp;/ /g"
          \ | sed -E "s/\\[([^\\]]+)\\]\\([^)]+\\)/\\1/g"
          \ | say --voice='. s:voice .' &')
+    nnoremap <buffer><silent> <esc> :call system('killall say')<CR>
 endfunction
 
 vnoremap z "xy:call TTS()<cr>
 
 " stop TTS
-nnoremap <ESC> :silent call system('killall say')<CR>
+" <Enter> to kill say unless in qf/ql/netrw
+  " fun! EnterKillSay()
+  "     " Don't strip on these filetypes
+  "     if &modifiable
+  "     nnoremap <buffer><silent> <cr> :call system('killall say')<CR> endif
+  " endfun
+
+  " autocmd BufEnter * call EnterKillSay()
+" }}}2
 
 augroup MoveSectionWhise
 autocmd!
@@ -341,7 +369,7 @@ augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
   autocmd BufRead,BufEnter *md.,*tex,*.txt,*.mail syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>,"
-  autocmd BufRead,BufEnter *md.,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])"
+  autocmd BufRead,BufEnter *md.,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])\\?"
 augroup end
 
 " Open non-text file externally
@@ -389,7 +417,9 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
             \,'COMMA_PARENTHESIS_WHITESPACE'
             \]
             \ }
-nnoremap <F5> <Plug>(grammarous-open-info-window)
+
+" See above
+" nnoremap <F5> <Plug>(grammarous-open-info-window)
 
   "{{{2 Syntastic
   " Recommended settings in help
@@ -587,13 +617,23 @@ nnoremap <Leader>pw :silent !open '%'*.docx &<CR>
 
 " Variable used in compilation mappings
 let g:pandoc_citation_style = 'apa-6th-edition.csl'
-let g:pandoc_reference_docx = 'reference.docx'
+let g:pandoc_reference_docx = './reference.docx'
 let g:pandoc_output_dir = './'
+let g:pandoc_bibliography = '~/dotfiles/mylatexstuff/bibliotek.bib'
+
+
+"{{{3 File specific compilation settings
+
 
 
 " citation styles for specific files
-  autocmd BufEnter **/arabica/*.md let b:pandoc_citation_style = 'arabica.csl' | let b:pandoc_reference_docx = 'arabica.docx'
-  autocmd BufEnter ~/case/**/*.md let b:pandoc_citation_style = 'apa-6th-edition.csl' | let b:pandoc_reference_docx = 'reading-and-writing.docx'
+  autocmd BufEnter **/arabica/*.md let g:pandoc_citation_style = 'arabica.csl'
+        \ | let g:pandoc_reference_docx = 'arabica.docx'
+  autocmd BufEnter ~/Box\ Sync/case/manuscript/submission-second/*.md let g:pandoc_citation_style = 'apa-6th-edition.csl'
+        \ | let g:pandoc_bibliography = 'manuscript.bib'
+        \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
+"}}}
+
 
 augroup PandocCompilation
 autocmd!
@@ -607,8 +647,8 @@ autocmd!
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
     \ --columns=200
-    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
+    \ --bibliography ' . g:pandoc_bibliography .
+    \ ' --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
     \ ' -o ' . g:pandoc_output_dir . '%' . '.pdf'<cr>
 
 
@@ -659,8 +699,9 @@ autocmd!
       \ :execute 'AsyncRun pandoc ' . '%' .
       \ ' -f markdown+implicit_figures+table_captions+example_lists+smart
       \ --filter pandoc-crossref
-      \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-      \ --reference-doc=$HOME/dotfiles/pandoc-data-dir/' . g:pandoc_reference_docx .
+      \ --verbose
+      \ --bibliography ' . g:pandoc_bibliography . 
+      \ ' --reference-doc=reference.docx' .
       \ ' --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
       \ ' -o ' . '%' . '.docx'<cr>
 
@@ -676,6 +717,10 @@ autocmd!
     \ --wrap=none
     \ -o '%'.tex<cr>
 
+  " to tex visual selection
+  autocmd Filetype markdown 
+    \ vnoremap <buffer> <Leader>pt :!pandoc -f markdown -t latex<cr>
+  
   "  to tex self contained
   autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer> <Leader>pts :w<CR>
@@ -712,6 +757,18 @@ autocmd!
       \ -t html
       \ <bar> sed 's/\<table\>/\<table cellspacing="10pt"\>/'
       \ > '%'.html<cr>
+
+  " to html from visual selection
+  autocmd Filetype markdown,pandoc.markdown
+      \ vnoremap <buffer><Leader>ph
+      \ :AsyncRun
+      \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html
+      \ --columns=80
+      \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
+      \ --filter pandoc-crossref
+      \ -t html
+      \ <bar> sed 's/\<table\>/\<table cellspacing="10pt"\>/'
+      \ > 
 
   "  to html, self contained
   autocmd Filetype markdown,pandoc.markdown
@@ -753,10 +810,11 @@ nnoremap <Leader>a :<C-U>call AraType()<CR>
 "  Switch to Swedish
 function! SweType()
   inoremap jj <c-w>
+  set spelllang=sv
+  set spellfile=~/.vim/spell/sv.utf-8.add,~/.vim/spell/aratrans.utf-8.add
 " To switch back from Arabic
   set keymap=swe-us "Modified keymap. File in .vim/keymap
   set norightleft
-  set spelllang=sv
   set spell
 endfunction
 
@@ -765,6 +823,7 @@ function! EngType()
   inoremap jj <c-w>
 " To switch back from Arabic
   set keymap=us-altlatin "Modified keymap. File in .vim/keymap
+  set spellfile=~/.vim/spell/en.utf-8.add,~/.vim/spell/aratrans.utf-8.add
   set norightleft
   set spelllang=en_us
   set spell
@@ -795,12 +854,11 @@ augroup LaTeXMaps
   autocmd FileType tex nnoremap <Leader>tc vip:s/\v +/ /<CR>vip:Tabularize / <CR>
   " to autocomplete reference labels 
   autocmd FileType tex setlocal iskeyword+=:
-  autocmd FileType tex setlocal iskeyword+=-
 augroup end
 
 augroup LaTeXHighlight
   autocmd!
-  " autocmd FileType tex syn match Statement "_" containedin=ALL " Stop _ being an error
+  autocmd FileType tex syn match Statement "_" containedin=ALL " Stop _ being an error
 augroup end
 
 " " run biber
@@ -829,7 +887,6 @@ augroup MardownSettings
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
-  autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=-
 augroup end
 
 
@@ -931,9 +988,11 @@ augroup FontMappings
   " visual mode
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gb mf`<i**<esc>`>a**<esc>`f
 
-" Italic i
+" Italic i (word) and I (WORD)
   " normal mode
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gi lmfbi*<esc>ea*<esc>`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gI lmfBi*<esc>ea*<esc>`f
+
   autocmd FileType tex nnoremap <buffer>gi lmfbi<Bslash>textit{<esc>ea}<esc>`f
   " visual mode
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gi mf<esc>`<i*<esc>`>a*<esc>`f
@@ -1117,4 +1176,8 @@ augroup Chat
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex set list
 augroup end
+
 "{{{ Test
+
+
+

@@ -56,7 +56,7 @@ alias gcb='git checkout -b' #checkout and create new branch
 alias gb='git branch'
 alias gs='git status'
 
-alias renamer="vim -c 'Renamer .'"
+alias Acrobat="launch -a Adobe\ Acrobat"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
@@ -83,3 +83,6 @@ export PATH
 bind "set completion-ignore-case on"
 
 export PATH="/usr/local/opt/qt/bin:$PATH"
+
+# Fix ruby link in Catalina
+export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.6.0/bin/:$PATH"

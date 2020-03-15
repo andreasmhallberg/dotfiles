@@ -4,6 +4,8 @@
 <dict>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
+	<key>ApplePressAndHoldEnabled</key>
+	<false/>
 	<key>AppleScrollAnimationEnabled</key>
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
@@ -181,15 +183,15 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>-910 288 620 392 -1200 -840 1200 1897 </string>
+	<string>290 1128 620 392 0 0 1200 1897 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1651 126 606 469 -1920 0 1920 1200 </string>
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>83 411 770 429 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>240 0 720 877 0 0 1440 900 </string>
+	<string>0 0 955 1057 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>176 84 650 477 0 0 1920 1177 </string>
+	<string>-1123 -752 825 552 -1200 -840 1200 1920 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -609,11 +611,15 @@
 	</array>
 	<key>NoSyncAllAppVersions</key>
 	<array>
-		<string>3.3.2</string>
-		<string>3.2.9</string>
+		<string>3.3.6</string>
+		<string>3.3.8</string>
 		<string>3.3.1</string>
-		<string>3.3.4</string>
 		<string>3.3.3</string>
+		<string>3.3.5</string>
+		<string>3.3.7</string>
+		<string>3.2.9</string>
+		<string>3.3.2</string>
+		<string>3.3.4</string>
 	</array>
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
@@ -627,7 +633,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>40A0C347-8173-440F-A07D-705A182465B0</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>10</integer>
+	<integer>43</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1012,6 +1018,14 @@
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
+				<string>currentTab.window</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
 				<string>id</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
@@ -1189,6 +1203,14 @@
 			</dict>
 			<dict>
 				<key>isTerminal</key>
+				<false/>
+				<key>name</key>
+				<string>title</string>
+				<key>nonterminalContext</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
 				<string>iterm2.localhostName</string>
@@ -1213,6 +1235,14 @@
 			</dict>
 			<dict>
 				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>title</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
 				<false/>
 				<key>name</key>
 				<string>iterm2</string>
@@ -1232,6 +1262,14 @@
 				<true/>
 				<key>name</key>
 				<string>currentSession.jobPid</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>window</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -1322,11 +1360,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-10-08T04:53:26Z</date>
+	<date>2020-02-15T18:21:28Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>
-	<true/>
+	<false/>
 	<key>ShowFullScreenTabBar</key>
 	<false/>
 	<key>ShowPaneTitles</key>
@@ -1342,6 +1380,6 @@
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
-	<string>3.3.4</string>
+	<string>3.3.8</string>
 </dict>
 </plist>
