@@ -8,7 +8,8 @@
 let b:keymap_name = "arabic-pc"
 
 " Modified by Andreas to fit PC layout with THAL on paragraph character as
-" well as replacing لا on the B key.
+" B produces ذ rather than لا
+" SHIFT+و or ي produces letter with hamza above
 " To be symlinked in .vim/keymap.
 
 loadkeymap
@@ -73,7 +74,8 @@ P	<char-0x061b>			" (1563)	- Arabic Semicolon
 }	<char-0x003e>			" (62)		- ASCII -- >
 A	<char-0x0650>			" (1616)	- Tanween -- KASRA
 S	<char-0x064d>			" (1613)	- Tanween -- KASRATAN
-D	<char-0x005b>			" (91)		- ASCII -- [
+"D	<char-0x005b>			" (91)		- ASCII -- [
+D	<char-0x0626>			" (1574)	- YEH with HAMZA ABOVE
 F	<char-0x005d>			" (93)		- ASCII -- ]
 G	<char-0x0644><char-0x0623>	" (1604/1571)	- LAA  with HAMZA ABOVE
 H	<char-0x0623>			" (1571)	- ALEF with HAMZA ABOVE
@@ -87,6 +89,7 @@ V	<char-0x007d>			" (125)		- ASCII -- }
 B	<char-0x0644><char-0x0622>	" (1604/1570)	- LAA  with MADDA ABOVE
 N	<char-0x0622>			" (1570)	- ALEF with MADDA ABOVE
 M	<char-0x0027>			" (39)		- ASCII -- '
-<	<char-0x002c>			" (44)		- ASCII -- ,
+" <	<char-0x002c>			" (44)		- ASCII -- ,
+<	<char-0x0624>			" (1572)	- WAW with HAMZA ABOVE
 >	<char-0x002e>			" (46)		- ASCII -- .
 ?	<char-0x061f>			" (1567)	- Arabic Question Mark

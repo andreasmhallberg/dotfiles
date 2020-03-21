@@ -357,8 +357,8 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration in prose
-  autocmd BufRead,BufEnter *md.,*tex,*.txt,*.mail syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>,"
-  autocmd BufRead,BufEnter *md.,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])\\?"
+  autocmd BufRead,BufEnter *.md,*tex,*.txt,*.mail syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>,"
+  autocmd BufRead,BufEnter *.md,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])\\?"
 augroup end
 
 " Open non-text file externally
@@ -929,8 +929,8 @@ cnoremap jj <c-w>
 inoremap <Tab> <c-n>
 " Shift TAB to inser tab character
 inoremap <S-Tab> <Tab>
-" complete file path with fzf
-imap <C-f> <plug>(fzf-complete-path)
+" complete file path with fzf. Same binding as in terminal
+imap <C-t> <plug>(fzf-complete-path)
 
 " imap <c-f> <plug>(fzf-complete-path)
 " completion of following word
@@ -987,6 +987,7 @@ augroup FontMappings
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gi mf<esc>`<i*<esc>`>a*<esc>`f
   autocmd FileType tex vnoremap <buffer>gi mf`<esc>i<Bslash>textit{<esc>`>a}<esc>`f
   " remove
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gdi mf<esc>?\*<cr>x/\*/\*<cr>x`f
 
 " Smallcaps s
   " normal mode

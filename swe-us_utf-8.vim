@@ -34,6 +34,7 @@ loadkeymap
 <M-a>U Ū
 <M-.>m ṃ
 <M-.>M Ṃ
+<M-a>o ō 
 <M-a>O Ō 
 <M-a>e ē
 <M-a>E Ē
