@@ -982,6 +982,7 @@ augroup FontMappings
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gi lmfbi*<esc>ea*<esc>`f
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gI lmfBi*<esc>ea*<esc>`f
 
+
   autocmd FileType tex nnoremap <buffer>gi lmfbi<Bslash>textit{<esc>ea}<esc>`f
   " visual mode
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gi mf<esc>`<i*<esc>`>a*<esc>`f

@@ -7,9 +7,10 @@
 " Use this short name in the status line.
 let b:keymap_name = "arabic-pc"
 
-" Modified by Andreas to fit PC layout with THAL on paragraph character as
-" B produces ذ rather than لا
-" SHIFT+و or ي produces letter with hamza above
+" Modified by Andreas
+"  - B produces ذ rather than لا
+"  - SHIFT+و or ي produces letter with hamza above
+
 " To be symlinked in .vim/keymap.
 
 loadkeymap

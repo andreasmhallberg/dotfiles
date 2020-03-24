@@ -1,7 +1,9 @@
 # symlink to ~/.muttrc
 
+
 set ssl_starttls=yes
 set ssl_force_tls=yes
+
 set use_from=yes
 set smtp_authenticators = 'gssapi:login'
 
