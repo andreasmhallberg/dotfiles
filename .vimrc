@@ -140,7 +140,7 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 
 " Easier Arabic transcription
 
-function MapEALL()
+function! MapEALL()
   let g:eallmappings = 1
   inoremap aa ā
   inoremap ii ī
@@ -166,7 +166,6 @@ function MapEALL()
   inoremap xD Ḏ
   inoremap xt ṯ
   inoremap xT Ṯ
-
 endfunction
 
 function UnmapEALL()

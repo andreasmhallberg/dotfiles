@@ -7,7 +7,7 @@ application/pdf; xpdf %s &;
 
 # office formats
 application/docx; open %s;
-application/vnd.openxm; open '%s';
+application/vnd.openxm; open %s;
 application/vnd.openxmlformats-officedocument.wordprocessingml.document; open %s;
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; open %s;
 application/vnd.ms-word.document.12; open %s;

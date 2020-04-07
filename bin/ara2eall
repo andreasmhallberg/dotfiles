@@ -8,14 +8,16 @@
 # Presupposes correct use of hamza, e.g. Qatʿ in maṣdar IV.
 
 # First to Buckwalter
-tr ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئى AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y | \
+
+tr ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئىًٌٍَُِّْ AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}yauiFNK~o | \
 
 # Then to EALL. Leave 'A' (alif) for later. 
-tr bptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y bptṯjḥxdḏrzsšṣḍṭẓʿġfqklmnhwyʾʾʾʾʾā | \
+tr bptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y bptṯjḥxdḏrzsšṣḍṭẓʿġfqklmnhwyʾʾʾʾʾā #| \
 
 # Definite article "-"
     # without prefix
-    gsed -E "s/\bAl(?!(tzAm|thAb)\b)/al-/g" #| \
+# gsed -E 's/\bAl(?!(ti?za?Am|ti?ha?Ab|ti?ba?As)\b)/al-/g'
+    #| \
 
     # with prefix -w, not "wālī"
     # gsed -E "s/\b(w?)Al(?!y?\b)/\1al-/g" | \

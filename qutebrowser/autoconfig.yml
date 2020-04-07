@@ -14,8 +14,9 @@ settings:
   bindings.commands:
     global:
       normal:
-        <Ctrl+f>: spawn open -a Firefox {url}
+        <Meta+Alt+f>: spawn launch -a Firefox {}
         <Meta+Ctrl+f>: fullscreen
+        <Meta+f>: spawn launch -a Firefox {url}
         D: null
         cm: clear-messages
         d: null
@@ -51,9 +52,9 @@ settings:
   tabs.position:
     global: left
   tabs.show:
-    global: multiple
+    global: switching
   tabs.show_switching_delay:
-    global: 2000
+    global: 1000
   tabs.title.format:
     global: '{audio}{title}'
   tabs.width:
@@ -66,6 +67,6 @@ settings:
       ei: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopaedia-of-islam-2&search-go=&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
+      ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}
-      ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
