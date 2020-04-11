@@ -1,0 +1,11 @@
+# Use ggrep to allow for lookaheads
+# \b \w do not work with Unicode characters
+file=$@
+echo "fatHa:" $(ggrep -oP "َ(?=\s|$)" $file | wc -l)
+echo "kasra:" $(ggrep -oP "ِ(?=\s|$)" $file | wc -l)
+echo "Damma:" $(ggrep -oP "ُ(?=\s|$)" $file | wc -l)
+echo "fathataan:" $(ggrep -oP "ًا?(?=\s|$)" $file | wc -l)
+echo "kasrataan:" $(ggrep -oP "ٍ(?=\s|$)" $file | wc -l)
+echo "Dammataan:" $(ggrep -oP "ٌ(?=\s|$)" $file | wc -l)
+echo "sukun:" $(ggrep -oP "ْ(?=\s|$)" $file | wc -l)
+echo "shadda:" $(ggrep -oP "ّ(?=\s|$)" $file | wc -l)

@@ -1,0 +1,6 @@
+# Use ggrep to allow for lookaheads
+# \b \w do not work with Unicode characters
+file=$@
+echo "fatHa:" $(ggrep -oP "َا" $file | wc -l)
+echo "kasra:" $(ggrep -oP "ِي" $file | wc -l)
+echo "Damma:" $(ggrep -oP "ُو" $file | wc -l)

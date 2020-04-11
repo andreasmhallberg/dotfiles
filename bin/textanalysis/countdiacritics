@@ -1,0 +1,9 @@
+file=$@
+echo "fatHa:" $(grep -o 'َ' $file | wc -l)
+echo "kasra:" $(grep -o 'ِ' $file | wc -l)
+echo "Damma:" $(grep -o 'ُ' $file | wc -l)
+echo "fathataan:" $(grep -o 'َ' $file | wc -l)
+echo "kasrataan:" $(grep -o 'ٍ' $file | wc -l)
+echo "Dammataan:" $(grep -o 'ٌ' $file | wc -l)
+echo "sukun:" $(grep -o 'ْ' $file | wc -l)
+echo "shadda:" $(grep -o 'ّ' $file | wc -l)

@@ -8,6 +8,7 @@ export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
 # add bin folder in ~/dotfiles/ to available commands
 export PATH=$PATH:~/dotfiles/bin
+export PATH=$PATH:~/dotfiles/bin/textanalysis
 
 source ~/.fzf.bash
 

@@ -77,7 +77,7 @@ set autoread                                 " autoread when a file is changed f
 " set backspace=indent,eol,start             " backspace over everything in insert mode
 set hidden                                   " Allow unsaved buffers to be hidden.
 set virtualedit=block                        " Allow block selection over empty lines.
-set scrolloff=10                              " When scrolling, keep the cursor 4 lines from the top/bottom
+set scrolloff=999                              " When scrolling, keep the cursor 4 lines from the top/bottom
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
 set display+=lastline                        " Display as much as possible of last line rather than @s
 set textwidth=0                              " Don't hard-wrap lines for me.
@@ -139,6 +139,8 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 "{{{1 Commands
 
 " Easier Arabic transcription
+
+" TODO: att exceptions for text, extreme
 
 function! MapEALL()
   let g:eallmappings = 1
@@ -224,7 +226,7 @@ function! OverveiwToggle()
     " Save valuesq
     let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
     let g:oldtw = &tw | set tw=80 
-    let g:oldscolloff = &scrolloff | set scrolloff=999
+    " let g:oldscolloff = &scrolloff | set scrolloff=999
   else
     let &guifont = g:oldfont
     let &tw = g:oldtw
@@ -822,7 +824,6 @@ function! AraType()
     set keymap=arabic-pc "Modified keymap. File in .vim/keymap
     set rightleft
     set nospell
-    iunmap jj
 endfunction
 
 "{{{1 csv mappings and functions
