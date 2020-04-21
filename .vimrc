@@ -23,8 +23,8 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'will133/vim-dirdiff'
 Plugin 'skywind3000/asyncrun.vim'
 Plugin 'klapheke/vim-chat'             " syntax highlighting for CHAT-transcriptions
-Plugin 'jalvesaq/Nvim-R'               " R functionality and integration. Requires tmux.
-Plugin 'tpope/vim-surround'            " Useful mappings for netrw
+Plugin 'jalvesaq/nvim-r'               " r functionality and integration
+Plugin 'tpope/vim-surround'          
 Plugin 'tpope/vim-commentary'          " gc<range> to comment
 Plugin 'tpope/vim-repeat'              " make mappings repeatable
 Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
@@ -40,13 +40,15 @@ Plugin 'vim-scripts/YankRing.vim'      " After ctrlp to remap <c-p>
 Plugin 'rhysd/vim-grammarous'          " LanguageTool integration for grammar checking
 " Plugin 'blueyed/vim-diminactive'     " Dims window that is not in focus. Clashes with FZF in netrw
 Plugin 'rickhowe/diffchar.vim'         " Character wise diff
+" Plugin 'francoiscabrol/ranger.vim'   
 
 " Colorschemes
 " Plugin 'Jorengarenar/vim-darkness'
 Plugin 'morhetz/gruvbox'
-Plugin 'kristiandupont/shades-of-teal'
-Plugin 'hauleth/blame.vim'
-" Plugin 'davidosomething/vim-colors-meh'
+Plugin 'cocopon/iceberg.vim'  
+" Plugin 'kristiandupont/shades-of-teal'   "  Wrong spell has other background
+" Plugin 'hauleth/blame.vim'               "  Wrong spell is to stark.
+" Plugin 'davidosomething/vim-colors-meh'  "  Clashes with pandoc-syntax
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
@@ -140,7 +142,7 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 
 " Easier Arabic transcription
 
-" TODO: att exceptions for text, extreme
+" TODO: add exceptions for text, extreme
 
 function! MapEALL()
   let g:eallmappings = 1
@@ -225,13 +227,14 @@ function! OverveiwToggle()
     let g:overview = 1
     " Save valuesq
     let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
-    let g:oldtw = &tw | set tw=80 
+    let g:oldtw = &tw | set tw=80 | set formatoptions-=l
     " let g:oldscolloff = &scrolloff | set scrolloff=999
   else
     let &guifont = g:oldfont
     let &tw = g:oldtw
     let &scrolloff = g:oldscolloff
     let g:overview = 0
+    normal <c-w>=
   endif
 endfunction
 
@@ -241,8 +244,6 @@ nnoremap <Leader>o :call OverveiwToggle()<CR>
 " useful to delete multiple buffers
 " <c-a> is taken by Quicksilver
 cnoremap <c-c> <c-a>
-
-noremap - :Explore<cr>
 
 nnoremap <F5> <Plug>(grammarous-open-info-window)
 
@@ -258,6 +259,8 @@ function! TTS()
     " !killall say &>/dev/null
     if &spelllang == 'sv'
       let s:voice = 'Alva'
+    elseif &keymap == 'arabic-pc'
+      let s:voice = 'Laila'
     else
       let s:voice = 'Allison'
     endif
@@ -332,7 +335,7 @@ autocmd WinEnter,BufEnter,VimResized * call ConditionalScrolloff()
 " Dont list function buffers in :ls and ignore in :bn and friends
 augroup termIgnore
     autocmd!
-    autocmd BufEnter qf,netrw set nobuflisted
+    autocmd BufEnter qf set nobuflisted
     autocmd TerminalOpen * set nobuflisted
 augroup END 
 
@@ -346,7 +349,6 @@ augroup PassiveAutos
         \ "normal md"
         \| silent s/\.\@<!\.\.$/./e
         \| execute "normal `d"
-  " Make all splits equal size when going changing Vim total window size, eg when going to fullscreen
   " Always use minimalist foldtext
   autocmd BufEnter * set foldtext=getline(v:foldstart)
   " Set working directory for current file
@@ -362,23 +364,25 @@ augroup ProseHighLighting
   autocmd BufRead,BufEnter *.md,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])\\?"
 augroup end
 
+function! OpenPdfExternally()
+  silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
+  edit #
+  redraw!
+  syntax on
+endfunction
+autocmd BufRead *.pdf call OpenPdfExternally()
+
+function! OpenExternally()
+  silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &"
+  edit #
+  redraw!
+  syntax on
+endfunction
+autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt call OpenExternally()
+
+autocmd BufRead *.docx !pandoc :shellescape(expand("%:p")) -t markdown  
+
 " Open non-text file externally
-augroup openExternally
-  autocmd!
-  autocmd BufRead * let g:saved_altfile_external = @#
-  autocmd BufRead *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
-        \| buffer#
-        \| bdelete#
-        \| redraw!
-        \| syntax on
-        \| let @# = g:saved_altfile_external
-  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.docx,*.rtf,*.odt silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &"
-        \| buffer#
-        \| bdelete#
-        \| redraw!
-        \| syntax on
-        \| let @# = g:saved_altfile_external
-augroup END
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
@@ -395,6 +399,12 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
+  "{{{2 ranger
+  " Disable mappings
+  " let g:ranger_map_keys = 0
+  
+  " let g:ranger_replace_netrw = 1
+
   "{{{2 Grammarous
   let g:grammarous#disabled_rules = {
             \ '*' : [
@@ -469,6 +479,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     " Reduce error reports
     " autocmd InsertEnter * :RDCha
     " autocmd InsertLeave * :TDCha
+
   "{{{2 netrw
 
    " supress banner
@@ -477,7 +488,27 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
    let g:netrw_sort_options = "i"
    " keep the current directory the same as the browsing directory.
    let g:netrw_keepdir = 0
-   autocmd FileType netrw setlocal cursorline
+   let g:netrw_altfile = 1 " does not work
+
+
+   " function! EnterNetrwKeepalt()
+   "   let g:NetrwAltFileSave = expand('#')
+   "   let g:NetrwCurrentFileSave = expand('%')
+   "   Explore
+   " endfunction
+
+   " function! LeaveNetrwKeepalt()
+   "   Rexplore
+   "   let @#=expand(g:NetrwAltFileSave)
+   " endfunction
+
+" nnoremap - :call EnterNetrwKeepalt()<cr>
+
+augroup NetrwAutos
+  autocmd!
+  autocmd FileType netrw setlocal cursorline
+  " autocmd FileType netrw nnoremap <buffer><bs> :call LeaveNetrwKeepalt()<cr> 
+augroup end
 
   "{{{2 csv
 
@@ -534,8 +565,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   " number of decimals
   let g:HowMuch_scale = 4
   "}}}2
-  "{{{2 Solarized
-  let g:solarized_termcolors=256
 "}}}1
 "{{{1 Display & Color
 
@@ -607,7 +636,7 @@ nnoremap <Leader>pw :silent !open '%'*.docx &<CR>
 
 " Variable used in compilation mappings
 let g:pandoc_citation_style = 'apa-6th-edition.csl'
-let g:pandoc_reference_docx = './reference.docx'
+let g:pandoc_reference_docx = '~/dotfiles/pandoc-data-dir/reference.docx'
 let g:pandoc_output_dir = './'
 let g:pandoc_bibliography = '~/dotfiles/mylatexstuff/bibliotek.bib'
 
@@ -682,6 +711,7 @@ autocmd!
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ ' -so ' . '%' . '.beamer.tex'<cr>
 
+
   "  to docx.
       autocmd Filetype markdown,pandoc.markdown
       \ nnoremap <buffer><Leader>pd
@@ -691,9 +721,10 @@ autocmd!
       \ --filter pandoc-crossref
       \ --verbose
       \ --bibliography ' . g:pandoc_bibliography . 
-      \ ' --reference-doc=reference.docx' .
       \ ' --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
       \ ' -o ' . '%' . '.docx'<cr>
+
+      " \ ' --reference-doc=' . g:pandoc_reference_docx .
 
   " to tex
   autocmd Filetype markdown 
@@ -726,10 +757,10 @@ autocmd!
   autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer> <Leader>px
     \ :w<CR>
-    \ :AsyncRun pandoc
+    \ :AsyncRun pandoc+smart
     \ -f markdown+implicit_figures+table_captions %
+    \ --filter pandoc-crossref
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ -smart
     \ -o '%'.txt<CR>
 
 
@@ -1025,20 +1056,6 @@ inoremap <m--> ‑
 " 〉U+232
 inoremap <A-<> 〈
 inoremap <A->> 〉
-
-" Like numpad
-inoremap <A-j> 1
-inoremap <A-k> 2
-inoremap <A-l> 3
-inoremap <A-u> 4
-inoremap <A-i> 5
-inoremap <A-o> 6
-inoremap <A-7> 7
-inoremap <A-8> 8
-inoremap <A-9> 9
-" Alt-,
-inoremap ¬ 0
- 
 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>

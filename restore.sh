@@ -131,6 +131,8 @@ ln -sf ~/dotfiles/en.utf-8.add ~/.vim/spell/en.utf-8.add
 
 
 # install R-packages
+# may need to run with `sudo -i r` to fix non-zero exit status
+# https://stackoverflow.com/questions/35666638/cant-access-user-library-in-r-non-zero-exit-status-warning
 Rscript r-packages.r
 
 # Jekyll stuff

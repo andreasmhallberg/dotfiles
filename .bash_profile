@@ -15,6 +15,8 @@ source ~/.fzf.bash
 export VISUAL="vim"
 export EDITOR="vim"
 
+export XDG_CONFIG_HOME="$HOME/.config/"
+
 # fzf default options
 export FZF_DEFAULT_COMMAND='fd -H --no-ignore . $HOME'
 # ctrl-t to insert path from home
@@ -57,6 +59,9 @@ alias gcb='git checkout -b' #checkout and create new branch
 alias gb='git branch'
 alias gs='git status'
 
+alias m="mutt"
+alias z="zathura"
+
 alias Acrobat="launch -a Adobe\ Acrobat"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
@@ -74,6 +79,9 @@ function cs () {
     cd "$@" && ls
         }
 alias cd='cs'
+
+# Correct minor spelling mistakes in cd command
+shopt -s cdspell
 
 
 # Setting PATH for Python 3.6

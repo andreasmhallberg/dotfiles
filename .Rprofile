@@ -12,7 +12,7 @@ library(lmerTest)
 
 # Funcions
   # transform proportion to percent with two decimals
-roundpercent <- function(x) round(x*100,2)
+roundpercent <- function(x) round(x*100,1)
 
  # get standard error of ninary variable
  # https://stackoverflow.com/questions/38583729/standard-error-binary-variable-r
