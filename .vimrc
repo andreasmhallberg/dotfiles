@@ -79,7 +79,7 @@ set autoread                                 " autoread when a file is changed f
 " set backspace=indent,eol,start             " backspace over everything in insert mode
 set hidden                                   " Allow unsaved buffers to be hidden.
 set virtualedit=block                        " Allow block selection over empty lines.
-set scrolloff=999                              " When scrolling, keep the cursor 4 lines from the top/bottom
+set scrolloff=10                             " When scrolling, keep the cursor 4 lines from the top/bottom
 set sidescrolloff=4                          " When scrolling, keep the cursor 4 side
 set display+=lastline                        " Display as much as possible of last line rather than @s
 set textwidth=0                              " Don't hard-wrap lines for me.
@@ -228,7 +228,7 @@ function! OverveiwToggle()
     " Save valuesq
     let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
     let g:oldtw = &tw | set tw=80 | set formatoptions-=l
-    " let g:oldscolloff = &scrolloff | set scrolloff=999
+    let g:oldscolloff = &scrolloff | set scrolloff=999
   else
     let &guifont = g:oldfont
     let &tw = g:oldtw
@@ -283,11 +283,11 @@ vnoremap z "xy:call TTS()<cr>
 augroup MoveSectionWhise
 autocmd!
   " Move forwards
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>]] /^#<CR>
-  autocmd Filetype tex nnoremap <buffer>]] /^\\\(chapter\|section\|paragraph\)<CR>
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>]] j/^#<CR>
+  autocmd Filetype tex nnoremap <buffer>]] j/^\\\(chapter\|section\|paragraph\)<CR>
   " Move backwards
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>[[ ?^#<CR>
-  autocmd Filetype tex nnoremap <buffer>[[ ?^\\\(chapter\|section\|paragraph\)<CR>
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>[[ k?^#<CR>
+  autocmd Filetype tex nnoremap <buffer>[[ k?^\\\(chapter\|section\|paragraph\)<CR>
 augroup end
 
 " cycle buffers
@@ -365,16 +365,20 @@ augroup ProseHighLighting
 augroup end
 
 function! OpenPdfExternally()
-  silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
-  edit #
+  silent keepalt execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
+  edit # 
+  bdelete #
   redraw!
   syntax on
+  " let @# = g:saved_altfile
 endfunction
+ " autocmd BufReadPre *.pdf let g:saved_altfile = expand('#')
 autocmd BufRead *.pdf call OpenPdfExternally()
 
 function! OpenExternally()
   silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &"
   edit #
+  bdelete #
   redraw!
   syntax on
 endfunction
@@ -820,13 +824,6 @@ autocmd Filetype tex
 
 "{{{2 Language switching
 
-" Switch to Swedish typing
-nnoremap <Leader>s :<C-U>call SweType()<CR>
-" Switch to English typing
-nnoremap <Leader>e :<C-U>call EngType()<CR>
-" Switch to Arabic typing
-nnoremap <Leader>a :<C-U>call AraType()<CR>
-
 
 "  Switch to Swedish
 function! SweType()
@@ -856,6 +853,15 @@ function! AraType()
     set rightleft
     set nospell
 endfunction
+
+" Switch to English typing
+nnoremap <Leader>e :<C-U>call EngType()<CR>
+call EngType() " Do this on startup
+" Switch to Swedish typing
+nnoremap <Leader>s :<C-U>call SweType()<CR>
+" Switch to Arabic typing
+nnoremap <Leader>a :<C-U>call AraType()<CR>
+
 
 "{{{1 csv mappings and functions
 "
@@ -1097,6 +1103,8 @@ inoremap ' ''<Left>
 inoremap '' '
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> * **<Left>
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ** *
+autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^ ^^<Left>
+autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^^ ^
 " When only one for English possessive 's etc.
 " Don't use this mapping for normal English prose where it is used in possessives.
 autocmd FileType r inoremap ' ''<Left>

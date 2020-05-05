@@ -9,6 +9,7 @@ export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 # add bin folder in ~/dotfiles/ to available commands
 export PATH=$PATH:~/dotfiles/bin
 export PATH=$PATH:~/dotfiles/bin/textanalysis
+export PATH=$PATH:/Users/xhalaa/Library/Python/3.7/bin
 
 source ~/.fzf.bash
 
@@ -61,7 +62,6 @@ alias gs='git status'
 
 alias m="mutt"
 alias z="zathura"
-
 alias Acrobat="launch -a Adobe\ Acrobat"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
@@ -95,3 +95,34 @@ export PATH="/usr/local/opt/qt/bin:$PATH"
 
 # Fix ruby link in Catalina
 export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.6.0/bin/:$PATH"
+
+
+# Bindings
+
+bind '"\C-f":"open_with_fzf\n"'
+bind '"\C-v":"vim $(fzf)\n"'
+bind '"\C-c":"cd $(fd -t d -H . $HOME | fzf)\n"'
+
+open_with_fzf() {
+  file="$(fd -t f -H . $HOME | fzf)"
+  if [[ $file == *.pdf ]]
+  then
+    xpdf $file
+  else
+    open $file
+  fi
+}
+
+rn() {
+  local file
+  # if [ $# -eq 0 ] # check if no argument
+   file=$(grep . ~/jobb/readingnotes/*.md | fzf --preview="rga --ignore-case --pretty --context 10 {q}")
+   file=$(echo $file | sed -E 's/:.*$//')
+   vim "$file"
+}
+
+fif() {
+    if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+    local file
+    file="$(rga --max-count=1 --ignore-case --files-with-matches --no-messages "$@" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 '"$@"' {q}")" && open "$file"
+}

@@ -14,12 +14,16 @@ settings:
   bindings.commands:
     global:
       normal:
+        <Left>: back
         <Meta+Alt+f>: spawn launch -a Firefox {}
         <Meta+Ctrl+f>: fullscreen
         <Meta+f>: spawn launch -a Firefox {url}
+        <Right>: forward
         D: null
         cm: clear-messages
         d: null
+        h: back
+        l: forward
         q: tab-close
   colors.tabs.bar.bg:
     global: black

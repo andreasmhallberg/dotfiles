@@ -1,0 +1,2 @@
+file=$@
+ggrep -oP "ِ(?=\s|$)" $file | wc -l

@@ -32,7 +32,8 @@ unicodeMap	ISO-8859-6	/usr/local/share/xpdf/arabic/ISO-8859-6.unicodeMap
 # Command for prining. Start with |. 
 # Print with skim
 # not working
-psFile "| launch -p"
+
+# psFile "| launch -p" */
 
 # BINDINGS
 
@@ -64,6 +65,7 @@ bind	J	any	nextTab
 bind	K	any	prevTab
 bind	q	any	quit
 # Note quoting to handle file names with spaces
+unbind  ctrl-s  any
 bind	s	any	'run(open "%f")'
 bind    S       any     toggleSidebar
 bind	=	any	zoomFitWidth

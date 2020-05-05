@@ -61,6 +61,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim #
 $pkman install w3m # used in mutt
 $pkman install r 
 $pkman install fd 
+$pkman install ag
 $pkman install ack # grep alternative
 $pkman install unzip
 $pkman install unrar
@@ -76,6 +77,10 @@ $pkman install ruby # in jekyll
 $pkman install ruby-gems # in jekyll
 $pkman install fzf
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
+$pkman install python3
+
+# Python
+python3 -m pip install text2qti --user
 
 
 # installations for OSX
