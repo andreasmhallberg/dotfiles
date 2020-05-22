@@ -14,11 +14,10 @@ settings:
   bindings.commands:
     global:
       normal:
-        <Left>: back
+        <Backspace>: tab-focus last
         <Meta+Alt+f>: spawn launch -a Firefox {}
         <Meta+Ctrl+f>: fullscreen
         <Meta+f>: spawn launch -a Firefox {url}
-        <Right>: forward
         D: null
         cm: clear-messages
         d: null
@@ -41,6 +40,13 @@ settings:
     global: bottom
   downloads.remove_finished:
     global: 5000
+  editor.command:
+    global:
+    - vim
+    - -f
+    - '{file}'
+    - -c
+    - normal {line}G{column0}l
   fonts.tabs:
     global: 15pt
   input.insert_mode.auto_load:
@@ -56,13 +62,13 @@ settings:
   tabs.position:
     global: left
   tabs.show:
-    global: switching
+    global: always
   tabs.show_switching_delay:
     global: 1000
   tabs.title.format:
-    global: '{audio}{title}'
+    global: '{index}'
   tabs.width:
-    global: 10%
+    global: 40
   url.searchengines:
     global:
       DEFAULT: https://duckduckgo.com/?q={}

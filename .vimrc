@@ -58,7 +58,7 @@ set clipboard^=unnamed                        " unnamed register and *-register 
 set nostartofline                            " remember cursor position when switching buffers
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
-set directory=~/.vim/temp                    " Dir for backup files
+set directory=~/.vim/temp                     " Dir for backup files
 set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keys wrap to pre/next line.
 set path+=**                                 " make file-based commands search in subfolders
 " set complete +=kspell                      " Complete from dictionary when spell is on. Mostly annoying. Technical words will be written more than once and that way added to completion list.
@@ -364,15 +364,15 @@ augroup ProseHighLighting
   autocmd BufRead,BufEnter *.md,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])\\?"
 augroup end
 
+" Open non-text file externally
+"
 function! OpenPdfExternally()
-  silent keepalt execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
-  edit # 
-  bdelete #
+  silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
+  buffer # 
   redraw!
   syntax on
-  " let @# = g:saved_altfile
+  bdelete # 
 endfunction
- " autocmd BufReadPre *.pdf let g:saved_altfile = expand('#')
 autocmd BufRead *.pdf call OpenPdfExternally()
 
 function! OpenExternally()
@@ -386,7 +386,6 @@ autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt call Ope
 
 autocmd BufRead *.docx !pandoc :shellescape(expand("%:p")) -t markdown  
 
-" Open non-text file externally
 
 " Enable ALT-key in vim. (Only on Mac)
 if has('macunix')
@@ -403,12 +402,10 @@ let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 "{{{1 Plugin configs
-  "{{{2 ranger
-  " Disable mappings
-  " let g:ranger_map_keys = 0
-  
-  " let g:ranger_replace_netrw = 1
-
+  "{{{2 asyncrun
+    " Notify when background process is done
+    let g:asyncrun_exit = "echo 'Done.'"
+ 
   "{{{2 Grammarous
   let g:grammarous#disabled_rules = {
             \ '*' : [
@@ -456,6 +453,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
   " Quite goyo when leaving window
   autocmd BufLeave * Goyo!
+  autocmd BufEnter article.md Goyo
 
   " Stuff that happen when entering goyo
       function! s:goyo_enter()
@@ -563,7 +561,7 @@ augroup end
    let R_indent_commented = 0
 
   "{{{2 yankring
-    let g:yankring_history_dir = '$HOME/temp/'
+    let g:yankring_history_dir = '$HOME/tmp/'
 
   "{{{2 HowMuch
   " number of decimals
@@ -634,8 +632,8 @@ augroup end
 " source ~/dotfiles/vim-pandoc-function.vim
 
 " Open pdf compiled from this file
-nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
-nnoremap <Leader>pw :silent !open '%'*.docx &<CR>
+nnoremap <Leader>po :silent !xpdf '%'.pdf &<CR>
+nnoremap <Leader>pw :silent !open '%'.docx &<CR>
 
 
 " Variable used in compilation mappings
@@ -643,6 +641,7 @@ let g:pandoc_citation_style = 'apa-6th-edition.csl'
 let g:pandoc_reference_docx = '~/dotfiles/pandoc-data-dir/reference.docx'
 let g:pandoc_output_dir = './'
 let g:pandoc_bibliography = '~/dotfiles/mylatexstuff/bibliotek.bib'
+let g:pandoc_compilation_extension = 'pdf'
 
 
 "{{{3 File specific compilation settings
@@ -657,7 +656,7 @@ let g:pandoc_bibliography = '~/dotfiles/mylatexstuff/bibliotek.bib'
         \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
 "}}}
 
-
+" TODO: make functions
 augroup PandocCompilation
 autocmd!
 
@@ -813,7 +812,7 @@ augroup end
 autocmd Filetype tex
   \ nnoremap <buffer> <Leader>pp :w<CR>
   \ :AsyncRun 
-  \ xelatex --aux-directory=~/temp --synctex=1 --src-specials %
+  \ xelatex --aux-directory=~/tmp --synctex=1 --src-specials %
   \ && mv '%<'.pdf '%'.pdf<CR>
 
 " tex do docx
@@ -1035,10 +1034,10 @@ augroup FontMappings
 
 " Arabic a
   " nomral mode
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>ga lmfbi[<esc>ea]{lang=ar}<esc>`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>ga lmfbi[<esc>ea]{lang=ar dir="rtl"}<esc>`f
   autocmd FileType tex nnoremap <buffer>ga lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
   " visual mode 
-  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>ga mf<esc>`<i[<esc>`>a]{lang=ar}<esc>`f
+  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>ga mf<esc>`<i[<esc>`>a]{lang=ar dir="rtl"}<esc>`f
   autocmd FileType tex vnoremap <buffer>ga mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
   " delete
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dga mf/]{lang=ar}<cr>df}?[<cr>x`f

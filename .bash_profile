@@ -19,12 +19,11 @@ export EDITOR="vim"
 export XDG_CONFIG_HOME="$HOME/.config/"
 
 # fzf default options
-export FZF_DEFAULT_COMMAND='fd -H --no-ignore . $HOME'
+export FZF_DEFAULT_COMMAND='fd -H --no-ignore . $HOME' 
+  # -H include hidden filse, -L follow links
 # ctrl-t to insert path from home
 export FZF_CTRL_T_COMMAND='fd -H --no-ignore . $HOME'
 
-# Prompt shape
-# See man bash > PROMTING
 
 # abbreviate wd in promt with `..`
 export PROMPT_DIRTRIM=2 # does not work with bash 3 that ships with OSX
@@ -62,7 +61,7 @@ alias gs='git status'
 
 alias m="mutt"
 alias z="zathura"
-alias Acrobat="launch -a Adobe\ Acrobat"
+alias acrobat="launch -a Adobe\ Acrobat"
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.

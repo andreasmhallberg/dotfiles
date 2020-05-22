@@ -49,6 +49,8 @@ bind	R	any	rotateCW
 bind	r	any	reload
 bind    d       continuous     sideBySideSingleMode
 bind    d       singlePage     continuousMode
+bind    y       any     copy
+
 #
 unbind  j       any
 bind	j	continuous	scrollDown(128)
@@ -57,6 +59,7 @@ bind	k	continuous	scrollUp(128)
 bind	k	singlePage	prevPage
 bind	h	any	scrollLeft(128)
 bind	l	any	scrollRight(128)
+
 #
 bind	ctrl-f	any	nextPage
 bind	ctrl-b	any	prevPage
