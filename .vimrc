@@ -31,6 +31,7 @@ Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
 Plugin 'tpope/vim-characterize'        " display more character info with ga
 Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
+Plugin 'https://github.com/alok/notational-fzf-vim'  " Notational velocity-like functionality
 Plugin 'mbbill/undotree'
 Plugin 'lervag/vimtex'
 Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
@@ -218,6 +219,7 @@ command! -bang -nargs=1 -complete=file LFilter call s:FilterLocationList(<bang>0
 " toggle hlsearch
 nnoremap <f12> :set hlsearch!<CR>
 
+
 " <Leader>o to toggle overview with small font
 let g:overview = 0
 
@@ -266,15 +268,17 @@ function! TTS()
     endif
     call system('echo '. shellescape(@x) .'
          \ | sed -E "s/[<>**]//g"
-         \ | sed -E "s/@[a-z-]+_[a-z-]+_([0-9]{4,4})/citation: \\1/g"
+         \ | sed -E "s/@[a-z-]+_[a-z-]+_([0-9]{4,4})/, citation: \\1/g"
          \ | sed -E "s/\\[\\^([a-z]+)\\]/ footnote: \\1./g"
          \ | sed -E "s/\\]{(\\.[^}]+)}//g"
          \ | sed -E "s/http:\\/\\/\\S* /URL /g"
          \ | sed -E "s/[ʿʾ]//g"
+         \ | sed -E "s/\\$//g"
+         \ | sed -E "s/{(\S+=\S+)( \1)*}//g"
          \ | sed -E "s/SA/S A/g"
          \ | sed -E "s/&nbsp;/ /g"
          \ | sed -E "s/\\[([^\\]]+)\\]\\([^)]+\\)/\\1/g"
-         \ | say --voice='. s:voice .' &')
+         \ | say --voice='. s:voice . ' -r 250 &')
     nnoremap <buffer><silent> <esc> :call system('killall say')<CR>
 endfunction
 
@@ -359,9 +363,11 @@ augroup end
 
 augroup ProseHighLighting
   autocmd!
-  " Enumeration in prose
-  autocmd BufRead,BufEnter *.md,*tex,*.txt,*.mail syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>,"
-  autocmd BufRead,BufEnter *.md,*tex,*.txt,*.mail syn match Constant "\<(\?[a-z0-9])\\?"
+  " Enumeration
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>,"
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\<(\?[a-z0-9])\\?"
+ " spell-check double words
+autocmd FileType markdown.pandoc,mail,txt,tex syn match SpellBad /\c\v<(\w+)\s+\1>/
 augroup end
 
 " Open non-text file externally
@@ -373,7 +379,7 @@ function! OpenPdfExternally()
   syntax on
   bdelete # 
 endfunction
-autocmd BufRead *.pdf call OpenPdfExternally()
+autocmd! BufEnter *.pdf call OpenPdfExternally()
 
 function! OpenExternally()
   silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &"
@@ -384,7 +390,7 @@ function! OpenExternally()
 endfunction
 autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt call OpenExternally()
 
-autocmd BufRead *.docx !pandoc :shellescape(expand("%:p")) -t markdown  
+autocmd! BufRead *.docx !pandoc :shellescape(expand("%:p")) -t markdown  
 
 
 " Enable ALT-key in vim. (Only on Mac)
@@ -404,8 +410,15 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 "{{{1 Plugin configs
   "{{{2 asyncrun
     " Notify when background process is done
-    let g:asyncrun_exit = "echo 'Done.'"
- 
+    let g:asyncrun_exit = "echo 'Done'"
+
+  "{{{2 notational-fzf
+    let g:nv_search_paths = ['~/Box Sync/notes', '~/Box Sync/notes-privat', '~/Box Sync/readingnotes']
+
+    " Add following after line 221 in notational_fzf.vim to make seaches
+    " non-recursive
+    "         \ '--max-depth 1',
+
   "{{{2 Grammarous
   let g:grammarous#disabled_rules = {
             \ '*' : [
@@ -453,7 +466,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
   " Quite goyo when leaving window
   autocmd BufLeave * Goyo!
-  autocmd BufEnter article.md Goyo
+  " autocmd BufEnter article.md Goyo
 
   " Stuff that happen when entering goyo
       function! s:goyo_enter()
@@ -493,23 +506,9 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
    let g:netrw_altfile = 1 " does not work
 
 
-   " function! EnterNetrwKeepalt()
-   "   let g:NetrwAltFileSave = expand('#')
-   "   let g:NetrwCurrentFileSave = expand('%')
-   "   Explore
-   " endfunction
-
-   " function! LeaveNetrwKeepalt()
-   "   Rexplore
-   "   let @#=expand(g:NetrwAltFileSave)
-   " endfunction
-
-" nnoremap - :call EnterNetrwKeepalt()<cr>
-
 augroup NetrwAutos
   autocmd!
   autocmd FileType netrw setlocal cursorline
-  " autocmd FileType netrw nnoremap <buffer><bs> :call LeaveNetrwKeepalt()<cr> 
 augroup end
 
   "{{{2 csv
@@ -532,7 +531,7 @@ augroup end
     " Soft wrap gundo preview
     augroup MyGundo
         au!
-        au BufWinEnter __Gundo_Preview__ :setl linebreak wrap
+        au BufWinEnter __Gundo_Preview__ setl linebreak wrap
     augroup end
 
     " Wider gundo window
@@ -632,7 +631,7 @@ augroup end
 " source ~/dotfiles/vim-pandoc-function.vim
 
 " Open pdf compiled from this file
-nnoremap <Leader>po :silent !xpdf '%'.pdf &<CR>
+nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
 nnoremap <Leader>pw :silent !open '%'.docx &<CR>
 
 
@@ -649,11 +648,19 @@ let g:pandoc_compilation_extension = 'pdf'
 
 
 " citation styles for specific files
-  autocmd BufEnter **/arabica/*.md let g:pandoc_citation_style = 'arabica.csl'
-        \ | let g:pandoc_reference_docx = 'arabica.docx'
-  autocmd BufEnter ~/Box\ Sync/case/manuscript/submission-second/*.md let g:pandoc_citation_style = 'apa-6th-edition.csl'
-        \ | let g:pandoc_bibliography = 'manuscript.bib'
-        \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
+augroup CitationVariables
+  autocmd!
+  autocmd BufRead **/arabica/*.md let g:pandoc_citation_style = 'arabica.csl'
+        \  let g:pandoc_reference_docx = 'arabica.docx'
+  " autocmd BufEnter ~/Box\ Sync/case/manuscript/submission-second/*.md let g:pandoc_citation_style = 'apa-6th-edition.csl'
+  "       \ | let g:pandoc_bibliography = 'manuscript.bib'
+  "       \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
+  autocmd BufRead **/mood-endings-in-ssa/article.md
+        \  let g:pandoc_citation_style = 'my-styles/al-arabiyya.csl'
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabiyya.docx'
+  autocmd BufRead **/diacritisation-practices/article.md 
+        \  let g:pandoc_citation_style = 'chicago-author-date.csl'
+augroup end
 "}}}
 
 " TODO: make functions
@@ -725,9 +732,9 @@ autocmd!
       \ --verbose
       \ --bibliography ' . g:pandoc_bibliography . 
       \ ' --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
-      \ ' -o ' . '%' . '.docx'<cr>
-
-      " \ ' --reference-doc=' . g:pandoc_reference_docx .
+      \ ' -o ' . '%' . '.docx'
+      \ . ' --reference-doc=' . g:pandoc_reference_docx<cr>
+      
 
   " to tex
   autocmd Filetype markdown 
@@ -848,6 +855,7 @@ endfunction
 
 " Switch to Arabic
 function! AraType()
+    iunmap jj
     set keymap=arabic-pc "Modified keymap. File in .vim/keymap
     set rightleft
     set nospell
@@ -896,7 +904,7 @@ augroup end
 " Mappings only used in markdown files 
 
 " trigger markdown.pandoc syntax on all markdown files
-autocmd BufEnter *.md,*.mkd setlocal filetype=markdown.pandoc
+autocmd BufRead *.md,*.mkd setlocal filetype=markdown.pandoc
 
 " Mappings
 " autocmd Filetype markdown call MarkdownMaps()
@@ -919,8 +927,6 @@ augroup MardownHL
   autocmd!
   autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL 
   autocmd Filetype markdown,markdown.pandoc syn match Constant "^\s*- "
-  autocmd Filetype markdown,markdown.pandoc syn match Constant "\s(\?[a-z0-9])"
- syn match Constant "\<(\?[a-z-9])"
 augroup end
 
 " Folding
@@ -968,16 +974,19 @@ inoremap <S-Tab> <Tab>
 " complete file path with fzf. Same binding as in terminal
 imap <C-t> <plug>(fzf-complete-path)
 
-" imap <c-f> <plug>(fzf-complete-path)
 " completion of following word
 inoremap xx <c-x><c-n>
 "}}}2
 
-" move around windows
+" {{{2 Navigating windows
+" Move around windows
 nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
+
+
+"}}}2
 
 " Make Y behave like D and C
 nnoremap Y y$
@@ -1031,6 +1040,7 @@ augroup FontMappings
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gs lmfbi[<esc>ea]{.smallcaps}<esc>`f
   autocmd FileType tex nnoremap <buffer>gs lmfbi\textsc{<esc>ea}<esc>`f
   " visual mode
+  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gs mf<esc>`<i[<esc>`>ea]{.smallcaps}<esc>`f
 
 " Arabic a
   " nomral mode

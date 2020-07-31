@@ -161,7 +161,7 @@
 	dWxs0g0ODxJaTlMub2JqZWN0c1YkY2xhc3OiEBGAAoAKgA3TFA0OFRkdV05TLmtleXOj
 	FhcYgAOABIAFoxobHIAGgAeACIAJWklkZW50aWZpZXJVV2lkdGhWSGlkZGVuUTAjQGjA
 	AAAAAAAI0iUmJyhaJGNsYXNzbmFtZVgkY2xhc3Nlc1xOU0RpY3Rpb25hcnmiJylYTlNP
-	YmplY3TTFA0OKy8doxYXGIADgASABaMwMRyAC4AMgAiACVExI0BzsZ2yLQ5W0iUmNzhe
+	YmplY3TTFA0OKy8doxYXGIADgASABaMwMRyAC4AMgAiACVExI0B0oZ2yLQ5W0iUmNzhe
 	TlNNdXRhYmxlQXJyYXmjNzkpV05TQXJyYXkACAARABoAJAApADIANwBJAEwAUgBUAGMA
 	aQBuAHkAgACDAIUAhwCJAJAAmACcAJ4AoACiAKYAqACqAKwArgC5AL8AxgDIANEA0gDX
 	AOIA6wD4APsBBAELAQ8BEQETARUBGQEbAR0BHwEhASMBLAExAUABRAAAAAAAAAIBAAAA
@@ -183,13 +183,13 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>290 1146 620 392 0 0 1200 1920 </string>
+	<string>410 363 620 392 0 0 1440 877 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1651 126 606 469 -1920 0 1920 1200 </string>
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>83 411 770 429 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>2 325 810 552 0 0 1440 900 </string>
+	<string>0 0 720 877 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>-1123 -752 825 552 -1200 -840 1200 1920 </string>
 	<key>New Bookmarks</key>
@@ -613,6 +613,7 @@
 	<array>
 		<string>3.3.6</string>
 		<string>3.3.8</string>
+		<string>3.3.11</string>
 		<string>3.3.1</string>
 		<string>3.3.3</string>
 		<string>3.3.5</string>
@@ -630,9 +631,9 @@
 	<key>NoSyncFrame_SessionsPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {1920, 1200}}</string>
+		<string>{{0, 0}, {1440, 900}}</string>
 		<key>topLeft</key>
-		<string>{657, 1029}</string>
+		<string>{269, 595}</string>
 	</dict>
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
@@ -646,7 +647,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>40A0C347-8173-440F-A07D-705A182465B0</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>63</integer>
+	<integer>112</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1335,6 +1336,8 @@
 	<real>570044099.94002295</real>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -1370,6 +1373,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/xhalaa/dotfiles/iterm2-settings</string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>PromptOnQuit</key>
 	<true/>
 	<key>SUEnableAutomaticChecks</key>
@@ -1381,11 +1386,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-04-11T11:15:23Z</date>
+	<date>2020-06-17T10:21:50Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
-	<integer>1745956938</integer>
+	<integer>854068188</integer>
 	<key>SUUpdateRelaunchingMarker</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
@@ -1403,6 +1408,6 @@
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
-	<string>3.3.9</string>
+	<string>3.3.11</string>
 </dict>
 </plist>
