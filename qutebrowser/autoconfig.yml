@@ -17,7 +17,6 @@ settings:
   bindings.commands:
     global:
       normal:
-        <Backspace>: tab-focus last
         <Meta+Alt+f>: spawn launch -a Firefox {}
         <Meta+Ctrl+f>: fullscreen
         <Meta+f>: spawn launch -a Firefox {url}
@@ -41,6 +40,10 @@ settings:
     global: gray
   colors.webpage.darkmode.enabled:
     global: false
+  content.notifications:
+    https://toolbox.iskysoft.com: false
+  content.register_protocol_handler:
+    https://calendar.google.com?cid=%25s: true
   downloads.position:
     global: bottom
   downloads.remove_finished:
@@ -81,6 +84,7 @@ settings:
       eall: https://referenceworks-brillonline-com.ezproxy.ub.gu.se/search?s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&search-go=&s.q={}
       ei: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopaedia-of-islam-2&search-go=&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
+      oxford: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/spellcheck/arabic-english/?q={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}

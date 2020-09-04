@@ -227,10 +227,11 @@ function! OverveiwToggle()
   " if has('gui')
   if g:overview == 0
     let g:overview = 1
+    let g:oldww = winwidth(0)
+    let g:oldtw = &tw | set tw=g:oldww | set formatoptions-=l
+    let g:oldscolloff = &scrolloff | set scrolloff=999
     " Save valuesq
     let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
-    let g:oldtw = &tw | set tw=80 | set formatoptions-=l
-    let g:oldscolloff = &scrolloff | set scrolloff=999
   else
     let &guifont = g:oldfont
     let &tw = g:oldtw
@@ -568,6 +569,8 @@ augroup end
   "}}}2
 "}}}1
 "{{{1 Display & Color
+"
+set langmenu=e
 
 syntax on
 colorscheme gruvbox " super sexy
@@ -636,7 +639,7 @@ nnoremap <Leader>pw :silent !open '%'.docx &<CR>
 
 
 " Variable used in compilation mappings
-let g:pandoc_citation_style = 'apa-6th-edition.csl'
+let g:pandoc_citation_style = '~/Box\ Sync/citation-styles/apa-6th-edition.csl'
 let g:pandoc_reference_docx = '~/dotfiles/pandoc-data-dir/reference.docx'
 let g:pandoc_output_dir = './'
 let g:pandoc_bibliography = '~/dotfiles/mylatexstuff/bibliotek.bib'
@@ -650,16 +653,21 @@ let g:pandoc_compilation_extension = 'pdf'
 " citation styles for specific files
 augroup CitationVariables
   autocmd!
-  autocmd BufRead **/arabica/*.md let g:pandoc_citation_style = 'arabica.csl'
+
+  autocmd BufRead **/arabica/*.md let g:pandoc_citation_style = '~/dotfiles/my-styles/arabica.csl'
         \  let g:pandoc_reference_docx = 'arabica.docx'
   " autocmd BufEnter ~/Box\ Sync/case/manuscript/submission-second/*.md let g:pandoc_citation_style = 'apa-6th-edition.csl'
   "       \ | let g:pandoc_bibliography = 'manuscript.bib'
   "       \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
+  
   autocmd BufRead **/mood-endings-in-ssa/article.md
-        \  let g:pandoc_citation_style = 'my-styles/al-arabiyya.csl'
+        \  let g:pandoc_citation_style = '~/dotfiles/my-styles/al-arabiyya.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabiyya.docx'
-  autocmd BufRead **/diacritisation-practices/article.md 
-        \  let g:pandoc_citation_style = 'chicago-author-date.csl'
+
+  autocmd BufRead **/diacritisation-practices/article.arabica.md 
+        \  let g:pandoc_citation_style = '~/dotfiles/my-styles/arabica.csl'
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabiyya.docx'
+
 augroup end
 "}}}
 
@@ -677,7 +685,7 @@ autocmd!
     \ --filter pandoc-crossref
     \ --columns=200
     \ --bibliography ' . g:pandoc_bibliography .
-    \ ' --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
+    \ ' --csl ' . g:pandoc_citation_style .
     \ ' -o ' . g:pandoc_output_dir . '%' . '.pdf'<cr>
 
 
@@ -705,7 +713,7 @@ autocmd!
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --slide-level 1
-    \ --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
+    \ --csl ' . g:pandoc_citation_style .
     \ ' -o ' . '%' . '.beamer.pdf'<cr>
 
   "  to beamer (LaTeX)
@@ -731,7 +739,7 @@ autocmd!
       \ --filter pandoc-crossref
       \ --verbose
       \ --bibliography ' . g:pandoc_bibliography . 
-      \ ' --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
+      \ ' --csl ' . g:pandoc_citation_style .
       \ ' -o ' . '%' . '.docx'
       \ . ' --reference-doc=' . g:pandoc_reference_docx<cr>
       
@@ -781,7 +789,7 @@ autocmd!
       \ nnoremap <buffer><Leader>ph
       \ :w<CR>
       \ :AsyncRun
-      \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html %
+      \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html+grid_tables %
       \ --columns=80
       \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
       \ --filter pandoc-crossref
@@ -961,9 +969,8 @@ function! MarkdownLevel()
 endfunction
 
 " }}}1
-"{{{1 Command line maopings
-cnoremap jj <c-w>
 "{{{1 Movement & Editing
+cnoremap jj <c-w>
 " {{{2 Completion
   " Use TAB for completions
 
@@ -1088,6 +1095,8 @@ iab teh the
 iab tow two
 iab whcih which
 iab widht width
+iab introductoin introduction
+
 " Capitalized nationalities in English
 iab arabic Arabic
 iab egyptian Egyptian
