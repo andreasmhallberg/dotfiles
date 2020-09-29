@@ -1,2 +1,2 @@
 file=$@
-ggrep -oP "َ(?!ا)" $file | wc -l
+rg -E UTF-8 -oP "َ(?![اى])" $file | wc -l

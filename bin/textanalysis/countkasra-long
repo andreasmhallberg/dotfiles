@@ -1,2 +1,2 @@
 file=$@
-ggrep -oP "ِي" $file | wc -l
+rg -E UTF-8 -oP "ِي" $file | wc -l

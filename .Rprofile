@@ -9,6 +9,8 @@ library(pander)
 library(ggplot2)
 library(lme4)
 library(lmerTest)
+library(GGally)
+library(reshape) # provides function melt to transform wide to long
 
 # Funcions
   # transform proportion to percent with two decimals

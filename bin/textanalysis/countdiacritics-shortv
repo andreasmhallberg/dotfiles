@@ -1,6 +1,6 @@
-# Use ggrep to allow for lookaheads
+# Use rg -E UTF-8 to allow for lookaheads
 # \b \w do not work with Unicode characters
 file=$@
-echo "fatHa:" $(ggrep -oP "َ(?!ا)" $file | wc -l)
-echo "kasra:" $(ggrep -oP "ِ(?!ي)" $file | wc -l)
-echo "Damma:" $(ggrep -oP "ُ(?!و)" $file | wc -l)
+echo "fatHa:" $(rg -E UTF-8 -oP "َ(?!ا)" $file | wc -l)
+echo "kasra:" $(rg -E UTF-8 -oP "ِ(?!ي)" $file | wc -l)
+echo "Damma:" $(rg -E UTF-8 -oP "ُ(?!و)" $file | wc -l)

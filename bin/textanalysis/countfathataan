@@ -1,2 +1,2 @@
 file=$@
-grep -o 'َ' $file | wc -l
+rg -E UTF-8 -o 'ً' $file | wc -l

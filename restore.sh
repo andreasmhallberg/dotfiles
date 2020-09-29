@@ -60,6 +60,7 @@ mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
 $pkman install w3m # used in mutt
 $pkman install r 
+$pkman install coreutils # tac etc.
 $pkman install fd 
 $pkman install ag
 $pkman install ack # grep alternative

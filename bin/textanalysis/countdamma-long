@@ -1,2 +1,2 @@
 file=$@
-ggrep -oP "ُو" $file | wc -l
+rg -E UTF-8 -oP "ُو" $file | wc -l

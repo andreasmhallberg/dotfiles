@@ -5,6 +5,8 @@ filetype indent on
 autocmd BufRead ~/.vimrc setlocal foldmethod=marker
 autocmd BufRead ~/.vimrc setlocal nospell
 
+language en_US " set language of messages to English. Some plugins give error messages for other languages.
+
 "{{{1 Plugins
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -31,7 +33,7 @@ Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
 Plugin 'tpope/vim-characterize'        " display more character info with ga
 Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
-Plugin 'https://github.com/alok/notational-fzf-vim'  " Notational velocity-like functionality
+" Plugin 'https://github.com/alok/notational-fzf-vim'  " Notational velocity-like functionality
 Plugin 'mbbill/undotree'
 Plugin 'lervag/vimtex'
 Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
@@ -57,6 +59,7 @@ call vundle#end()            " required
 set clipboard^=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nostartofline                            " remember cursor position when switching buffers
+set delcombine                               " Delete part of combining character with x command. Useful for editing Arabic diacritics.
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
 set directory=~/.vim/temp                     " Dir for backup files
@@ -147,30 +150,30 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 
 function! MapEALL()
   let g:eallmappings = 1
-  inoremap aa ā
-  inoremap ii ī
-  inoremap uu ū
-  inoremap AA Ā
-  inoremap II Ī
-  inoremap UU Ū
-  inoremap .d ḍ
-  inoremap .D Ḍ
-  inoremap .t ṭ
-  inoremap .T Ṭ
-  inoremap .s ṣ
-  inoremap .S Ṣ
-  inoremap .z ẓ
-  inoremap .Z Ẓ
-  inoremap .h ḥ
-  inoremap .H Ḥ
-  inoremap .g ġ
-  inoremap .G Ġ
-  inoremap vs š
-  inoremap vS Š
-  inoremap xd ḏ
-  inoremap xD Ḏ
-  inoremap xt ṯ
-  inoremap xT Ṯ
+  inoremap <buffer> aa ā
+  inoremap <buffer> ii ī
+  inoremap <buffer> uu ū
+  inoremap <buffer> AA Ā
+  inoremap <buffer> II Ī
+  inoremap <buffer> UU Ū
+  inoremap <buffer> .d ḍ
+  inoremap <buffer> .D Ḍ
+  inoremap <buffer> .t ṭ
+  inoremap <buffer> .T Ṭ
+  inoremap <buffer> .s ṣ
+  inoremap <buffer> .S Ṣ
+  inoremap <buffer> .z ẓ
+  inoremap <buffer> .Z Ẓ
+  inoremap <buffer> .h ḥ
+  inoremap <buffer> .H Ḥ
+  inoremap <buffer> .g ġ
+  inoremap <buffer> .G Ġ
+  inoremap <buffer> vs š
+  inoremap <buffer> vS Š
+  inoremap <buffer> xd ḏ
+  inoremap <buffer> xD Ḏ
+  inoremap <buffer> xt ṯ
+  inoremap <buffer> xT Ṯ
 endfunction
 
 function UnmapEALL()
@@ -312,6 +315,9 @@ nnoremap ! :!
 nnoremap gt :tabnew<CR>
 
 "{{{1 General stuff (passive)
+
+
+	au BufWritePre /tmp/* setlocal noundofile
 
 " Make insert completion case sensitive
 au InsertEnter * set noignorecase          
@@ -561,16 +567,17 @@ augroup end
    let R_indent_commented = 0
 
   "{{{2 yankring
-    let g:yankring_history_dir = '$HOME/tmp/'
+    let g:yankring_history_dir = '~/tmp/'
 
   "{{{2 HowMuch
   " number of decimals
   let g:HowMuch_scale = 4
   "}}}2
+  "{{{2 VimTex
+  let g:tex_flavor = 'latex' " set flvor for .tex files
 "}}}1
 "{{{1 Display & Color
 "
-set langmenu=e
 
 syntax on
 colorscheme gruvbox " super sexy
@@ -700,7 +707,7 @@ autocmd!
     \ --columns=200
     \ --number-sections
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ~/jobb/citation-styles/' . g:pandoc_citation_style .
+    \ --csl ' . g:pandoc_citation_style .
     \ ' -o ' . '%' . '.pdf'<cr>
 
   "  to beamer 
@@ -933,7 +940,7 @@ augroup end
 
 augroup MardownHL
   autocmd!
-  autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL 
+  " autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL " Defined above for all prose
   autocmd Filetype markdown,markdown.pandoc syn match Constant "^\s*- "
 augroup end
 

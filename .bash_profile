@@ -100,7 +100,7 @@ export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.6.0/bin/:$PATH"
 
 bind '"\C-f":"open_with_fzf\n"'
 bind '"\C-v":"vim $(fzf)\n"'
-bind '"\C-c":"cd $(fd -t d -H . $HOME | fzf)\n"'
+bind '"\C-d":"cd $(fd -t d -H . $HOME | fzf)\n"'
 
 open_with_fzf() {
   file="$(fd -t f -H . $HOME | fzf)"
