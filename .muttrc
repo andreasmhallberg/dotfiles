@@ -81,8 +81,8 @@ bind index gg first-entry
 bind pager gg top
 bind index U toggle-new
 bind index D delete-message # netrw-like
-bind pager G bottom # vim-like
-bind index G group-reply
+# bind pager G bottom # vim-like
+bind index,pager G group-reply
 bind index,pager \Cf next-page # vim-like
 bind index,pager \Cb previous-page # vim-like
 bind index,pager N search-opposite # vim-like

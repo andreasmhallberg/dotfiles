@@ -2,7 +2,6 @@
 #    set smtp_pass = '<pass>'
 set imap_pass = `security find-generic-password -w -s muttgmail -a andreasmartenhallberg@gmail.com`
 set smtp_pass = `security find-generic-password -w -s muttgmail -a andreasmartenhallberg@gmail.com`
-set imap_user = 'andreasmartenhallberg@gmail.com'
 
 set from = "andreasmartenhallberg@gmail.com"
 set folder = imaps://imap.gmail.com:993

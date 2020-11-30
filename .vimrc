@@ -14,36 +14,37 @@ set rtp+=/usr/local/opt/fzf
 call vundle#begin()
 
 " let Vundle manage Vundle, required
-" Plugin 'jlanzarotta/bufexplorer'     
+" Plugin 'jlanzarotta/bufexplorer'
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'junegunn/fzf'                  " general purpose fuzzy finder
-Plugin 'sk1418/HowMuch'                " calculate visually marked math
-Plugin 'junegunn/fzf.vim'              " heaven
-Plugin 'milkypostman/vim-togglelist'   " toggle quickfix and location list on and off with <leader>q and <leader>l
-Plugin 'muttaliasescomplete.vim'       " autocompletion of mutts addressbook. ~/.mutt/aliases as default
+" Plugin 'justinmk/vim-dirvish'                      "  Less klunky netrw alternative, but needs a lot of costum setup with mappings and such
+Plugin 'junegunn/fzf'                                "  general purpose fuzzy finder
+Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
+Plugin 'junegunn/fzf.vim'                            "  heaven
+Plugin 'milkypostman/vim-togglelist'                 "  toggle quickfix and location list on and off with <leader>q and <leader>l
 Plugin 'junegunn/goyo.vim'
 Plugin 'will133/vim-dirdiff'
+Plugin 'Konfekt/vim-mutt-aliases' " Compete emails is mutt with <c-x><c-u>
+  let g:muttaliases_file = '/Users/xhalaa/.mutt/aliases'
 Plugin 'skywind3000/asyncrun.vim'
-Plugin 'klapheke/vim-chat'             " syntax highlighting for CHAT-transcriptions
-Plugin 'jalvesaq/nvim-r'               " r functionality and integration
-Plugin 'tpope/vim-surround'          
-Plugin 'tpope/vim-commentary'          " gc<range> to comment
-Plugin 'tpope/vim-repeat'              " make mappings repeatable
-Plugin 'tpope/vim-vinegar'             " useful mappings for netrw
-Plugin 'tpope/vim-characterize'        " display more character info with ga
-Plugin 'vim-pandoc/vim-pandoc-syntax'  " good syntax, nested HTML, yaml, etc.
+Plugin 'jalvesaq/nvim-r'                             "  r functionality and integration
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'                        "  gc<range> to comment
+Plugin 'tpope/vim-repeat'                            "  make mappings repeatable
+Plugin 'tpope/vim-vinegar'                           "  useful mappings for netrw
+Plugin 'tpope/vim-characterize'                      "  display more character info with ga
+Plugin 'vim-pandoc/vim-pandoc-syntax'                "  good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
-" Plugin 'https://github.com/alok/notational-fzf-vim'  " Notational velocity-like functionality
 Plugin 'mbbill/undotree'
 Plugin 'lervag/vimtex'
-Plugin 'godlygeek/tabular'             " :Tabular command to align stuff
-Plugin 'gibiansky/vim-latex-objects'  " LaTeX text objectes. e=environments. % to jump begin/end
-Plugin 'qpkorr/vim-renamer'            " Batch rename files vim-style.
-Plugin 'vim-scripts/YankRing.vim'      " After ctrlp to remap <c-p>
-Plugin 'rhysd/vim-grammarous'          " LanguageTool integration for grammar checking
-" Plugin 'blueyed/vim-diminactive'     " Dims window that is not in focus. Clashes with FZF in netrw
-Plugin 'rickhowe/diffchar.vim'         " Character wise diff
-" Plugin 'francoiscabrol/ranger.vim'   
+Plugin 'godlygeek/tabular'                           "  :Tabular command to align stuff
+Plugin 'gibiansky/vim-latex-objects'                 "  LaTeX text objectes. e=environments. % to jump begin/end
+Plugin 'qpkorr/vim-renamer'                          "  Batch rename files vim-style.
+Plugin 'vim-scripts/YankRing.vim'                  
+Plugin 'maxbrunsfeld/vim-yankstack'                  "  Lighter yankring
+Plugin 'rhysd/vim-grammarous'                        "  LanguageTool integration for grammar checking
+" Plugin 'blueyed/vim-diminactive'                   "  Dims window that is not in focus. Clashes with FZF in netrw
+Plugin 'rickhowe/diffchar.vim'                       "  Character wise diff
+" Plugin 'francoiscabrol/ranger.vim'
 
 " Colorschemes
 " Plugin 'Jorengarenar/vim-darkness'
@@ -146,69 +147,91 @@ set ttimeoutlen=1                         "  fixes delay on cursor shape in term
 
 " Easier Arabic transcription
 
+"{{{2 EALL transcription 
 " TODO: add exceptions for text, extreme
-
-function! MapEALL()
-  let g:eallmappings = 1
-  inoremap <buffer> aa ā
-  inoremap <buffer> ii ī
-  inoremap <buffer> uu ū
-  inoremap <buffer> AA Ā
-  inoremap <buffer> II Ī
-  inoremap <buffer> UU Ū
-  inoremap <buffer> .d ḍ
-  inoremap <buffer> .D Ḍ
-  inoremap <buffer> .t ṭ
-  inoremap <buffer> .T Ṭ
-  inoremap <buffer> .s ṣ
-  inoremap <buffer> .S Ṣ
-  inoremap <buffer> .z ẓ
-  inoremap <buffer> .Z Ẓ
-  inoremap <buffer> .h ḥ
-  inoremap <buffer> .H Ḥ
-  inoremap <buffer> .g ġ
-  inoremap <buffer> .G Ġ
-  inoremap <buffer> vs š
-  inoremap <buffer> vS Š
-  inoremap <buffer> xd ḏ
-  inoremap <buffer> xD Ḏ
-  inoremap <buffer> xt ṯ
-  inoremap <buffer> xT Ṯ
+function! EALLToggle()
+  if !exists("b:eallmappings")
+    let b:eallmappings = 0
+  endif 
+  if b:eallmappings == 0
+    let b:eallmappings = 1
+    echo "EALL mappings on for this buffer"
+    inoremap <buffer> aa ā
+    inoremap <buffer> ii ī
+    inoremap <buffer> uu ū
+    inoremap <buffer> AA Ā
+    inoremap <buffer> II Ī
+    inoremap <buffer> UU Ū
+    inoremap <buffer> .d ḍ
+    inoremap <buffer> .D Ḍ
+    inoremap <buffer> .t ṭ
+    inoremap <buffer> .T Ṭ
+    inoremap <buffer> .s ṣ
+    inoremap <buffer> .S Ṣ
+    inoremap <buffer> .z ẓ
+    inoremap <buffer> .Z Ẓ
+    inoremap <buffer> .h ḥ
+    inoremap <buffer> .H Ḥ
+    inoremap <buffer> .g ġ
+    inoremap <buffer> .G Ġ
+    inoremap <buffer> vs š
+    inoremap <buffer> vS Š
+    inoremap <buffer> xd ḏ
+    inoremap <buffer> xD Ḏ
+    inoremap <buffer> xt ṯ
+    inoremap <buffer> xT Ṯ
+  elseif b:eallmappings == 1
+    let b:eallmappings = 0
+    echo "EALL mappings off"
+    iunmap <buffer>aa
+    iunmap <buffer>ii
+    iunmap <buffer>uu
+    iunmap <buffer>AA
+    iunmap <buffer>II
+    iunmap <buffer>UU
+    iunmap <buffer>.d
+    iunmap <buffer>.D
+    iunmap <buffer>.t
+    iunmap <buffer>.T
+    iunmap <buffer>.s
+    iunmap <buffer>.S
+    iunmap <buffer>.z
+    iunmap <buffer>.Z
+    iunmap <buffer>.h
+    iunmap <buffer>.H
+    iunmap <buffer>.g
+    iunmap <buffer>.G
+    iunmap <buffer>vs
+    iunmap <buffer>vS
+    iunmap <buffer>xd
+    iunmap <buffer>xD
+    iunmap <buffer>xt
+    iunmap <buffer>xT
+  endif
 endfunction
 
-function UnmapEALL()
-  let g:eallmappings = 0
-  iunmap aa
-  iunmap ii
-  iunmap uu
-  iunmap AA
-  iunmap II
-  iunmap UU
-  iunmap .d
-  iunmap .D
-  iunmap .t
-  iunmap .T
-  iunmap .s
-  iunmap .S
-  iunmap .z
-  iunmap .Z
-  iunmap .h
-  iunmap .H
-  iunmap .g
-  iunmap .G
-  iunmap vs
-  iunmap vS
-  iunmap xd
-  iunmap xD
-  iunmap xt
-  iunmap xT
+command! EALLToggle call EALLToggle()
+
+"}}}2
+"{{{2 Flip between markdown and R
+
+function! FlipRMarkdown()
+  if &ft=='r'
+    set ft=pandoc.markdown
+  elseif &ft=~'markdown'
+    set ft=r
+  endif
 endfunction
 
-command! Eall call MapEALL()
-command! NoEall call UnmapEALL()
+command FlipR call FlipRMarkdown()
+
+"}}}2
+
+
 
 command Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
 
+" Only one instance of each file in location list
 " https://dhruvasagar.com/2013/12/17/vim-filter-quickfix-list
 function! s:FilterLocationList(bang, pattern)
   let cmp = a:bang ? '!~#' : '=~#'
@@ -227,29 +250,26 @@ nnoremap <f12> :set hlsearch!<CR>
 let g:overview = 0
 
 function! OverveiwToggle()
-  " if has('gui')
-  if g:overview == 0
-    let g:overview = 1
-    let g:oldww = winwidth(0)
-    let g:oldtw = &tw | set tw=g:oldww | set formatoptions-=l
-    let g:oldscolloff = &scrolloff | set scrolloff=999
-    " Save valuesq
-    let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
+  if has('gui')
+    if g:overview == 0
+      let g:overview = 1
+      let g:oldtw = &tw | set formatoptions-=l
+      let g:oldscolloff = &scrolloff | set scrolloff=999
+      " Save valuesq
+      let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
+    else
+      let &guifont = g:oldfont
+      let &tw = g:oldtw
+      let &scrolloff = g:oldscolloff
+      let g:overview = 0
+      normal <c-w>=
+    endif
   else
-    let &guifont = g:oldfont
-    let &tw = g:oldtw
-    let &scrolloff = g:oldscolloff
-    let g:overview = 0
-    normal <c-w>=
+    echo "Overview mode needs gui."
   endif
 endfunction
 
 nnoremap <Leader>o :call OverveiwToggle()<CR>
- 
-" complete all matches in command line
-" useful to delete multiple buffers
-" <c-a> is taken by Quicksilver
-cnoremap <c-c> <c-a>
 
 nnoremap <F5> <Plug>(grammarous-open-info-window)
 
@@ -271,17 +291,16 @@ function! TTS()
       let s:voice = 'Allison'
     endif
     call system('echo '. shellescape(@x) .'
-         \ | sed -E "s/[<>**]//g"
+         \ | sed -E "s/[<>$]//g"
          \ | sed -E "s/@[a-z-]+_[a-z-]+_([0-9]{4,4})/, citation: \\1/g"
          \ | sed -E "s/\\[\\^([a-z]+)\\]/ footnote: \\1./g"
          \ | sed -E "s/\\]{(\\.[^}]+)}//g"
-         \ | sed -E "s/http:\\/\\/\\S* /URL /g"
-         \ | sed -E "s/[ʿʾ]//g"
-         \ | sed -E "s/\\$//g"
-         \ | sed -E "s/{(\S+=\S+)( \1)*}//g"
-         \ | sed -E "s/SA/S A/g"
+         \ | sed -E "s/\\^\\[([^]]+)\\]/ ... footnote text: \1. /g"
+         \ | sed -E "s/\\[([^]]+)\\]\\([^)]+\\)/\\1/g"
+         \ | sed -E "s/https?[^ ]+/URL /g"
          \ | sed -E "s/&nbsp;/ /g"
-         \ | sed -E "s/\\[([^\\]]+)\\]\\([^)]+\\)/\\1/g"
+         \ | sed -E "s/[ʿʾ]//g"
+         \ | sed -E "s/SA/S A/g"
          \ | say --voice='. s:voice . ' -r 250 &')
     nnoremap <buffer><silent> <esc> :call system('killall say')<CR>
 endfunction
@@ -419,13 +438,10 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     " Notify when background process is done
     let g:asyncrun_exit = "echo 'Done'"
 
-  "{{{2 notational-fzf
-    let g:nv_search_paths = ['~/Box Sync/notes', '~/Box Sync/notes-privat', '~/Box Sync/readingnotes']
+  "{{{2 yankstack
 
-    " Add following after line 221 in notational_fzf.vim to make seaches
-    " non-recursive
-    "         \ '--max-depth 1',
-
+    nmap <C-p> <Plug>yankstack_substitute_older_paste
+    nmap <C-P> <Plug>yankstack_substitute_newer_paste
   "{{{2 Grammarous
   let g:grammarous#disabled_rules = {
             \ '*' : [
@@ -455,10 +471,12 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
   "{{{2 fzf
 
+
   " keymaps in prompt
       let g:fzf_action = {
         \ 'ctrl-t': 'tab split',
         \ 'ctrl-x': '!launch',
+        \ 'ctrl-p': '!xpdf',
         \ 'ctrl-v': 'vsplit' ,
         \ 'ctrl-s': 'split' ,
         \  }
@@ -504,20 +522,53 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
   "{{{2 netrw
 
+ " Disable netrw. Useful for testing dervish
+	" let g:loaded_netrw       = 1
+	" let g:loaded_netrwPlugin = 1
+
    " supress banner
    let g:netrw_banner=0
    " sort case insensitive
    let g:netrw_sort_options = "i"
    " keep the current directory the same as the browsing directory.
    let g:netrw_keepdir = 0
-   let g:netrw_altfile = 1 " does not work
+   let g:netrw_keepalt = 1
 
 
-augroup NetrwAutos
-  autocmd!
-  autocmd FileType netrw setlocal cursorline
-augroup end
 
+  augroup NetrwAutos
+    autocmd!
+    autocmd FileType netrw setlocal cursorline
+    " override netrw mapping
+    autocmd FileType netrw nmap <buffer> <c-l> <c-w>l
+    " r to refresh
+    autocmd FileType netrw nmap <buffer> r :e .<cr>
+  augroup end
+
+  " function! NetrwPreViewMode()
+  "   if g:netrw_preview_mode == 1 
+  "     let g:netrw_preview_mode = 0
+  "   else
+  "     let g:netrw_preview_mode = 1
+  "   endif
+
+
+
+
+  "{{{2 dirvish
+  augroup DirvishAutos
+    autocmd!
+    autocmd FileType dirvish setlocal cursorline
+    autocmd FileType dirvish setlocal nospell
+    autocmd FileType dirvish setlocal conceallevel=1
+  augroup end
+
+  augroup DirivshMappings
+    autocmd!
+    autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
+    autocmd FileType dirvish nnoremap <buffer> R 0y$:!mv "<c-r>0" "<c-r>0"
+  augroup end
+  
   "{{{2 csv
 
     autocmd BufRead,BufEnter *.csv set filetype=csv
@@ -563,9 +614,30 @@ augroup end
 
   " Don't type <- with _
      let R_assign = 0
-  " Don't indent by yoursel
-   let R_indent_commented = 0
 
+  " Unly use user defined binding
+  " See R mappings and functions below for mappings
+    let R_user_maps_only = 0
+
+" augroup RMaps
+"  autocmd!
+"   " Envoke nvim-r plugin mappings
+"  autocmd FileType r nnoremap <buffer> <leader>rf <Plug>RStart
+"  autocmd FileType r nnoremap <buffer> <leader>rh <Plug>RHelp
+"  autocmd FileType r nnoremap <buffer> <leader>rq <Plug>RClose
+"  autocmd FileType r nnoremap <buffer> <leader>rv <Plug>RViewDF
+"  autocmd FileType r nnoremap <buffer> <leader>rs <Plug>RSummary
+"  autocmd FileType r nnoremap <buffer> <leader>rn <Plug>RObjectNames
+"  autocmd FileType r nnoremap <buffer> <leader>ss <Plug>RSendSelection
+"  autocmd FileType r nnoremap <buffer> <leader>so <Plug>RSendSelAndInsertOutput
+"  autocmd FileType r nnoremap <buffer> <leader>pp <Plug>RSendParagraph
+"  autocmd FileType r nnoremap <buffer> <leader>ll <Plug>RSendLine
+"  autocmd FileType r nnoremap <buffer> <leader>lo <Plug>RSendLine
+"  autocmd FileType r nnoremap <buffer> <leader>lo <Plug>RDSendLineAndInsertOutput
+" augroup end
+
+
+ 
   "{{{2 yankring
     let g:yankring_history_dir = '~/tmp/'
 
@@ -591,8 +663,8 @@ if has('terminal')
   hi SpellBad cterm=underline
 endif
 
-" Override conceal applied by varies packages. No pseudo WYSYWYG!
-autocmd BufEnter * silent! set cole=0
+" Override conceal applied by varies packages.
+  autocmd BufEnter * silent! set conceallevel=0
 
 "}}}1
 "{{{1 Leader mappings
@@ -662,14 +734,14 @@ augroup CitationVariables
   autocmd!
 
   autocmd BufRead **/arabica/*.md let g:pandoc_citation_style = '~/dotfiles/my-styles/arabica.csl'
-        \  let g:pandoc_reference_docx = 'arabica.docx'
+        \ | let g:pandoc_reference_docx = 'arabica.docx'
   " autocmd BufEnter ~/Box\ Sync/case/manuscript/submission-second/*.md let g:pandoc_citation_style = 'apa-6th-edition.csl'
   "       \ | let g:pandoc_bibliography = 'manuscript.bib'
   "       \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
   
-  autocmd BufRead **/mood-endings-in-ssa/article.md
-        \  let g:pandoc_citation_style = '~/dotfiles/my-styles/al-arabiyya.csl'
-        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabiyya.docx'
+  autocmd BufRead article-zal.md
+        \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ZAL.csl'
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ZAL_stylesheet_with-instructions.dotx'
 
   autocmd BufRead **/diacritisation-practices/article.arabica.md 
         \  let g:pandoc_citation_style = '~/dotfiles/my-styles/arabica.csl'
@@ -719,7 +791,6 @@ autocmd!
     \ -t beamer
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --slide-level 1
     \ --csl ' . g:pandoc_citation_style .
     \ ' -o ' . '%' . '.beamer.pdf'<cr>
 
@@ -892,7 +963,9 @@ autocmd Filetype csv setlocal list
 
 
 
-"{{{1 tex mappings and functions
+"{{{1 R mappings and functions
+
+"{{{1 Tex mappings and functions
 
 augroup LaTeXMaps
   autocmd!
@@ -924,13 +997,10 @@ autocmd BufRead *.md,*.mkd setlocal filetype=markdown.pandoc
 " Mappings
 " autocmd Filetype markdown call MarkdownMaps()
 
-augroup MarkdownMaps 
-  autocmd!
-  autocmd Filetype markdown,markdown.pandoc setlocal commentstring=<!--\ %s\ -->
-augroup end
 
 augroup MardownSettings
   autocmd!
+  autocmd Filetype markdown,markdown.pandoc setlocal commentstring=<!--\ %s\ -->
   autocmd Filetype markdown,markdown.pandoc,r call MarkdownLevel()
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
@@ -940,8 +1010,7 @@ augroup end
 
 augroup MardownHL
   autocmd!
-  " autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL " Defined above for all prose
-  autocmd Filetype markdown,markdown.pandoc syn match Constant "^\s*- "
+   autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL " Defined above for all prose autocmd Filetype markdown,markdown.pandoc syn match Constant "^\s*- "
 augroup end
 
 " Folding
@@ -970,6 +1039,13 @@ function! MarkdownLevel()
         return ">7"
     endif
     if getline(v:lnum)=~'-->$'
+        return "<7"
+    endif
+    " codebloc
+    if getline(v:lnum)=~'\v^\s*```( \w+)?$'
+        return ">7"
+    endif
+    if getline(v:lnum)=~'^\s*```$'
         return "<7"
     endif
     return "=" 
@@ -1058,15 +1134,15 @@ augroup FontMappings
 
 " Arabic a
   " nomral mode
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>ga lmfbi[<esc>ea]{lang=ar dir="rtl"}<esc>`f
-  autocmd FileType tex nnoremap <buffer>ga lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gr lmfbi[<esc>ea]{lang=ar dir="rtl"}<esc>`f
+  autocmd FileType tex nnoremap <buffer>gj lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
   " visual mode 
-  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>ga mf<esc>`<i[<esc>`>a]{lang=ar dir="rtl"}<esc>`f
-  autocmd FileType tex vnoremap <buffer>ga mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
+  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gr mf<esc>`<i[<esc>`>a]{lang=ar dir="rtl"}<esc>`f
+  autocmd FileType tex vnoremap <buffer>gr mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
   " delete
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dga mf/]{lang=ar}<cr>df}?[<cr>x`f
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gda mf/]{lang=ar}<cr>df}?[<cr>x`f
-  autocmd FileType tex nnoremap <buffer>dga mf/}<cr><Bslash>textarabic<cr>df{`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dgr mf/]{lang=ar}<cr>df}?[<cr>x`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gdr mf/]{lang=ar}<cr>df}?[<cr>x`f
+  autocmd FileType tex nnoremap <buffer>dgr mf/}<cr><Bslash>textarabic<cr>df{`f
 
 augroup end
 
@@ -1126,19 +1202,18 @@ inoremap ` ``<Left>
 inoremap `` `
 inoremap ' ''<Left>
 inoremap '' '
+inoremap 〈 〈〉<Left>
+inoremap 〈〈 〈 
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> * **<Left>
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ** *
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^ ^^<Left>
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^^ ^
 " When only one for English possessive 's etc.
-" Don't use this mapping for normal English prose where it is used in possessives.
-autocmd FileType r inoremap ' ''<Left>
 inoremap " ""<Left>
 inoremap "" "
 inoremap < \<><Left>
 inoremap << \<
 autocmd Filetype r inoremap <buffer> < <
-
 
 " Move to eol in Normal, Visual, Select, Operator-pending
 noremap L $
@@ -1168,7 +1243,7 @@ augroup readingnotes
   autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal complete +=sKeywords.md
   autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal breakindent
   " Highlight when listing radingnotes
-  autocmd FileType netrw syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
+  autocmd BufRead ~/Box\ Sync/readingnotes/ syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
 augroup END
 
 " Filter location list to get one hit per file 

@@ -16,10 +16,10 @@ fontFile ZapfDingbats		/usr/local/share/ghostscript/9.22/Resource/Font/D050000L
 fontDir /Users/xhalaa/Library/Fonts/
 fontDir /System/Library/Fonts/
 
-# Fit with of page with window size
-initialZoom width
+tileCacheSize 100
 
 initialSidebarState no
+initialToolbarState no
 
 # Output options
 textEncoding UTF-8

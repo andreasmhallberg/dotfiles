@@ -1,3 +1,4 @@
-# count words with only Arabic characters
+# Count words with only Arabic characters.
+# Diacritics have to be included, otherwise they break up strings to be counted as several words
 
-rg -o '[ٱابتثجحخددذرزسشصضطظعغفقكلمنهويئءؤأإ-ةًٌٍَُِّْٰ]+' | wc -l
+rg -o '[ٱاىبتثجحخدذرزسشصضطظعغفقكلمنهويئءؤأإةًٌٍَُِّْٰ]+' $1 | wc -l

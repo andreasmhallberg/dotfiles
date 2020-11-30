@@ -1,2 +1,2 @@
 file=$@
-rg -E UTF-8 -o '[ًٌٍَُِّْٱ]' $file | wc -l
+rg -E UTF-8 -o '[ًٌٍَُِّْ]' $file | wc -l

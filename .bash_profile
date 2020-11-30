@@ -63,6 +63,9 @@ alias m="mutt"
 alias z="zathura"
 alias acrobat="launch -a Adobe\ Acrobat"
 
+# open files as new tab in running instance om MacVim
+alias mvim='mvim --remote-tab-silent'
+
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
 
@@ -120,8 +123,10 @@ rn() {
    vim "$file"
 }
 
-fif() {
-    if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-    local file
-    file="$(rga --max-count=1 --ignore-case --files-with-matches --no-messages "$@" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 '"$@"' {q}")" && open "$file"
+# Interactive fuzzy find in readingnotes
+# Give string to command to select files, then string for interactive search within these files
+
+rn() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  rg --files-with-matches --no-messages "$1" ~/jobb/readingnotes/| fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 100 '$1' || rg --ignore-case --context 100 '$1' {}"
 }

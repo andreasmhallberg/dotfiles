@@ -3,11 +3,9 @@
 
 \renewcommand{\textbf}[1]{\structure{#1}} 
 
-
-
 % Column environments that avoid \begin commands.
 
-% Kept for backwards compability. Use :::::: spans instead
+% Kept for backwards compability. Use :::::: spans from pandoc markdown instead
 
 \newcommand{\columnsbeginT}{\begin{columns}[T]} % Align with top baseline
 \newcommand{\columnsbegint}{\begin{columns}[t]} % Align with top.
@@ -38,3 +36,5 @@
 \setbeamertemplate{itemize subitem}{\Large-}
 \setbeamertemplate{itemize subsubitem}{\Large-}
 
+
+\setbeamercolor{quotation}{fg=gray!80}

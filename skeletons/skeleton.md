@@ -12,4 +12,5 @@ header-includes:
     - \newfontfamily\arabicfontsf[Script=Arabic]{Lateef}
     - \newfontfamily\arabicfontit[Script=Arabic]{Lateef}
     - \frenchspacing
+    - \def\UrlFont{\itshape}
 ---

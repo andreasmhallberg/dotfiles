@@ -50,7 +50,7 @@ settings:
     global: 5000
   editor.command:
     global:
-    - vim
+    - mvim
     - -f
     - '{file}'
     - -c

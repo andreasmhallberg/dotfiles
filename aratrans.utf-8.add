@@ -1,27 +1,36 @@
 /encoding=utf-8
 # symlinked to ~/.vim/spell/aratrans.utf-8.ad
 
-
+# Suffixes
 -ayn
 -ān
 -īn
 -uhu
 -ūn
 
+# prefixes
+al-
+
 adab
 akbar
 alif
+allaḏī
 amāma
 aḥmad
 aḥruf
 aṣl
 badal
+balad
 balāġa
+bayt
 baʿḍ
 bināʾ
 bāb
 dalāʾl
+dars
 farʿ
+fatḥa
+fatḥatān
 faʿʿala
 fiʿl
 fuṣḥā
@@ -45,12 +54,15 @@ iḏa
 jarr
 jumla
 kalām
+kasra
+kasratān
 kitāb
 kān
 kāna
 lan
 laḥn
 limā
+liqāʾ
 luġa
 mabnī
 mafʿūl
@@ -97,6 +109,8 @@ naẓariyya
 nisba
 nāqiṣ
 nāʾib
+qamar
+qawāʿid
 qirāʾāt
 qiyāsiyya
 qāla
@@ -104,6 +118,9 @@ rafʿ
 risāla
 sa
 sawfa
+sukūn
+sīratān
+taaʾ
 tamyīz       
 tanwīn
 tanāzuʿ
@@ -115,21 +132,25 @@ taʾkīd
 taʾxīr
 taʿlīl
 taʿlīmiyya
+taṭwīl
 tāʾ marbūṭa
 uṣūl
 wa
 waqf
 wazn
 waṣala
+waṣla
 wujūban
 xabar
 yakūna
 yaqwul
+yawm
 yaṣil
 zawāʾid
 zāʾida
 ġalaṭ
 ġayr
+šadda
 šarḥ
 šawāhid
 šibh
@@ -137,6 +158,8 @@ zāʾida
 šāhid
 šāḏḏ
 ʾab
+ʾan
+ʾanna
 ʾanna
 ʾaġlāṭ
 ʾin
@@ -153,6 +176,7 @@ zāʾida
 ʿāmma
 ʿāmmiyya
 ḍamma
+ḍammatān
 ḥadīṯ
 ḥaraka
 ḥarf
@@ -170,11 +194,12 @@ zāʾida
 ṣīġa
 ṯalāṯat
 ṯiqal
+ṯāliṯ
 ẓarf
 ẓurūf
 
 # Proper names
-#
+
 Alfiyya
 Alfiyyat Ibn Mālik
 Baṣra
@@ -194,28 +219,9 @@ al-Xaṣāʾis
 al-Ājurrūmiyya
 az-Zajjājī
 as-Suyūṭī
+Muḥammad
+Ziyād
+Hindāwi
 
 # Words added with zg/b here
-balad
-ʾAnna
-allaḏī
-ʾan
-qawāʿid
-yawm
-liqāʾ
-Muḥammad
-fatḥa
-sukūn
-taaʾ
-sīratān
-šadda
-waṣla
-kasra
-fatḥatān
-kasratān
-ḍammatān
-Hindawi
-Ziyād
-bayt
-qamar
-taṭwīl
+

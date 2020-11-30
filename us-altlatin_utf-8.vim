@@ -60,3 +60,4 @@ loadkeymap
 <M-w> ẇ
 <M-y> ẏ
 
+<M-:> ː

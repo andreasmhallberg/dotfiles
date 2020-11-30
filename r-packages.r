@@ -4,6 +4,7 @@ install.packages(
    'BayesFactor'
   ,'ggplot2'
   ,'lme4'
+  ,'emmeans' # constrasts in lm
   ,'lmerTest'
   ,'plotly'
   ,'reshape2' # new reshape
@@ -16,4 +17,6 @@ install.packages(
   ,"pander" # converts stuff to pandoc markdown
   ,'ggcorrplot'
   ,'GGally' # ggplairs
+  ,'rmarkdown'
+  ,'quantmod' # findPeaks
 )

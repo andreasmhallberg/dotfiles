@@ -1,8 +1,6 @@
 # text/html; launch -l %s &; #test=test -n "$DISPLAY";
-text/html; launch -a Qutebrowser %s; needsterminal; nametemplate=%s.html
-#needsterminal;
 text/html; w3m -I %{charset} -T text/html; copiousoutput;
-# text/html; open %s ; needsterminal; nametemplate=%s.html
+text/html; launch -a Qutebrowser %s; copiousoutput; needsterminal; nametemplate=%s.html
 
 application/pdf; xpdf %s &; 
 

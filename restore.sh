@@ -62,10 +62,13 @@ $pkman install w3m # used in mutt
 $pkman install r 
 $pkman install coreutils # tac etc.
 $pkman install fd 
+$pkman install tldr # readable man pages
+$pkman install bat # cat with syntax highlighting
 $pkman install ag
 $pkman install ack # grep alternative
 $pkman install unzip
 $pkman install unrar
+$pkman install libxml2 # xml-grep
 $pkman install tmux # needed for R integration in vim with nvim-r
 if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
   $pkman install mactex
