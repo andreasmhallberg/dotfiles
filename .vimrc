@@ -16,7 +16,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 " Plugin 'jlanzarotta/bufexplorer'
 Plugin 'VundleVim/Vundle.vim'
-" Plugin 'justinmk/vim-dirvish'                      "  Less klunky netrw alternative, but needs a lot of costum setup with mappings and such
+Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
 Plugin 'junegunn/fzf'                                "  general purpose fuzzy finder
 Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
 Plugin 'junegunn/fzf.vim'                            "  heaven
@@ -31,7 +31,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'                        "  gc<range> to comment
 Plugin 'tpope/vim-repeat'                            "  make mappings repeatable
 Plugin 'tpope/vim-vinegar'                           "  useful mappings for netrw
-Plugin 'tpope/vim-characterize'                      "  display more character info with ga
+Plugin 'tpope/vim-characterize'                      "  simpler netrw alternative
 Plugin 'vim-pandoc/vim-pandoc-syntax'                "  good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
 Plugin 'mbbill/undotree'
@@ -40,7 +40,7 @@ Plugin 'godlygeek/tabular'                           "  :Tabular command to alig
 Plugin 'gibiansky/vim-latex-objects'                 "  LaTeX text objectes. e=environments. % to jump begin/end
 Plugin 'qpkorr/vim-renamer'                          "  Batch rename files vim-style.
 Plugin 'vim-scripts/YankRing.vim'                  
-Plugin 'maxbrunsfeld/vim-yankstack'                  "  Lighter yankring
+" Plugin 'maxbrunsfeld/vim-yankstack'                  "  Lighter yankring
 Plugin 'rhysd/vim-grammarous'                        "  LanguageTool integration for grammar checking
 " Plugin 'blueyed/vim-diminactive'                   "  Dims window that is not in focus. Clashes with FZF in netrw
 Plugin 'rickhowe/diffchar.vim'                       "  Character wise diff
@@ -76,6 +76,7 @@ set fillchars=fold:-                         " Fold linefill
 set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
+" set autochdir                                " set workng directory to dir of current buffer. Not supported by dervish
 set smartcase                                " Case-sensitive when upper case is used in search string
 set complete+=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
 set complete+=s~/dotfiles/aratrans.utf-8.add " list of transliterated word to completion files
@@ -381,8 +382,8 @@ augroup PassiveAutos
         \| execute "normal `d"
   " Always use minimalist foldtext
   autocmd BufEnter * set foldtext=getline(v:foldstart)
-  " Set working directory for current file
-  autocmd BufEnter * silent! lcd %:p:h
+  " Set working directory for current file " done with set autochdir
+  " autocmd BufEnter * silent! lcd %:p:h
   " No wrapping in quickfix or location list buffer
   autocmd BufEnter,BufRead quickfix setlocal nowrap
 augroup end
@@ -418,12 +419,10 @@ autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt call Ope
 
 autocmd! BufRead *.docx !pandoc :shellescape(expand("%:p")) -t markdown  
 
-
 " Enable ALT-key in vim. (Only on Mac)
-if has('macunix')
-    set macmeta
+if has('osxdarwin')
+  set macmeta
 endif
-
 
 
 " Different cursor shapes in Iterm
@@ -553,8 +552,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   "   endif
 
 
-
-
   "{{{2 dirvish
   augroup DirvishAutos
     autocmd!
@@ -567,6 +564,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     autocmd!
     autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
     autocmd FileType dirvish nnoremap <buffer> R 0y$:!mv "<c-r>0" "<c-r>0"
+    autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
   augroup end
   
   "{{{2 csv
@@ -639,7 +637,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
  
   "{{{2 yankring
-    let g:yankring_history_dir = '~/tmp/'
+    let g:yankring_history_dir = '~/tmp'
 
   "{{{2 HowMuch
   " number of decimals
@@ -914,48 +912,6 @@ autocmd Filetype tex
     \ :w<CR>
     \ :AsyncRun pandoc % -smart --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib -o '%'.docx<CR>
 
-"{{{2 Language switching
-
-
-"  Switch to Swedish
-function! SweType()
-  inoremap jj <c-w>
-  set spelllang=sv
-  set spellfile=~/.vim/spell/sv.utf-8.add,~/.vim/spell/aratrans.utf-8.add
-" To switch back from Arabic
-  set keymap=swe-us "Modified keymap. File in .vim/keymap
-  set norightleft
-  set spell
-endfunction
-
-" Switch to English
-function! EngType()
-  inoremap jj <c-w>
-" To switch back from Arabic
-  set keymap=us-altlatin "Modified keymap. File in .vim/keymap
-  set spellfile=~/.vim/spell/en.utf-8.add,~/.vim/spell/aratrans.utf-8.add
-  set norightleft
-  set spelllang=en_us
-  set spell
-endfunction
-
-" Switch to Arabic
-function! AraType()
-    iunmap jj
-    set keymap=arabic-pc "Modified keymap. File in .vim/keymap
-    set rightleft
-    set nospell
-endfunction
-
-" Switch to English typing
-nnoremap <Leader>e :<C-U>call EngType()<CR>
-call EngType() " Do this on startup
-" Switch to Swedish typing
-nnoremap <Leader>s :<C-U>call SweType()<CR>
-" Switch to Arabic typing
-nnoremap <Leader>a :<C-U>call AraType()<CR>
-
-
 "{{{1 csv mappings and functions
 "
 autocmd Filetype csv setlocal cursorline
@@ -1052,6 +1008,8 @@ function! MarkdownLevel()
 endfunction
 
 " }}}1
+
+
 "{{{1 Movement & Editing
 cnoremap jj <c-w>
 " {{{2 Completion
@@ -1132,7 +1090,7 @@ augroup FontMappings
   " visual mode
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gs mf<esc>`<i[<esc>`>ea]{.smallcaps}<esc>`f
 
-" Arabic a
+" Arabic r
   " nomral mode
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gr lmfbi[<esc>ea]{lang=ar dir="rtl"}<esc>`f
   autocmd FileType tex nnoremap <buffer>gj lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
@@ -1151,16 +1109,16 @@ augroup end
 
 
 " increment numbers
-inoremap <m-e> ə
-inoremap <m-E> Ə
+inoremap <M-e> ə
+inoremap <M-E> Ə
 " non-breaking hyphen
-inoremap <m--> ‑
-
+inoremap <M--> ‑
 " Angular brackets
-"〈 U+2329
-" 〉U+232
-inoremap <A-<> 〈
-inoremap <A->> 〉
+  "〈 U+2329
+  " 〉U+232A
+inoremap <M-<> 〈
+inoremap <M->> 〉
+
 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
@@ -1221,6 +1179,46 @@ noremap H 0
 
 
 "}}}1
+"{{{1 Language switching
+
+
+"  Switch to Swedish
+function! SweType()
+  inoremap jj <c-w>
+  set spelllang=sv
+  set spellfile=~/.vim/spell/sv.utf-8.add,~/.vim/spell/aratrans.utf-8.add
+" To switch back from Arabic
+  set keymap=swe-us "Modified keymap. File in .vim/keymap
+  set norightleft
+  set spell
+endfunction
+
+" Switch to English
+function! EngType()
+  inoremap jj <c-w>
+" To switch back from Arabic
+  set keymap=us-altlatin "Modified keymap. File in .vim/keymap
+  set spellfile=~/.vim/spell/en.utf-8.add,~/.vim/spell/aratrans.utf-8.add
+  set norightleft
+  set spelllang=en_us
+  set spell
+endfunction
+
+" Switch to Arabic
+function! AraType()
+    iunmap jj
+    set keymap=arabic-pc "Modified keymap. File in .vim/keymap
+    set rightleft
+    set nospell
+endfunction
+
+" Switch to English typing
+nnoremap <Leader>e :<C-U>call EngType()<CR>
+call EngType() " Do this on startup
+" Switch to Swedish typing
+nnoremap <Leader>s :<C-U>call SweType()<CR>
+" Switch to Arabic typing
+nnoremap <Leader>a :<C-U>call AraType()<CR>
 "{{{1 Readingnotes
 " https://github.com/andreasmhallberg/readingnotes
 
@@ -1243,7 +1241,7 @@ augroup readingnotes
   autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal complete +=sKeywords.md
   autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal breakindent
   " Highlight when listing radingnotes
-  autocmd BufRead ~/Box\ Sync/readingnotes/ syn match String '\v^.{2,}, \d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
+  autocmd FileType dirvish syn match String '\v\d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
 augroup END
 
 " Filter location list to get one hit per file 
@@ -1292,8 +1290,3 @@ augroup Chat
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex set list
 augroup end
-
-"{{{ Test
-
-
-

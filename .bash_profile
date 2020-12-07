@@ -13,6 +13,8 @@ export PATH=$PATH:/Users/xhalaa/Library/Python/3.7/bin
 
 source ~/.fzf.bash
 
+export LC_CTYPE="sv.UTF-8"
+
 export VISUAL="vim"
 export EDITOR="vim"
 
@@ -50,28 +52,31 @@ alias ls='ls -F' # ls with directory/symlink indocators (-F) and hidden files (-
 # alias "-"='cd ..' # doesnt work
 # alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
+alias m="mutt"
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
 alias qmv='qmv -f do' # only show output column when using qmv
 alias :e='vim' # because vim
+# run macvim in terminal. Built in vim doesn't have all the features.
+alias vim="mvim -v"
+alias v="view"
 # git
 alias gc='git checkout'
 alias gcb='git checkout -b' #checkout and create new branch
 alias gb='git branch'
 alias gs='git status'
 
-alias m="mutt"
 alias z="zathura"
 alias acrobat="launch -a Adobe\ Acrobat"
 
 # open files as new tab in running instance om MacVim
-alias mvim='mvim --remote-tab-silent'
+# alias mvim='mvim --remote-tab-silent'
 
 # MacVim has better display of Arabic characters, also when run in ITerm.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
 
 # OSX only
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+  #alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
   alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
   alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 fi
@@ -96,8 +101,8 @@ bind "set completion-ignore-case on"
 export PATH="/usr/local/opt/qt/bin:$PATH"
 
 # Fix ruby link in Catalina
-export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.6.0/bin/:$PATH"
-
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
 
 # Bindings
 

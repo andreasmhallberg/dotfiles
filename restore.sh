@@ -1,18 +1,7 @@
 #!/bin/bash
 
-# run this with sudo
-
 # Make linux compatible
-    # https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script
-
-if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
-        pkgman=brew
-# elif [[ "$OSTYPE" == "linux-gnu" ]]; then # linux
-        # pkgman=apt-get
-      else
-        pkgman=apt-get
-
-fi
+  # https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script
 
 # Install manually first
 # - Zotero
@@ -23,6 +12,7 @@ fi
 # - Homebrew
 # - MacTex  - http://tug.org/mactex/mactex-download.html
 #           - update texlive when installed to get most resent packages
+# brow
 
 # Install fonts
   # LateefGR
@@ -33,15 +23,16 @@ fi
 
   # Installations for all *nix systems
 
+xcode-select --install # xcode
+
+# homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # git
-
-$pkman install git-all
+brew install git-all
 git config --global user.name "Andreas Hallberg"
 git config --global user.email andreasmartenhallberg@gmail.com
-if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
-  git config --global credential.helper osxkeychain
-fi
+git config --global credential.helper osxkeychain
 
 
 #get my dotfiles
@@ -51,60 +42,58 @@ git clone https://github.com/andreasmhallberg/dotfiles.git ~/
 git clone https://github.com/andreasmhallberg/andreasmhallberg.github.io.git ~/blog/
 
 
-# config symlinks
 
 # vim
 mkdir -p ~/.vim/temp # make directory for swap files
 # brew install macvim  # install manually instead
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
-$pkman install w3m # used in mutt
-$pkman install r 
-$pkman install coreutils # tac etc.
-$pkman install fd 
-$pkman install tldr # readable man pages
-$pkman install bat # cat with syntax highlighting
-$pkman install ag
-$pkman install ack # grep alternative
-$pkman install unzip
-$pkman install unrar
-$pkman install libxml2 # xml-grep
-$pkman install tmux # needed for R integration in vim with nvim-r
-if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
-  $pkman install mactex
-fi
-$pkman install xpdf
-$pkman install pandoc
-$pkman install pandoc-citeproc
-$pkman install jekyll
-$pkman install ruby # in jekyll
-$pkman install ruby-gems # in jekyll
-$pkman install fzf
+brew install w3m # used in mutt
+brew install r 
+brew install coreutils # tac etc.
+brew install fd 
+brew install rg 
+brew install tldr # readable man pages
+brew install bat # cat with syntax highlighting
+brew install ag
+brew install ack # grep alternative
+brew install unzip
+brew install unrar
+brew install libxml2 # xml-grep
+brew install tmux # needed for R integration in vim with nvim-r
+brew install mactex
+brew install xpdf
+brew install pandoc
+brew install pandoc-corssref
+brew install ruby # in jekyll
+brew install ruby-gems # in jekyll
+brew install fzf
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
-$pkman install python3
+brew install python3
+
+# After ruby
+gem install --user-install bundler jekyll
+gem install --user-install jekyll-feed
+gem install --user-install jekyll-seo-tag
 
 # Python
 python3 -m pip install text2qti --user
 
 
 # installations for OSX
-if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
+mkdir -p ~/.config/karabiner/
+ln -sf ~/dotfiles/karabiner ~/.config/karabiner
 
-  mkdir -p ~/.config/karabiner/
-  ln -sf ~/dotfiles/karabiner.json ~/.config/karabiner/
+brew install launch
 
-  $pkman install launch
 
-  xcode-select --install # xcode. Requiered by nvim-r
+# make ITerm2 do italics
+# https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
+tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
 
-  # make ITerm2 do italics
-  # https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
-  tic -o ~/.terminfo xterm-256color.terminfo.txt
-
-  # fonts
-  brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
-
-fi
+# fonts
+brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
+brew tap homebrew/cask-fonts && brew cask install font-source-sans-pro
 
 #misc
 
@@ -122,7 +111,7 @@ ln -sf ~/dotfiles/.inputrc ~/.inputrc
 # mutt
 mkdir -p ~/.mutt
 git clone https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/
-$pkman install mutt
+brew install mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
 ln -sf ~/jobb/aliases ~/.mutt/aliases
@@ -149,5 +138,3 @@ gem install --user-install bundler jekyll # Install jekyll
 gem install bundler jekyll
 gem install jekyll-sitemap
 gem install jekyll-seo-tag
-
-
