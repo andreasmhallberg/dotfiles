@@ -1,14 +1,15 @@
 # osx keychain
 
 set imap_pass = `security find-generic-password -w -s mutt -a xhalaa`
-set imap_user = 'xhalaa'
+set imap_user = 'andreas.hallberg@sprak.gu.se'
 set smtp_pass = `security find-generic-password -w -s mutt -a xhalaa`
 
 
 set from = "andreas.hallberg@sprak.gu.se"
-set folder = "imaps://owa.gu.se:993"
+set folder = "imaps://outlook.office365.com:993"
+set smtp_url = "smtp://andreas.hallberg@sprak.gu.se@smtp.office365.com:587/"
+
 set spoolfile = +INBOX
-set smtp_url = "smtp://xhalaa@smtpgw.gu.se:587/"
 mailboxes +Skickat +INBOX
 set record="+Skickat"
 set header_cache="~/.mutt/gu/cache/headers"
