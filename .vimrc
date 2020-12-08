@@ -35,7 +35,7 @@ Plugin 'tpope/vim-characterize'                      "  simpler netrw alternativ
 Plugin 'vim-pandoc/vim-pandoc-syntax'                "  good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
 Plugin 'mbbill/undotree'
-Plugin 'lervag/vimtex'
+" Plugin 'lervag/vimtex'
 Plugin 'godlygeek/tabular'                           "  :Tabular command to align stuff
 Plugin 'gibiansky/vim-latex-objects'                 "  LaTeX text objectes. e=environments. % to jump begin/end
 Plugin 'qpkorr/vim-renamer'                          "  Batch rename files vim-style.
@@ -382,8 +382,8 @@ augroup PassiveAutos
         \| execute "normal `d"
   " Always use minimalist foldtext
   autocmd BufEnter * set foldtext=getline(v:foldstart)
-  " Set working directory for current file " done with set autochdir
   " autocmd BufEnter * silent! lcd %:p:h
+  autocmd BufEnter * silent! lcd %:p:h
   " No wrapping in quickfix or location list buffer
   autocmd BufEnter,BufRead quickfix setlocal nowrap
 augroup end
@@ -565,6 +565,9 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
     autocmd FileType dirvish nnoremap <buffer> R 0y$:!mv "<c-r>0" "<c-r>0"
     autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
+    " Remove modified search mappings
+    autocmd FileType dirvish silent! unmap <buffer> /
+    autocmd FileType dirvish silent! unmap <buffer> ?
   augroup end
   
   "{{{2 csv
