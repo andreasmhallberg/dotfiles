@@ -1,22 +1,22 @@
 # This file is sourced in restore.sh to install packages
 
-install.packages(
-   'BayesFactor'
-  ,'ggplot2'
-  ,'lme4'
-  ,'emmeans' # constrasts in lm
-  ,'lmerTest'
-  ,'plotly'
-  ,'reshape2' # new reshape
-  ,'xtable'
-  ,'Hmisc' # xtable to convert to latex
-  ,'effects'
-  ,"GGally"
-  ,"network"
-  ,"igraph"
-  ,"pander" # converts stuff to pandoc markdown
-  ,'ggcorrplot'
-  ,'GGally' # ggplairs
-  ,'rmarkdown'
-  ,'quantmod' # findPeaks
-)
+install.packages('readxl') " read_xlsx()
+install.packages('BayesFactor')
+install.packages('ggplot2')
+install.packages('lme4')
+install.packages('emmeans')# constrasts in lm
+install.packages('lmerTest')
+install.packages('plotly')
+install.packages('reshape2')# new reshape
+install.packages('xtable')
+install.packages('Hmisc')# xtable to convert to latex
+install.packages('effects')
+install.packages("GGally")
+install.packages("network")
+install.packages("igraph")
+install.packages("pander") # converts stuff to pandoc markdown
+install.packages('ggcorrplot')
+install.packages('GGally')# ggplairs
+install.packages('rmarkdown')
+install.packages('quantmod')# findPeaks
+

@@ -16,7 +16,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 " Plugin 'jlanzarotta/bufexplorer'
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
+" Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
 Plugin 'junegunn/fzf'                                "  general purpose fuzzy finder
 Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
 Plugin 'junegunn/fzf.vim'                            "  heaven
@@ -788,7 +788,7 @@ autocmd!
     \ nnoremap <buffer><Leader>pb 
     \ :w<CR>
     \ :execute 'AsyncRun pandoc ' . '%' .
-    \ ' -f markdown+implicit_figures+table_captions+smart
+    \ ' -f markdown+implicit_figures+smart
     \ -t beamer
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
@@ -1280,6 +1280,8 @@ augroup MailStuff
   autocmd FileType mail setlocal iskeyword+=@-@
   autocmd FileType mail setlocal iskeyword+=.
   autocmd FileType mail setlocal iskeyword+=_
+  " format text
+  autocmd FileType mail nnoremap <buffer> <CR> gqip
 augroup end
 
 
@@ -1287,6 +1289,7 @@ augroup end
 "{{{1 CHAT
 augroup Chat
   autocmd!
+  " Syntax highlighting
   autocmd BufEnter *.cha,*.cex syn match Statement '\v\$(HED|ATT)\S+'
   autocmd BufEnter *.cha,*.cex syn match Constant '\v\$[123]\S+'
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'

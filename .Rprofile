@@ -9,7 +9,7 @@ library(pander)
 library(ggplot2)
 library(lme4)
 library(lmerTest) # P-values for models
-library(reshape) # provides function melt to transform wide to long
+library(reshape2) # provides function melt to transform wide to long
 
 # Funcions
   # transform proportion to percent with two decimals

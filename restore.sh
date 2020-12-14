@@ -68,6 +68,7 @@ brew install pandoc-corssref
 brew install ruby # in jekyll
 brew install ruby-gems # in jekyll
 brew install fzf
+brew install youtube-dl
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
 brew install python3
 
