@@ -106,6 +106,7 @@ ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/a
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/.qutebrowser ~/.qutebrowser
 ln -sf ~/dotfiles/.Rprofile ~/.Rprofile
+ln -sf ~/dotfiles/.Renviron ~/.Renviron
 ln -sf ~/dotfiles/.xpdfrc ~/.xpdfrc
 ln -sf ~/dotfiles/.inputrc ~/.inputrc
 

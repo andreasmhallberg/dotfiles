@@ -4,6 +4,8 @@ set -o vi
 # Set pbcopy to use Unicode
 export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
+export LC_CTYPE="en_US.UTF-8"
+
 [[ -s ~/.bashrc ]] && source ~/.bashrc
 
 # add bin folder in ~/dotfiles/ to available commands
@@ -12,8 +14,6 @@ export PATH=$PATH:~/dotfiles/bin/textanalysis
 export PATH=$PATH:/Users/xhalaa/Library/Python/3.7/bin
 
 source ~/.fzf.bash
-
-export LC_CTYPE="sv.UTF-8"
 
 export VISUAL="vim"
 export EDITOR="vim"

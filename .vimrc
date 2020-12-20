@@ -11,11 +11,12 @@ language en_US " set language of messages to English. Some plugins give error me
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 set rtp+=/usr/local/opt/fzf
-call vundle#begin()
+
+call vundle#begin('~/.vim/plugged')
 
 " let Vundle manage Vundle, required
-" Plugin 'jlanzarotta/bufexplorer'
 Plugin 'VundleVim/Vundle.vim'
+" Plugin 'jlanzarotta/bufexplorer'
 " Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
 Plugin 'junegunn/fzf'                                "  general purpose fuzzy finder
 Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
@@ -56,6 +57,7 @@ Plugin 'cocopon/iceberg.vim'
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
+
 "{{{1 Settings
 set clipboard^=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
@@ -719,7 +721,7 @@ nnoremap <Leader>pw :silent !open '%'.docx &<CR>
 
 
 " Variable used in compilation mappings
-let g:pandoc_citation_style = '~/Box\ Sync/citation-styles/apa-6th-edition.csl'
+let g:pandoc_citation_style = '~/citation-styles/apa.csl'
 let g:pandoc_reference_docx = '~/dotfiles/pandoc-data-dir/reference.docx'
 let g:pandoc_output_dir = './'
 let g:pandoc_bibliography = '~/dotfiles/mylatexstuff/bibliotek.bib'
@@ -763,6 +765,7 @@ autocmd!
     \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
+    \ --citeproc
     \ --columns=200
     \ --bibliography ' . g:pandoc_bibliography .
     \ ' --csl ' . g:pandoc_citation_style .
