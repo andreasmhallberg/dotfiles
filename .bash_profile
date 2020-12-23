@@ -16,13 +16,13 @@ export PATH=$PATH:/Users/xhalaa/Library/Python/3.7/bin
 source ~/.fzf.bash
 
 export VISUAL="vim"
-export EDITOR="vim"
+export EDITOR="nvim"
 
 export XDG_CONFIG_HOME="$HOME/.config/"
 
 # fzf default options
 export FZF_DEFAULT_COMMAND='fd -H --no-ignore . $HOME' 
-  # -H include hidden filse, -L follow links
+  # -H include hidden files
 # ctrl-t to insert path from home
 export FZF_CTRL_T_COMMAND='fd -H --no-ignore . $HOME'
 
@@ -34,11 +34,7 @@ GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
   
-if [[ "$OSTYPE" == "darwin"* ]]; then
 PS1='\[${GREEN}\][\w] \[${RESET}\]'
-else # not macOS
-PS1='\[${GREEN}\][\w] \[${RESET}\]'
-fi
 
 # MacPorts Installer addition on 2016-08-03_at_10:37:22: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
@@ -48,8 +44,8 @@ export CLICOLOR=1
 
 # Aliases
 
+alias todo="$EDITOR ~/jobb/notes/todo.md"
 alias ls='ls -F' # ls with directory/symlink indocators (-F) and hidden files (-a)
-# alias "-"='cd ..' # doesnt work
 # alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
 alias m="mutt"
@@ -58,30 +54,29 @@ alias qmv='qmv -f do' # only show output column when using qmv
 alias :e='vim' # because vim
 # run macvim in terminal. Built in vim doesn't have all the features.
 alias vim="mvim -v"
+alias n="nvim"
+alias nivm="nvim"
 alias v="view"
 # git
 alias gc='git checkout'
-alias gcb='git checkout -b' #checkout and create new branch
-alias gb='git branch'
+alias gb='git checkout -b' #checkout and create new branch
 alias gs='git status'
+alias gl='git log --graph'
 
 alias z="zathura"
 alias acrobat="launch -a Adobe\ Acrobat"
 
-# open files as new tab in running instance om MacVim
-# alias mvim='mvim --remote-tab-silent'
-
-# MacVim has better display of Arabic characters, also when run in ITerm.
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
 
 # OSX only
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  #alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
   alias skim='/Applications/Skim.app/Contents/MacOS/Skim'
   alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 fi
 
-# cd to cd and ls
+
+
+# Do ls after cd
 function cs () {
     cd "$@" && ls
         }
@@ -120,18 +115,10 @@ open_with_fzf() {
   fi
 }
 
-rn() {
-  local file
-  # if [ $# -eq 0 ] # check if no argument
-   file=$(grep . ~/jobb/readingnotes/*.md | fzf --preview="rga --ignore-case --pretty --context 10 {q}")
-   file=$(echo $file | sed -E 's/:.*$//')
-   vim "$file"
-}
-
 # Interactive fuzzy find in readingnotes
 # Give string to command to select files, then string for interactive search within these files
 
 rn() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-  rg --files-with-matches --no-messages "$1" ~/jobb/readingnotes/| fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 100 '$1' || rg --ignore-case --context 100 '$1' {}"
+  fd "$1" ~/jobb/readingnotes/| fzf --preview "highlight -O ansi -l {} 2> /dev/null | xargs rg --colors 'match:bg:yellow' --ignore-case --pretty --context 100 '$1'"
 }

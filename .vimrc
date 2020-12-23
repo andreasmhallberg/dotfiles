@@ -1,13 +1,9 @@
 filetype plugin on
 filetype indent on
 
-" Settings for this file
-autocmd BufRead ~/.vimrc setlocal foldmethod=marker
-autocmd BufRead ~/.vimrc setlocal nospell
-
 language en_US " set language of messages to English. Some plugins give error messages for other languages.
 
-"{{{1 Plugins
+"{{{1 Plugin
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 set rtp+=/usr/local/opt/fzf
@@ -144,6 +140,9 @@ set shiftwidth=2                          "  Length of tab-character for indenti
 set formatoptions=r                       "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
 set formatoptions+=j                      "  j=Where it makes sense, remove a comment leader when joining lines.
 set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
+if has('nvim')
+  set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20
+endif
 
 " }}}1
 "{{{1 Commands
@@ -226,13 +225,13 @@ function! FlipRMarkdown()
   endif
 endfunction
 
-command FlipR call FlipRMarkdown()
+command! FlipR call FlipRMarkdown()
 
 "}}}2
 
 
 
-command Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
+command! Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
 
 " Only one instance of each file in location list
 " https://dhruvasagar.com/2013/12/17/vim-filter-quickfix-list
@@ -369,7 +368,9 @@ autocmd WinEnter,BufEnter,VimResized * call ConditionalScrolloff()
 augroup termIgnore
     autocmd!
     autocmd BufEnter qf set nobuflisted
-    autocmd TerminalOpen * set nobuflisted
+    if !has('nvim')
+      autocmd TerminalOpen * set nobuflisted
+    endif
 augroup END 
 
 augroup PassiveAutos
@@ -422,10 +423,11 @@ autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt call Ope
 autocmd! BufRead *.docx !pandoc :shellescape(expand("%:p")) -t markdown  
 
 " Enable ALT-key in vim. (Only on Mac)
-if has('osxdarwin')
-  set macmeta
+if !has('nvim')
+  if has('osxdarwin')
+    set macmeta
+  endif
 endif
-
 
 " Different cursor shapes in Iterm
 " http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
@@ -458,17 +460,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " See above
 " nnoremap <F5> <Plug>(grammarous-open-info-window)
-
-  "{{{2 Syntastic
-  " Recommended settings in help
-      set statusline+=%#warningmsg#
-      " set statusline+=%{SyntasticStatuslineFlag()}
-      set statusline+=%*
-
-      let g:syntastic_always_populate_loc_list = 0
-      let g:syntastic_auto_loc_list = 0
-      let g:syntastic_check_on_open = 1
-      let g:syntastic_check_on_wq = 0
 
   "{{{2 fzf
 
@@ -686,7 +677,8 @@ nnoremap <Leader>w <C-w>
 " View undoo tree. Currently with undotree
 nnoremap <Leader>u :UndotreeToggle<CR>
 " Open vimrc
-nnoremap <Leader>m :e $MYVIMRC<CR>
+nnoremap <Leader>m :e ~/.vimrc<CR>
+
 " list and chose open buffer 
 " nnoremap <leader>l :ls<CR>:b<space>
 " toggle wrap
@@ -762,7 +754,7 @@ autocmd!
     \ nnoremap <buffer> <Leader>pp 
     \ :w <bar>
     \ execute 'AsyncRun pandoc ' . '%' .
-    \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart
+    \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart+task_lists
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
     \ --citeproc
@@ -1014,8 +1006,6 @@ function! MarkdownLevel()
 endfunction
 
 " }}}1
-
-
 "{{{1 Movement & Editing
 cnoremap jj <c-w>
 " {{{2 Completion
@@ -1119,12 +1109,6 @@ inoremap <M-e> ə
 inoremap <M-E> Ə
 " non-breaking hyphen
 inoremap <M--> ‑
-" Angular brackets
-  "〈 U+2329
-  " 〉U+232A
-inoremap <M-<> 〈
-inoremap <M->> 〉
-
 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
@@ -1166,8 +1150,9 @@ inoremap ` ``<Left>
 inoremap `` `
 inoremap ' ''<Left>
 inoremap '' '
-inoremap 〈 〈〉<Left>
-inoremap 〈〈 〈 
+inoremap <M->> 〉
+inoremap <M-<> 〈〉<Left>
+inoremap <M-<><M-<> 〈 
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> * **<Left>
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ** *
 autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^ ^^<Left>
@@ -1299,3 +1284,5 @@ augroup Chat
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex set list
 augroup end
+
+"  vim:foldmethod=marker:nospell

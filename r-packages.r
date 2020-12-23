@@ -3,6 +3,7 @@
 install.packages('readxl') " read_xlsx()
 install.packages('BayesFactor')
 install.packages('ggplot2')
+install.packages('stringr')
 install.packages('lme4')
 install.packages('emmeans')# constrasts in lm
 install.packages('lmerTest')
