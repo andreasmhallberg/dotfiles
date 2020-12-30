@@ -2,6 +2,9 @@
 title:
 lang: sv
 author: Andreas Hallberg
+papersize: a4
+fontsize: 12pt
+mainfont: Linux Libertine O
 date:
 header-includes:
     - \usepackage[bottom]{footmisc} 

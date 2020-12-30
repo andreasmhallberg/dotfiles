@@ -13,7 +13,7 @@ call vundle#begin('~/.vim/plugged')
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 " Plugin 'jlanzarotta/bufexplorer'
-" Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
+Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
 Plugin 'junegunn/fzf'                                "  general purpose fuzzy finder
 Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
 Plugin 'junegunn/fzf.vim'                            "  heaven
@@ -55,7 +55,7 @@ Plugin 'cocopon/iceberg.vim'
 call vundle#end()            " required
 
 "{{{1 Settings
-set clipboard^=unnamed                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
+set clipboard+=unnamedplus                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nostartofline                            " remember cursor position when switching buffers
 set delcombine                               " Delete part of combining character with x command. Useful for editing Arabic diacritics.
@@ -89,11 +89,8 @@ set display+=lastline                        " Display as much as possible of la
 set textwidth=0                              " Don't hard-wrap lines for me.
 set foldlevel=100                            " leave folds open on startup
 
-" save undo file
-if has("persistent_undo")
-  set undodir=~/.undodir
-  set undofile
-endif
+set undodir=~/.vim/undodir
+set undofile
 
 
 " DISPLAY
@@ -178,10 +175,10 @@ function! EALLToggle()
     inoremap <buffer> .G Ġ
     inoremap <buffer> vs š
     inoremap <buffer> vS Š
-    inoremap <buffer> xd ḏ
-    inoremap <buffer> xD Ḏ
-    inoremap <buffer> xt ṯ
-    inoremap <buffer> xT Ṯ
+    inoremap <buffer> _d ḏ
+    inoremap <buffer> _D Ḏ
+    inoremap <buffer> _t ṯ
+    inoremap <buffer> _T Ṯ
   elseif b:eallmappings == 1
     let b:eallmappings = 0
     echo "EALL mappings off"
@@ -205,10 +202,10 @@ function! EALLToggle()
     iunmap <buffer>.G
     iunmap <buffer>vs
     iunmap <buffer>vS
-    iunmap <buffer>xd
-    iunmap <buffer>xD
-    iunmap <buffer>xt
-    iunmap <buffer>xT
+    iunmap <buffer>_d
+    iunmap <buffer>_D
+    iunmap <buffer>_t
+    iunmap <buffer>_T
   endif
 endfunction
 
@@ -272,8 +269,6 @@ function! OverveiwToggle()
 endfunction
 
 nnoremap <Leader>o :call OverveiwToggle()<CR>
-
-nnoremap <F5> <Plug>(grammarous-open-info-window)
 
 " {{{2  Text to speech
   " Says whatever is in the x-register
@@ -558,6 +553,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
     autocmd FileType dirvish nnoremap <buffer> R 0y$:!mv "<c-r>0" "<c-r>0"
     autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
+    autocmd FileType dirvish nnoremap <buffer> ! 0y$:!"<c-r>0"<Home><Right><Space><Left>
     " Remove modified search mappings
     autocmd FileType dirvish silent! unmap <buffer> /
     autocmd FileType dirvish silent! unmap <buffer> ?
@@ -1008,6 +1004,7 @@ endfunction
 " }}}1
 "{{{1 Movement & Editing
 cnoremap jj <c-w>
+inoremap jj <c-w>
 " {{{2 Completion
   " Use TAB for completions
 
@@ -1089,13 +1086,16 @@ augroup FontMappings
 " Arabic r
   " nomral mode
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gr lmfbi[<esc>ea]{lang=ar dir="rtl"}<esc>`f
-  autocmd FileType tex nnoremap <buffer>gj lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
+  autocmd FileType tex nnoremap <buffer>gr lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
+  autocmd FileType html nnoremap <buffer>gr lmfbi<span lang="ar" dir="rtl"><esc>ea</span><esc>`f
   " visual mode 
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gr mf<esc>`<i[<esc>`>a]{lang=ar dir="rtl"}<esc>`f
-  autocmd FileType tex vnoremap <buffer>gr mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
+  autocmd FileType tex  vnoremap <buffer>gr mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
+  autocmd FileType html vnoremap <buffer>gr mf<esc>`<i<span lang="ar" dir="rtl"><esc>`>a</span><esc>`f
   " delete
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dgr mf/]{lang=ar}<cr>df}?[<cr>x`f
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gdr mf/]{lang=ar}<cr>df}?[<cr>x`f
+  " requires vim-surround plugin
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dgr mf/]{lang=ar<cr>df}?[<cr>x`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gdr mf/]{lang=ar<cr>df}?[<cr>x`f
   autocmd FileType tex nnoremap <buffer>dgr mf/}<cr><Bslash>textarabic<cr>df{`f
 
 augroup end
@@ -1103,8 +1103,6 @@ augroup end
 " }}}2
 "{{{2 CHARACTER INPUT
 
-
-" increment numbers
 inoremap <M-e> ə
 inoremap <M-E> Ə
 " non-breaking hyphen
@@ -1113,7 +1111,7 @@ inoremap <M--> ‑
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
-" Abbreviations for common typoes
+" Abbreviations for common typos
 iab ARab Arab
 iab ARabic Arabic
 iab Andras Andreas
@@ -1168,10 +1166,8 @@ autocmd Filetype r inoremap <buffer> < <
 noremap L $
 noremap H 0
 
-
 "}}}1
 "{{{1 Language switching
-
 
 "  Switch to Swedish
 function! SweType()

@@ -56,8 +56,10 @@ brew install rg
 brew install tldr # readable man pages
 brew install bat # cat with syntax highlighting
 brew install ag
+brew install exiftool # extract metadata from ebooks 
 brew install ack # grep alternative
 brew install unzip
+brew install wget
 brew install unrar
 brew install libxml2 # xml-grep
 brew install tmux # needed for R integration in vim with nvim-r
@@ -71,6 +73,7 @@ brew install fzf
 brew install youtube-dl
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
 brew install python3
+
 
 # After ruby
 gem install --user-install bundler jekyll
@@ -140,3 +143,8 @@ gem install --user-install bundler jekyll # Install jekyll
 gem install bundler jekyll
 gem install jekyll-sitemap
 gem install jekyll-seo-tag
+
+# Set bash 5 as default
+brew install bash # to get bash 5. Places it in /usr/local/bin/bash
+sudo echo "/usr/local/bin/bash" >> /etc/shells # add to list of shells
+chsh -s /usr/local/bin/bash # make default

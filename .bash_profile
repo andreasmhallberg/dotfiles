@@ -1,6 +1,9 @@
 # Must come before fzf-stuff are sourced
 set -o vi
 
+# type only directory name to cd to it
+shopt -s autocd
+
 # Set pbcopy to use Unicode
 export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
@@ -56,12 +59,12 @@ alias :e='vim' # because vim
 alias vim="mvim -v"
 alias n="nvim"
 alias nivm="nvim"
-alias v="view"
+alias v="nvim -R"
 # git
 alias gc='git checkout'
 alias gb='git checkout -b' #checkout and create new branch
 alias gs='git status'
-alias gl='git log --graph'
+alias gl='git log --graph --oneline --all'
 
 alias z="zathura"
 alias acrobat="launch -a Adobe\ Acrobat"
@@ -122,3 +125,5 @@ rn() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
   fd "$1" ~/jobb/readingnotes/| fzf --preview "highlight -O ansi -l {} 2> /dev/null | xargs rg --colors 'match:bg:yellow' --ignore-case --pretty --context 100 '$1'"
 }
+
+cd ~/jobb
