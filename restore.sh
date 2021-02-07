@@ -70,6 +70,7 @@ brew install pandoc-corssref
 brew install ruby # in jekyll
 brew install ruby-gems # in jekyll
 brew install fzf
+brew install launch
 brew install youtube-dl
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
 brew install python3
@@ -88,8 +89,6 @@ python3 -m pip install text2qti --user
 mkdir -p ~/.config/karabiner/
 ln -sf ~/dotfiles/karabiner ~/.config/karabiner
 
-brew install launch
-
 
 # make ITerm2 do italics
 # https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
@@ -98,6 +97,7 @@ tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
 # fonts
 brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
 brew tap homebrew/cask-fonts && brew cask install font-source-sans-pro
+brew install font-amiri
 
 #misc
 
@@ -113,7 +113,7 @@ ln -sf ~/dotfiles/.Renviron ~/.Renviron
 ln -sf ~/dotfiles/.xpdfrc ~/.xpdfrc
 ln -sf ~/dotfiles/.inputrc ~/.inputrc
 
-# mutt
+# mail
 mkdir -p ~/.mutt
 git clone https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/
 brew install mutt

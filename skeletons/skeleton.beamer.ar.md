@@ -1,7 +1,7 @@
 ---
 title: '' 
 subtitle: ''
-lang: en
+lang: ar
 author: Andreas Hallberg
 date:
 slide-level: 2
@@ -18,4 +18,6 @@ header-includes:
   - \renewcommand\endhead{\null}
   - \input{/Users/xhalaa/dotfiles/mypandocstuff/beamermacros.tex}
   - \setbeamercolor{quotation}{fg=gray!80}
+  - \usepackage{etoolbox}
+  - \appto{\itemize}{\raggedleft}
 ---

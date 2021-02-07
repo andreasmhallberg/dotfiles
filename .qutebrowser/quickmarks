@@ -38,7 +38,7 @@ ortoped http://ortoped.com/
 hindawi https://www.hindawi.org/
 guplay https://play.gu.se/
 text2qti https://github.com/gpoore/text2qti
-canvasar1101 https://gu.instructure.com/courses/30165
+canvasar1101 https://gu.instructure.com/courses/34684
 retendo https://gu.retendo.com/gu051160/RXWeb.dll?XGIDCallback?AuthKey=030b76ecc9db616c4d37a81d83fc30cea&grandidsession=62f9919d4732df1fc1c87ad07735c05b#M=Companies[323671]Resources[723431]&V=K00000f9a1c
 split https://www.sejda.com/split-pdf-down-the-middle
 sprak https://sprak.gu.se/
@@ -56,3 +56,6 @@ canvasar1102 https://gu.instructure.com/courses/34447
 AR1200 https://gu.instructure.com/courses/34684
 ar1101 https://gu.instructure.com/courses/34684
 ar1200 https://gu.instructure.com/courses/34670
+activity http://localhost:5600/#/activity/ml-180126-006/view/
+AR1300 https://gu.instructure.com/courses/34451
+canvasar1400 https://gu.instructure.com/courses/34671

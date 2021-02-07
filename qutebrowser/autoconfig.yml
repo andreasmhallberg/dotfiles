@@ -55,7 +55,9 @@ settings:
     - '{file}'
     - -c
     - normal {line}G{column0}l
-  fonts.tabs:
+  fonts.tabs.selected:
+    global: 15pt
+  fonts.tabs.unselected:
     global: 15pt
   input.insert_mode.auto_load:
     global: true
@@ -64,7 +66,7 @@ settings:
   tabs.indicator.width:
     global: 0
   tabs.last_close:
-    global: close
+    global: ignore
   tabs.max_width:
     global: -1
   tabs.position:
@@ -84,7 +86,8 @@ settings:
       eall: https://referenceworks-brillonline-com.ezproxy.ub.gu.se/search?s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&search-go=&s.q={}
       ei: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopaedia-of-islam-2&search-go=&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
-      oxford: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/spellcheck/arabic-english/?q={}
+      merriam: https://www.merriam-webster.com/dictionary/{}
+      oxford-ea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/{}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}

@@ -62,12 +62,12 @@ alias nivm="nvim"
 alias v="nvim -R"
 # git
 alias gc='git checkout'
-alias gb='git checkout -b' #checkout and create new branch
+alias gb='git branch'
 alias gs='git status'
 alias gl='git log --graph --oneline --all'
 
 alias z="zathura"
-alias acrobat="launch -a Adobe\ Acrobat"
+alias acrobat="launch -a Adobe\ Acrobat\ Reader\ DC"
 
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
 
@@ -105,7 +105,7 @@ export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
 # Bindings
 
 bind '"\C-f":"open_with_fzf\n"'
-bind '"\C-v":"vim $(fzf)\n"'
+bind '"\C-v":"nvim "$(fzf)"\n"'
 bind '"\C-d":"cd $(fd -t d -H . $HOME | fzf)\n"'
 
 open_with_fzf() {
@@ -116,14 +116,6 @@ open_with_fzf() {
   else
     open $file
   fi
-}
-
-# Interactive fuzzy find in readingnotes
-# Give string to command to select files, then string for interactive search within these files
-
-rn() {
-  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-  fd "$1" ~/jobb/readingnotes/| fzf --preview "highlight -O ansi -l {} 2> /dev/null | xargs rg --colors 'match:bg:yellow' --ignore-case --pretty --context 100 '$1'"
 }
 
 cd ~/jobb

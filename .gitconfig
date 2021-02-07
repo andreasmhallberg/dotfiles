@@ -4,3 +4,7 @@
 	email = andreasmartenhallberg@gmail.com
 [credential]
 	helper = osxkeychain
+[merge]
+	tool = vimdiff
+[mergetool "vimdiff"]
+	path = nvim

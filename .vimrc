@@ -47,6 +47,8 @@ Plugin 'rickhowe/diffchar.vim'                       "  Character wise diff
 " Plugin 'Jorengarenar/vim-darkness'
 Plugin 'morhetz/gruvbox'
 Plugin 'cocopon/iceberg.vim'  
+Plugin 'altercation/vim-colors-solarized'
+
 " Plugin 'kristiandupont/shades-of-teal'   "  Wrong spell has other background
 " Plugin 'hauleth/blame.vim'               "  Wrong spell is to stark.
 " Plugin 'davidosomething/vim-colors-meh'  "  Clashes with pandoc-syntax
@@ -55,7 +57,7 @@ Plugin 'cocopon/iceberg.vim'
 call vundle#end()            " required
 
 "{{{1 Settings
-set clipboard+=unnamedplus                        " unnamed register and *-register are the same. Copy to system clipboard by default. 
+" set clipboard+=unnamedplus                   " unnamed register and *-register are the same. Copy to system clipboard by default. Bug in neovim messes up pasting of visual block.
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nostartofline                            " remember cursor position when switching buffers
 set delcombine                               " Delete part of combining character with x command. Useful for editing Arabic diacritics.
@@ -167,6 +169,8 @@ function! EALLToggle()
     inoremap <buffer> .T Ṭ
     inoremap <buffer> .s ṣ
     inoremap <buffer> .S Ṣ
+    inoremap <buffer> .r ṛ
+    inoremap <buffer> .R Ṛ
     inoremap <buffer> .z ẓ
     inoremap <buffer> .Z Ẓ
     inoremap <buffer> .h ḥ
@@ -229,6 +233,7 @@ command! FlipR call FlipRMarkdown()
 
 
 command! Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
+command! Todo edit ~/jobb/notes/todo.md
 
 " Only one instance of each file in location list
 " https://dhruvasagar.com/2013/12/17/vim-filter-quickfix-list
@@ -285,7 +290,7 @@ function! TTS()
     elseif &keymap == 'arabic-pc'
       let s:voice = 'Laila'
     else
-      let s:voice = 'Allison'
+      let s:voice = 'Allison' "must be downloaded in System preferences
     endif
     call system('echo '. shellescape(@x) .'
          \ | sed -E "s/[<>$]//g"
@@ -302,7 +307,9 @@ function! TTS()
     nnoremap <buffer><silent> <esc> :call system('killall say')<CR>
 endfunction
 
-vnoremap z "xy:call TTS()<cr>
+vnoremap z "xy:call TTS()<CR>
+" TTS for rest of paragraph
+" nnoremap z "xy}:call TTS()<CR>
 
 augroup MoveSectionWhise
 autocmd!
@@ -389,8 +396,8 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>,"
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\<(\?[a-z0-9])\\?"
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>," containedin=ALL
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\<(\?[a-z0-9])\\?" containedin=ALL
  " spell-check double words
 autocmd FileType markdown.pandoc,mail,txt,tex syn match SpellBad /\c\v<(\w+)\s+\1>/
 augroup end
@@ -477,7 +484,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   "{{{2 Goyo
 
   " Quite goyo when leaving window
-  autocmd BufLeave * Goyo!
+  " autocmd BufLeave * Goyo!
   " autocmd BufEnter article.md Goyo
 
   " Stuff that happen when entering goyo
@@ -551,9 +558,10 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   augroup DirivshMappings
     autocmd!
     autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
-    autocmd FileType dirvish nnoremap <buffer> R 0y$:!mv "<c-r>0" "<c-r>0"
+    autocmd FileType dirvish nnoremap <buffer> R 0y$$F/"1yg_:!mv "<c-r>0" .<c-r>1<c-f>A
     autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
     autocmd FileType dirvish nnoremap <buffer> ! 0y$:!"<c-r>0"<Home><Right><Space><Left>
+    autocmd FileType dirvish nnoremap <buffer> x 0y$:open "<c-r>0"<cr>
     " Remove modified search mappings
     autocmd FileType dirvish silent! unmap <buffer> /
     autocmd FileType dirvish silent! unmap <buffer> ?
@@ -660,6 +668,9 @@ endif
 "{{{1 Leader mappings
 "{{{2 general
 
+" Copy buffer to system clopboard
+nnoremap <Leader>c mcggVggG"*y`c:echo "Buffer copied to clipboard"<CR>
+
 " insert date in format yymmdd
 nnoremap <Leader>d :pu =strftime('%Y-%m-%d')<CR>kJ
 " Fuzzy find files with FZF
@@ -690,9 +701,9 @@ nmap <leader>dg <Plug>GetDiffCharPair
 " Tabularize mappings (normal and visual)
 augroup Tabularize
   autocmd!
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t vip:Tabularize /\|<CR>
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t mtvip:Tabularize /\|<CR>`t
   autocmd Filetype markdown,markdown.pandoc vnoremap <buffer><Leader>t :Tabularize /\|<CR>
-  autocmd FileType tex nnoremap <buffer><Leader>t vip:Tabularize /&<CR>
+  autocmd FileType tex nnoremap <buffer><Leader>t mtvip:Tabularize /&<CR>`t
   autocmd FileType tex vnoremap <buffer><Leader>t Tabularize /&<CR>
 augroup end
 
@@ -730,6 +741,8 @@ augroup CitationVariables
   "       \ | let g:pandoc_bibliography = 'manuscript.bib'
   "       \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
   
+  autocmd BufRead article-jss.md
+        \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/journal-of-semitic-studies.csl'
   autocmd BufRead article-zal.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ZAL.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ZAL_stylesheet_with-instructions.dotx'
@@ -754,7 +767,7 @@ autocmd!
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
     \ --citeproc
-    \ --columns=200
+    \ --columns=100
     \ --bibliography ' . g:pandoc_bibliography .
     \ ' --csl ' . g:pandoc_citation_style .
     \ ' -o ' . g:pandoc_output_dir . '%' . '.pdf'<cr>
@@ -768,7 +781,8 @@ autocmd!
     \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
-    \ --columns=200
+    \ --citeproc
+    \ --columns=100
     \ --number-sections
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --csl ' . g:pandoc_citation_style .
@@ -781,6 +795,7 @@ autocmd!
     \ :execute 'AsyncRun pandoc ' . '%' .
     \ ' -f markdown+implicit_figures+smart
     \ -t beamer
+    \ --citeproc
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --csl ' . g:pandoc_citation_style .
@@ -794,6 +809,7 @@ autocmd!
     \ ' -f markdown+implicit_figures+table_captions+smart
     \ -t beamer
     \ --pdf-engine=xelatex
+    \ --citeproc
     \ --slide-level 1
     \ --biblatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
@@ -808,10 +824,11 @@ autocmd!
       \ ' -f markdown+implicit_figures+table_captions+example_lists+smart
       \ --filter pandoc-crossref
       \ --verbose
+      \ --citeproc
       \ --bibliography ' . g:pandoc_bibliography . 
       \ ' --csl ' . g:pandoc_citation_style .
-      \ ' -o ' . '%' . '.docx'
-      \ . ' --reference-doc=' . g:pandoc_reference_docx<cr>
+      \ ' -o ' . '%' . '.docx'<cr>
+      " \ . ' --reference-doc=' . g:pandoc_reference_docx<cr>
       
 
   " to tex
@@ -824,7 +841,7 @@ autocmd!
     \ --biblatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --wrap=none
-    \ -o '%'.tex<cr>
+    \ -so '%'.tex<cr>
 
   " to tex visual selection
   autocmd Filetype markdown 
@@ -958,10 +975,7 @@ augroup MardownSettings
 augroup end
 
 
-augroup MardownHL
-  autocmd!
-   autocmd Filetype markdown,markdown.pandoc syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL " Defined above for all prose autocmd Filetype markdown,markdown.pandoc syn match Constant "^\s*- "
-augroup end
+
 
 " Folding
 
@@ -1091,7 +1105,7 @@ augroup FontMappings
   " visual mode 
   autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gr mf<esc>`<i[<esc>`>a]{lang=ar dir="rtl"}<esc>`f
   autocmd FileType tex  vnoremap <buffer>gr mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
-  autocmd FileType html vnoremap <buffer>gr mf<esc>`<i<span lang="ar" dir="rtl"><esc>`>a</span><esc>`f
+  autocmd FileType html vnoremap <buffer>gr mf`>a</span><esc>`<i<span lang="ar" dir="rtl"><esc>`f
   " delete
   " requires vim-surround plugin
   autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dgr mf/]{lang=ar<cr>df}?[<cr>x`f
@@ -1101,15 +1115,19 @@ augroup FontMappings
 augroup end
 
 " }}}2
-"{{{2 CHARACTER INPUT
+" {{{2 CHARACTER INPUT
 
 inoremap <M-e> ə
 inoremap <M-E> Ə
 " non-breaking hyphen
 inoremap <M--> ‑
+" non-breaking space
+inoremap <M-Space>  
 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
+
+inoremap <M-"> ”“<left>
 
 " Abbreviations for common typos
 iab ARab Arab
@@ -1219,7 +1237,7 @@ augroup readingnotes
   " Write in English
   autocmd BufRead,BufEnter ~/*/readingnotes/* call EngType()
   " Highlight page refs at end of line
-  autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Constant "\v [xvi0-9]+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
+  autocmd BufRead,BufEnter ~/*/readingnotes/*.md syn match Constant "\v [xvi0-9]+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
   " Highlight indefinitely indented comments
   autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Comment "\v^\s*\>.*$"
   " For completion of keywords 
@@ -1228,7 +1246,10 @@ augroup readingnotes
   autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal complete +=sKeywords.md
   autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal breakindent
   " Highlight when listing radingnotes
-  autocmd FileType dirvish syn match String '\v\d\d\d\d[ab]?. \zs.{4,}\ze\.(md|pdf)$' containedin=ALL
+  " year
+  autocmd FileType dirvish syn match Constant '\v\d\d\d\d[abc]?\.' containedin=ALL
+  " suffix
+  autocmd FileType dirvish syn match Comment '\.[a-z.]\+$' containedin=ALL
 augroup END
 
 " Filter location list to get one hit per file 
@@ -1279,6 +1300,13 @@ augroup Chat
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex set list
+augroup end
+
+"{{{1 todo.md
+augroup Todo
+  autocmd!
+  " Syntax highlighting
+  autocmd BufEnter todo.md syn match Constant '\d\d-\d\d-\d\d' containedin=ALL
 augroup end
 
 "  vim:foldmethod=marker:nospell
