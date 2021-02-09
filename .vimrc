@@ -78,6 +78,7 @@ set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
 " set autochdir                                " set workng directory to dir of current buffer. Not supported by dervish
 set smartcase                                " Case-sensitive when upper case is used in search string
+set wildignorecase                           " Non-case-sensitive file name completion
 set complete+=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
 set complete+=s~/dotfiles/aratrans.utf-8.add " list of transliterated word to completion files
 set wildmenu                                 " Show command completion alternatives
@@ -378,7 +379,7 @@ augroup END
 augroup PassiveAutos
   autocmd!
   " Remove one dot if one extra is added at end of sentence.
-  " Happens when performing 'ct.' inside a sentence.
+  " Happens when performing 'ct.' inside a sentence and end with ' .'.
   " Marker used to go back.
   " Do not execute if sentence ends in ...
   autocmd InsertLeave * execute
@@ -396,33 +397,17 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\v(First|Second|Third|Fourth|Fifth)\>," containedin=ALL
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL
   autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\<(\?[a-z0-9])\\?" containedin=ALL
  " spell-check double words
 autocmd FileType markdown.pandoc,mail,txt,tex syn match SpellBad /\c\v<(\w+)\s+\1>/
 augroup end
 
 " Open non-text file externally
-"
-function! OpenPdfExternally()
-  silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &"
-  buffer # 
-  redraw!
-  syntax on
-  bdelete # 
-endfunction
-autocmd! BufEnter *.pdf call OpenPdfExternally()
+autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt sil ex "!open " . shellescape(expand("%:p")) | bd
+autocmd! BufRead *.pdf sil ex !xpdf % | bd
 
-function! OpenExternally()
-  silent execute "!open " . shellescape(expand("%:p")) . " &>/dev/null &"
-  edit #
-  bdelete #
-  redraw!
-  syntax on
-endfunction
-autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt call OpenExternally()
-
-autocmd! BufRead *.docx !pandoc :shellescape(expand("%:p")) -t markdown  
+autocmd! BufReadPost *.docx !pandoc % -t markdown  
 
 " Enable ALT-key in vim. (Only on Mac)
 if !has('nvim')
@@ -1272,7 +1257,7 @@ endfu
 
 com! -nargs=0 FilterLocList :call FilterLocList()
 "}}}1
-"{{{1 Mutt/mail related
+"{{{1 Mail related
 
 " syntax for mutt files
 autocmd BufRead ~/.mutt/* setlocal filetype=muttrc
@@ -1285,6 +1270,7 @@ augroup MailStuff
   autocmd FileType mail setlocal iskeyword+=@-@
   autocmd FileType mail setlocal iskeyword+=.
   autocmd FileType mail setlocal iskeyword+=_
+  autocmd FileType mail let @z='https://gu-se.zoom.us/j/9021061411'
   " format text
   autocmd FileType mail nnoremap <buffer> <CR> gqip
 augroup end
