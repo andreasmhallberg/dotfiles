@@ -74,6 +74,7 @@ index-format-hook  date  "~A"       "%[%y%m%d]"
 # bind <mode> <key> <action>
 
 bind index,pager h noop # Often hit by mistake
+bind index q noop # So as not to quite by mistake. Use Ctrl-c instead
 bind pager j next-line # vim-like
 bind pager k previous-line # vim-like
 bind index,pager g noop # because of next line

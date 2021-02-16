@@ -14,6 +14,7 @@ call vundle#begin('~/.vim/plugged')
 Plugin 'VundleVim/Vundle.vim'
 " Plugin 'jlanzarotta/bufexplorer'
 Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
+Plugin 'chrisbra/unicode.vim'                        "  Search for unicode chars
 Plugin 'junegunn/fzf'                                "  general purpose fuzzy finder
 Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
 Plugin 'junegunn/fzf.vim'                            "  heaven
@@ -401,13 +402,21 @@ augroup ProseHighLighting
   autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\<(\?[a-z0-9])\\?" containedin=ALL
  " spell-check double words
 autocmd FileType markdown.pandoc,mail,txt,tex syn match SpellBad /\c\v<(\w+)\s+\1>/
+ " dates format yyyy-mm-dd
+  autocmd FileType markdown.pandoc,mail,txt,tex syn sync match Constant "\d\d\d\d-\d\d-\d\d" containedin=ALL
 augroup end
 
 " Open non-text file externally
-autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt sil ex "!open " . shellescape(expand("%:p")) | bd
-autocmd! BufRead *.pdf sil ex !xpdf % | bd
+augroup OpenExternally
+autocmd!
 
-autocmd! BufReadPost *.docx !pandoc % -t markdown  
+  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt sil ex "!open " . shellescape(expand("%:p")) | bd
+
+  autocmd! BufRead *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | b#
+
+  autocmd! BufReadPost *.docx !pandoc % -t markdown  
+
+augroup end
 
 " Enable ALT-key in vim. (Only on Mac)
 if !has('nvim')
