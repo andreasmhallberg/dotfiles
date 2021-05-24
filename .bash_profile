@@ -37,7 +37,8 @@ GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
   
-PS1='\[${GREEN}\][\w] \[${RESET}\]'
+PS1='\[${GREEN}\]\w [$(git symbolic-ref --short HEAD 2>/dev/null)]\[${RESET}\] '
+
 
 # MacPorts Installer addition on 2016-08-03_at_10:37:22: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"

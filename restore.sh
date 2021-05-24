@@ -82,8 +82,9 @@ gem install --user-install jekyll-feed
 gem install --user-install jekyll-seo-tag
 
 # Python
-python3 -m pip install text2qti --user
-
+pip3 install text2qti --user
+pip3 install PyQtWebEngine # requred for qutebrowser
+pip3 install qutebrowser
 
 # installations for OSX
 mkdir -p ~/.config/karabiner/
@@ -97,6 +98,7 @@ tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
 # fonts
 brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
 brew tap homebrew/cask-fonts && brew cask install font-source-sans-pro
+brew tap homebrew/cask-fonts && brew cask install font-brill
 brew install font-amiri
 
 #misc

@@ -21,23 +21,31 @@ settings:
         <Meta+Ctrl+f>: fullscreen
         <Meta+f>: spawn launch -a Firefox {url}
         D: null
+        a: spawn open -a firefox {url}
+        aa: spawn firefox {url}
         cm: clear-messages
         d: null
         h: back
         l: forward
         q: tab-close
   colors.tabs.bar.bg:
-    global: black
-  colors.tabs.even.bg:
-    global: black
-  colors.tabs.even.fg:
     global: white
+  colors.tabs.even.bg:
+    global: gray
+  colors.tabs.even.fg:
+    global: black
   colors.tabs.odd.bg:
+    global: gray
+  colors.tabs.odd.fg:
     global: black
   colors.tabs.selected.even.bg:
-    global: gray
+    global: white
+  colors.tabs.selected.even.fg:
+    global: black
   colors.tabs.selected.odd.bg:
-    global: gray
+    global: white
+  colors.tabs.selected.odd.fg:
+    global: black
   colors.webpage.darkmode.enabled:
     global: false
   content.notifications:
@@ -64,6 +72,10 @@ settings:
     global: true
   messages.timeout:
     global: 10000
+  scrolling.smooth:
+    global: true
+  tabs.background:
+    global: false
   tabs.indicator.width:
     global: 0
   tabs.last_close:
@@ -79,16 +91,18 @@ settings:
   tabs.title.format:
     global: '{index}'
   tabs.width:
-    global: 40
+    global: 27
   url.searchengines:
     global:
       DEFAULT: https://duckduckgo.com/?q={}
       adlibris: http://www.adlibris.com/se/sok?q={}
+      colloc: https://www.freecollocation.com/search?word={}
       eall: https://referenceworks-brillonline-com.ezproxy.ub.gu.se/search?s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&search-go=&s.q={}
       ei: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopaedia-of-islam-2&search-go=&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
       merriam: https://www.merriam-webster.com/dictionary/{}
-      oxford-ea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/{}
+      ox-ae: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/arabic-Arabic/{}
+      ox-ea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/q="{}"
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}

@@ -19,7 +19,7 @@ fontDir /System/Library/Fonts/
 tileCacheSize 100
 
 initialSidebarState no
-initialToolbarState no
+initialToolbarState yes
 
 # Output options
 textEncoding UTF-8

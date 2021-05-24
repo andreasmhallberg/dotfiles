@@ -6,7 +6,8 @@ set smtp_pass = `security find-generic-password -w -s mutt -a xhalaa`
 
 
 set from = "andreas.hallberg@sprak.gu.se"
-set folder = "imaps://outlook.office365.com:993"
+# set folder = "imaps://outlook.office365.com:993"
+set folder = "~/Maildir/gu"
 set smtp_url = "smtp://andreas.hallberg@sprak.gu.se@smtp.office365.com:587/"
 
 set spoolfile = +INBOX

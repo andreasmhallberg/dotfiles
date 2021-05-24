@@ -4,20 +4,7 @@ TIME=`date +%y%m%d`
 
 mkdir /Volumes/BACKUP1/jobb.$TIME
 
-for F in \
-.vim \
-.mutt \
-blog \
-dotfiles \
-jobb \
-hobby-projects \
-mylatexstuff \
-mypandocstuff \
-prosa
-do
-    echo Backar upp ${F}.
-    cp -R ~/$F /Volumes/BACKUP1/jobb.$TIME/
-    echo Klar med ${F}.
-done
+echo Backar upp jobb.
+cp -RLv ~/jobb/ /Volumes/BACKUP1/jobb.$TIME/
 
-echo Har backat upp allt jobbrelaterat.
+echo Har backat upp ~/jobb till BACKUP1/jobb.$TIME.

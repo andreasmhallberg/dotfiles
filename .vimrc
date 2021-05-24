@@ -148,6 +148,15 @@ endif
 " }}}1
 "{{{1 Commands
 
+" Delete hidden buffers
+function DeleteHiddenBuffers()
+    let tpbl=[]
+    call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+    for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+        silent execute 'bwipeout' buf
+    endfor
+endfunction
+
 " Easier Arabic transcription
 
 "{{{2 EALL transcription 
@@ -251,7 +260,6 @@ command! -bang -nargs=1 -complete=file LFilter call s:FilterLocationList(<bang>0
 " toggle hlsearch
 nnoremap <f12> :set hlsearch!<CR>
 
-
 " <Leader>o to toggle overview with small font
 let g:overview = 0
 
@@ -298,7 +306,7 @@ function! TTS()
          \ | sed -E "s/[<>$]//g"
          \ | sed -E "s/@[a-z-]+_[a-z-]+_([0-9]{4,4})/, citation: \\1/g"
          \ | sed -E "s/\\[\\^([a-z]+)\\]/ footnote: \\1./g"
-         \ | sed -E "s/\\]{(\\.[^}]+)}//g"
+         \ | sed -E "s/\\]{[^}]+}/]/g"
          \ | sed -E "s/\\^\\[([^]]+)\\]/ ... footnote text: \1. /g"
          \ | sed -E "s/\\[([^]]+)\\]\\([^)]+\\)/\\1/g"
          \ | sed -E "s/https?[^ ]+/URL /g"
@@ -338,11 +346,16 @@ nnoremap ! :!
 
 " gt go to next tab
 nnoremap gt :tabnew<CR>
+nnoremap gn :tabnext<CR>
 
 "{{{1 General stuff (passive)
 
+" Use ripgrep, if available for searches
+if executable("rg")
+    set grepprg=rg\ --vimgrep\ --no-heading
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
 
-	au BufWritePre /tmp/* setlocal noundofile
 
 " Make insert completion case sensitive
 au InsertEnter * set noignorecase          
@@ -398,12 +411,12 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\v(First|Second|Third|Fourth|Fifth)," containedin=ALL
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant "\<(\?[a-z0-9])\\?" containedin=ALL
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant '\v(First|Second|Third|Fourth|Fifth),' containedin=ALL
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant '\<(\?[a-z0-9])\\?' containedin=ALL
  " spell-check double words
-autocmd FileType markdown.pandoc,mail,txt,tex syn match SpellBad /\c\v<(\w+)\s+\1>/
+autocmd FileType markdown.pandoc,mail,txt,tex syn match SpellBad '/\c\<\(\w\+\)\s\+\1\>/'
  " dates format yyyy-mm-dd
-  autocmd FileType markdown.pandoc,mail,txt,tex syn sync match Constant "\d\d\d\d-\d\d-\d\d" containedin=ALL
+  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant '\d\d\d\d-\d\d-\d\d' containedin=ALL
 augroup end
 
 " Open non-text file externally
@@ -470,6 +483,22 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
         \  }
 
       let g:fzf_layout = { 'down': '~50%' }
+
+  " Find in files with rg
+
+    " --column: Show column number
+    " --line-number: Show line number
+    " --no-heading: Do not show file headings in results
+    " --fixed-strings: Search term as a literal string
+    " --ignore-case: Case insensitive search
+    " --no-ignore: Do not respect .gitignore, etc...
+    " --hidden: Search hidden files and folders
+    " --follow: Follow symlinks
+    " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+    " --color: Search color options
+
+    command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+
 
   "{{{2 undotree
   
@@ -555,7 +584,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     autocmd FileType dirvish nnoremap <buffer> R 0y$$F/"1yg_:!mv "<c-r>0" .<c-r>1<c-f>A
     autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
     autocmd FileType dirvish nnoremap <buffer> ! 0y$:!"<c-r>0"<Home><Right><Space><Left>
-    autocmd FileType dirvish nnoremap <buffer> x 0y$:open "<c-r>0"<cr>
+    autocmd FileType dirvish nnoremap <buffer> x 0y$:!open "<c-r>0"<cr>
     " Remove modified search mappings
     autocmd FileType dirvish silent! unmap <buffer> /
     autocmd FileType dirvish silent! unmap <buffer> ?
@@ -729,21 +758,14 @@ let g:pandoc_compilation_extension = 'pdf'
 augroup CitationVariables
   autocmd!
 
-  autocmd BufRead **/arabica/*.md let g:pandoc_citation_style = '~/dotfiles/my-styles/arabica.csl'
-        \ | let g:pandoc_reference_docx = 'arabica.docx'
-  " autocmd BufEnter ~/Box\ Sync/case/manuscript/submission-second/*.md let g:pandoc_citation_style = 'apa-6th-edition.csl'
-  "       \ | let g:pandoc_bibliography = 'manuscript.bib'
-  "       \ | let g:pandoc_reference_docx = 'reading-and-writing.docx'
+  autocmd BufRead article.arabica.md let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/arabica.csl'
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabica.docx'
   
   autocmd BufRead article-jss.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/journal-of-semitic-studies.csl'
   autocmd BufRead article-zal.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ZAL.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ZAL_stylesheet_with-instructions.dotx'
-
-  autocmd BufRead **/diacritisation-practices/article.arabica.md 
-        \  let g:pandoc_citation_style = '~/dotfiles/my-styles/arabica.csl'
-        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabiyya.docx'
 
 augroup end
 "}}}
@@ -969,8 +991,6 @@ augroup MardownSettings
 augroup end
 
 
-
-
 " Folding
 
 function! MarkdownLevel()
@@ -1093,11 +1113,11 @@ augroup FontMappings
 
 " Arabic r
   " nomral mode
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gr lmfbi[<esc>ea]{lang=ar dir="rtl"}<esc>`f
+  autocmd FileType markdown,markdown.pandoc,mail nnoremap <buffer>gr lmfbi[<esc>ea]{lang="ar" dir="rtl"}<esc>`f
   autocmd FileType tex nnoremap <buffer>gr lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
   autocmd FileType html nnoremap <buffer>gr lmfbi<span lang="ar" dir="rtl"><esc>ea</span><esc>`f
   " visual mode 
-  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gr mf<esc>`<i[<esc>`>a]{lang=ar dir="rtl"}<esc>`f
+  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gr mf<esc>`<i[<esc>`>a]{lang="ar" dir="rtl"}<esc>`f
   autocmd FileType tex  vnoremap <buffer>gr mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
   autocmd FileType html vnoremap <buffer>gr mf`>a</span><esc>`<i<span lang="ar" dir="rtl"><esc>`f
   " delete
@@ -1121,7 +1141,7 @@ inoremap <M-Space>  
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
-inoremap <M-"> ”“<left>
+inoremap <M-"> “”<left>
 
 " Abbreviations for common typos
 iab ARab Arab
@@ -1137,6 +1157,7 @@ iab tow two
 iab whcih which
 iab widht width
 iab introductoin introduction
+iab Syrain Syrian
 
 " Capitalized nationalities in English
 iab arabic Arabic
@@ -1279,7 +1300,6 @@ augroup MailStuff
   autocmd FileType mail setlocal iskeyword+=@-@
   autocmd FileType mail setlocal iskeyword+=.
   autocmd FileType mail setlocal iskeyword+=_
-  autocmd FileType mail let @z='https://gu-se.zoom.us/j/9021061411'
   " format text
   autocmd FileType mail nnoremap <buffer> <CR> gqip
 augroup end
