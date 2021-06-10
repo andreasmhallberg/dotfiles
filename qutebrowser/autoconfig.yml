@@ -17,12 +17,9 @@ settings:
   bindings.commands:
     global:
       normal:
-        <Meta+Alt+f>: spawn launch -a Firefox {}
         <Meta+Ctrl+f>: fullscreen
-        <Meta+f>: spawn launch -a Firefox {url}
         D: null
-        a: spawn open -a firefox {url}
-        aa: spawn firefox {url}
+        A: spawn open -a firefox {url}
         cm: clear-messages
         d: null
         h: back

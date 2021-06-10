@@ -74,7 +74,13 @@ brew install launch
 brew install youtube-dl
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
 brew install python3
+brew install gcalcli # For issues with login, see https://github.com/insanum/gcalcli/issues/580 
 
+brew tap zegervdv/zathura
+brew install zathura
+brew install zathura-pdf-mupdf
+mkdir -p $(brew --prefix zathura)/lib/zathura
+ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib $(brew --prefix zathura)/lib/zathura/libpdf-mupdf.dylib
 
 # After ruby
 gem install --user-install bundler jekyll
@@ -96,10 +102,14 @@ ln -sf ~/dotfiles/karabiner ~/.config/karabiner
 tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
 
 # fonts
-brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
-brew tap homebrew/cask-fonts && brew cask install font-source-sans-pro
-brew tap homebrew/cask-fonts && brew cask install font-brill
-brew install font-amiri
+brew tap homebrew/cask-fonts
+brew cask install font-source-code-pro
+brew cask install font-source-sans-pro
+brew cask install font-brill
+brew cask install font-amiri
+brew cask install font-linux-libertine 
+brew cask install font-lateef
+
 
 #misc
 

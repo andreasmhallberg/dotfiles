@@ -47,8 +47,8 @@ Plugin 'rickhowe/diffchar.vim'                       "  Character wise diff
 " Colorschemes
 " Plugin 'Jorengarenar/vim-darkness'
 Plugin 'morhetz/gruvbox'
-Plugin 'cocopon/iceberg.vim'  
-Plugin 'altercation/vim-colors-solarized'
+" Plugin 'cocopon/iceberg.vim'  
+" Plugin 'altercation/vim-colors-solarized'
 
 " Plugin 'kristiandupont/shades-of-teal'   "  Wrong spell has other background
 " Plugin 'hauleth/blame.vim'               "  Wrong spell is to stark.
@@ -425,7 +425,7 @@ autocmd!
 
   autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt sil ex "!open " . shellescape(expand("%:p")) | bd
 
-  autocmd! BufRead *.pdf silent execute "!xpdf " . shellescape(expand("%:p")) . " &>/dev/null &" | b#
+  autocmd! BufRead *.pdf silent execute "!zathura --mode=fullscreen " . shellescape(expand("%:p")) . " &>/dev/null &" | b# | bd#
 
   autocmd! BufReadPost *.docx !pandoc % -t markdown  
 
@@ -477,7 +477,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
       let g:fzf_action = {
         \ 'ctrl-t': 'tab split',
         \ 'ctrl-x': '!launch',
-        \ 'ctrl-p': '!xpdf',
+        \ 'ctrl-p': '!zathura --mode=fullsrcreen ',
         \ 'ctrl-v': 'vsplit' ,
         \ 'ctrl-s': 'split' ,
         \  }
@@ -738,7 +738,8 @@ augroup end
 " source ~/dotfiles/vim-pandoc-function.vim
 
 " Open pdf compiled from this file
-nnoremap <Leader>po :silent !xpdf '%'*.pdf &<CR>
+" nnoremap <silent> <Leader>po :silent !zathura '%'*.pdf&<CR>
+nnoremap <silent> <Leader>po :silent execute "!zathura --mode fullscreen " . shellescape(expand("%")) . "*.pdf &>/dev/null &"<CR>
 nnoremap <Leader>pw :silent !open '%'.docx &<CR>
 
 

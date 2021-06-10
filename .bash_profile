@@ -36,8 +36,13 @@ export PROMPT_DIRTRIM=2 # does not work with bash 3 that ships with OSX
 GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
-  
-PS1='\[${GREEN}\]\w [$(git symbolic-ref --short HEAD 2>/dev/null)]\[${RESET}\] '
+# Prompt  
+  # \e[32m = green
+  # \e[31m = red
+  # \e[39m = default
+  # Non-printable characters must be wrapped in `\[ \]`
+
+PS1='\[\e[32m\]\w [\[\e[31m\]$(git symbolic-ref --short HEAD 2>/dev/null)\[\e[32m\]] \[\e[39m\]'
 
 
 # MacPorts Installer addition on 2016-08-03_at_10:37:22: adding an appropriate PATH variable for use with MacPorts.
@@ -49,26 +54,39 @@ export CLICOLOR=1
 # Aliases
 
 alias todo="$EDITOR ~/jobb/notes/todo.md"
+alias todol="rg --no-line-number '\- \[ \]' ~/jobb/notes/todo.md"
+
+## Passive
 alias ls='ls -F' # ls with directory/symlink indocators (-F) and hidden files (-a)
-# alias mutt='LC_MESSAGES="en_US.UTF-8" neomutt'          # mutt with english menues.
+# Do ls after cd
+function cs () {
+    cd "$@" && ls
+        }
+alias cd='cs'
+
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
 alias m="mutt"
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
 alias qmv='qmv -f do' # only show output column when using qmv
-alias :e='vim' # because vim
-# run macvim in terminal. Built in vim doesn't have all the features.
 alias vim="mvim -v"
 alias n="nvim"
-alias nivm="nvim"
+alias e="nvim"
+alias :e='nvim'
 alias v="nvim -R"
+
 # git
 alias gc='git checkout'
 alias gb='git branch'
 alias gs='git status'
 alias gl='git log --graph --oneline --all'
 
-alias z="zathura"
+alias z="zathurafullscreen"
+alias zathurafullscreen="zathura --mode=fullscreen"
 alias acrobat="launch -a Adobe\ Acrobat\ Reader\ DC"
+
+alias gcal="gcalcli"
+alias agenda="gcalcli agenda --details end"
+alias calw="gcalcli calw --details end --monday"
 
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
 
@@ -80,11 +98,6 @@ fi
 
 
 
-# Do ls after cd
-function cs () {
-    cd "$@" && ls
-        }
-alias cd='cs'
 
 # Correct minor spelling mistakes in cd command
 shopt -s cdspell
@@ -113,10 +126,11 @@ open_with_fzf() {
   file="$(fd -t f -H . $HOME | fzf)"
   if [[ $file == *.pdf ]]
   then
-    xpdf $file
+    z $file
   else
     open $file
   fi
 }
 
-cd ~/jobb
+calw
+~/jobb
