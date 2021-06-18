@@ -423,7 +423,7 @@ augroup end
 augroup OpenExternally
 autocmd!
 
-  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.doc,*.rtf,*.odt sil ex "!open " . shellescape(expand("%:p")) | bd
+  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.docx,*.rtf,*.odt sil ex "!open " . shellescape(expand("%:p")) | b# | bd#
 
   autocmd! BufRead *.pdf silent execute "!zathura --mode=fullscreen " . shellescape(expand("%:p")) . " &>/dev/null &" | b# | bd#
 
@@ -764,9 +764,13 @@ augroup CitationVariables
   
   autocmd BufRead article-jss.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/journal-of-semitic-studies.csl'
+
   autocmd BufRead article-zal.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ZAL.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ZAL_stylesheet_with-instructions.dotx'
+
+  autocmd BufRead article-apa.md
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/apa.docx'
 
 augroup end
 "}}}
@@ -844,8 +848,8 @@ autocmd!
       \ --citeproc
       \ --bibliography ' . g:pandoc_bibliography . 
       \ ' --csl ' . g:pandoc_citation_style .
+      \ ' --reference-doc=' . g:pandoc_reference_docx .
       \ ' -o ' . '%' . '.docx'<cr>
-      " \ . ' --reference-doc=' . g:pandoc_reference_docx<cr>
       
 
   " to tex
@@ -1159,6 +1163,7 @@ iab whcih which
 iab widht width
 iab introductoin introduction
 iab Syrain Syrian
+iab langauge language
 
 " Capitalized nationalities in English
 iab arabic Arabic

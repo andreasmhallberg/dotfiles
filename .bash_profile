@@ -54,7 +54,12 @@ export CLICOLOR=1
 # Aliases
 
 alias todo="$EDITOR ~/jobb/notes/todo.md"
-alias todol="rg --no-line-number '\- \[ \]' ~/jobb/notes/todo.md"
+alias todol='todolist'
+
+function todolist () {
+  rg --no-line-number '^#|\- \[ \]' ~/jobb/notes/todo.md | \
+  sed -E 's/ - //'
+}
 
 ## Passive
 alias ls='ls -F' # ls with directory/symlink indocators (-F) and hidden files (-a)
@@ -132,5 +137,6 @@ open_with_fzf() {
   fi
 }
 
-calw
-~/jobb
+cd ~/jobb
+clear
+todol
