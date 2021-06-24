@@ -676,6 +676,8 @@ syntax on
 colorscheme gruvbox " super sexy
 set bg=dark " Dark background
 
+set redrawtime=5000 " dont give up on large files
+
 " Italic comments.
 highlight Comment cterm=italic
 
@@ -745,7 +747,7 @@ nnoremap <Leader>pw :silent !open '%'.docx &<CR>
 
 " Variable used in compilation mappings
 let g:pandoc_citation_style = '~/citation-styles/apa.csl'
-let g:pandoc_reference_docx = '~/dotfiles/pandoc-data-dir/reference.docx'
+let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/reference.docx'
 let g:pandoc_output_dir = './'
 let g:pandoc_bibliography = '~/dotfiles/mylatexstuff/bibliotek.bib'
 let g:pandoc_compilation_extension = 'pdf'
