@@ -5,10 +5,9 @@
 
 # Install manually first
 # - Zotero
-# - MacVim
-# - Quicksilver - fuzzy application launcher
 # - Spectacle - shortcuts for window management on multi-screens
 # - Qutebrowser
+# - Karabiner Elements
 # - Homebrew
 # - MacTex  - http://tug.org/mactex/mactex-download.html
 #           - update texlive when installed to get most resent packages
