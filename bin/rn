@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ $# == 1 ]
+then
+  rg --files-with-matches "$1" ~/jobb/readingnotes/*
+elif [ $# == 2 ]
+then
+  rg --files-with-matches "$1" ~/jobb/readingnotes/*\
+    | xargs -I{} rg --files-with-matches "$2" {}
+elif [ $# == 3 ]
+then
+  rg --files-with-matches "$1" ~/jobb/readingnotes/* \
+    | xargs -I{} rg --files-with-matches "$2" {} \
+    | xargs -I{} rg --files-with-matches "$3" {}
+elif [ $# > 3 ]
+then
+  echo "Only up to three search terms supported."
+fi

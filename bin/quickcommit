@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "Type a commit message. Hit <Enter> for \"minor edit\""
+
+# keyboard input to variable $mess
+read mess
+
+# if no input is give, only enter is pressed
+if [[ -z $mess ]]
+then
+  mess="Minor edit"
+fi
+
+echo "Adding all new files and committing to GitHub with the message \"$mess\""
+
+git add -A
+git commit -m "$mess"
+git push

@@ -1,0 +1,6 @@
+# Count words with only Arabic characters.
+# Diacritics have to be included, otherwise they break up strings to be counted as several words
+
+file=$@
+
+rg -o '[ٱاىبتثجحخدذرزسشصضطظعغفقكلمنهويئءؤأإةًٌٍَُِّْٰ]+' $file | wc -l

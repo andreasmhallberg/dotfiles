@@ -1,0 +1,10 @@
+\usepackage{fancyhdr}
+\newcommand\printtitle[1]{The Title}
+\newcommand\printauthor[1]{Andreas Hallberg}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[EL,OL]{\printauthor --- \today}
+\fancyhead[ER,OR]{\textit{\printtitle}}
+\fancyfoot[EC,OC]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}

@@ -1,0 +1,64 @@
+% Biber sometimes produces faulty cache.
+% Delete it with folliwing command: rm -rf `biber --cache`
+% http://tex.stackexchange.com/questions/140814/biblatex-biber-fails-with-a-strange-error-about-missing-recode-data-xml-file
+
+\usepackage{romannum} % Convert integer to roman number. Used for \volcite.
+\usepackage[
+  %ibidtracker=false, % Turns of ibid. 
+maxcitenames=2
+,maxbibnames=4
+%,uniquelist=false
+,backend=biber
+,doi=false
+,isbn=false
+,url=false
+,language=english
+,bibstyle=authoryear
+,citestyle=authoryear-icomp
+,natbib=true
+,sortcites=true
+,hyperref
+,uniquename=false % Dont print initials to make name unique
+]{biblatex}
+
+
+%% undertrycker saker som inte ska komma upp i bibliografin. 
+\AtEveryBibitem{% Clean up the bibtex rather than editing it
+ \clearlist{address}%
+ \clearfield{url}%
+% \clearfield{eprint}
+ \clearfield{isbn}
+ \clearfield{issn}
+ \clearfield{note}
+ \clearfield{volumes}
+ \clearfield{edition}
+ \clearfield{pagetotal}
+% \clearlist{location}
+ \clearfield{month}%
+ \clearfield{series}%
+\ifentrytype{book}{\clearfield{number}}{} % Clear number in book series
+\ifentrytype{incollection}{\clearfield{number}}{} % Clear number in book series
+}
+
+% Ed. rather ten Ed. by in bibliography
+\DefineBibliographyStrings{english}{%
+  byeditor = {Ed.},
+}
+
+\newcommand{\citeps}{\parencites}
+\newcommand{\citets}{\textcites}
+%\newcommand\volcitet\tvolcite
+
+% fixar biblatex till <author>, <year>:<page>
+\renewcommand*{\nameyeardelim}{ }
+\renewcommand*{\postnotedelim}{:\,} % Linebreak between colon and page looks terrible. 
+\renewcommand*{\volcitedelim}{,\ } % Between vol. and page nr.
+
+\DeclareFieldFormat{postnote}{#1}
+\DeclareFieldFormat{multipostnote}{#1}
+\DeclareFieldFormat{volcitepages}{#1}
+\DeclareFieldFormat{volcitevolume}{vol.\,\romannum{#1}}
+
+% Remove 'in' in article in bibliography.
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}

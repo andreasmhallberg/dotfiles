@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for file in $1*.aiff
+  do
+    echo '${file%.*}'
+    # ffmpeg -i "$file" "$2${file%.*}.mp3"
+  done
+

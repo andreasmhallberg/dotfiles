@@ -1,0 +1,94 @@
+# symlink to ~/.muttrc
+
+
+set ssl_starttls=yes
+set ssl_force_tls=yes
+
+set use_from=yes
+set smtp_authenticators = 'gssapi:login'
+
+source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+
+# Default account
+source ~/dotfiles/account.gu.se.andreas.hallberg
+
+set realname = "Andreas Hallberg"
+
+
+# {{{ Accounts
+
+# Folder hooks
+folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/dotfiles/account.com.gmail.andreasmartenhallberg'
+folder-hook 'account.gu.se.andreas.hallberg' 'source ~/dotfiles/account.gu.se.andreas.hallberg'
+
+
+# Macros for switching accounts
+macro index <f2> '<sync-mailbox><enter-command>source ~/dotfiles/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/dotfiles/account.gu.se.andreas.hallberg<enter><change-folder>!<enter>'
+
+
+set fast_reply # Don't ask for reciever or subject when replying to email.
+set include # Always include original message in reply. Don't ask.
+set recall=no # Don't ask to recall postponed messages.
+set editor='mvim -v +"call SweType()" +"norm }o"'
+
+set sort = reverse-date-received
+# set sort=threads
+# set sort_aux=reverse-last-date-received
+
+# aliases
+set sort_alias=alias
+set reverse_alias=yes
+
+# source $alias_file
+source ~/jobb/aliases
+
+
+# html rendering
+auto_view text/html                                  # View html automatically.
+alternative_order text/plain text/enriched text/html # Save html for last.
+
+unset markers # Remove ugly markers at linebreaks.
+set text_flowed=yes # Let reciever reflow text.
+set timeout=30
+
+# Edit e-mail headers in editor. Attach files by adding line Attach: <path>
+set edit_headers=yes
+
+# save attatchemts - give path to home direcotry
+macro attach s <save-entry><kill-line>~/ 
+
+# mail indexing format
+# Indicate with A if email has attachment. 
+# See https://stackoverflow.com/questions/37080414/show-if-a-message-in-the-mutt-index-has-an-attachment
+# set index_format="%3C %S %?X?A& ? %{%y%m%d} %-12.12L %?M?(#%03M)&(%4c)? %?y?(%.20Y) ?%s"
+
+set index_format="%3C %S %?X?A& ? %-6@date@ %-15.15L  %?y?(%.20Y) ?%s"
+
+index-format-hook  date  "~d<1d"    "%[%H:%M]"
+index-format-hook  date  "~d<7d"    "%[%a %d]"
+index-format-hook  date  "~d<1m"    "%[%d/%m]"
+index-format-hook  date  "~A"       "%[%y%m%d]"
+
+# {{{ Bindings
+# bind <mode> <key> <action>
+
+bind index,pager h noop # Often hit by mistake
+bind index q noop # So as not to quite by mistake. Use Ctrl-c instead
+bind pager j next-line # vim-like
+bind pager k previous-line # vim-like
+bind index,pager g noop # because of next line
+bind index gg first-entry
+bind pager gg top
+bind index U toggle-new
+bind index D delete-message # netrw-like
+# bind pager G bottom # vim-like
+bind index,pager G group-reply
+bind index,pager \Cf next-page # vim-like
+bind index,pager \Cb previous-page # vim-like
+bind index,pager N search-opposite # vim-like
+
+# Convert mail written in markdown to html before sending
+macro compose H "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=utf-8\n"
+
+set wait_key=no

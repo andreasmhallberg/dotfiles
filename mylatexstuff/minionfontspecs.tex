@@ -1,0 +1,272 @@
+\usepackage{newunicodechar} % To change tanwid fath
+\setmainfont[
+		SmallCapsFeatures = {LetterSpace=3},
+		%ItalicFeatures={SmallCapsFeatures={FakeSlant=0.02}}, % Minion Pro has italic small caps. No need to fake.		
+		Ligatures={TeX, Common},
+		Numbers={Proportional,OldStyle}
+			]{Minion Pro}		
+			
+\setmathrm[Numbers={OldStyle,Proportional}]{Minion Pro}
+
+\newcommand\tabfont{\setmainfont[
+  		Numbers={Monospaced,OldStyle},
+		Ligatures={TeX, Common},
+	      ]{Minion Pro}}
+\newcommand\liningfont{\setmainfont[Numbers={Proportional,Lining}]
+	{Minion Pro}}
+% \phonetic{<symbol>}
+
+\newfontfamily{\phoneticfamily}[Scale=MatchLowercase]
+	{Gentium Plus} 
+	
+\AtBeginEnvironment{tabular}{\tabfont}
+\AtBeginEnvironment{tabularx}{\tabfont}
+\AtBeginEnvironment{tikzpicture}{\tabfont}	
+	
+\DeclareTextFontCommand{\phonetic}{\phoneticfamily}
+
+
+	
+\setsansfont[
+		Scale=MatchUppercase
+		,Numbers={Monospaced}
+		,Ligatures=TeX
+		]
+		{Source Sans Pro}
+
+\newcommand\tabfontsf{\setmainfont[
+  		Numbers={Monospaced},
+		Ligatures={TeX, Common},
+	      ]{Source Sans Pro}}
+
+
+\newfontfamily\labelfont[
+		Scale=MatchLowercase,
+		Numbers={Monospaced,Lining},
+		Ligatures=TeX
+		]
+		{Source Sans Pro ExtraLight}
+\DeclareTextFontCommand{\textlab}{\labelfont}
+		
+
+\setmonofont[	Scale=MatchLowercase,
+		Ligatures={TeX}
+	      			]{Source Code Pro}
+
+\setmathrm{Minion Pro}
+
+\newfontfamily\arabicfont[Script=Arabic
+		    ,Scale=MatchUppercase
+		    ,RawFeature={ 
+		     ss01 % Mode dot in baa down when clashing.
+		     ,ss02 % Mim-alif ligatures
+		    %,ss05 % Kasra below letter, not below shadda
+		     }
+		  ]{Amiri}
+\newfontfamily\arabicfontsf[Script=Arabic
+		  ,Scale=MatchLowercase]{Amiri}
+\newfontfamily\arabicfonttt[Script=Arabic,
+		  Scale=MatchUppercase]{Amiri}
+
+% Make an tanwin active and lower it.
+% Migh need ifnextchar if only to be applied with alif.
+\def\lowan{\raisebox{-.5ex}{%
+  \hspace{-.1em}%
+ً%
+}}
+\newunicodechar{ً}{\lowan}
+
+
+% if to test for italicness
+\makeatletter
+\newcommand*{\IfItElse}{%
+ \ifx\f@shape\my@test@it
+   \expandafter\@firstoftwo
+ \else
+   \expandafter\@secondoftwo
+ \fi
+}
+\newcommand*{\my@test@it}{it}
+\makeatother
+
+
+% ------ Fake  AYN and HAMZA ----------------------
+% Extra braces to get so as not to swallow spaces after command.
+% Kerning trick: ^^^^feff added to be detecet in as characterclass. http://tex.stackexchange.com/questions/180409/xetex-kerning-with-newunicodechar
+% Optimized for Minion Pro.
+% Use \hamza and \ayn in tabular
+% hamza
+\newcommand\hamza{\textsuperscript{%
+	\protect\raisebox{1.2ex}{\protect\rotatebox{180}{c}}}%
+	{}}
+\catcode`ʾ=\active
+\protect\defʾ{^^^^feff%
+	\IfItElse{\kern.12em}{\kern.0em}%	
+	\hamza%
+	\IfItElse{\kern-.1em}{\kern-.05em}%
+	^^^^feff} % Unused character to be detected
+% ayn
+\newcommand\ayn{%
+	\raisebox{.1ex}{\textsuperscript{c}}%
+	{}}
+\catcode`ʿ=\active
+\protect\defʿ{^^^^feff%
+	\IfItElse{\kern.07em}{\kern.0em}%
+	\ayn%
+	\IfItElse{\kern-.05em}{\kern-.02em}%
+	^^^^feff} % Unused character to be detected
+
+\robustify{ʿ}
+\robustify{ʾ}
+
+
+% -------------------------------------------------------------
+
+% Dotted and barred letters for fonts that dont have them
+% http://tex.stackexchange.com/questions/20789/tex-accents-do-not-seem-to-work-with-fontspec-and-xe-lua-latex
+% http://tex.stackexchange.com/questions/163696/special-unicode-characters-with-xetex
+\UndeclareUTFcomposite[\UTFencname]{x1E47}{\d}{d}
+\UndeclareUTFcomposite[\UTFencname]{x1E0C}{\d}{D}
+\UndeclareUTFcomposite[\UTFencname]{x1E63}{\d}{s}
+\UndeclareUTFcomposite[\UTFencname]{x1E62}{\d}{S}
+\UndeclareUTFcomposite[\UTFencname]{x1E6D}{\d}{t}
+\UndeclareUTFcomposite[\UTFencname]{x1E6C}{\d}{T}
+\UndeclareUTFcomposite[\UTFencname]{x1E24}{\d}{H}
+\UndeclareUTFcomposite[\UTFencname]{x1E25}{\d}{h}
+\UndeclareUTFcomposite[\UTFencname]{x1E92}{\d}{Z}
+\UndeclareUTFcomposite[\UTFencname]{x1E93}{\d}{z}
+
+
+\UndeclareUTFcomposite[\UTFencname]{x1E6E}{\b}{T}
+\UndeclareUTFcomposite[\UTFencname]{x1E6F}{\b}{t}
+\UndeclareUTFcomposite[\UTFencname]{x1E0E}{\b}{D}
+\UndeclareUTFcomposite[\UTFencname]{x1E0F}{\b}{d}
+
+\UndeclareUTFcomposite[\UTFencname]{x1E8F}{\.}{y}
+\UndeclareUTFcomposite[\UTFencname]{x1E87}{\.}{w}
+
+\makeatletter
+% Dot below
+\let\d\relax
+\DeclareRobustCommand{\d}[1]
+   {\hmode@bgroup
+    \o@lign{\relax#1\crcr\hidewidth\ltx@sh@ft{-1ex}.\hidewidth}\egroup}
+
+% Bar below
+\let\b\relax
+\DeclareRobustCommand{\b}[1]
+   {\hmode@bgroup\o@lign{\relax#1\crcr\hidewidth\ltx@sh@ft{-3ex}%
+     \vbox to.2ex{\hbox{\char"AF}\vss}\hidewidth}\egroup}
+
+% Dot above
+\let\.\relax
+\DeclareRobustCommand{\.}[1]
+  {\hmode@bgroup\vbox{% \o@lign has \vtop
+    \lineskiplimit\z@
+   \baselineskip\z@skip
+   \lineskip.25ex
+   \ialign{##\crcr\hidewidth%
+     {\IfItElse{\hspace{.15em}}{}.}%
+   \hidewidth\crcr#1\crcr}}\egroup}
+% Bar above
+
+   
+% dotted
+\catcode`ḥ=\active
+\defḥ{\d{h}}
+\catcode`Ḥ=\active
+\defḤ{\d{H}}
+\catcode`ṣ=\active
+\defṣ{\d{s}}
+\catcode`Ṣ=\active
+\defṢ{\d{S}}
+\catcode`ḍ=\active
+\defḍ{\d{d}}
+\catcode`Ḍ=\active
+\defḌ{\d{D}}
+\catcode`ẓ=\active
+\defẓ{\d{z}}
+\catcode`Ẓ=\active
+\defẒ{\d{Z}}
+\catcode`ṭ=\active
+\defṭ{\d{t}}
+\catcode`Ṭ=\active
+\defṬ{\d{T}}
+
+\catcode`ġ=\active
+\defġ{\.{g}}
+\catcode`Ġ=\active
+\defĠ{\.{G}}
+\catcode`ẇ=\active
+\defẇ{\.{w}}
+\catcode`ẏ=\active
+\defẏ{\.{y}}
+
+
+\catcode`ṯ=\active
+\defṯ{\b{t}}
+\catcode`Ṯ=\active
+\defṮ{\b{T}}
+\catcode`ḏ=\active
+\defḏ{\b{d}}
+\catcode`Ḏ=\active
+\defḎ{\b{D}}
+
+%\UndeclareUTFcomposite[\UTFencname]{x0101}{\=}{a}
+%\catcode`ā=\active
+%\defā{\={a}}
+
+
+
+
+
+% ------------ KERNINGS --------------------------
+\XeTeXinterchartokenstate=1
+% In Minion Pro '. looks like strange ;
+% Removes original negative kerning
+\newXeTeXintercharclass\invcomma
+\XeTeXcharclass `\'=\invcomma
+\XeTeXcharclass `\`=\invcomma
+\newXeTeXintercharclass\periodcomma
+\XeTeXcharclass `\.=\periodcomma
+\XeTeXcharclass `\,=\periodcomma
+
+\XeTeXinterchartoks \invcomma \periodcomma {\kern -.05em}
+\XeTeXinterchartoks \periodcomma \invcomma {\kern -.05em}
+
+\newXeTeXintercharclass\diac
+\XeTeXcharclass "FEFF=\diac % hamza and ayn
+
+% ʿ.,
+\XeTeXinterchartoks \diac \periodcomma ={\kern -.15em}
+
+%ʾA
+\newXeTeXintercharclass\bigA
+\XeTeXcharclass `\A=\bigA
+\XeTeXcharclass `\Ā=\bigA
+\XeTeXinterchartoks \diac \bigA ={\kern -.1em}
+\XeTeXinterchartoks \bigA \diac ={\kern -.05em}
+
+% fʿ
+\newXeTeXintercharclass\smallf
+\XeTeXcharclass `\f=\smallf
+\XeTeXinterchartoks \smallf \diac ={\kern.1em}
+
+% ʿd
+\newXeTeXintercharclass\leftbulge
+\XeTeXcharclass `\d=\leftbulge
+\XeTeXinterchartoks \diac \leftbulge ={\kern-.05em}
+
+% italic ʿa.  Small italc a deiffers from upright a with no saddle.
+\newXeTeXintercharclass\smalla
+\XeTeXcharclass `\a=\smalla
+\XeTeXcharclass `\ā=\smalla
+\XeTeXcharclass `\u=\smalla
+\XeTeXcharclass `\ū=\smalla
+\XeTeXinterchartoks \diac \smalla ={\IfItElse{\kern-.05em}{}}
+
+% -ʿ
+\newXeTeXintercharclass\hyphenclass
+\XeTeXcharclass `\-=\hyphenclass
+\XeTeXinterchartoks \diac \hyphenclass ={\kern-.05em}
+\XeTeXinterchartoks \hyphenclass \diac ={\kern-.05em}

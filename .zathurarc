@@ -1,0 +1,5 @@
+set guioptions ""
+map [normal] f toggle_fullscreen
+map [fullscreen] f toggle_fullscreen
+set window-height 3000
+set window-width 3000

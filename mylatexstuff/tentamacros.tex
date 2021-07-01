@@ -1,0 +1,106 @@
+\usepackage{totcount} % Get maximum points at beginning of document
+\usepackage{etoolbox}
+
+% Lite luftigare tabeller
+\renewcommand{\arraystretch}{2}
+
+% \renewcommand{\textbf}[1]{\underline{#1}}
+
+% {{{1 If regular (rodinarie) exam
+% If statement to make regular and re-exam in same document
+% Use like this:
+% \oford
+% <Question in regular exam>
+% \else
+% <Question in re-exam>
+% \fi
+
+% Add `\ordflase` to generate re-exame
+
+\newif\iford
+\ordtrue
+
+\newcommand{\ordom}[2]{\iford#1\else#1\fi}
+
+% }}}1
+% {{{1 Answers
+
+% svarsrad
+\newcommand{\radlinje}{\par\vspace{\baselineskip}\hrulefill\nobreak} % hel rad att svarap på
+
+\newlength\ordlinjewidth
+\setlength{\ordlinjewidth}{4cm}
+
+% Rad för svar som är ett ord
+\newcommand{\ordlinje}{\rule{\ordlinjewidth}{.1pt}\allowbreak}
+
+ % Kort rad för svar som är ett ord
+\newcommand{\kortordlinje}{\rule{.5\ordlinjewidth}{.1pt}\allowbreak}
+
+% Filled in space for exampel answer
+\newcommand{\exsvar}[1]{%
+    \rlap{\ordlinje}%
+    \makebox[\ordlinjewidth][c]{\raisebox{.2ex}{\large#1}}%
+}
+
+% Roman siffror för delar
+% \renewcommand{\thesection}{\Roman{section}}
+
+% Fill page with \ratline 
+
+% Fill rest of page with blank lines
+% \setbox0=\vbox{\hrulefill\break}
+% \newcommand{\fillrows}{\cleaders\box0\vfill}
+
+% }}}1
+% {{{1 Points
+
+% poäng för vare uppgift efter instruktionerna. hhögerställs efter text.
+\newcounter{pts}
+\regtotcounter{pts}
+\setcounter{pts}{0}
+
+\DeclareRobustCommand{\pts}[1]{\normalsize\hspace*{0pt}\hfill({\itshape#1~p.})\addtocounter{pts}{#1}}
+% protect to have intitles
+
+% use \thepts to print max points. Only at end of document
+
+% }}}1
+% {{{1 Misc
+% Notes used for backward compability
+% Use html notes `<!-- note -->` instead
+\newif\ifnotes
+\notesfalse
+
+\newcommand{\notes}[1]{%
+    \ifnotes\textbf{#1}\else\null\fi
+}
+
+% }}}1
+% {{{1 Lists
+
+% Extra between items in answer lists
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=\baselineskip}
+
+% Item-like command for tables
+\newcounter{tabit}
+\setcounter{tabit}{0}
+
+% }}}1
+% {{{1 Tables
+
+% No booktab rules 
+\makeatletter
+\@ifpackageloaded{booktabs}{
+    \renewcommand{\toprule}{\null}
+    \renewcommand{\bottomrule}{\null}
+} {\null}
+\makeatother
+
+\newcommand\tabitem{\stepcounter{tabit}\thetabit}
+
+\AtBeginEnvironment{tabular}{\setcounter{tabit}{0}} % With etoolbox
+\AtBeginEnvironment{longtable}{\setcounter{tabit}{0}} % With etoolbox
+
+% }}1

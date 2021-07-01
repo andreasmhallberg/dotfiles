@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Transliterate from Arabic script to Buckwalter.
+# See order of characters in http://www.qamus.org/transliteration.htm
+
+# Todo
+#    - numbers
+#    - punctuation marks
+
+tr ٠١٢٣٤٥٦٧٨٩ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئىًٌٍَُِّْ 0123456789AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}yauiFNK~o

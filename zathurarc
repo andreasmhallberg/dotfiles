@@ -1,0 +1,10 @@
+map f toggle_fullscreen
+map F display_link
+map r reload
+map R rotate
+
+set scroll-step 50
+set selection-clipboard clipboard
+set adjust-open height
+
+set first-page-column 1:1

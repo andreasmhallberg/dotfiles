@@ -1,0 +1,20 @@
+% Wrap longtable (used by pandoc) in minipage to prohibit page break
+ 
+\makeatletter
+\@ifpackageloaded{longtable}{
+  \renewenvironment{longtable}
+  {\begin{tabular}}
+  {\end{tabular}}
+}
+
+\makeatother
+
+% % remove rules in tables
+% \makeatletter
+% \@ifpackageloaded{booktabs}{
+%     \renewcommand\toprule{\null}
+%     \renewcommand\midrule{\null}
+%     \renewcommand\bottomrule{\null}
+%     \renewcommand\endhead{\null}
+%  } {\null}
+% \makeatother

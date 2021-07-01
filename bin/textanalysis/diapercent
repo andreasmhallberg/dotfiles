@@ -1,0 +1,10 @@
+for file in "$@"
+
+do 
+letters=$(countletters "$file")
+dia=$(countletters-dia "$file")
+diaperc=$(bc <<< "scale=10;$dia/$letters")
+diaperc2=$(bc <<< "$diaperc*100")
+
+echo $diaperc2
+done

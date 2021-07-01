@@ -1,0 +1,10 @@
+#!/bin/bash
+
+TIME=`date +%y%m%d`
+
+mkdir /Volumes/BACKUP1/jobb.$TIME
+
+echo Backar upp jobb.
+cp -RLv ~/jobb/ /Volumes/BACKUP1/jobb.$TIME/
+
+echo Har backat upp ~/jobb till BACKUP1/jobb.$TIME.

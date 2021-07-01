@@ -1,0 +1,20 @@
+# text/html; launch -l %s &; #test=test -n "$DISPLAY";
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
+text/html; launch -a Qutebrowser %s; copiousoutput; needsterminal; nametemplate=%s.html
+
+application/pdf; xpdf %s &; 
+
+# office formats
+application/docx; open %s;
+application/vnd.openxm; open %s;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; open %s;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; open %s;
+application/vnd.ms-word.document.12; open %s;
+application/msword; open %s;
+application/vnd.ms-excel; open %s;
+
+# images etc.
+image/gif; open %s;
+image/jpeg; open %s;
+image/png; open %s;
+image/m4v; open %s;

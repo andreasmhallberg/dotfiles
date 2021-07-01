@@ -1,0 +1,20 @@
+\NeedsTeXFormat{LaTeX2e}[2017/09/21]
+\ProvidesPackage{ccbyandreas}
+\RequirePackage[
+      all
+    , placement=bottom
+    , scale=1
+    , color=black
+    , opacity=1
+    , vshift=1.5cm
+]{background}
+\RequirePackage{ccicons}
+\RequirePackage{hyperref}
+\PassOptionsToPackage{hidelinks}{hyperref}
+
+\newcommand{\ccyear}{\the\year}
+
+\SetBgContents{% 
+    \footnotesize
+    Andreas Hallberg \ccby{} \ccyear. This document is available for download at \href{http://andreasmhallberg.github.io}{\textit{http://andreasmhallberg.github.io}}.%
+}
