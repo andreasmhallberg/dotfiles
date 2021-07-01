@@ -1,0 +1,19 @@
+[general]
+accounts = gu
+pythonfile = ~/dotfiles/offlineimap.py
+
+[Account gu]
+localrepository = Local
+remoterepository = Remote
+
+[Repository Local]
+type = Maildir
+localfolders = ~/Maildir/gu
+
+[Repository Remote]
+type = IMAP
+remotehost = outlook.office365.com
+remoteuser = andreas.hallberg@sprak.gu.se
+remotepasseval = get_pass()
+ssl=true
+sslcacertfile = ~/dotfiles/certificate.crt

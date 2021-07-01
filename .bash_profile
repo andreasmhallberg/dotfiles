@@ -7,6 +7,10 @@ shopt -s autocd
 # Set pbcopy to use Unicode
 export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
+# Dont tell me about default zsh
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+
 export LC_CTYPE="en_US.UTF-8"
 
 [[ -s ~/.bashrc ]] && source ~/.bashrc
@@ -15,6 +19,9 @@ export LC_CTYPE="en_US.UTF-8"
 export PATH=$PATH:~/dotfiles/bin
 export PATH=$PATH:~/dotfiles/bin/textanalysis
 export PATH=$PATH:/Users/xhalaa/Library/Python/3.7/bin
+
+# brew in path
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 source ~/.fzf.bash
 
@@ -57,7 +64,7 @@ alias todo="$EDITOR ~/jobb/notes/todo.md"
 alias todol='todolist'
 
 function todolist () {
-  rg --no-line-number '^#|\- \[ \]' ~/jobb/notes/todo.md | \
+  rg --no-line-number '\- \[ \]' ~/jobb/notes/todo.md | \
   sed -E 's/ - //'
 }
 
