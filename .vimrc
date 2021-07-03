@@ -64,7 +64,11 @@ set nostartofline                            " remember cursor position when swi
 set delcombine                               " Delete part of combining character with x command. Useful for editing Arabic diacritics.
 set nojoinspaces                             " Don't add extra space when joining lines with shift-J.
 set laststatus=2                             " Always show statusline.
+<<<<<<< HEAD
 set directory=~/.vim/temp                     " Dir for backup files
+=======
+set directory=~/.vim/temp                    " Dir for backup files
+>>>>>>> temp
 set whichwrap+=<,>,h,l,[,]                   " Makes h and l and arrow keys wrap to pre/next line.
 set path+=**                                 " make file-based commands search in subfolders
 " set complete +=kspell                      " Complete from dictionary when spell is on. Mostly annoying. Technical words will be written more than once and that way added to completion list.
@@ -283,6 +287,12 @@ function! OverveiwToggle()
   endif
 endfunction
 
+<<<<<<< HEAD
+=======
+" make Q usefule. Avoid hitting Ex-mode by mistake
+nnoremap Q :q
+
+>>>>>>> temp
 nnoremap <Leader>o :call OverveiwToggle()<CR>
 
 " {{{2  Text to speech
@@ -772,7 +782,15 @@ augroup CitationVariables
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ZAL_stylesheet_with-instructions.dotx'
 
   autocmd BufRead article-apa.md
+<<<<<<< HEAD
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/apa.docx'
+=======
+        \ let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/apa.docx'
+
+  autocmd BufRead *-arabiyya.md
+        \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/al-arabiyya.csl'
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabica.docx'
+>>>>>>> temp
 
 augroup end
 "}}}

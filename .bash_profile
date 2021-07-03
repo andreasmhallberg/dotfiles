@@ -7,6 +7,9 @@ shopt -s autocd
 # Set pbcopy to use Unicode
 export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+
 export LC_CTYPE="en_US.UTF-8"
 
 [[ -s ~/.bashrc ]] && source ~/.bashrc
@@ -15,11 +18,13 @@ export LC_CTYPE="en_US.UTF-8"
 export PATH=$PATH:~/dotfiles/bin
 export PATH=$PATH:~/dotfiles/bin/textanalysis
 export PATH=$PATH:/Users/xhalaa/Library/Python/3.7/bin
-export PATH=$PATH:/bin
+
+# brew in path
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 source ~/.fzf.bash
 
-export VISUAL="vim"
+export VISUAL="nvim"
 export EDITOR="nvim"
 
 export XDG_CONFIG_HOME="$HOME/.config/"
@@ -28,7 +33,7 @@ export XDG_CONFIG_HOME="$HOME/.config/"
 export FZF_DEFAULT_COMMAND='fd -H --no-ignore . $HOME' 
   # -H include hidden files
 # ctrl-t to insert path from home
-export FZF_CTRL_T_COMMAND='fd -H --no-ignore . $HOME'
+export FZF_CTRL_T_COMMAND='fd -H --no-ignore . /'
 
 
 # abbreviate wd in promt with `..`
@@ -58,7 +63,7 @@ alias todo="$EDITOR ~/jobb/notes/todo.md"
 alias todol='todolist'
 
 function todolist () {
-  rg --no-line-number '^#|\- \[ \]' ~/jobb/notes/todo.md | \
+  rg --no-line-number '\- \[ \]' ~/jobb/notes/todo.md | \
   sed -E 's/ - //'
 }
 
@@ -74,7 +79,6 @@ alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
 alias m="mutt"
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
 alias qmv='qmv -f do' # only show output column when using qmv
-alias vim="mvim -v"
 alias n="nvim"
 alias e="nvim"
 alias :e='nvim'
@@ -102,12 +106,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 fi
 
-
-
-
 # Correct minor spelling mistakes in cd command
 shopt -s cdspell
-
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave
@@ -139,6 +139,4 @@ open_with_fzf() {
 }
 
 cd ~/jobb
-clear
 todol
-eval "$(/opt/homebrew/bin/brew shellenv)"

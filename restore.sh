@@ -22,6 +22,12 @@
 
   # Installations for all *nix systems
 
+<<<<<<< HEAD
+=======
+
+mkdir -p ~/tmp # make directory for swap files
+
+>>>>>>> temp
 xcode-select --install # xcode
 
 # homebrew
@@ -40,6 +46,12 @@ git clone https://github.com/andreasmhallberg/dotfiles.git ~/
 #get blog
 git clone https://github.com/andreasmhallberg/andreasmhallberg.github.io.git ~/blog/
 
+<<<<<<< HEAD
+=======
+#get citation styles
+git clone https://github.com/citation-style-language/styles.git ~/citation-styles/
+
+>>>>>>> temp
 
 
 # vim
@@ -59,12 +71,23 @@ brew install exiftool # extract metadata from ebooks
 brew install ack # grep alternative
 brew install unzip
 brew install wget
+<<<<<<< HEAD
+=======
+brew install tree
+>>>>>>> temp
 brew install unrar
 brew install libxml2 # xml-grep
 brew install tmux # needed for R integration in vim with nvim-r
 brew install mactex
+<<<<<<< HEAD
 brew install xpdf
 brew install pandoc
+=======
+brew install pandoc
+brew install offlineimap
+# create a certificate to be linked in offlineimaprc
+# openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:4096 -keyout private.key -out certificate.crt
+>>>>>>> temp
 brew install pandoc-corssref
 brew install ruby # in jekyll
 brew install ruby-gems # in jekyll
@@ -102,17 +125,31 @@ tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
 
 # fonts
 brew tap homebrew/cask-fonts
+<<<<<<< HEAD
 brew cask install font-source-code-pro
 brew cask install font-source-sans-pro
 brew cask install font-brill
 brew cask install font-amiri
 brew cask install font-linux-libertine 
 brew cask install font-lateef
+=======
+brew install svn
+brew install font-source-code-pro
+brew install font-source-sans-pro
+brew install font-brill
+brew install font-amiri
+brew install font-linux-libertine 
+brew install font-lateef
+>>>>>>> temp
 
 
 #misc
 
 ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
+<<<<<<< HEAD
+=======
+ln -sf ~/dotfiles/.offlineimaprc ~/.offlineimaprc
+>>>>>>> temp
 ln -sf ~/dotfiles/.bashrc ~/.bashrc
 ln -sf ~/dotfiles/.fzf.bash ~/.fzf.bash
 mkdir -p ~/Library/Preferences/qutebrowser/
@@ -123,6 +160,11 @@ ln -sf ~/dotfiles/.Rprofile ~/.Rprofile
 ln -sf ~/dotfiles/.Renviron ~/.Renviron
 ln -sf ~/dotfiles/.xpdfrc ~/.xpdfrc
 ln -sf ~/dotfiles/.inputrc ~/.inputrc
+<<<<<<< HEAD
+=======
+mkdir -p ~/.config/nvim/
+ln -sf ~/dotfiles/init.vim ~/.config/nvim/init.vim
+>>>>>>> temp
 
 # mail
 mkdir -p ~/.mutt

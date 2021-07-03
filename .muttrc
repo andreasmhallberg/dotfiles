@@ -7,7 +7,11 @@ set ssl_force_tls=yes
 set use_from=yes
 set smtp_authenticators = 'gssapi:login'
 
+<<<<<<< HEAD
 source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+=======
+source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
+>>>>>>> temp
 
 # Default account
 source ~/dotfiles/account.gu.se.andreas.hallberg
@@ -30,7 +34,12 @@ macro index <f3> '<sync-mailbox><enter-command>source ~/dotfiles/account.gu.se.a
 set fast_reply # Don't ask for reciever or subject when replying to email.
 set include # Always include original message in reply. Don't ask.
 set recall=no # Don't ask to recall postponed messages.
+<<<<<<< HEAD
 set editor='mvim -v +"call SweType()" +"norm }o"'
+=======
+# set editor='nvim -v +"call SweType()" +"norm }o"'
+set editor='nvim -c "call SweType()" -c "norm }o"'
+>>>>>>> temp
 
 set sort = reverse-date-received
 # set sort=threads
