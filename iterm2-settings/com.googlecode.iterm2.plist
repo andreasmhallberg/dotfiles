@@ -1029,5 +1029,7 @@
 	<false/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
+	<key>WorkAroundBigSurBug</key>
+	<true/>
 </dict>
 </plist>

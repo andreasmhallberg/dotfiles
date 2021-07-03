@@ -43,6 +43,9 @@ git clone https://github.com/andreasmhallberg/dotfiles.git ~/
 #get blog
 git clone https://github.com/andreasmhallberg/andreasmhallberg.github.io.git ~/blog/
 
+#get citation styles
+git clone https://github.com/citation-style-language/styles.git ~/citation-styles/
+
 
 
 # vim
@@ -62,11 +65,11 @@ brew install exiftool # extract metadata from ebooks
 brew install ack # grep alternative
 brew install unzip
 brew install wget
+brew install tree
 brew install unrar
 brew install libxml2 # xml-grep
 brew install tmux # needed for R integration in vim with nvim-r
 brew install mactex
-brew install xpdf
 brew install pandoc
 brew install offlineimap
 # create a certificate to be linked in offlineimaprc

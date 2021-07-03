@@ -8,3 +8,5 @@ set selection-clipboard clipboard
 set adjust-open height
 
 set first-page-column 1:1
+
+set window-title-basename true
