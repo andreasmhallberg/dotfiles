@@ -4,7 +4,7 @@ lang: sv
 author: Andreas Hallberg
 papersize: a4
 fontsize: 12pt
-mainfont: Linux Libertine O
+mainfont: Linux Libertine
 date:
 header-includes:
     - \usepackage[bottom]{footmisc} 

@@ -2,6 +2,7 @@ map f toggle_fullscreen
 map F display_link
 map r reload
 map R rotate
+map i recolor 
 
 set scroll-step 50
 set selection-clipboard clipboard
@@ -10,3 +11,6 @@ set adjust-open height
 set first-page-column 1:1
 
 set window-title-basename true
+
+set selection-clipboard clipboard
+

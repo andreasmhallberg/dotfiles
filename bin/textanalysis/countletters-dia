@@ -1,2 +1,3 @@
 file=$@
+# letters followed by a diacritic
 rg -E UTF-8 -oP '[ابتثجحخدذرزسشصضطظعغفقكلمنهويئءٱأإؤةى][ًٌٍَُِّْٰ]|ٱ' $file | wc -l

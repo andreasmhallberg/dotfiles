@@ -16,4 +16,4 @@ remotehost = outlook.office365.com
 remoteuser = andreas.hallberg@sprak.gu.se
 remotepasseval = get_pass()
 ssl=true
-sslcacertfile = ~/dotfiles/certificate.crt
+sslcacertfile = ~/jobb/certificate.crt

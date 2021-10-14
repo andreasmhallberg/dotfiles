@@ -1031,5 +1031,7 @@
 	<string>/-+\~_.</string>
 	<key>WorkAroundBigSurBug</key>
 	<true/>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 </dict>
 </plist>

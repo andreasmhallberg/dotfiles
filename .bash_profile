@@ -1,6 +1,7 @@
 # Must come before fzf-stuff are sourced
 set -o vi
 
+
 # type only directory name to cd to it
 shopt -s autocd
 
@@ -51,6 +52,8 @@ RESET="$(tput sgr0)"
 
 PS1='\[\e[32m\]\w [\[\e[31m\]$(git symbolic-ref --short HEAD 2>/dev/null)\[\e[32m\]] \[\e[39m\]'
 
+# Disable new mail message
+unset MAILCHECK 
 
 # MacPorts Installer addition on 2016-08-03_at_10:37:22: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
@@ -77,7 +80,8 @@ function cs () {
 alias cd='cs'
 
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
-alias m="mutt"
+alias m="offlineimap -f INBOX && mutt"
+# alias m="mutt"
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
 alias qmv='qmv -f do' # only show output column when using qmv
 alias n="nvim"
@@ -85,13 +89,14 @@ alias e="nvim"
 alias :e='nvim'
 alias v="nvim -R"
 
+
 # git
 alias gc='git checkout'
 alias gb='git branch'
 alias gs='git status'
 alias gl='git log --graph --oneline --all'
 
-alias z="zathurafullscreen"
+alias z="zathura --mode=fullscreen"
 alias zathurafullscreen="zathura --mode=fullscreen"
 alias acrobat="launch -a Adobe\ Acrobat\ Reader\ DC"
 
@@ -121,7 +126,7 @@ export PATH="/usr/local/opt/qt/bin:$PATH"
 
 # Fix ruby link in Catalina
 export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
+export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
 
 # Bindings
 
@@ -140,4 +145,5 @@ open_with_fzf() {
 }
 
 cd ~/jobb
-todol
+clear
+# todol # list todos

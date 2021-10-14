@@ -3,7 +3,7 @@ for file in "$@"
 do 
 letters=$(countletters "$file")
 dia=$(countdiacritics-all "$file")
-dpl=$(bc <<< "scale=2;$dia/$letters")
+dpl=$(bc <<< "scale=4;$dia/$letters")
 
 echo $dpl "$file"
 done

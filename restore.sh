@@ -11,14 +11,7 @@
 # - Homebrew
 # - MacTex  - http://tug.org/mactex/mactex-download.html
 #           - update texlive when installed to get most resent packages
-# brow
-
-# Install fonts
-  # LateefGR
-  # Linux Libertine O
-  # Amiri
-  # Source Code Pro
-  # Source Sans Pro
+# brew
 
   # Installations for all *nix systems
 
@@ -54,9 +47,10 @@ mkdir -p ~/.vim/temp # make directory for swap files
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
 brew install w3m # used in mutt
-brew install r 
+# brew install r # Problems with new Mac processors. Download binary from https://cran.r-project.org/bin/macosx/ instead
 brew install coreutils # tac etc.
 brew install fd 
+brew install rar
 brew install rg 
 brew install tldr # readable man pages
 brew install bat # cat with syntax highlighting
@@ -110,6 +104,7 @@ ln -sf ~/dotfiles/karabiner ~/.config/karabiner
 tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
 
 # fonts
+## Latin
 brew tap homebrew/cask-fonts
 brew install svn
 brew install font-source-code-pro
@@ -117,7 +112,10 @@ brew install font-source-sans-pro
 brew install font-brill
 brew install font-amiri
 brew install font-linux-libertine 
+brew install font-duolos-sil
+## Arabic
 brew install font-lateef
+brew install font-scheherazade
 
 
 #misc

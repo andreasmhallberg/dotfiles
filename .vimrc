@@ -28,7 +28,7 @@ Plugin 'jalvesaq/nvim-r'                             "  r functionality and inte
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'                        "  gc<range> to comment
 Plugin 'tpope/vim-repeat'                            "  make mappings repeatable
-Plugin 'tpope/vim-vinegar'                           "  useful mappings for netrw
+" Plugin 'tpope/vim-vinegar'                           "  useful mappings for netrw. Use dirvish instead
 Plugin 'tpope/vim-characterize'                      "  simpler netrw alternative
 Plugin 'vim-pandoc/vim-pandoc-syntax'                "  good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
@@ -426,7 +426,7 @@ augroup end
 augroup OpenExternally
 autocmd!
 
-  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.docx,*.rtf,*.odt sil ex "!open " . shellescape(expand("%:p")) | b# | bd#
+  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.docx,*.rtf,*.odt,*.epub sil ex "!open " . shellescape(expand("%:p")) | b# | bd#
 
   autocmd! BufRead *.pdf silent execute "!zathura --mode=fullscreen " . shellescape(expand("%:p")) . " &>/dev/null &" | b# | bd#
 
@@ -525,7 +525,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
       endfunction
 
     autocmd! User GoyoEnter nested call <SID>goyo_enter()
-    autocmd! User GoyoLeave nested call <SID>goyo_leave()
+    autocmd! User GoyoLeave nested call <SID>goyo_leave() | syntax on 
 
 
   "{{{2 DiffChar
@@ -767,19 +767,23 @@ augroup CitationVariables
   autocmd BufRead article.arabica.md let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/arabica.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabica.docx'
   
-  autocmd BufRead article-jss.md
+  autocmd BufRead *-jss.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/journal-of-semitic-studies.csl'
 
-  autocmd BufRead article-zal.md
+  autocmd BufRead *-zal.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ZAL.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ZAL_stylesheet_with-instructions.dotx'
 
-  autocmd BufRead article-apa.md
+  autocmd BufRead *-apa.md
         \ let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/apa.docx'
 
   autocmd BufRead *-arabiyya.md
         \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/al-arabiyya.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabica.docx'
+
+  autocmd BufRead *-ijcl.md
+        \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ijcs.csl'
+
 
 augroup end
 "}}}
@@ -1030,7 +1034,7 @@ function! MarkdownLevel()
     if getline(v:lnum)=~'^<!--'
         return ">7"
     endif
-    if getline(v:lnum)=~'-->$'
+    if getline(v:lnum)=~'^-->$'
         return "<7"
     endif
     " codebloc
@@ -1136,8 +1140,8 @@ augroup FontMappings
   autocmd FileType html vnoremap <buffer>gr mf`>a</span><esc>`<i<span lang="ar" dir="rtl"><esc>`f
   " delete
   " requires vim-surround plugin
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dgr mf/]{lang=ar<cr>df}?[<cr>x`f
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gdr mf/]{lang=ar<cr>df}?[<cr>x`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>dgr mf/]{lang="ar"<cr>df}?[<cr>x`f
+  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gdr mf/]{lang="ar"<cr>df}?[<cr>x`f
   autocmd FileType tex nnoremap <buffer>dgr mf/}<cr><Bslash>textarabic<cr>df{`f
 
 augroup end
@@ -1173,6 +1177,13 @@ iab widht width
 iab introductoin introduction
 iab Syrain Syrian
 iab langauge language
+iab apporach approach
+
+
+iab aa ʿāmmiyya
+iab Aa ʿĀmmiyya
+iab ff fuṣḥā
+iab Ff Fuṣḥā
 
 " Capitalized nationalities in English
 iab arabic Arabic

@@ -18,8 +18,8 @@ settings:
     global:
       normal:
         <Meta+Ctrl+f>: fullscreen
-        D: null
         A: spawn open -a firefox {url}
+        D: null
         cm: clear-messages
         d: null
         h: back
@@ -45,7 +45,7 @@ settings:
     global: black
   colors.webpage.darkmode.enabled:
     global: false
-  content.notifications:
+  content.notifications.enabled:
     https://toolbox.iskysoft.com: false
   content.register_protocol_handler:
     https://calendar.google.com?cid=%25s: true
@@ -71,6 +71,8 @@ settings:
     global: 10000
   scrolling.smooth:
     global: true
+  statusbar.position:
+    global: bottom
   tabs.background:
     global: false
   tabs.indicator.width:
@@ -104,3 +106,5 @@ settings:
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}
+  window.title_format:
+    global: '{host} - {current_title}{title_sep}qutebrowser'
