@@ -414,12 +414,12 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant '\v(First|Second|Third|Fourth|Fifth),' containedin=ALL
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant '\<(\?[a-z0-9])\\?' containedin=ALL
+  autocmd BufEnter *.md syn match Constant '\v(First|Second|Third|Fourth|Fifth),'
+  autocmd BufEnter *.md syn match Constant '\<(\?[a-z0-9])\\?' containedin=ALL
  " spell-check double words
-autocmd FileType markdown.pandoc,mail,txt,tex syn match SpellBad '/\c\<\(\w\+\)\s\+\1\>/'
+autocmd BufEnter *.md syn match SpellBad '/\c\<\(\w\+\)\s\+\1\>/'
  " dates format yyyy-mm-dd
-  autocmd FileType markdown.pandoc,mail,txt,tex syn match Constant '\d\d\d\d-\d\d-\d\d' containedin=ALL
+ autocmd BufEnter *.md syn match Constant '\d\{2,4}-\d\d-\d\d' containedin=ALL
 augroup end
 
 " Open non-text file externally
@@ -782,7 +782,8 @@ augroup CitationVariables
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabica.docx'
 
   autocmd BufRead *-ijcl.md
-        \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ijcs.csl'
+        \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ijcl.csl'
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ijcl.docx'
 
 
 augroup end
@@ -1341,13 +1342,6 @@ augroup Chat
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex set list
-augroup end
-
-"{{{1 todo.md
-augroup Todo
-  autocmd!
-  " Syntax highlighting
-  autocmd BufEnter todo.md syn match Constant '\d\d-\d\d-\d\d' containedin=ALL
 augroup end
 
 "  vim:foldmethod=marker:nospell

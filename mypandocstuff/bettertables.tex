@@ -2,7 +2,7 @@
  
 \makeatletter
 \@ifpackageloaded{longtable}{
-  \renewenvironment{longtable}
+  \preto{longtable}
   {\begin{tabular}}
   {\end{tabular}}
 }
