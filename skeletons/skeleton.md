@@ -15,6 +15,15 @@ header-includes:
     - \newfontfamily\arabicfontsf[Script=Arabic]{Lateef}
     - \newfontfamily\arabicfontit[Script=Arabic]{Lateef}
     - \def\UrlFont{\itshape}
+    # Disable pagebreaks tables
+ #  - \preto{\longtable}{\begin{minipage}{\textwidth}}
+ #  - \appto{\endlongtable}{\bigskip\end{minipage}}
+tabPrefix:
+  - 'Table'
+  - 'Tables'
+figPrefix:
+  - 'Figure'
+  - 'Figures'
 ---
 
 \frenchspacing

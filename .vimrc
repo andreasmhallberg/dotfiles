@@ -136,7 +136,7 @@ set listchars=tab:▸\ ,eol:¬,nbsp:_        "  Representation of invisible char
 set splitright                            "  Open vsplit window to the right
 set splitbelow                            "  Open split window opens below
 set shortmess+=A                          "  No swapfile exists warning
-set expandtab                             "  tab key inserts spaces. Needed for indentation with <
+" set expandtab                             "  tab key inserts spaces. Needed for indentation with <
 set shiftwidth=2                          "  Length of tab-character for indention 4 spaces for markdown syntax
 set formatoptions=r                       "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
 set formatoptions+=j                      "  j=Where it makes sense, remove a comment leader when joining lines.
@@ -414,7 +414,7 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration
-  autocmd BufEnter *.md syn match Constant '\v(First|Second|Third|Fourth|Fifth),'
+  autocmd BufEnter *.md syn match Constant '\v([Ff]irst|[Ss]econd|[Tt]hird|[Ff]ourth|[Ff]ifth),'
   autocmd BufEnter *.md syn match Constant '\<(\?[a-z0-9])\\?' containedin=ALL
  " spell-check double words
 autocmd BufEnter *.md syn match SpellBad '/\c\<\(\w\+\)\s\+\1\>/'

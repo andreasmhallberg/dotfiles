@@ -125,8 +125,7 @@ bind "set completion-ignore-case on"
 export PATH="/usr/local/opt/qt/bin:$PATH"
 
 # Fix ruby link in Catalina
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
+export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
 
 # Bindings
 
@@ -147,3 +146,6 @@ open_with_fzf() {
 cd ~/jobb
 clear
 # todol # list todos
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+eval "$(rbenv init - bash)"

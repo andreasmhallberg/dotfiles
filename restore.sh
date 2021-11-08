@@ -109,10 +109,12 @@ brew tap homebrew/cask-fonts
 brew install svn
 brew install font-source-code-pro
 brew install font-source-sans-pro
+brew install font-source-serif-pro
 brew install font-brill
 brew install font-amiri
 brew install font-linux-libertine 
 brew install font-duolos-sil
+brew install font-gentium-plus
 ## Arabic
 brew install font-lateef
 brew install font-scheherazade
