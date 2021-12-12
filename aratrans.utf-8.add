@@ -1,5 +1,4 @@
-/encoding=utf-8
-# symlinked to ~/.vim/spell/aratrans.utf-8.ad
+# symlinked to ~/.vim/spell/aratrans.utf-8.add
 
 # Suffixes
 -ayn
@@ -11,10 +10,14 @@
 # prefixes
 al-
 
+Qurʾān
 adab
 akbar
+al-Ḥallāj
 alif
+alif maqṣūra
 allaḏī
+allāh
 amāma
 aḥmad
 aḥruf
@@ -26,6 +29,7 @@ bayt
 baʿḍ
 bināʾ
 bāb
+construction
 dalāʾl
 dars
 farʿ
@@ -38,6 +42,8 @@ fāʿil
 fī
 hal
 hamza
+hamzat al-qaṭʿ
+hamzat al-waṣl
 hāḏa
 ibtidāʾ
 idġām
@@ -87,6 +93,7 @@ maʿnā
 maḥallī
 maḥḏūf
 maṣdar
+miṣr
 mubtadaʾ
 mudāriʿ
 mujarrad
@@ -122,12 +129,14 @@ sukūn
 sīratān
 taaʾ
 tamyīz       
+tanqīṭ
 tanwīn
 tanāzuʿ
 taqdīm
 taqdīr
 tawkīd
 tawābiʿ
+taškīl
 taʾkīd
 taʾxīr
 taʿlīl
@@ -141,11 +150,14 @@ wazn
 waṣala
 waṣla
 wujūban
+wāw
 xabar
+xanjariyya
 yakūna
 yaqwul
 yawm
 yaṣil
+yāʾ
 zawāʾid
 zāʾida
 ġalaṭ
@@ -160,11 +172,9 @@ zāʾida
 ʾab
 ʾan
 ʾanna
-ʾanna
 ʾaġlāṭ
 ʾin
 ʾinna
-ʿAmal
 ʿamal
 ʿarab
 ʿarabiyya
@@ -179,9 +189,9 @@ zāʾida
 ḍammatān
 ḥadīṯ
 ḥaraka
+ḥarakāt
 ḥarf
 ḥarfayn
-ḥaḍf
 ḥaḏf
 ḥikma
 ḥikmat
@@ -192,6 +202,7 @@ zāʾida
 ṣāra
 ṣārat
 ṣīġa
+ṯalāṯa
 ṯalāṯat
 ṯiqal
 ṯāliṯ
@@ -224,6 +235,7 @@ as-Suyūṭī
 Muḥammad
 Ziyād
 Hindāwi
+Yūsuf Idrīs
 
 # Words added with zg/b here
-
+maktabat

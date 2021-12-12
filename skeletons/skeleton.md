@@ -18,12 +18,7 @@ header-includes:
     # Disable pagebreaks tables
  #  - \preto{\longtable}{\begin{minipage}{\textwidth}}
  #  - \appto{\endlongtable}{\bigskip\end{minipage}}
-tabPrefix:
-  - 'Table'
-  - 'Tables'
-figPrefix:
-  - 'Figure'
-  - 'Figures'
+notes-after-puncturation: true
 ---
 
 \frenchspacing

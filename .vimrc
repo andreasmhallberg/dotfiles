@@ -241,8 +241,10 @@ command! FlipR call FlipRMarkdown()
 
 "}}}2
 
+" Open files
 
-
+command! Re edit ~/jobb/readingnotes
+command! Uni edit ~/jobb/notes/unicode.md
 command! Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
 command! Todo edit ~/jobb/notes/todo.md
 
@@ -256,6 +258,9 @@ command! -bang -nargs=1 -complete=file LFilter call s:FilterLocationList(<bang>0
 
 
 "{{{1 General mappings
+
+onoremap w iw
+onoremap W iW
 
 " toggle hlsearch
 nnoremap <f12> :set hlsearch!<CR>
@@ -678,6 +683,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 syntax on
 colorscheme gruvbox " super sexy
 set bg=dark " Dark background
+let g:gruvbox_contrast_dark="soft" " soft|medium|hard
 
 set redrawtime=5000 " dont give up on large files
 
@@ -764,8 +770,10 @@ let g:pandoc_compilation_extension = 'pdf'
 augroup CitationVariables
   autocmd!
 
-  autocmd BufRead article.arabica.md let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/arabica.csl'
+  autocmd BufRead article.arabica.md,*-arabica.md let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/arabica.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/arabica.docx'
+  
+  autocmd BufRead *-suecana.md let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/orientalia-suecana.csl'
   
   autocmd BufRead *-jss.md
         \  let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/journal-of-semitic-studies.csl'
@@ -1007,6 +1015,7 @@ augroup MardownSettings
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
+  autocmd Filetype markdown,markdown.pandoc syn match MDnospell "{.\{-}}" contains=@NoSpell
 augroup end
 
 

@@ -7,16 +7,23 @@
 
 # BAD!
 
-postilions/!
-slop/!
-proffered/!
-specif/!
-tat/!
+chicer/!
 es/!
 fallow/!
 fallowed/!
-withs/!
+postilions/!
+proffered/!
+revile/!
+reviles/!
 sereis/!
+slop/!
+specif/!
+tat/!
+withs/!
+thees/!
+roughtly/!
+noral/!
+asses/!
 
 # Acronyms
 
@@ -50,6 +57,7 @@ gen.
 nom.
 
 10th
+Al‑Kitaab
 Akkadian
 Al Jazeera
 Andreas
@@ -76,10 +84,15 @@ Routledge
 Sami
 Sibawayhi
 Spearman
+TAFL
 Tashkeela
 UG
 Velaraized
+Younes
 abjad
+abjad
+absolutus
+abǧad
 ad hoc
 adnominal
 allophones
@@ -87,6 +100,7 @@ analyzablility
 animacy
 arabization
 arabophone
+aspectual
 attractors
 axe
 aya
@@ -102,6 +116,7 @@ classificatory
 clitic
 clitics
 codeswitching
+colloquials
 combinatory
 communicatively
 complementizer
@@ -111,10 +126,12 @@ consonantal
 cooccur
 counterintuitive
 dataset
+de facto
 decipherability
+declensional
 decomposable
 derivational
-descoverable
+discoverable
 diacritization
 diacritize
 diacritized
@@ -126,14 +143,19 @@ diglossic
 diptote
 diptotes
 directionality
+disambiguate
 disambiguated
+disambiguates
 disambiguating
+disfluency
 disproportionally
 distractor
 distractors
 duals
 durations
+durative
 elative
+embeddedness
 embodiments
 enclitic
 endogram
@@ -150,11 +172,11 @@ formulae
 fovea
 foveal
 frequentist
-fuṣḥā
 garden pathed
 gemination
 generalizable
 genitivkonstruktion
+globalization
 grammaticalized
 grapheme
 graphemes
@@ -169,7 +191,6 @@ historicizing
 homographic
 homography
 homophony
-icraab
 identificatory
 imperfective
 implicational
@@ -193,10 +214,10 @@ interword
 intraspeaker
 invariance
 itch
-iʿraab
 jussive
 kashida
 kashidas
+langaugehood
 latencies
 lecturenotes
 lektionsplanering
@@ -205,6 +226,7 @@ lexeme
 lexemes
 lexica
 lexicalized
+listable
 literatures
 logogen
 logographs
@@ -232,15 +254,17 @@ operationalizable
 operationalization
 operationalizations
 operationalize
+operationalized
 optionality
 ordintern
 ordinterna
+orthographical
 outgroup
 outlier
 overhearer
 packpacking
 panarabism
-pandoc
+Pandoc
 parafoveal
 parafoveally
 pardigmatic
@@ -250,6 +274,7 @@ phonograms
 phonotactics
 pictographic
 piginisation
+plasticy
 pleremic
 plosives
 pluricentric
@@ -257,10 +282,12 @@ posttarget
 postvocalic
 prescribers
 prescriptivism
+prescriptivism
 prescriptivist
 prioristically
 probabilistically
 proclitic
+proficiencies
 prosodic
 pseudowords
 psycholinguistic
@@ -272,19 +299,19 @@ resampling
 saccade
 saccades
 selfregulated
-shadda
 situationally
 skewedness
+sociolinguistically
+sociocultural
 sociolinguistic
 sociolinguistics
 sociolinguists
-standardarabisar
-standardarabiska
 standardness
 suppletion
 suppletive
 sura
 suras
+synchronic
 synchronically
 syncretism
 syncronic
@@ -292,20 +319,19 @@ systematicity
 topicalization
 translocative
 triptote
-triptote
 triptotes
 unanalyzable
 uncodified
 underrepresentation
+underspecified
 undiacritized
+undirived
 undotted
 uninflected
-uninlfected
 unitizability
 unpointed
 unvocalized
 unvowelled
-unwowelled
 utesluten
 variationist
 velaraised
@@ -319,28 +345,8 @@ vowellessness
 vowelling
 whitespace
 wildcard
-abǧad
-Qurʾān
-synchronic
-orthographical
-embeddedness
-disfluency
-undirived
-aspectual
-durative
-declensional
-langaugehood
-globalization
-de facto
-prescriptivism
-sociallinguistically
-Younes
-colloquials
-sociocultural
-proficiencies
-TAFL
-underspecified
-absolutus
-disambiguates
-listable
-operationalized
+overhearers
+whereafter
+foci
+arabiCorpus
+Hindawi

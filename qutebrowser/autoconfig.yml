@@ -23,6 +23,8 @@ settings:
         cm: clear-messages
         d: null
         h: back
+        j: scroll-px 0 25
+        k: scroll-px 0 -25
         l: forward
         q: tab-close
   colors.tabs.bar.bg:
@@ -104,6 +106,7 @@ settings:
       ox-ea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/q="{}"
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
+      uba: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=default_scope&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}
   window.title_format:
