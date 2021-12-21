@@ -913,19 +913,20 @@ autocmd!
 
 
 
-  "  to html.
-  "  adds table padding
-  autocmd Filetype markdown,pandoc.markdown
-      \ nnoremap <buffer><Leader>ph
-      \ :w<CR>
-      \ :AsyncRun
-      \ pandoc -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html+grid_tables %
-      \ --columns=80
-      \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-      \ --filter pandoc-crossref
-      \ -t html
-      \ <bar> sed 's/\<table\>/\<table cellspacing="10pt"\>/'
-      \ > '%'.html<cr>
+"  to html.
+"  adds table padding
+autocmd Filetype markdown,pandoc.markdown
+    \ nnoremap <buffer><Leader>ph
+    \ :w <bar>
+    \ execute 'AsyncRun pandoc ' . '%' .
+    \ ' -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html+grid_tables %
+    \ --filter pandoc-crossref
+    \ --citeproc
+    \ --columns=100
+    \ --bibliography ' . g:pandoc_bibliography .
+    \ ' --csl ' . g:pandoc_citation_style .
+    \ ' -t html
+    \ -o ' . g:pandoc_output_dir . '%' . '.html'<cr>
 
   " to html from visual selection
   autocmd Filetype markdown,pandoc.markdown
