@@ -11,9 +11,8 @@ header-includes:
  #  - \usepackage{titleps}
  #  - \newpagestyle{mystyle}{\sethead{}{\bfseries\sffamily\Large\color{black!20} DRAFT --- DO NOT DISTRIBUTE}{}\setfoot{}{\thepage}{}}
  #  - \pagestyle{mystyle}
-    - \newfontfamily\arabicfont[Script=Arabic]{Lateef}
-    - \newfontfamily\arabicfontsf[Script=Arabic]{Lateef}
-    - \newfontfamily\arabicfontit[Script=Arabic]{Lateef}
+    - \babelfont[arabic]{rm}{Lateef}
+    - \newcommand{\RL}{\null}
     - \def\UrlFont{\itshape}
     # Disable pagebreaks tables
  #  - \preto{\longtable}{\begin{minipage}{\textwidth}}
