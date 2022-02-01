@@ -108,16 +108,19 @@ set statusline=%F          "  Full path and file name.
 set statusline+=%m         "  Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
 set statusline+=%=         "  Separator between left and right alignmet
 set statusline+=\ \ \ \ 
-set statusline+=%l         "  Line number
+" set statusline+=%l         "  Line number
 " set statusline+=/
-" set statusline+=%L         "  Lines in buffer
+set statusline+=%L         "  Lines in buffer
+set statusline+=l         "  Lines in buffer
 " set statusline+=\ 
 " set statusline+=%n  " buffer number
-set statusline+=\|
-set statusline+=%B  " character code
+set statusline+=\ 
+set statusline+=%{wordcount().words}w 
+set statusline+=\ 
+" set statusline+=%B  " character code
 set statusline+=\ 
 set statusline+=%y         "  Filetype
-set statusline+=\ 
+" set statusline+=\ 
 set statusline+=%k         "  Current keymap
 
 set guioptions-=r                        " Remove left and right scrollbar
@@ -147,6 +150,16 @@ endif
 
 " }}}1
 "{{{1 Commands
+
+" FixHtmlPaddim
+function! FixHTMLTablePadding()
+  %s/<table>/<table cellspacing="10pt">/g
+endfunction
+
+function! DoubleWordCorr()
+  %s/\(\<\S\+\>\) \<\1\>/\1/gc
+endfunction  
+command! DoubleWordCorr call DoubleWordCorr()
 
 " Delete hidden buffers
 function DeleteHiddenBuffers()
@@ -807,7 +820,7 @@ autocmd!
     \ :w <bar>
     \ execute 'AsyncRun pandoc ' . '%' .
     \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart+task_lists
-    \ --pdf-engine=xelatex
+    \ --pdf-engine xelatex
     \ --filter pandoc-crossref
     \ --citeproc
     \ --columns=100
@@ -829,7 +842,7 @@ autocmd!
     \ --number-sections
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --csl ' . g:pandoc_citation_style .
-    \ ' -o ' . '%' . '.pdf'<cr>
+    \ ' -o ' . '%' . '.pdf'<CR>
 
   "  to beamer 
   autocmd Filetype markdown,pandoc.markdown
@@ -914,19 +927,18 @@ autocmd!
 
 
 "  to html.
-"  adds table padding
 autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer><Leader>ph
     \ :w <bar>
     \ execute 'AsyncRun pandoc ' . '%' .
-    \ ' -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html+grid_tables %
+    \ ' -f markdown+implicit_figures+table_captions+smart+all_symbols_escapable+raw_html+grid_tables
     \ --filter pandoc-crossref
     \ --citeproc
     \ --columns=100
     \ --bibliography ' . g:pandoc_bibliography .
     \ ' --csl ' . g:pandoc_citation_style .
-    \ ' -t html
-    \ -o ' . g:pandoc_output_dir . '%' . '.html'<cr>
+    \ ' -o ' . g:pandoc_output_dir . '%' . '.html'<CR>
+
 
   " to html from visual selection
   autocmd Filetype markdown,pandoc.markdown

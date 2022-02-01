@@ -79,6 +79,10 @@ function cs () {
         }
 alias cd='cs'
 
+function cutfirstpage () {
+    cpdf "$@" 2-end -o "$@"
+        }
+
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
 alias m="offlineimap -f INBOX && mutt"
 # alias m="mutt"
@@ -88,6 +92,7 @@ alias n="nvim"
 alias e="nvim"
 alias :e='nvim'
 alias v="nvim -R"
+alias print='launch -p '
 
 
 # git
@@ -103,6 +108,7 @@ alias acrobat="launch -a Adobe\ Acrobat\ Reader\ DC"
 alias gcal="gcalcli"
 alias agenda="gcalcli agenda --details end"
 alias calw="gcalcli calw --details end --monday"
+
 
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
 

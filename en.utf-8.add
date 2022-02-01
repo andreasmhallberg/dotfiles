@@ -24,6 +24,7 @@ thees/!
 roughtly/!
 noral/!
 asses/!
+studding/!
 
 # Acronyms
 
@@ -36,30 +37,37 @@ AOI
 AOIs
 L1
 L2
+UG
+VR
+TAFL
+NOM
+ACC
+GEN
 
 # Abbreviations
 
-et al.
-eg.,
-etc.
-s.
-pl.
-part.
-m.pl.
-i.e.,
-fs.
-ms.
-vs.
-p.
 DpL
 acc.
+eg.,
+et al.
+etc.
+fs.
 gen.
+i.e.,
+m.pl.
+ms.
 nom.
+nr.
+p.
+part.
+pl.
+s.
+vs.
 
 10th
-Al‑Kitaab
 Akkadian
 Al Jazeera
+Al‑Kitaab
 Andreas
 Arabica
 Baharna
@@ -70,26 +78,27 @@ Clitics
 Damscene
 Gothenburg
 Hallberg
+Hallberg's
 Hassan
+Hindawi
 Humanisten
 Latinate
 Levantine
 Mekka
 Meänkieli
-NOM
+Mrowe
 Niehorster
+Pandoc
 Quran
 Quranic
 Routledge
+Saiegh-Haddad
 Sami
 Sibawayhi
 Spearman
-TAFL
 Tashkeela
-UG
-Velaraized
+velaraized
 Younes
-abjad
 abjad
 absolutus
 abǧad
@@ -97,11 +106,14 @@ ad hoc
 adnominal
 allophones
 analyzablility
+anecdotally
 animacy
+arabiCorpus
 arabization
 arabophone
 aspectual
 attractors
+automatization
 axe
 aya
 ayas
@@ -131,7 +143,6 @@ decipherability
 declensional
 decomposable
 derivational
-discoverable
 diacritization
 diacritize
 diacritized
@@ -147,6 +158,7 @@ disambiguate
 disambiguated
 disambiguates
 disambiguating
+discoverable
 disfluency
 disproportionally
 distractor
@@ -167,6 +179,7 @@ excemptive
 extralinguistic
 fMRI
 fictionality
+foci
 forgrounding
 formulae
 fovea
@@ -217,6 +230,7 @@ itch
 jussive
 kashida
 kashidas
+kerning
 langaugehood
 latencies
 lecturenotes
@@ -262,9 +276,9 @@ orthographical
 outgroup
 outlier
 overhearer
+overhearers
 packpacking
 panarabism
-Pandoc
 parafoveal
 parafoveally
 pardigmatic
@@ -298,12 +312,13 @@ repositioning
 resampling
 saccade
 saccades
+searchability
 selfregulated
 situationally
 skewedness
-sociolinguistically
 sociocultural
 sociolinguistic
+sociolinguistically
 sociolinguistics
 sociolinguists
 standardness
@@ -311,10 +326,12 @@ suppletion
 suppletive
 sura
 suras
+syllabaries
 synchronic
 synchronically
 syncretism
 syncronic
+syntacticroles
 systematicity
 topicalization
 translocative
@@ -329,6 +346,7 @@ undirived
 undotted
 uninflected
 unitizability
+unpatterned
 unpointed
 unvocalized
 unvowelled
@@ -339,15 +357,21 @@ verbless
 verbyness
 vis á vis
 vokoliserad
+vowalized
 vowelization
 vowelled
 vowellessness
 vowelling
+whereafter
 whitespace
 wildcard
-overhearers
-whereafter
-foci
-arabiCorpus
-Hindawi
-kerning
+de-emphasizing
+agglutinative
+misrepresentions
+Mariam
+Dalhoumi
+Dalhoumi's
+infixes
+SEK
+recoded
+recode
