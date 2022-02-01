@@ -1,4 +1,5 @@
 .DS_Store
+offlineimap.pyc
 *.swp
 *.log
 *.crt
