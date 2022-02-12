@@ -891,13 +891,13 @@ autocmd!
   autocmd Filetype markdown 
     \ nnoremap <buffer> <Leader>pt :w<CR>
     \ :AsyncRun pandoc
-    \ -f markdown+implicit_figures+table_captions+smart %
+    \ -f markdown+implicit_figures+table_captions+smart+raw_tex %
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
     \ --biblatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --wrap=none
-    \ -so '%'.tex<cr>
+    \ -o '%'.tex<cr>
 
   " to tex visual selection
   autocmd Filetype markdown 
@@ -970,7 +970,7 @@ augroup end
 autocmd Filetype tex
   \ nnoremap <buffer> <Leader>pp :w<CR>
   \ :AsyncRun 
-  \ xelatex --aux-directory=~/tmp --synctex=1 --src-specials %
+  \ xelatex --synctex=1 --src-specials %
   \ && mv '%<'.pdf '%'.pdf<CR>
 
 " tex do docx

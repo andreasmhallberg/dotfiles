@@ -7,13 +7,15 @@ fontsize: 12pt
 mainfont: Linux Libertine
 date:
 header-includes:
-    - \usepackage[bottom]{footmisc} 
+  - \usepackage[bottom]{footmisc} 
  #  - \usepackage{titleps}
  #  - \newpagestyle{mystyle}{\sethead{}{\bfseries\sffamily\Large\color{black!20} DRAFT --- DO NOT DISTRIBUTE}{}\setfoot{}{\thepage}{}}
  #  - \pagestyle{mystyle}
-    - \babelfont[arabic]{rm}{Lateef}
-    - \newcommand{\RL}{\null}
-    - \def\UrlFont{\itshape}
+  - |
+    ```{=latex}
+    \babelfont[arabic]{rm}[Scale=1.5]{Lateef}
+    ```
+  - \def\UrlFont{\itshape}
     # Disable pagebreaks tables
  #  - \preto{\longtable}{\begin{minipage}{\textwidth}}
  #  - \appto{\endlongtable}{\bigskip\end{minipage}}

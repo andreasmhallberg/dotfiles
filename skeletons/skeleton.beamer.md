@@ -8,9 +8,11 @@ slide-level: 2
 classoption:
   - 8pt
 header-includes:
-  - \newfontfamily\arabicfont[Script=Arabic]{Lateef}
-  - \newfontfamily\arabicfontsf[Script=Arabic]{Lateef}
-  - \newfontfamily\arabicfontit[Script=Arabic]{Amiri}
+  - |
+    ```{=latex}
+    \babelfont[arabic]{rm}[Scale=1.5]{Lateef}
+    ```
+  - \def\UrlFont{\itshape}
   - \frenchspacing
   - \renewcommand\toprule{\null}
   - \renewcommand\midrule{\null}
