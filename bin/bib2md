@@ -1,0 +1,1 @@
+rg --multiline "\S*\{$@,(\n.*},)*\n.*}$" ~/dotfiles/mylatexstuff/bibliotek.bib | pandoc -C -f biblatex -t markdown_strict-citations --csl ~/citation-styles/apa.csl --wrap=none
