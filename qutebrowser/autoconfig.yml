@@ -28,7 +28,7 @@ settings:
         l: forward
         q: tab-close
   colors.tabs.bar.bg:
-    global: white
+    global: gray
   colors.tabs.even.bg:
     global: gray
   colors.tabs.even.fg:
@@ -45,6 +45,8 @@ settings:
     global: white
   colors.tabs.selected.odd.fg:
     global: black
+  colors.webpage.darkmode.contrast:
+    global: 0.0
   colors.webpage.darkmode.enabled:
     global: false
   content.notifications.enabled:
@@ -52,6 +54,8 @@ settings:
   content.register_protocol_handler:
     https://calendar.google.com?cid=%25s: true
     https://mail.google.com?extsrc=mailto&url=%25s: false
+  content.user_stylesheets:
+    global: null
   downloads.position:
     global: bottom
   downloads.remove_finished:
@@ -73,8 +77,13 @@ settings:
     global: 10000
   scrolling.smooth:
     global: true
+  spellcheck.languages:
+    global:
+    - en-US
   statusbar.position:
     global: bottom
+  statusbar.show:
+    global: always
   tabs.background:
     global: false
   tabs.indicator.width:

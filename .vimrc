@@ -41,7 +41,7 @@ Plugin 'vim-scripts/YankRing.vim'
 " Plugin 'maxbrunsfeld/vim-yankstack'                  "  Lighter yankring
 Plugin 'rhysd/vim-grammarous'                        "  LanguageTool integration for grammar checking
 " Plugin 'blueyed/vim-diminactive'                   "  Dims window that is not in focus. Clashes with FZF in netrw
-Plugin 'rickhowe/diffchar.vim'                       "  Character wise diff
+" Plugin 'rickhowe/diffchar.vim'                       "  Character wise diff
 " Plugin 'francoiscabrol/ranger.vim'
 
 " Colorschemes
@@ -819,7 +819,7 @@ autocmd!
     \ nnoremap <buffer> <Leader>pp 
     \ :w <bar>
     \ execute 'AsyncRun pandoc ' . '%' .
-    \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart+task_lists
+    \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart+task_lists-auto_identifiers
     \ --pdf-engine xelatex
     \ --filter pandoc-crossref
     \ --citeproc
@@ -970,7 +970,7 @@ augroup end
 autocmd Filetype tex
   \ nnoremap <buffer> <Leader>pp :w<CR>
   \ :AsyncRun 
-  \ xelatex --synctex=1 --src-specials %
+  \ xelatex --src-specials %
   \ && mv '%<'.pdf '%'.pdf<CR>
 
 " tex do docx

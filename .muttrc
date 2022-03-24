@@ -26,6 +26,8 @@ folder-hook 'account.gu.se.andreas.hallberg' 'source ~/dotfiles/account.gu.se.an
 macro index <f2> '<sync-mailbox><enter-command>source ~/dotfiles/account.com.gmail.andreasmartenhallberg<enter><change-folder>!<enter>'
 macro index <f3> '<sync-mailbox><enter-command>source ~/dotfiles/account.gu.se.andreas.hallberg<enter><change-folder>!<enter>'
 
+macro index,pager <tab> "<shell-escape>offlineimap -f INBOX<enter>" "Sync mailbox"
+
 
 set fast_reply # Don't ask for reciever or subject when replying to email.
 set include # Always include original message in reply. Don't ask.

@@ -79,6 +79,11 @@ function cs () {
         }
 alias cd='cs'
 
+function bib2md () {
+rg --multiline "\S*\{$@,(\n.*},)*\n.*}$" ~/dotfiles/mylatexstuff/bibliotek.bib | pandoc -C -f biblatex -t markdown_strict-citations --csl ~/citation-styles/apa.csl --wrap=none
+
+}
+
 function cutfirstpage () {
     cpdf "$@" 2-end -o "$@"
         }
@@ -99,7 +104,7 @@ alias print='launch -p '
 alias gc='git checkout'
 alias gb='git branch'
 alias gs='git status'
-alias gl='git log --graph --oneline --all'
+alias gl="git log --pretty=format:'%h %C(blue) %<|(20) %as %C(auto) %d %s' --graph"
 
 alias z="zathura --mode=fullscreen"
 alias zathurafullscreen="zathura --mode=fullscreen"
@@ -155,3 +160,6 @@ clear
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
 eval "$(rbenv init - bash)"
+
+
+
