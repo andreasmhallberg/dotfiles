@@ -65,6 +65,8 @@ export CLICOLOR=1
 
 alias todo="$EDITOR ~/jobb/notes/todo.md"
 alias todol='todolist'
+alias cv="$EDITOR ~/jobb/CV/cv.tex"
+
 
 function todolist () {
   rg --no-line-number '\- \[ \]' ~/jobb/notes/todo.md | \
@@ -98,7 +100,6 @@ alias e="nvim"
 alias :e='nvim'
 alias v="nvim -R"
 alias print='launch -p '
-
 
 # git
 alias gc='git checkout'

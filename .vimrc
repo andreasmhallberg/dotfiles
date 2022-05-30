@@ -256,8 +256,8 @@ command! FlipR call FlipRMarkdown()
 
 " Open files
 
-command! Re edit ~/jobb/readingnotes
-command! Uni edit ~/jobb/notes/unicode.md
+command! Re edit ~/**/readingnotes
+command! Uni edit ~/**/notes/unicode.md
 command! Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
 command! Todo edit ~/jobb/notes/todo.md
 
@@ -334,7 +334,7 @@ function! TTS()
          \ | sed -E "s/&nbsp;/ /g"
          \ | sed -E "s/[ʿʾ]//g"
          \ | sed -E "s/SA/S A/g"
-         \ | say --voice='. s:voice . ' -r 250 &')
+         \ | say --voice='. s:voice . ' -r 200 &')
     nnoremap <buffer><silent> <esc> :call system('killall say')<CR>
 endfunction
 
@@ -696,7 +696,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 syntax on
 colorscheme gruvbox " super sexy
 set bg=dark " Dark background
-let g:gruvbox_contrast_dark="soft" " soft|medium|hard
+let g:gruvbox_contrast_dark="medium" " soft|medium|hard
 
 set redrawtime=5000 " dont give up on large files
 
@@ -970,7 +970,7 @@ augroup end
 autocmd Filetype tex
   \ nnoremap <buffer> <Leader>pp :w<CR>
   \ :AsyncRun 
-  \ xelatex --src-specials %
+  \ xelatex %
   \ && mv '%<'.pdf '%'.pdf<CR>
 
 " tex do docx
@@ -1154,11 +1154,11 @@ augroup FontMappings
 
 " Arabic r
   " nomral mode
-  autocmd FileType markdown,markdown.pandoc,mail nnoremap <buffer>gr lmfbi[<esc>ea]{lang="ar" dir="rtl"}<esc>`f
+  autocmd FileType markdown,markdown.pandoc,mail nnoremap <buffer>gr lmfbi[<esc>ea]{lang=ar}<esc>`f
   autocmd FileType tex nnoremap <buffer>gr lmfbi<Bslash>textarabic{<esc>ea}<esc>`f
   autocmd FileType html nnoremap <buffer>gr lmfbi<span lang="ar" dir="rtl"><esc>ea</span><esc>`f
   " visual mode 
-  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gr mf<esc>`<i[<esc>`>a]{lang="ar" dir="rtl"}<esc>`f
+  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gr mf<esc>`<i[<esc>`>a]{lang=ar}<esc>`f
   autocmd FileType tex  vnoremap <buffer>gr mf<esc>`<i<Bslash>textarabic{<esc>`>a}<esc>`f
   autocmd FileType html vnoremap <buffer>gr mf`>a</span><esc>`<i<span lang="ar" dir="rtl"><esc>`f
   " delete
@@ -1202,6 +1202,8 @@ iab Syrain Syrian
 iab langauge language
 iab apporach approach
 
+" Swedish
+iab istället i stället
 
 iab aa ʿāmmiyya
 iab Aa ʿĀmmiyya
@@ -1295,20 +1297,20 @@ augroup readingnotes
   autocmd!
   " Prettier list indentation after line break
   " Shift 2 characters after break
-  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal breakindentopt=shift:2
+  autocmd BufRead,BufEnter **/readingnotes/*.md setlocal breakindentopt=shift:2
   " Don't fold
-  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal nofoldenable
+  autocmd BufRead,BufEnter **/readingnotes/*.md setlocal nofoldenable
   " Write in English
-  autocmd BufRead,BufEnter ~/*/readingnotes/* call EngType()
+  autocmd BufRead,BufEnter **/readingnotes/*.md call EngType()
   " Highlight page refs at end of line
-  autocmd BufRead,BufEnter ~/*/readingnotes/*.md syn match Constant "\v [xvi0-9]+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
+  autocmd BufRead,BufEnter **/readingnotes/*.md syn match Constant "\v [xvi0-9]+(-{1,2}|,)?(\d+)?(n\d+)?\s*$" containedin=ALL
   " Highlight indefinitely indented comments
-  autocmd BufRead,BufEnter ~/*/readingnotes/* syn match Comment "\v^\s*\>.*$"
+  autocmd BufRead,BufEnter **/readingnotes/*.md syn match Comment "\v^\s*\>.*$"
   " For completion of keywords 
-  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal iskeyword+=@-@
-  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal iskeyword+=-
-  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal complete +=sKeywords.md
-  autocmd BufRead,BufEnter ~/*/readingnotes/* setlocal breakindent
+  autocmd BufRead,BufEnter **/readingnotes/*.md setlocal iskeyword+=@-@
+  autocmd BufRead,BufEnter **/readingnotes/*.md setlocal iskeyword+=-
+  autocmd BufRead,BufEnter **/readingnotes/*.md setlocal complete +=sKeywords.md
+  autocmd BufRead,BufEnter **/readingnotes/*.md setlocal breakindent
   " Highlight when listing radingnotes
   " year
   autocmd FileType dirvish syn match Constant '\v\d\d\d\d[abc]?\.' containedin=ALL

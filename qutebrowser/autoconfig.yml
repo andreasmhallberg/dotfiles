@@ -28,7 +28,7 @@ settings:
         l: forward
         q: tab-close
   colors.tabs.bar.bg:
-    global: gray
+    global: black
   colors.tabs.even.bg:
     global: gray
   colors.tabs.even.fg:
