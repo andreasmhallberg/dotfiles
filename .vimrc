@@ -144,6 +144,7 @@ set shiftwidth=2                          "  Length of tab-character for indenti
 set formatoptions=r                       "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
 set formatoptions+=j                      "  j=Where it makes sense, remove a comment leader when joining lines.
 set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
+set maxmempattern=2000000
 if has('nvim')
   set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20
 endif
@@ -157,7 +158,8 @@ function! FixHTMLTablePadding()
 endfunction
 
 function! DoubleWordCorr()
-  %s/\(\<\S\+\>\) \<\1\>/\1/gc
+  " %s/\(\<\S\+\>\) \<\1\>/\1/gc
+  %s/\v(<\S+( \S+)*>) <\1>/\1/gc
 endfunction  
 command! DoubleWordCorr call DoubleWordCorr()
 
@@ -893,7 +895,6 @@ autocmd!
     \ :AsyncRun pandoc
     \ -f markdown+implicit_figures+table_captions+smart+raw_tex %
     \ --pdf-engine=xelatex
-    \ --filter pandoc-crossref
     \ --biblatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --wrap=none

@@ -112,6 +112,7 @@ brew install font-source-sans-pro
 brew install font-source-serif-pro
 brew install font-brill
 brew install font-amiri
+brew install font-libertinus
 brew install font-linux-libertine 
 brew install font-duolos-sil
 brew install font-gentium-plus

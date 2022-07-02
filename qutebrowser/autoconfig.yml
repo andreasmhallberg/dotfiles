@@ -11,14 +11,13 @@ settings:
       q: quit
       w: session-save
       wq: quit --save
-      zotero: spawn --userscript zotero
   auto_save.session:
     global: true
   bindings.commands:
     global:
       normal:
         <Meta+Ctrl+f>: fullscreen
-        A: spawn open -a firefox {url}
+        A: spawn open -a 'Google Chrome' {url}
         D: null
         cm: clear-messages
         d: null
@@ -49,6 +48,8 @@ settings:
     global: 0.0
   colors.webpage.darkmode.enabled:
     global: false
+  content.geolocation:
+    https://www.sas.se: true
   content.notifications.enabled:
     https://toolbox.iskysoft.com: false
   content.register_protocol_handler:

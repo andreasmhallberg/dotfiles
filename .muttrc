@@ -8,6 +8,7 @@ set use_from=yes
 set smtp_authenticators = 'gssapi:login'
 
 source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
+# source ~/.mutt/gruvbox/colors-gruvbox-shuber.muttrc
 
 # Default account
 source ~/dotfiles/account.gu.se.andreas.hallberg
@@ -32,8 +33,8 @@ macro index,pager <tab> "<shell-escape>offlineimap -f INBOX<enter>" "Sync mailbo
 set fast_reply # Don't ask for reciever or subject when replying to email.
 set include # Always include original message in reply. Don't ask.
 set recall=no # Don't ask to recall postponed messages.
-# set editor='nvim -v +"call SweType()" +"norm }o"'
-set editor='nvim -c "call SweType()" -c "norm }o"'
+# set editor='nvim -c "call SweType()" -c "norm }o"'
+set editor=nvim
 
 set sort = reverse-date-received
 # set sort=reverse-threads
