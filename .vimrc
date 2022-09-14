@@ -173,9 +173,7 @@ function DeleteHiddenBuffers()
 endfunction
 
 " Easier Arabic transcription
-
 "{{{2 EALL transcription 
-" TODO: add exceptions for text, extreme
 function! EALLToggle()
   if !exists("b:eallmappings")
     let b:eallmappings = 0
@@ -256,10 +254,10 @@ command! FlipR call FlipRMarkdown()
 
 "}}}2
 
-" Open files
+" {{{2 File/dir-opening commands
 
-command! Re edit ~/**/readingnotes
-command! Uni edit ~/**/notes/unicode.md
+command! Re edit ~/readingnotes
+command! Uni edit ~/jobb/notes/unicode.md
 command! Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
 command! Todo edit ~/jobb/notes/todo.md
 
@@ -273,9 +271,6 @@ command! -bang -nargs=1 -complete=file LFilter call s:FilterLocationList(<bang>0
 
 
 "{{{1 General mappings
-
-onoremap w iw
-onoremap W iW
 
 " toggle hlsearch
 nnoremap <f12> :set hlsearch!<CR>
@@ -303,7 +298,7 @@ function! OverveiwToggle()
   endif
 endfunction
 
-" make Q usefule. Avoid hitting Ex-mode by mistake
+" make Q usefule. Avoid entering Ex-mode by mistake
 nnoremap Q :q
 
 nnoremap <Leader>o :call OverveiwToggle()<CR>
@@ -521,7 +516,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     " --color: Search color options
 
     command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
-
 
   "{{{2 undotree
   
@@ -851,7 +845,7 @@ autocmd!
     \ nnoremap <buffer><Leader>pb 
     \ :w<CR>
     \ :execute 'AsyncRun pandoc ' . '%' .
-    \ ' -f markdown+implicit_figures+smart
+    \ ' -f markdown+implicit_figures+smart+all_symbols_escapable
     \ -t beamer
     \ --citeproc
     \ --pdf-engine=xelatex
@@ -1105,7 +1099,7 @@ nnoremap Y y$
 " U to redo
 nnoremap U <C-r>
 
-" Choose first word in spelling list preceding misspelled word
+" Choose first word in spelling list for preceding misspelled word
 nnoremap zz <esc>mz[s1z=e`z
 
 " Back space to alternate buffer
@@ -1172,7 +1166,6 @@ augroup end
 
 " }}}2
 " {{{2 CHARACTER INPUT
-
 inoremap <M-e> ə
 inoremap <M-E> Ə
 " non-breaking hyphen
@@ -1205,6 +1198,7 @@ iab apporach approach
 
 " Swedish
 iab istället i stället
+iab spårk språk
 
 iab aa ʿāmmiyya
 iab Aa ʿĀmmiyya
@@ -1352,7 +1346,7 @@ augroup MailStuff
   autocmd FileType mail setlocal iskeyword+=@-@
   autocmd FileType mail setlocal iskeyword+=.
   autocmd FileType mail setlocal iskeyword+=_
-  " format text
+  " format text with Enter
   autocmd FileType mail nnoremap <buffer> <CR> gqip
 augroup end
 

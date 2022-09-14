@@ -49,6 +49,7 @@ settings:
   colors.webpage.darkmode.enabled:
     global: false
   content.geolocation:
+    https://ut.no: true
     https://www.sas.se: true
   content.notifications.enabled:
     https://toolbox.iskysoft.com: false
