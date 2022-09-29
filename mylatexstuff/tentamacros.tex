@@ -90,14 +90,6 @@
 % }}}1
 % {{{1 Tables
 
-% No booktab rules 
-\makeatletter
-\@ifpackageloaded{booktabs}{
-    \renewcommand{\toprule}{\null}
-    \renewcommand{\bottomrule}{\null}
-} {\null}
-\makeatother
-
 \newcommand\tabitem{\stepcounter{tabit}\thetabit}
 
 \AtBeginEnvironment{tabular}{\setcounter{tabit}{0}} % With etoolbox

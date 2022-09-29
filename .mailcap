@@ -1,20 +1,24 @@
 # text/html; launch -l %s &; #test=test -n "$DISPLAY";
-text/html; w3m -I %{charset} -T text/html; copiousoutput;
-text/html; launch -a Qutebrowser %s; copiousoutput; needsterminal; nametemplate=%s.html
+# text/html; launch -a Qutebrowser %s; needsterminal; nametemplate=%s.html
 
-application/pdf; xpdf %s &; 
+text/html; open -a Qutebrowser %s & -n "$DISPLAY"; needsterminal; nametemplate=%s.html
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
+
+
+application/pdf; ~/dotfiles/mailstuff/view_attachment.sh %s pdf
+image/pjpeg; ~/dotfiles/mailstuff/view_attachment.sh %s
+image/png; ~/dotfiles/mailstuff/view_attachment.sh %s
+image/gif; ~/dotfiles/mailstuff/view_attachment.sh %s
 
 # office formats
-application/docx; open %s;
-application/vnd.openxm; open %s;
-application/vnd.openxmlformats-officedocument.wordprocessingml.document; open %s;
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; open %s;
-application/vnd.ms-word.document.12; open %s;
-application/msword; open %s;
-application/vnd.ms-excel; open %s;
+## doc
+application/docx; ~/dotfiles/mailStuff/view_attachment.sh %s - '/Applications/Microsoft Word.app/'
+application/vnd.openxm; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft Word.app/'
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft Word.app/'
+application/vnd.ms-word.document.12; ~/dotfiles/mailstuff/view_attachment.sh %s  - '/Applications/Microsoft Word.app/'
+application/msword; ~/dotfiles/mailstuff/view_attachment.sh %s  - '/Applications/Microsoft Word.app/'
 
-# images etc.
-image/gif; open %s;
-image/jpeg; open %s;
-image/png; open %s;
-image/m4v; open %s;
+# excel
+
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft Excel.app/'
+application/vnd.ms-excel; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft Excel.app/'

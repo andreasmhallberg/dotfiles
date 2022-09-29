@@ -877,6 +877,7 @@ autocmd!
       \ --filter pandoc-crossref
       \ --verbose
       \ --citeproc
+      \ -N
       \ --bibliography ' . g:pandoc_bibliography . 
       \ ' --csl ' . g:pandoc_citation_style .
       \ ' --reference-doc=' . g:pandoc_reference_docx .
@@ -1362,5 +1363,16 @@ augroup Chat
   autocmd BufEnter *.cha,*.cex syn match String '\d\+_\d\+'
   autocmd BufEnter *.cha,*.cex set list
 augroup end
+
+"{{{1 reading case
+augroup readingcasebindings
+  autocmd!
+  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap A A:AMB<esc> 
+  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap <buffer> M A:MAR<esc> 
+  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap <buffer> U A:UNM<esc> 
+  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap <buffer> H A:HYP<esc> 
+augroup end
+
+"}}}
 
 "  vim:foldmethod=marker:nospell
