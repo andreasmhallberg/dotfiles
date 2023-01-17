@@ -72,6 +72,7 @@ brew install pandoc-corssref
 brew install ruby # in jekyll
 brew install ruby-gems # in jekyll
 brew install fzf
+brew install kitty
 brew install launch
 brew install youtube-dl
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
@@ -123,6 +124,7 @@ brew install font-scheherazade
 
 #misc
 
+ln -sf kitty.conf ~/.config/kitty/kitty.conf
 ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/dotfiles/.offlineimaprc ~/.offlineimaprc
 ln -sf ~/dotfiles/.bashrc ~/.bashrc

@@ -113,8 +113,8 @@ settings:
       ei: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopaedia-of-islam-2&search-go=&s.q={}
       libris: http://libris.kb.se/hitlist?d=libris&q={}
       merriam: https://www.merriam-webster.com/dictionary/{}
-      ox-ae: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/arabic-Arabic/{}
-      ox-ea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/q="{}"
+      oxae: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/arabic-english/?q={}
+      oxea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/q={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       uba: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=default_scope&vid=46GUB_VU1&lang=en_US&offset=0

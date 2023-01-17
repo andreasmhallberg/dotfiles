@@ -60,6 +60,8 @@ loadkeymap
 <M-x>T Ṯ
 <M-v>s š
 <M-v>S Š
+<M-.>r ṛ
+<M-.>R Ṛ
 
 " EALLx
 <M-e> ´

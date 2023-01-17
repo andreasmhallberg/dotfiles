@@ -1,6 +1,5 @@
 # symlink to ~/.muttrc
 
-
 set ssl_starttls=yes
 set ssl_force_tls=yes
 
@@ -97,5 +96,7 @@ macro compose H "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=utf-8
 
 # $ to sync email
 # macro index $ "!offlineimap -f INBOX\n"
+
+macro index,pager B  ":set confirmappend=no\n<save-message>=BUGA/<enter>" "Moved message to BUGA folder"
 
 set wait_key=no

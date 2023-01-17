@@ -162,5 +162,5 @@ export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
 eval "$(rbenv init - bash)"
 
-
+export GPG_TTY=$(tty)
 

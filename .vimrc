@@ -434,14 +434,14 @@ augroup ProseHighLighting
  " spell-check double words
 autocmd BufEnter *.md syn match SpellBad '/\c\<\(\w\+\)\s\+\1\>/'
  " dates format yyyy-mm-dd
- autocmd BufEnter *.md syn match Constant '\d\{2,4}-\d\d-\d\d' containedin=ALL
+ autocmd BufEnter *.md syn match Constant '\d\{2,4}-\(0\d\|1[0-2]\)-[0-3]\d' containedin=ALL
 augroup end
 
 " Open non-text file externally
 augroup OpenExternally
 autocmd!
 
-  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.docx,*.rtf,*.odt,*.epub sil ex "!open " . shellescape(expand("%:p")) | b# | bd#
+  autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.docx,*.rtf,*.odt,*.epub silent execute "!open " . shellescape(expand("%:p")) | b# | bd#
 
   autocmd! BufRead *.pdf silent execute "!zathura --mode=fullscreen " . shellescape(expand("%:p")) . " &>/dev/null &" | b# | bd#
 
@@ -467,6 +467,8 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   "{{{2 asyncrun
     " Notify when background process is done
     let g:asyncrun_exit = "echo 'Done'"
+
+  "{{{ pandoc syntax
 
   "{{{2 yankstack
 
@@ -598,7 +600,8 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   augroup DirivshMappings
     autocmd!
     autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
-    autocmd FileType dirvish nnoremap <buffer> R 0y$$F/"1yg_:!mv "<c-r>0" .<c-r>1<c-f>A
+    " Rename
+    autocmd FileType dirvish nnoremap <buffer> R 0y$$F/"1yg_:!mv "<c-r>0" ".<c-r>1<c-f>A"
     autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
     autocmd FileType dirvish nnoremap <buffer> ! 0y$:!"<c-r>0"<Home><Right><Space><Left>
     autocmd FileType dirvish nnoremap <buffer> x 0y$:!open "<c-r>0"<cr>
@@ -622,6 +625,9 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   "{{{2 vim-pandoc-syntax
     " don't use conceal
     let g:pandoc#syntax#conceal#use = 0
+
+    " left align all columns
+    let b:csv_arrange_align = 'l*'
 
   "{{{2 gundo
     " Soft wrap gundo preview
@@ -800,6 +806,10 @@ augroup CitationVariables
 
   autocmd BufRead *-ijcl.md
         \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/ijcl.csl'
+        \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ijcl.docx'
+
+  autocmd BufRead *-ar.md
+        \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/apa-ar.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ijcl.docx'
 
 
@@ -1024,7 +1034,10 @@ augroup MardownSettings
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
-  autocmd Filetype markdown,markdown.pandoc syn match MDnospell "{.\{-}}" contains=@NoSpell
+  autocmd Filetype markdown,markdown.pandoc syn match MDnospell "<\S\+>" contains=@NoSpell
+  " spelling
+  autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
+
 augroup end
 
 
@@ -1197,21 +1210,25 @@ iab Syrain Syrian
 iab langauge language
 iab apporach approach
 
-" Swedish
-iab istället i stället
-iab spårk språk
-
-iab aa ʿāmmiyya
-iab Aa ʿĀmmiyya
-iab ff fuṣḥā
-iab Ff Fuṣḥā
-
 " Capitalized nationalities in English
 iab arabic Arabic
 iab egyptian Egyptian
 iab english English
 iab german German
 iab french French
+
+" Swedish
+iab istället i stället
+iab spårk språk
+
+" Arabic
+iab قي في
+" shorthands
+iab am ʿāmmiyya
+iab Am ʿĀmmiyya
+iab fu fuṣḥā
+iab Fu Fuṣḥā
+
 
 
 " Remove word in input mode.
@@ -1224,22 +1241,22 @@ inoremap [ []<Left>
 inoremap [[ [
 inoremap { {}<Left>
 inoremap {{ {
-inoremap ` ``<Left>
-inoremap `` `
-inoremap ' ''<Left>
-inoremap '' '
+" inoremap ` ``<Left>
+" inoremap `` `
+" inoremap ' ''<Left>
+" inoremap '' '
 inoremap <M->> 〉
 inoremap <M-<> 〈〉<Left>
 inoremap <M-<><M-<> 〈 
-autocmd Filetype markdown,markdown.pandoc inoremap <buffer> * **<Left>
-autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ** *
-autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^ ^^<Left>
-autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^^ ^
+" autocmd Filetype markdown,markdown.pandoc inoremap <buffer> * **<Left>
+" autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ** *
+" autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^ ^^<Left>
+" autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^^ ^
 " When only one for English possessive 's etc.
-inoremap " ""<Left>
-inoremap "" "
-inoremap < \<><Left>
-inoremap << \<
+" inoremap " ""<Left>
+" inoremap "" "
+" inoremap < \<><Left>
+" inoremap << \<
 autocmd Filetype r inoremap <buffer> < <
 
 " Move to eol in Normal, Visual, Select, Operator-pending
@@ -1367,10 +1384,12 @@ augroup end
 "{{{1 reading case
 augroup readingcasebindings
   autocmd!
-  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap A A:AMB<esc> 
-  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap <buffer> M A:MAR<esc> 
-  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap <buffer> U A:UNM<esc> 
-  autocmd bufEnter **/case-reading-aloud/data-pilot/*.cha nnoremap <buffer> H A:HYP<esc> 
+  autocmd bufEnter **/case-reading-aloud/data/*.cha setlocal nospell
+  autocmd bufEnter **/case-reading-aloud/data/*.cha setlocal cursorline
+  autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap A AAMB<esc> 
+  autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> M AMAR<esc> 
+  autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> U AUNM<esc> 
+  autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> H AHYP<esc> 
 augroup end
 
 "}}}

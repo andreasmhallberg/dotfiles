@@ -15,7 +15,7 @@
     <category citation-format="author-date"/>
     <category field="psychology"/>
     <category field="generic-base"/>
-    <updated>2022-12-04T13:36:59+00:00</updated>
+    <updated>2022-12-03T18:45:11+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="en">
@@ -405,7 +405,7 @@
       </else-if>
       <else>
         <names variable="composer" delimiter=", ">
-          <name form="short" and="text" initialize="false" initialize-with=". "/>
+          <name form="short" and="symbol" delimiter=", " initialize-with=". "/>
           <substitute>
             <names variable="author"/>
             <names variable="illustrator"/>
@@ -1727,7 +1727,7 @@
           <label variable="locator" text-case="capitalize-first"/>
         </if>
         <else>
-          <label variable="page" form="short"/>
+          <label variable="locator" form="short"/>
         </else>
       </choose>
       <text variable="locator"/>
@@ -1741,7 +1741,7 @@
       <key variable="status"/>
     </sort>
     <layout prefix="(" suffix=")" delimiter="; ">
-      <group delimiter="، ">
+      <group delimiter=", ">
         <text macro="author-intext"/>
         <text macro="date-intext"/>
         <text macro="citation-locator"/>
