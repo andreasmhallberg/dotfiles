@@ -22,7 +22,7 @@ if [[ "$OSTYPE" =~ ^darwin ]]; then
   # install homebrew
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 elif [[ "$OSTYPE" =~ linux-android ]]; then
-  pkgman=pgk
+  pkgman=pkg
 fi
 
 # brew
