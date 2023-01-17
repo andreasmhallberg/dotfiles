@@ -11,24 +11,34 @@
 # - Homebrew
 # - MacTex  - http://tug.org/mactex/mactex-download.html
 #           - update texlive when installed to get most resent packages
+
+# Set package manager
+
+
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+  pkgman=brew
+  # install xcode
+  xcode-select --install # xcode
+  # install homebrew
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+elif [[ "$OSTYPE" =~ linux-android ]]; then
+  pkgman=pgk
+fi
+
 # brew
 
   # Installations for all *nix systems
 
-
 mkdir -p ~/tmp # make directory for swap files
 
-xcode-select --install # xcode
-
-# homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # git
-brew install git-all
+$pkgman install git-all
 git config --global user.name "Andreas Hallberg"
 git config --global user.email andreasmartenhallberg@gmail.com
-git config --global credential.helper osxkeychain
-
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+  git config --global credential.helper osxkeychain
+fi
 
 #get my dotfiles
 git clone https://github.com/andreasmhallberg/dotfiles.git ~/
@@ -46,44 +56,47 @@ mkdir -p ~/.vim/temp # make directory for swap files
 # brew install macvim  # install manually instead
 mkdir -p ~/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim # install vundle
-brew install w3m # used in mutt
+$pkgman install w3m # used in mutt
 # brew install r # Problems with new Mac processors. Download binary from https://cran.r-project.org/bin/macosx/ instead
-brew install coreutils # tac etc.
-brew install fd 
-brew install rar
-brew install rg 
-brew install tldr # readable man pages
-brew install bat # cat with syntax highlighting
-brew install ag
-brew install exiftool # extract metadata from ebooks 
-brew install ack # grep alternative
-brew install unzip
-brew install wget
-brew install tree
-brew install unrar
-brew install libxml2 # xml-grep
-brew install tmux # needed for R integration in vim with nvim-r
-brew install mactex
-brew install pandoc
-brew install offlineimap
+$pkgman install coreutils # tac etc.
+$pkgman install fd 
+$pkgman install rar
+$pkgman install rg 
+$pkgman install tldr # readable man pages
+$pkgman install bat # cat with syntax highlighting
+$pkgman install ag
+$pkgman install exiftool # extract metadata from ebooks 
+$pkgman install ack # grep alternative
+$pkgman install unzip
+$pkgman install wget
+$pkgman install tree
+$pkgman install unrar
+$pkgman install libxml2 # xml-grep
+$pkgman install tmux # needed for R integration in vim with nvim-r
+$pkgman install mactex
+$pkgman install pandoc
+$pkgman install offlineimap
 # create a certificate to be linked in offlineimaprc
 # openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:4096 -keyout private.key -out certificate.crt
-brew install pandoc-corssref
-brew install ruby # in jekyll
-brew install ruby-gems # in jekyll
-brew install fzf
-brew install kitty
-brew install launch
-brew install youtube-dl
+$pkgman install pandoc-corssref
+$pkgman install ruby # in jekyll
+$pkgman install ruby-gems # in jekyll
+$pkgman install fzf
+$pkgman install kitty
+$pkgman install launch
+$pkgman install youtube-dl
 /usr/local/opt/fzf/install # script to setup fzf keybindings etc.
-brew install python3
-brew install gcalcli # For issues with login, see https://github.com/insanum/gcalcli/issues/580 
+$pkgman install python3
+$pkgman install gcalcli # For issues with login, see https://github.com/insanum/gcalcli/issues/580 
 
-brew tap zegervdv/zathura
-brew install zathura
-brew install zathura-pdf-mupdf
-mkdir -p $(brew --prefix zathura)/lib/zathura
-ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib $(brew --prefix zathura)/lib/zathura/libpdf-mupdf.dylib
+$pkgman tap zegervdv/zathura
+$pkgman install zathura
+$pkgman install zathura-pdf-mupdf
+
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+  mkdir -p $(brew --prefix zathura)/lib/zathura
+  ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib $(brew --prefix zathura)/lib/zathura/libpdf-mupdf.dylib
+fi
 
 # After ruby
 gem install --user-install bundler jekyll
@@ -91,35 +104,45 @@ gem install --user-install jekyll-feed
 gem install --user-install jekyll-seo-tag
 
 # Python
-pip3 install text2qti --user
-pip3 install PyQtWebEngine # requred for qutebrowser
-pip3 install qutebrowser
 
+if [[ "$OSTYPE" =~ ^darwin ]]; then
 # installations for OSX
+  # qutebrowser
+  pip3 install text2qti --user
+  pip3 install PyQtWebEngine # requred for qutebrowser
+  pip3 install qutebrowser
+
+  mkdir -p ~/Library/Preferences/qutebrowser/
+  ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
+  ln -sf ~/dotfiles/.qutebrowser ~/.qutebrowser
+
 mkdir -p ~/.config/karabiner/
 ln -sf ~/dotfiles/karabiner ~/.config/karabiner
 
+  # make ITerm2 do italics
+  # https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
+  tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
 
-# make ITerm2 do italics
-# https://apple.stackexchange.com/questions/266333/how-to-show-italic-in-vim-in-iterm2#267261
-tic -o ~/dotfiles/.terminfo xterm-256color.terminfo.txt
+  # fonts
+  ## Latin
+  $pkgman tap homebrew/cask-fonts
+  $pkgman install svn
+  $pkgman install font-source-code-pro
+  $pkgman install font-source-sans-pro
+  $pkgman install font-source-serif-pro
+  $pkgman install font-brill
+  $pkgman install font-amiri
+  $pkgman install font-libertinus
+  $pkgman install font-linux-libertine 
+  $pkgman install font-duolos-sil
+  $pkgman install font-gentium-plus
+  ## Arabic
+  $pkgman install font-lateef
+  $pkgman install font-scheherazade
 
-# fonts
-## Latin
-brew tap homebrew/cask-fonts
-brew install svn
-brew install font-source-code-pro
-brew install font-source-sans-pro
-brew install font-source-serif-pro
-brew install font-brill
-brew install font-amiri
-brew install font-libertinus
-brew install font-linux-libertine 
-brew install font-duolos-sil
-brew install font-gentium-plus
-## Arabic
-brew install font-lateef
-brew install font-scheherazade
+fi
+
+
 
 
 #misc
@@ -129,10 +152,7 @@ ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/dotfiles/.offlineimaprc ~/.offlineimaprc
 ln -sf ~/dotfiles/.bashrc ~/.bashrc
 ln -sf ~/dotfiles/.fzf.bash ~/.fzf.bash
-mkdir -p ~/Library/Preferences/qutebrowser/
-ln -sf ~/dotfiles/qutebrowser/autoconfig.yml ~/Library/Preferences/qutebrowser/autoconfig.yml
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
-ln -sf ~/dotfiles/.qutebrowser ~/.qutebrowser
 ln -sf ~/dotfiles/.Rprofile ~/.Rprofile
 ln -sf ~/dotfiles/.Renviron ~/.Renviron
 ln -sf ~/dotfiles/.xpdfrc ~/.xpdfrc
@@ -143,7 +163,7 @@ ln -sf ~/dotfiles/init.vim ~/.config/nvim/init.vim
 # mail
 mkdir -p ~/.mutt
 git clone https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/
-brew install mutt
+$pkgman install mutt
 ln -sf ~/dotfiles/.muttrc ~/.muttrc
 ln -sf ~/dotfiles/.mailcap ~/.mailcap
 ln -sf ~/jobb/aliases ~/.mutt/aliases
@@ -172,6 +192,6 @@ gem install jekyll-sitemap
 gem install jekyll-seo-tag
 
 # Set bash 5 as default
-brew install bash # to get bash 5. Places it in /usr/local/bin/bash
+$pkgman install bash # to get bash 5. Places it in /usr/local/bin/bash
 sudo echo "/usr/local/bin/bash" >> /etc/shells # add to list of shells
 chsh -s /usr/local/bin/bash # make default
