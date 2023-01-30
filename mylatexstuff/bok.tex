@@ -1,0 +1,92 @@
+\documentclass{article}
+
+\frenchspacing
+
+\usepackage{geometry}
+\usepackage{hyperref}
+
+% TYPOGRAPHY
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{array}
+
+% LANGUAGES
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguage{arabic}
+\newfontfamily\arabicfont[Script=Arabic,Scale=1.4]{Lateef}
+
+% REFERENCES
+
+% Biber sometimes produces faulty cache.
+% Delete it with folliwing command: rm -rf `biber --cache`
+
+\usepackage[
+  %ibidtracker=false, % Turns of ibid. 
+maxcitenames=2
+,maxbibnames=4
+%,uniquelist=false
+,backend=biber
+,doi=false
+,isbn=false
+,url=false
+,language=english
+,bibstyle=authoryear
+,citestyle=authoryear-icomp
+% ,natbib=true
+,sortcites=true
+,hyperref
+,uniquename=false % Dont print initials to make name unique
+]{biblatex}
+\addbibresource{/Users/xhalaa/dotfiles/mylatexstuff/bibliotek.bib}
+
+
+\AtEveryBibitem{% Clean up the bibtex rather than editing it
+ \clearlist{address}%
+ \clearfield{url}%
+% \clearfield{eprint}
+ \clearfield{isbn}
+ \clearfield{issn}
+ \clearfield{note}
+ \clearfield{volumes}
+ \clearfield{edition}
+ \clearfield{pagetotal}
+% \clearlist{location}
+ \clearfield{month}%
+ \clearfield{series}%
+\ifentrytype{book}{\clearfield{number}}{} % Clear number in book series
+\ifentrytype{incollection}{\clearfield{number}}{} % Clear number in book series
+}
+
+% Remove 'in' in article in bibliography.
+\renewbibmacro{in:}{%
+
+% fixar biblatex till <author>, <year>:<page>
+\renewcommand*{\nameyeardelim}{ }
+\renewcommand*{\postnotedelim}{:\,} % Linebreak between colon and page looks terrible. 
+\renewcommand*{\volcitedelim}{,\ } % Between vol. and page nr.
+
+\DeclareFieldFormat{postnote}{#1}
+\DeclareFieldFormat{multipostnote}{#1}
+\DeclareFieldFormat{volcitepages}{#1}
+\DeclareFieldFormat{volcitevolume}{vol.\,\romannum{#1}}
+
+% Images
+
+\usepackage{graphicx}
+
+% Metadata
+\title{FILL IN}
+\author{Andreas Hallberg}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% put stuff here
+
+\printbibliography
+
+\end{document}
+

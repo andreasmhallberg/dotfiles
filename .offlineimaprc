@@ -12,10 +12,15 @@ localfolders = ~/Maildir/gu
 
 [Repository Remote]
 type = IMAP
-remotehost = outlook.office365.com
 remoteuser = andreas.hallberg@sprak.gu.se
-remotepasseval = get_pass()
-ssl=true
-# sslcacertfile = ~/jobb/certificate.crt
+remotehost = outlook.office365.com
+port = 993
+auth_mechanisms = XOAUTH2
+oauth2_request_url = https://login.microsoftonline.com/common/oauth2/v2.0/token
+oauth2_client_id = "08162f7c-0fd2-4200-a84a-f25a4db0b584"
+oauth2_client_secret = "TxRBilcHdC6WGBee]fs?QR:SJ8nI[g82"
+oauth2_access_token_eval = "~/jobb/mutt_oauth2.py ~/jobb/tokenfile"
+
 sslcacertfile =/opt/homebrew/etc/openssl@3/cert.pem 
+
 

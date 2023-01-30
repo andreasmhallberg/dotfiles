@@ -1,10 +1,10 @@
 # symlink to ~/.muttrc
 
-set ssl_starttls=yes
-set ssl_force_tls=yes
+# set ssl_starttls=yes
+# set ssl_force_tls=yes
 
 set use_from=yes
-set smtp_authenticators = 'gssapi:login'
+# set smtp_authenticators = 'gssapi:login'
 
 source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
 # source ~/.mutt/gruvbox/colors-gruvbox-shuber.muttrc
@@ -15,11 +15,11 @@ source ~/dotfiles/account.gu.se.andreas.hallberg
 set realname = "Andreas Hallberg"
 
 
-# {{{ Accounts
+# Accounts
 
 # Folder hooks
-folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/dotfiles/account.com.gmail.andreasmartenhallberg'
-folder-hook 'account.gu.se.andreas.hallberg' 'source ~/dotfiles/account.gu.se.andreas.hallberg'
+# folder-hook 'account.com.gmail.andreasmartenhallber' 'source ~/dotfiles/account.com.gmail.andreasmartenhallberg'
+# folder-hook 'account.gu.se.andreas.hallberg' 'source ~/dotfiles/account.gu.se.andreas.hallberg'
 
 
 # Macros for switching accounts

@@ -92,7 +92,10 @@ function cutfirstpage () {
 
 alias mutt='LC_MESSAGES="en_US.UTF-8" mutt'          # mutt with english menues.
 alias m="[ -f ~/.offlineimap/gu.lock ] && rm ~/.offlineimap/gu.lock & offlineimap -f INBOX && mutt"
-# alias m="mutt"
+
+alias m="mutt"
+# Use this when offlineimap has been fixed of oauth2
+# alias m="[ -f ~/.offlineimap/gu.lock ] && rm ~/.offlineimap/gu.lock & offlineimap -f INBOX && mutt"
 alias date='date +%y%m%d'                               # date with file-type format yymmdd
 alias qmv='qmv -f do' # only show output column when using qmv
 alias n="nvim"
