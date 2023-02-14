@@ -6,7 +6,8 @@ text/html; w3m -I %{charset} -T text/html; copiousoutput;
 
 text/plain; nvim %s 
 
-application/pdf; ~/dotfiles/mailstuff/view_attachment.sh %s pdf
+# application/pdf; ~/dotfiles/mailstuff/view_attachment.sh %s pdf
+application/pdf; zathura --mode fullscreen %s &; copiousoutput;
 image/jpeg; ~/dotfiles/mailstuff/view_attachment.sh %s jpeg
 image/jpg; ~/dotfiles/mailstuff/view_attachment.sh %s jpg
 image/png; ~/dotfiles/mailstuff/view_attachment.sh %s png

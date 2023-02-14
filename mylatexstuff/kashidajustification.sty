@@ -1,9 +1,11 @@
-\NeedsTeXFormat{LaTeX2e}[2017/09/21]
+\NeedsTeXFormat{LaTeX3}[2021/09/21]
 \ProvidesPackage{kashidajustification}
 
 %%% UNDER CONSTRUCTION!!!! %%%%
 
-\RequirePackage{polyglossia}
+\RequirePackage{calc}
+
+\@ifpackageloaded{babel}{\newcommand{\textarabic}[1]\RL{\foreignlangauge{arabic}{#1}}}
 
 \XeTeXinterchartokenstate=1
 \newXeTeXintercharclass\confb % connect back
@@ -58,12 +60,12 @@
  \XeTeXinterchartoks \confb \conb  = {\kashida{}}
 
  % Set lengths to the match the kashida of the typeface
-\newlength\kashidaheight
-\setlength\kashidaheight{\heightof{\textarabic{ـ}}}
-\newlength\kashidadepth
-\setlength\kashidadepth{\depthof{\textarabic{ـ}}}
+\newlength{\kashidaheight}
+\setlength{\kashidaheight}{\heightof{\textarabic{ـ}}}
+\newlength{\kashidadepth}
+\setlength{\kashidadepth}{\depthof{\textarabic{ـ}}}
 
-\newcommand\kashida[1]{\char"200D
+\newcommand{\kashida}[1]{\char"200D
 	    \nobreak\leaders
 		\hrule height \kashidaheight depth \kashidadepth
 		\hskip 0pt plus 100 pt
@@ -72,8 +74,12 @@
 	   % \renewcommand\kashida{\char"200D} % turn off kashida
 
 \newcommand{\renewkashida}{
-    \setlength\kashidaheight{\heightof{\textarabic{ـ}}}
-    \setlength\kashidadepth{\depthof{\textarabic{ـ}}}
+  \setlength{\kashidaheight}{\heightof{\textarabic{ـ}}}
+    \setlength{\kashidadepth}{\depthof{\textarabic{ـ}}}
 }
+
+% Disable kashida
+\newenvironment{nokashida}{\renewcommand{\kashida}{\relax}}{}
+\newcommand{\nokash}[1]{\begin{nokashida}#1\end{nokashida}}
 
 \endinput

@@ -240,6 +240,54 @@ endfunction
 command! EALLToggle call EALLToggle()
 
 "}}}2
+
+"{{{2 IPA transcription 
+function! IPAToggle()
+  if !exists("b:ipamappings")
+    let b:ipamappings = 0
+  endif 
+  if b:ipamappings == 0
+    let b:ipamappings = 1
+    echo "IPA mappings on for this buffer"
+    inoremap <buffer> aa aː
+    inoremap <buffer> ii iː
+    inoremap <buffer> uu uː
+    inoremap <buffer> .t tˁ 
+    inoremap <buffer> .s sˁ
+    inoremap <buffer> .d dˁ
+    inoremap <buffer> .r rˁ
+    inoremap <buffer> .z ðˁ
+    inoremap <buffer> .h ħ
+    inoremap <buffer> .g ɣ
+    inoremap <buffer> vs ʃ
+    inoremap <buffer> _d ḏ
+    inoremap <buffer> _t θ
+    " inormeap <buffer> ʿ ʕ
+    " inormeap <buffer> ʾ ʔ
+  elseif b:ipamappings == 1
+    let b:ipamappings = 0
+    echo "IPA mappings off"
+    iunmap aː
+    iunmap iː
+    iunmap uː
+    iunmap tˁ 
+    iunmap sˁ
+    iunmap dˁ
+    iunmap rˁ
+    iunmap ðˁ
+    iunmap ħ
+    iunmap ɣ
+    iunmap ʃ
+    iunmap ḏ
+    iunmap θ
+    " iunmap ʕ
+    " iunmap ʔ
+  endif
+endfunction
+
+command! IPAToggle call IPAToggle()
+
+"}}}2
 "{{{2 Flip between markdown and R
 
 function! FlipRMarkdown()
@@ -367,6 +415,10 @@ nnoremap gt :tabnew<CR>
 nnoremap gn :tabnext<CR>
 
 "{{{1 General stuff (passive)
+
+" lecturenotes.md and planering.md
+
+autocmd BufEnter planering.md,lecturenotes.md setlocal cursorline 
 
 " Use ripgrep, if available for searches
 if executable("rg")
@@ -811,6 +863,10 @@ augroup CitationVariables
   autocmd BufRead *-ar.md
         \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/apa-ar.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ijcl.docx'
+
+
+autocmd BufRead bok.*
+        \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/apa-sv.csl'
 
 
 augroup end
