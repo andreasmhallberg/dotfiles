@@ -10,7 +10,7 @@ source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
 # source ~/.mutt/gruvbox/colors-gruvbox-shuber.muttrc
 
 
-# Modify colorized to make read messages brighter
+# Modify colorized to make read messages in index brighter
 color index         color244        color234        "~R"                        # read messages
 color index         color244        color234        "~R~p!~F"                   # messages to me
 
