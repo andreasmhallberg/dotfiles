@@ -796,7 +796,7 @@ nnoremap <Leader>g :Goyo<cr>
 " next in location list
 nnoremap <Leader>n :lnext<cr>
 
-" Diffchar get text form other buffer
+" Diffchar get text from other buffer
 nmap <leader>dg <Plug>GetDiffCharPair
 
 " Tabularize mappings (normal and visual)
@@ -863,10 +863,6 @@ augroup CitationVariables
   autocmd BufRead *-ar.md
         \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/apa-ar.csl'
         \ | let g:pandoc_reference_docx = '/Users/xhalaa/dotfiles/pandoc-data-dir/ijcl.docx'
-
-
-autocmd BufRead bok.*
-        \ let g:pandoc_citation_style = '/Users/xhalaa/dotfiles/my-styles/apa-sv.csl'
 
 
 augroup end
@@ -1365,6 +1361,8 @@ nnoremap <Leader>a :<C-U>call AraType()<CR>
 augroup readingnotes
   autocmd!
   " Prettier list indentation after line break
+  " View article
+  autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>pa :e ~/jobb/articuli/%<.pdf
   " Shift 2 characters after break
   autocmd BufRead,BufEnter **/readingnotes/*.md setlocal breakindentopt=shift:2
   " Don't fold
@@ -1386,6 +1384,19 @@ augroup readingnotes
   " suffix
   autocmd FileType dirvish syn match Comment '\.[a-z.]\+$' containedin=ALL
 augroup END
+
+" open the pdf
+
+function! ReadingnotesOpenPdf()
+  :call fzf#run({
+      \ 'source': 'find ~/jobb/articuli ~/jobb/arkiv/bocker -type f',
+      \ 'options': '--query=' . '"' .  expand('%<:t') . '" --select-1',
+      \ 'sink': 'e'
+      \ })  
+endfunction
+
+  autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>a :call ReadingnotesOpenPdf()<cr>
+
 
 " Filter location list to get one hit per file 
 " https://vi.stackexchange.com/a/15171/3316
