@@ -25,6 +25,7 @@ application/msword; ~/dotfiles/mailstuff/view_attachment.sh %s  - '/Applications
 
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft Excel.app/'
 application/vnd.ms-excel; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft Excel.app/'
+application/vnd.ms-excel.sheet.macroenabled.12; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft Excel.app/'
 
 ## pptx
 application/vnd.openxmlformats-officedocument.presentationml.presentation; ~/dotfiles/mailstuff/view_attachment.sh %s - '/Applications/Microsoft PowerPoint.app/';
