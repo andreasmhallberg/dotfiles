@@ -1386,11 +1386,14 @@ augroup readingnotes
 augroup END
 
 " open the pdf
+" Get the first thirty letters of file namen and open corrsptinding pdf
 
 function! ReadingnotesOpenPdf()
-  :call fzf#run({
+  call fzf#run({
       \ 'source': 'find ~/jobb/articuli ~/jobb/arkiv/bocker -type f',
-      \ 'options': '--query=' . '"' .  expand('%<:t') . '" --select-1',
+      \ 'options': '-i --query=' . 
+      \ '"' . substitute(expand('%:t'),'\(^.\{1,30}\).*','\1','') . '"'
+      \ . ' --select-1',
       \ 'sink': 'e'
       \ })  
 endfunction
