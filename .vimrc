@@ -773,7 +773,7 @@ endif
 nnoremap <Leader>c mcggVggG"*y`c:echo "Buffer copied to clipboard"<CR>
 
 " insert date in format yymmdd
-nnoremap <Leader>d :pu =strftime('%Y-%m-%d')<CR>kJ
+nnoremap <Leader>d :let @d = strftime('%Y-%m-%d')<CR>"dp
 " Fuzzy find files with FZF
 nnoremap <Leader>f :FZF<Space>~/<CR>
 " Fuzzy find buffers with FZF
@@ -795,9 +795,6 @@ nnoremap <Leader>r :set wrap!<CR>
 nnoremap <Leader>g :Goyo<cr>
 " next in location list
 nnoremap <Leader>n :lnext<cr>
-
-" Diffchar get text from other buffer
-nmap <leader>dg <Plug>GetDiffCharPair
 
 " Tabularize mappings (normal and visual)
 augroup Tabularize
@@ -1398,7 +1395,7 @@ function! ReadingnotesOpenPdf()
       \ })  
 endfunction
 
-  autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>a :call ReadingnotesOpenPdf()<cr>
+  autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>pa :call ReadingnotesOpenPdf()<cr>
 
 
 " Filter location list to get one hit per file 
