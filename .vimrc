@@ -158,7 +158,6 @@ function! FixHTMLTablePadding()
 endfunction
 
 function! DoubleWordCorr()
-  " %s/\(\<\S\+\>\) \<\1\>/\1/gc
   %s/\v(<\S+( \S+)*>) <\1>/\1/gc
 endfunction  
 command! DoubleWordCorr call DoubleWordCorr()
@@ -803,6 +802,7 @@ augroup Tabularize
   autocmd Filetype markdown,markdown.pandoc vnoremap <buffer><Leader>t :Tabularize /\|<CR>
   autocmd FileType tex nnoremap <buffer><Leader>t mtvip:Tabularize /&<CR>`t
   autocmd FileType tex vnoremap <buffer><Leader>t Tabularize /&<CR>
+  autocmd FileType csv vnoremap <buffer><Leader>t %Tabularize /,<CR>
 augroup end
 
 "{{{2 Markdown compilation
@@ -1453,7 +1453,7 @@ augroup readingcasebindings
   autocmd!
   autocmd bufEnter **/case-reading-aloud/data/*.cha setlocal nospell
   autocmd bufEnter **/case-reading-aloud/data/*.cha setlocal cursorline
-  autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap A AAMB<esc> 
+  autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> A AAMB<esc> 
   autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> M AMAR<esc> 
   autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> U AUNM<esc> 
   autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> H AHYP<esc> 

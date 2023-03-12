@@ -13,6 +13,7 @@ source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
 # Modify colorized to make read messages in index brighter
 color index         color244        color234        "~R"                        # read messages
 color index         color244        color234        "~R~p!~F"                   # messages to me
+color index         color244        color234        "~P"                        # messages from me
 
 # Default account
 source ~/dotfiles/account.gu.se.andreas.hallberg

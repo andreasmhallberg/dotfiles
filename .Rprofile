@@ -4,6 +4,11 @@ options(csipen=10)
 # Set CRAN mirror to a default location
 options(repos = "http://cran.uk.r-project.org")
 
+# list output before truncation
+options(str = strOptions(list.len = 1000))
+
+
+
 # Load packages
 library(pander)
 library(ggplot2)
