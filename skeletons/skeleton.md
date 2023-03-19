@@ -20,6 +20,13 @@ header-includes:
  #  - \preto{\longtable}{\begin{minipage}{\textwidth}}
  #  - \appto{\endlongtable}{\bigskip\end{minipage}}
 notes-after-puncturation: true
+# for pandoc-crossref
+tabPrefix:
+  - 'Table'
+  - 'Tables'
+figPrefix:
+  - 'Figure'
+  - 'Figures'
 ---
 
 \frenchspacing

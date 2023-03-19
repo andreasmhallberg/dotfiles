@@ -1457,7 +1457,12 @@ augroup readingcasebindings
   autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> M AMAR<esc> 
   autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> U AUNM<esc> 
   autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> H AHYP<esc> 
+  autocmd bufEnter **/case-reading-aloud/data/*.cha nnoremap <buffer> X AXXX<esc> 
 augroup end
+
+function! OpenReadingAudio()
+  execute '!open ../recs/' . expand('%<:t') . '.mp3'
+endfunction
 
 "}}}
 

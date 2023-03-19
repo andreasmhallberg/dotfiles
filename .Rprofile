@@ -5,7 +5,8 @@ options(csipen=10)
 options(repos = "http://cran.uk.r-project.org")
 
 # list output before truncation
-options(str = strOptions(list.len = 1000))
+# options(str = strOptions(list.len = 1000))
+# options(str = strOptions(list.len = 9999))
 
 
 
