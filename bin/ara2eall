@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 ### UNDER CONSTRUCTION ###
 
 # Transliterate from Arabic to EALL.
@@ -11,12 +12,25 @@
 
 tr ابةتثجحخدذرزسشصضطظعغفقكلمنهويءآأؤإئىًٌٍَُِّْ AbptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}yauiFNK~o | \
 
+# shadda ~ doubles character
+
+gsed -E 's/(.)~/\1\1/g' | \
+
 # Then to EALL. Leave 'A' (alif) for later. 
-tr bptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y bptṯjḥxdḏrzsšṣḍṭẓʿġfqklmnhwyʾʾʾʾʾā #| \
+tr bptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y bptṯjḥxdḏrzsšṣḍṭẓʿġfqklmnhwyʾʾʾʾʾā | \
+
+# Remove sukuun
+gsed -E 's/o//g' | \
+
+
+# Fix long vowels | \
+perl -pe 's/uw(?![wiau])/ū/g' | \
+gsed -E 's/aA/ā/g' | \
+perl -pe 's/iy(?![wiau])/ī/g' | \
 
 # Definite article "-"
     # without prefix
-# gsed -E 's/\bAl(?!(ti?za?Am|ti?ha?Ab|ti?ba?As)\b)/al-/g'
+perl -pe 's/\bAl(?!(ti?za?Am|ti?ha?Ab|ti?ba?As)\b)/al-/g' | \
     #| \
 
     # with prefix -w, not "wālī"
@@ -42,9 +56,10 @@ tr bptvjHxd*rzs\$SDTZEgfqklmnhwy\'I\>\&\<}Y bptṯjḥxdḏrzsšṣḍṭẓʿġ
     # gsed -E "s/\BA/ā/g"
 
 
-
-    # sed -E s/آ/ʾā/g | \
 # madda
-# alif
+gsed -E 's/آ/ʾā/g' | \
 
+# All remaining A as long ā
+gsed -E 's/A/ā/g'
 
+# sunletter

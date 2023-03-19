@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# First to EAll
+
+ara2eall | \
+
+# Then to LOC
+
+
+# Sun letter with al-
+
+perl -pe 's/([tṯdḏvzsšṣḍṭẓln])-(\1)(?!(u*m|ā|ī)\b)/l-\1/g' | \
+
+# digraphs
+
+gsed -E 's/ṯ/th/g' | \
+gsed -E 's/ḏ/dh/g' | \
+gsed -E 's/š/sh/g' | \
+gsed -E 's/ġ/gh/g'
+
+
