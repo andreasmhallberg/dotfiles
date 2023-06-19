@@ -19,7 +19,8 @@ Plugin 'junegunn/fzf'                                "  general purpose fuzzy fi
 Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
 Plugin 'junegunn/fzf.vim'                            "  heaven
 Plugin 'milkypostman/vim-togglelist'                 "  toggle quickfix and location list on and off with <leader>q and <leader>l
-Plugin 'junegunn/goyo.vim'
+" Plugin 'junegunn/goyo.vim'
+Plugin 'folke/zen-mode.nvim'
 Plugin 'will133/vim-dirdiff'
 Plugin 'Konfekt/vim-mutt-aliases' " Compete emails is mutt with <c-x><c-u>
   let g:muttaliases_file = '/Users/xhalaa/.mutt/aliases'
@@ -180,6 +181,8 @@ function! EALLToggle()
   if b:eallmappings == 0
     let b:eallmappings = 1
     echo "EALL mappings on for this buffer"
+    inoremap <buffer> <M-p> ʿ
+    inoremap <buffer> <M-P> ʾ
     inoremap <buffer> aa ā
     inoremap <buffer> ii ī
     inoremap <buffer> uu ū
@@ -209,6 +212,8 @@ function! EALLToggle()
   elseif b:eallmappings == 1
     let b:eallmappings = 0
     echo "EALL mappings off"
+    iunmap <buffer> <M-p> ʿ
+    iunmap <buffer> <M-P> ʾ
     iunmap <buffer>aa
     iunmap <buffer>ii
     iunmap <buffer>uu
@@ -261,26 +266,29 @@ function! IPAToggle()
     inoremap <buffer> vs ʃ
     inoremap <buffer> _d ḏ
     inoremap <buffer> _t θ
+    inoremap <buffer> <M-p> ʕ
+    inoremap <buffer> <M-P> ʔ
+
     " inormeap <buffer> ʿ ʕ
     " inormeap <buffer> ʾ ʔ
   elseif b:ipamappings == 1
     let b:ipamappings = 0
     echo "IPA mappings off"
-    iunmap aː
-    iunmap iː
-    iunmap uː
-    iunmap tˁ 
-    iunmap sˁ
-    iunmap dˁ
-    iunmap rˁ
-    iunmap ðˁ
-    iunmap ħ
-    iunmap ɣ
-    iunmap ʃ
-    iunmap ḏ
-    iunmap θ
-    " iunmap ʕ
-    " iunmap ʔ
+    iunmap aa
+    iunmap ii
+    iunmap uu
+    iunmap .t 
+    iunmap .s
+    iunmap .d
+    iunmap .r
+    iunmap .z
+    iunmap .h
+    iunmap .g
+    iunmap vs
+    iunmap _d
+    iunmap _t
+    iunmap <buffer> <M-p>
+    iunmap <buffer> <M-P>
   endif
 endfunction
 
@@ -480,10 +488,10 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration
-  autocmd BufEnter *.md syn match Constant '\v([Ff]irst|[Ss]econd|[Tt]hird|[Ff]ourth|[Ff]ifth),'
+  autocmd BufEnter *.md syn match Constant '\v([Ff]irst(ly)?|[Ss]econd(ly)?|[Tt]hird(ly)?|[Ff]ourth(ly)?|[Ff]ifth(ly)?),'
   autocmd BufEnter *.md syn match Constant '\<(\?[a-z0-9])\\?' containedin=ALL
  " spell-check double words
-autocmd BufEnter *.md syn match SpellBad '/\c\<\(\w\+\)\s\+\1\>/'
+autocmd BufEnter *.md syn match SpellBad '/\<\(\w\+\)\s\+\1\>/'
  " dates format yyyy-mm-dd
  autocmd BufEnter *.md syn match Constant '\d\{2,4}-\(0\d\|1[0-2]\)-[0-3]\d' containedin=ALL
 augroup end
@@ -495,8 +503,6 @@ autocmd!
   autocmd BufRead *.mp4,*.mp3,*.flac,*.png,*.jpg,*.jpeg,*.docx,*.rtf,*.odt,*.epub silent execute "!open " . shellescape(expand("%:p")) | b# | bd#
 
   autocmd! BufRead *.pdf silent execute "!zathura --mode=fullscreen " . shellescape(expand("%:p")) . " &>/dev/null &" | b# | bd#
-
-  autocmd! BufReadPost *.docx !pandoc % -t markdown  
 
 augroup end
 
@@ -574,7 +580,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   
   let g:undotree_SetFocusWhenToggle = 1
  
-  "{{{2 Goyo
+  "{{{2 Goyo # Messy. Use Zen-mode instead (NeoVim)
 
   " Quite goyo when leaving window
   " autocmd BufLeave * Goyo!
@@ -586,13 +592,29 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
         set wrap
       endfunction
 
-  " Stuff that happen when exiting goyo
+  " Stuff that happen when exiting goo
       function! s:goyo_leave()
         set number
       endfunction
 
     autocmd! User GoyoEnter nested call <SID>goyo_enter()
     autocmd! User GoyoLeave nested call <SID>goyo_leave() | syntax on 
+
+
+  "{{{2 Zen-mode
+nnoremap <leader>g ZenMode:<CR>
+
+lua<<EOF
+  require("zen-mode").setup({
+  window = {
+    width = .70, -- width will be 85% of the editor width
+    height = .85, -- width will be 85% of the editor width
+    options = {
+      number = false,
+      },
+  },
+})
+EOF
 
 
   "{{{2 DiffChar
@@ -791,7 +813,7 @@ nnoremap <Leader>m :e ~/.vimrc<CR>
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
 " Toggle GoYo
-nnoremap <Leader>g :Goyo<cr>
+nnoremap <Leader>g :ZenMode<cr>
 " next in location list
 nnoremap <Leader>n :lnext<cr>
 
@@ -802,7 +824,7 @@ augroup Tabularize
   autocmd Filetype markdown,markdown.pandoc vnoremap <buffer><Leader>t :Tabularize /\|<CR>
   autocmd FileType tex nnoremap <buffer><Leader>t mtvip:Tabularize /&<CR>`t
   autocmd FileType tex vnoremap <buffer><Leader>t Tabularize /&<CR>
-  autocmd FileType csv vnoremap <buffer><Leader>t %Tabularize /,<CR>
+  autocmd FileType csv nnoremap <buffer><Leader>t :%Tabularize /,<CR>
 augroup end
 
 "{{{2 Markdown compilation
@@ -878,7 +900,7 @@ autocmd!
     \ --pdf-engine xelatex
     \ --filter pandoc-crossref
     \ --citeproc
-    \ --columns=100
+    \ --columns=200
     \ --bibliography ' . g:pandoc_bibliography .
     \ ' --csl ' . g:pandoc_citation_style .
     \ ' -o ' . g:pandoc_output_dir . '%' . '.pdf'<cr>
@@ -893,7 +915,7 @@ autocmd!
     \ --pdf-engine=xelatex
     \ --filter pandoc-crossref
     \ --citeproc
-    \ --columns=100
+    \ --columns=200
     \ --number-sections
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --csl ' . g:pandoc_citation_style .
@@ -1086,6 +1108,8 @@ augroup MardownSettings
   autocmd Filetype markdown,markdown.pandoc syn match MDnospell "<\S\+>" contains=@NoSpell
   " spelling
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
+  autocmd Filetype markdown,markdown.pandoc setlocal fdm=expr
+
 
 augroup end
 
@@ -1428,11 +1452,12 @@ augroup MailStuff
   autocmd!
   " for completion of email addresses 
   autocmd FileType mail setlocal complete +=s~/jobb/aliases 
+  " @ in iskeyword is wierd
   autocmd FileType mail setlocal iskeyword+=@-@
   autocmd FileType mail setlocal iskeyword+=.
   autocmd FileType mail setlocal iskeyword+=_
   " format text with Enter
-  autocmd FileType mail nnoremap <buffer> <CR> gqip
+  " autocmd FileType mail nnoremap <buffer> <CR> gqip
 augroup end
 
 
