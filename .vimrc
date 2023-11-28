@@ -1,9 +1,11 @@
+"  vim:foldmethod=marker:nospell:nowrap 
+"
 filetype plugin on
 filetype indent on
 
 language en_US " set language of messages to English. Some plugins give error messages for other languages.
 
-"{{{1 Plugin
+"{{{1 Plugins
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 set rtp+=/usr/local/opt/fzf
@@ -11,55 +13,56 @@ set rtp+=/usr/local/opt/fzf
 call vundle#begin('~/.vim/plugged')
 
 " let Vundle manage Vundle, required
+Plugin 'nvim-lua/plenary.nvim'
+Plugin 'nvim-telescope/telescope.nvim'
 Plugin 'VundleVim/Vundle.vim'
-" Plugin 'jlanzarotta/bufexplorer'
-Plugin 'justinmk/vim-dirvish'                        "  Less klunky netrw alternative
-Plugin 'chrisbra/unicode.vim'                        "  Search for unicode chars
-Plugin 'junegunn/fzf'                                "  general purpose fuzzy finder
-Plugin 'sk1418/HowMuch'                              "  calculate visually marked math
-Plugin 'junegunn/fzf.vim'                            "  heaven
-Plugin 'milkypostman/vim-togglelist'                 "  toggle quickfix and location list on and off with <leader>q and <leader>l
+Plugin 'nvim-treesitter/nvim-treesitter'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'justinmk/vim-dirvish'                             "  Less klunky netrw alternative
+Plugin 'chrisbra/unicode.vim'                             "  Search for unicode chars
+Plugin 'junegunn/fzf'                                     "  general purpose fuzzy finder
+Plugin 'sk1418/HowMuch'                                   "  calculate visually marked math
+Plugin 'junegunn/fzf.vim'                                 "  heaven
+Plugin 'acarapetis/vim-sh-heredoc-highlighting'           "  support syntax highlighting embedded lua, python and ruby. Used for lua scripts vimrc
+let g:vimsyn_embed = 'lPr'
+Plugin 'milkypostman/vim-togglelist'                      "  toggle quickfix and location list on and off with <leader>q and <leader>l
 " Plugin 'junegunn/goyo.vim'
 Plugin 'folke/zen-mode.nvim'
 Plugin 'will133/vim-dirdiff'
-Plugin 'Konfekt/vim-mutt-aliases' " Compete emails is mutt with <c-x><c-u>
+Plugin 'Konfekt/vim-mutt-aliases'                         "  Compete emails is mutt with <c-x><c-u>
   let g:muttaliases_file = '/Users/xhalaa/.mutt/aliases'
 Plugin 'skywind3000/asyncrun.vim'
-Plugin 'jalvesaq/nvim-r'                             "  r functionality and integration
+Plugin 'jalvesaq/nvim-r'                                  "  r functionality and integration
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'                        "  gc<range> to comment
-Plugin 'tpope/vim-repeat'                            "  make mappings repeatable
-" Plugin 'tpope/vim-vinegar'                           "  useful mappings for netrw. Use dirvish instead
-Plugin 'tpope/vim-characterize'                      "  simpler netrw alternative
-Plugin 'vim-pandoc/vim-pandoc-syntax'                "  good syntax, nested HTML, yaml, etc.
+Plugin 'tpope/vim-commentary'                             "  gc<range> to comment
+Plugin 'tpope/vim-repeat'                                 "  make mappings repeatable
+" Plugin 'tpope/vim-vinegar'                              "  useful mappings for netrw. Use dirvish instead
+Plugin 'tpope/vim-characterize'                           "  simpler netrw alternative
+Plugin 'vim-pandoc/vim-pandoc-syntax'                     "  good syntax, nested HTML, yaml, etc.
 Plugin 'chrisbra/csv.vim'
 Plugin 'mbbill/undotree'
 " Plugin 'lervag/vimtex'
-Plugin 'godlygeek/tabular'                           "  :Tabular command to align stuff
-Plugin 'gibiansky/vim-latex-objects'                 "  LaTeX text objectes. e=environments. % to jump begin/end
-Plugin 'qpkorr/vim-renamer'                          "  Batch rename files vim-style.
-Plugin 'vim-scripts/YankRing.vim'                  
-" Plugin 'maxbrunsfeld/vim-yankstack'                  "  Lighter yankring
-Plugin 'rhysd/vim-grammarous'                        "  LanguageTool integration for grammar checking
-" Plugin 'blueyed/vim-diminactive'                   "  Dims window that is not in focus. Clashes with FZF in netrw
-" Plugin 'rickhowe/diffchar.vim'                       "  Character wise diff
-" Plugin 'francoiscabrol/ranger.vim'
-
+Plugin 'godlygeek/tabular'                                "  :Tabular command to align stuff
+Plugin 'gibiansky/vim-latex-objects'                      "  LaTeX text objectes. e=environments. % to jump begin/end
+Plugin 'qpkorr/vim-renamer'                               "  Batch rename files vim-style.
+Plugin 'vim-scripts/YankRing.vim'
+" Plugin 'maxbrunsfeld/vim-yankstack'                     "  Lighter yankring
+" Plugin 'rickhowe/diffchar.vim'                          "  Character wise diff
 " Colorschemes
 " Plugin 'Jorengarenar/vim-darkness'
 Plugin 'morhetz/gruvbox'
-" Plugin 'cocopon/iceberg.vim'  
+" Plugin 'cocopon/iceberg.vim'
 " Plugin 'altercation/vim-colors-solarized'
 
-" Plugin 'kristiandupont/shades-of-teal'   "  Wrong spell has other background
-" Plugin 'hauleth/blame.vim'               "  Wrong spell is to stark.
-" Plugin 'davidosomething/vim-colors-meh'  "  Clashes with pandoc-syntax
+" Plugin 'kristiandupont/shades-of-teal'                  "  Wrong spell has other background
+" Plugin 'hauleth/blame.vim'                              "  Wrong spell is to stark.
+" Plugin 'davidosomething/vim-colors-meh'                 "  Clashes with pandoc-syntax
 
 " All Plugins must be added before the following line
 call vundle#end()            " required
 
 "{{{1 Settings
-" set clipboard+=unnamedplus                   " unnamed register and *-register are the same. Copy to system clipboard by default. Bug in neovim messes up pasting of visual block.
+set clipboard+=unnamedplus                   " unnamed register and *-register are the same. Copy to system clipboard by default.
 " set gdefault                               " Flag g[lobal] as default on searches. Good in theory but mostly confusing.
 set nostartofline                            " remember cursor position when switching buffers
 set delcombine                               " Delete part of combining character with x command. Useful for editing Arabic diacritics.
@@ -78,7 +81,6 @@ set fillchars=fold:-                         " Fold linefill
 set nohlsearch                               " No high-light search hits
 set incsearch                                " Search while typing
 set ignorecase                               " Ignore case when searching
-" set autochdir                                " set workng directory to dir of current buffer. Not supported by dervish
 set smartcase                                " Case-sensitive when upper case is used in search string
 set wildignorecase                           " Non-case-sensitive file name completion
 set complete+=s~/dotfiles/mylatexstuff/bibliotek.bib " Load bibtex dumpfile to completion files
@@ -100,29 +102,27 @@ set undofile
 
 " DISPLAY
 
-if has("gui_running" )
-  set termguicolors                          " 24-bit colors in terminal
-endif
-set guicursor=a:blinkoff0  "  Make the cursor not blink
+set termguicolors                      "  24-bit colors in terminal
+set guicursor=a:blinkoff0              "  Make the cursor not blink
+
 " Statusline
-set statusline=%F          "  Full path and file name.
-set statusline+=%m         "  Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
-set statusline+=%=         "  Separator between left and right alignmet
-set statusline+=\ \ \ \ 
-" set statusline+=%l         "  Line number
+set statusline=%f                      "  Full path and file name.
+set statusline+=%m                     "  Modified flag, text is "[+]"; "[-]" if 'modifiable' is off.
+set statusline+=%=                     "  Separator between left and right alignmet
+" set statusline+=%l                   "  Line number
 " set statusline+=/
-set statusline+=%L         "  Lines in buffer
-set statusline+=l         "  Lines in buffer
+" set statusline+=%L                     "  Lines in buffer
+" set statusline+=l                      "  Lines in buffer
 " set statusline+=\ 
-" set statusline+=%n  " buffer number
-set statusline+=\ 
-set statusline+=%{wordcount().words}w 
-set statusline+=\ 
-" set statusline+=%B  " character code
-set statusline+=\ 
-set statusline+=%y         "  Filetype
+" set statusline+=%n                   "  buffer number
 " set statusline+=\ 
-set statusline+=%k         "  Current keymap
+" set statusline+=%{wordcount().words}w
+" set statusline+=\ 
+" set statusline+=%B                   "  character code
+" set statusline+=\ 
+set statusline+=%k                     "  Current keymap
+set statusline+=\ 
+set statusline+=%y                     "  Filetype
 
 set guioptions-=r                        " Remove left and right scrollbar
 set guioptions-=R
@@ -136,12 +136,13 @@ set linespace=5                           "  More space between lines. Default=0
 set cpoptions=|                           "  | at end of changed (<c>) object
 set linebreak                             "  Soft-wrap between words
 set autoindent
-set listchars=tab:▸\ ,eol:¬,nbsp:_        "  Representation of invisible characters with set list
+set listchars=tab:▸-,eol:¬,nbsp:_        "  Representation of invisible characters with set list
 set splitright                            "  Open vsplit window to the right
 set splitbelow                            "  Open split window opens below
 set shortmess+=A                          "  No swapfile exists warning
 " set expandtab                             "  tab key inserts spaces. Needed for indentation with <
-set shiftwidth=2                          "  Length of tab-character for indention 4 spaces for markdown syntax
+set shiftwidth=2                          "  Number of spaces to use for each step of (auto)indent.  Used for	|'cindent'|, |>>|, |<<|, etc.set tabstop=2
+                             "  Length of tab-character for indention 4 spaces for markdown syntax
 set formatoptions=r                       "  r=automatically insert the current comment leader after hitting <Enter> in Insert mode.
 set formatoptions+=j                      "  j=Where it makes sense, remove a comment leader when joining lines.
 set ttimeoutlen=1                         "  fixes delay on cursor shape in terminal
@@ -244,7 +245,6 @@ endfunction
 command! EALLToggle call EALLToggle()
 
 "}}}2
-
 "{{{2 IPA transcription 
 function! IPAToggle()
   if !exists("b:ipamappings")
@@ -252,7 +252,7 @@ function! IPAToggle()
   endif 
   if b:ipamappings == 0
     let b:ipamappings = 1
-    echo "IPA mappings on for this buffer"
+    echo "IPA mappings activated for this buffer"
     inoremap <buffer> aa aː
     inoremap <buffer> ii iː
     inoremap <buffer> uu uː
@@ -273,7 +273,7 @@ function! IPAToggle()
     " inormeap <buffer> ʾ ʔ
   elseif b:ipamappings == 1
     let b:ipamappings = 0
-    echo "IPA mappings off"
+    echo "IPA mappings deactivated"
     iunmap aa
     iunmap ii
     iunmap uu
@@ -309,12 +309,16 @@ command! FlipR call FlipRMarkdown()
 
 "}}}2
 
-" {{{2 File/dir-opening commands
+" {{{2 File and directory opening commands
 
 command! Re edit ~/readingnotes
+command! R edit ~/readingnotes
 command! Uni edit ~/jobb/notes/unicode.md
+command! U edit ~/jobb/notes/unicode.md
 command! Bib edit ~/dotfiles/mylatexstuff/bibliotek.bib
+command! B edit ~/dotfiles/mylatexstuff/bibliotek.bib
 command! Todo edit ~/jobb/notes/todo.md
+command! T edit ~/jobb/notes/todo.md
 
 " Only one instance of each file in location list
 " https://dhruvasagar.com/2013/12/17/vim-filter-quickfix-list
@@ -327,36 +331,34 @@ command! -bang -nargs=1 -complete=file LFilter call s:FilterLocationList(<bang>0
 
 "{{{1 General mappings
 
-" toggle hlsearch
-nnoremap <f12> :set hlsearch!<CR>
-
 " <Leader>o to toggle overview with small font
 let g:overview = 0
 
-function! OverveiwToggle()
-  if has('gui')
-    if g:overview == 0
-      let g:overview = 1
-      let g:oldtw = &tw | set formatoptions-=l
-      let g:oldscolloff = &scrolloff | set scrolloff=999
-      " Save valuesq
-      let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
+if has('gui')
+  function! OverveiwToggle()
+      if g:overview == 0
+	let g:overview = 1
+	let g:oldtw = &tw | set formatoptions-=l
+	let g:oldscolloff = &scrolloff | set scrolloff=999
+	" Save valuesq
+	let g:oldfont = &guifont | let &guifont = substitute(  &guifont,  ':h\zs\d\+',  '5' ,'')
+      else
+	let &guifont = g:oldfont
+	let &tw = g:oldtw
+	let &scrolloff = g:oldscolloff
+	let g:overview = 0
+	normal <c-w>=
+      endif
     else
-      let &guifont = g:oldfont
-      let &tw = g:oldtw
-      let &scrolloff = g:oldscolloff
-      let g:overview = 0
-      normal <c-w>=
-    endif
-  else
-    echo "Overview mode needs gui."
-  endif
-endfunction
-
-" make Q usefule. Avoid entering Ex-mode by mistake
-nnoremap Q :q
+      echo "Overview mode needs gui."
+  endfunction
+endif
 
 nnoremap <Leader>o :call OverveiwToggle()<CR>
+
+" make Q useful. Avoid entering Ex-mode by mistake
+nnoremap Q :q
+
 
 " {{{2  Text to speech
   " Says whatever is in the x-register
@@ -423,13 +425,15 @@ nnoremap gn :tabnext<CR>
 
 "{{{1 General stuff (passive)
 
-" lecturenotes.md and planering.md
+" Override any filetype settings setting shiftwidth != 2
+autocmd BufEnter * set shiftwidth=2
 
-autocmd BufEnter planering.md,lecturenotes.md setlocal cursorline 
+" lecturenotes.md and planering.md
+autocmd BufEnter planering.md,lecturenotes.md,.vimrc setlocal cursorline 
 
 " Use ripgrep, if available for searches
 if executable("rg")
-    set grepprg=rg\ --vimgrep\ --no-heading
+    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
     set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
@@ -489,7 +493,7 @@ augroup ProseHighLighting
   autocmd!
   " Enumeration
   autocmd BufEnter *.md syn match Constant '\v([Ff]irst(ly)?|[Ss]econd(ly)?|[Tt]hird(ly)?|[Ff]ourth(ly)?|[Ff]ifth(ly)?),'
-  autocmd BufEnter *.md syn match Constant '\<(\?[a-z0-9])\\?' containedin=ALL
+  autocmd BufEnter *.md syn match Constant '\<(?[a-z0-9])?' containedin=ALL
  " spell-check double words
 autocmd BufEnter *.md syn match SpellBad '/\<\(\w\+\)\s\+\1\>/'
  " dates format yyyy-mm-dd
@@ -601,140 +605,125 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
     autocmd! User GoyoLeave nested call <SID>goyo_leave() | syntax on 
 
 
-  "{{{2 Zen-mode
-nnoremap <leader>g ZenMode:<CR>
-
-lua<<EOF
-  require("zen-mode").setup({
-  window = {
-    width = .70, -- width will be 85% of the editor width
-    height = .85, -- width will be 85% of the editor width
-    options = {
-      number = false,
-      },
-  },
-})
-EOF
 
 
-  "{{{2 DiffChar
-    " Set wrap in diff
-    au FilterWritePre * if &diff | set wrap | endif
+"{{{2 DiffChar
+  " Set wrap in diff
+  au FilterWritePre * if &diff | set wrap | endif
 
-    " let g:DiffUpdate = 1
-    " let g:DiffUnit = 'Word3'
-    " let g:DiffModeSync = 1
+  " let g:DiffUpdate = 1
+  " let g:DiffUnit = 'Word3'
+  " let g:DiffModeSync = 1
 
-    " Reduce error reports
-    " autocmd InsertEnter * :RDCha
-    " autocmd InsertLeave * :TDCha
+  " Reduce error reports
+  " autocmd InsertEnter * :RDCha
+  " autocmd InsertLeave * :TDCha
 
-  "{{{2 netrw
+"{{{2 netrw
 
- " Disable netrw. Useful for testing dervish
-	" let g:loaded_netrw       = 1
-	" let g:loaded_netrwPlugin = 1
+" Disable netrw. Useful for testing dervish
+      " let g:loaded_netrw       = 1
+      " let g:loaded_netrwPlugin = 1
 
-   " supress banner
-   let g:netrw_banner=0
-   " sort case insensitive
-   let g:netrw_sort_options = "i"
-   " keep the current directory the same as the browsing directory.
-   let g:netrw_keepdir = 0
-   let g:netrw_keepalt = 1
+ " supress banner
+ let g:netrw_banner=0
+ " sort case insensitive
+ let g:netrw_sort_options = "i"
+ " keep the current directory the same as the browsing directory.
+ let g:netrw_keepdir = 0
+ let g:netrw_keepalt = 1
 
 
 
-  augroup NetrwAutos
-    autocmd!
-    autocmd FileType netrw setlocal cursorline
-    " override netrw mapping
-    autocmd FileType netrw nmap <buffer> <c-l> <c-w>l
-    " r to refresh
-    autocmd FileType netrw nmap <buffer> r :e .<cr>
+augroup NetrwAutos
+  autocmd!
+  autocmd FileType netrw setlocal cursorline
+  " override netrw mapping
+  autocmd FileType netrw nmap <buffer> <c-l> <c-w>l
+  " r to refresh
+  autocmd FileType netrw nmap <buffer> r :e .<cr>
+augroup end
+
+" function! NetrwPreViewMode()
+"   if g:netrw_preview_mode == 1 
+"     let g:netrw_preview_mode = 0
+"   else
+"     let g:netrw_preview_mode = 1
+"   endif
+
+
+"{{{2 dirvish
+augroup DirvishAutos
+  autocmd!
+  autocmd FileType dirvish setlocal cursorline
+  autocmd FileType dirvish setlocal nospell
+  autocmd FileType dirvish setlocal conceallevel=1
+augroup end
+
+augroup DirivshMappings
+  autocmd!
+  autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
+  " Rename
+  autocmd FileType dirvish nnoremap <buffer> R 0y$$F/"1yg_:!mv "<c-r>0" ".<c-r>1<c-f>A"
+  autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
+  autocmd FileType dirvish nnoremap <buffer> ! 0y$:!"<c-r>0"<Home><Right><Space><Left>
+  autocmd FileType dirvish nnoremap <buffer> x 0y$:!open "<c-r>0"<cr>
+  " Remove modified search mappings
+  autocmd FileType dirvish silent! unmap <buffer> /
+  autocmd FileType dirvish silent! unmap <buffer> ?
+augroup end
+
+"{{{2 csv
+
+  autocmd BufRead,BufEnter *.tsv,*.csv,*.dat set filetype=csv
+  autocmd BufRead,BufEnter *.tsv,*.csv,*.dat setlocal cursorline
+
+  " Highlight column under cursor. Is not effected in insert mode
+  let g:csv_highlight_column = 'n'
+
+  " Don't conceal delimiter
+  let g:csv_no_conceal = 1
+
+"{{{2 vim-pandoc-syntax
+  " don't use conceal
+  let g:pandoc#syntax#conceal#use = 0
+
+  " left align all columns
+  let b:csv_arrange_align = 'l*'
+
+"{{{2 gundo
+  " Soft wrap gundo preview
+  augroup MyGundo
+      au!
+      au BufWinEnter __Gundo_Preview__ setl linebreak wrap
   augroup end
 
-  " function! NetrwPreViewMode()
-  "   if g:netrw_preview_mode == 1 
-  "     let g:netrw_preview_mode = 0
-  "   else
-  "     let g:netrw_preview_mode = 1
-  "   endif
+  " Wider gundo window
+      let g:gundo_width = 60
+  " Auto-close gundo window on revert.
+      let g:gundo_close_on_revert=1
 
+"{{{2 vim-markdown
+  " no mappings. We only want folding
+  let g:vim_markdown_no_default_key_mappings = 1
 
-  "{{{2 dirvish
-  augroup DirvishAutos
-    autocmd!
-    autocmd FileType dirvish setlocal cursorline
-    autocmd FileType dirvish setlocal nospell
-    autocmd FileType dirvish setlocal conceallevel=1
-  augroup end
+  " Fold at the title line
+  let g:vim_markdown_folding_style_pythonic = 1
 
-  augroup DirivshMappings
-    autocmd!
-    autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
-    " Rename
-    autocmd FileType dirvish nnoremap <buffer> R 0y$$F/"1yg_:!mv "<c-r>0" ".<c-r>1<c-f>A"
-    autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
-    autocmd FileType dirvish nnoremap <buffer> ! 0y$:!"<c-r>0"<Home><Right><Space><Left>
-    autocmd FileType dirvish nnoremap <buffer> x 0y$:!open "<c-r>0"<cr>
-    " Remove modified search mappings
-    autocmd FileType dirvish silent! unmap <buffer> /
-    autocmd FileType dirvish silent! unmap <buffer> ?
-  augroup end
-  
-  "{{{2 csv
+  " list levels are indented by 2 space
+  let g:vim_markdown_new_list_item_indent = 2
 
-    autocmd BufRead,BufEnter *.csv set filetype=csv
-    autocmd BufRead,BufEnter *.dat set filetype=csv
-    autocmd FileType csv setlocal cursorline
+  " Highlighting for YAML header
+  let g:vim_markdown_frontmatter = 1
 
-    " Highlight column under cursor. Is not effected in insert mode
-    let g:csv_highlight_column = 'n'
+"{{{2 nvim-r
 
-    " Don't conceal delimiter
-    let g:csv_no_conceal = 1
+" Don't type <- with _
+   let R_assign = 0
 
-  "{{{2 vim-pandoc-syntax
-    " don't use conceal
-    let g:pandoc#syntax#conceal#use = 0
-
-    " left align all columns
-    let b:csv_arrange_align = 'l*'
-
-  "{{{2 gundo
-    " Soft wrap gundo preview
-    augroup MyGundo
-        au!
-        au BufWinEnter __Gundo_Preview__ setl linebreak wrap
-    augroup end
-
-    " Wider gundo window
-        let g:gundo_width = 60
-    " Auto-close gundo window on revert.
-        let g:gundo_close_on_revert=1
-
-  "{{{2 vim-markdown
-    " no mappings. We only want folding
-    let g:vim_markdown_no_default_key_mappings = 1
-
-    " Fold at the title line
-    let g:vim_markdown_folding_style_pythonic = 1
-
-    " list levels are indented by 2 space
-    let g:vim_markdown_new_list_item_indent = 2
-
-    " Highlighting for YAML header
-    let g:vim_markdown_frontmatter = 1
-
-  "{{{2 nvim-r
-
-  " Don't type <- with _
-     let R_assign = 0
-
-  " Unly use user defined binding
-  " See R mappings and functions below for mappings
-    let R_user_maps_only = 0
+" Unly use user defined binding
+" See R mappings and functions below for mappings
+  let R_user_maps_only = 0
 
 " augroup RMaps
 "  autocmd!
@@ -766,7 +755,7 @@ EOF
   let g:tex_flavor = 'latex' " set flvor for .tex files
 "}}}1
 "{{{1 Display & Color
-"
+
 
 syntax on
 colorscheme gruvbox " super sexy
@@ -793,14 +782,28 @@ endif
 " Copy buffer to system clopboard
 nnoremap <Leader>c mcggVggG"*y`c:echo "Buffer copied to clipboard"<CR>
 
-" insert date in format yymmdd
+" insert date in format yyyy-mm-dd
 nnoremap <Leader>d :let @d = strftime('%Y-%m-%d')<CR>"dp
-" Fuzzy find files with FZF
-nnoremap <Leader>f :FZF<Space>~/<CR>
-" Fuzzy find buffers with FZF
-nnoremap <Leader>b :Buffers<CR>
-" Fuzzy help find with FZF
-nnoremap <Leader>h :Help<CR>
+
+" FZF *** REPLACED BY TELESCOPE*
+  " Files
+  " nnoremap <Leader>f :FZF<Space>~/<CR>
+  " Buffers
+  " nnoremap <Leader>b :Buffers<CR>
+  " Help
+  " nnoremap <Leader>h :Help<CR>
+
+" Telescope
+  " Files
+  nnoremap <Leader>f :Telescope find_files<CR>
+  " Buffers
+  nnoremap <Leader>b :Telescope buffers<CR>
+  " Help
+  nnoremap <Leader>h :Telescope help_tags<CR>
+  " Grep lines
+  nnoremap <Leader>l :Telescope grep_live<CR>
+
+  
 " Window command prefix
 nnoremap <Leader>w <C-w>
 " View undoo tree. Currently with undotree
@@ -808,8 +811,6 @@ nnoremap <Leader>u :UndotreeToggle<CR>
 " Open vimrc
 nnoremap <Leader>m :e ~/.vimrc<CR>
 
-" list and chose open buffer 
-" nnoremap <leader>l :ls<CR>:b<space>
 " toggle wrap
 nnoremap <Leader>r :set wrap!<CR>
 " Toggle GoYo
@@ -825,6 +826,7 @@ augroup Tabularize
   autocmd FileType tex nnoremap <buffer><Leader>t mtvip:Tabularize /&<CR>`t
   autocmd FileType tex vnoremap <buffer><Leader>t Tabularize /&<CR>
   autocmd FileType csv nnoremap <buffer><Leader>t :%Tabularize /,<CR>
+  autocmd BufRead,BufEnter *.tsv nnoremap <buffer><Leader>t :%Tabularize /\\t<CR>
 augroup end
 
 "{{{2 Markdown compilation
@@ -929,6 +931,7 @@ autocmd!
     \ ' -f markdown+implicit_figures+smart+all_symbols_escapable
     \ -t beamer
     \ --citeproc
+    \ --columns=100
     \ --pdf-engine=xelatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ --csl ' . g:pandoc_citation_style .
@@ -969,7 +972,7 @@ autocmd!
   autocmd Filetype markdown 
     \ nnoremap <buffer> <Leader>pt :w<CR>
     \ :AsyncRun pandoc
-    \ -f markdown+implicit_figures+table_captions+smart+raw_tex %
+    \ -f markdown+implicit_figures+table_captions+raw_tex+smart-auto_identifiers %
     \ --pdf-engine=xelatex
     \ --biblatex
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
@@ -1061,10 +1064,6 @@ autocmd Filetype tex
 autocmd Filetype csv setlocal cursorline
 autocmd Filetype csv setlocal list
 
-
-
-"{{{1 R mappings and functions
-
 "{{{1 Tex mappings and functions
 
 augroup LaTeXMaps
@@ -1105,14 +1104,12 @@ augroup MardownSettings
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldexpr=MarkdownLevel()  
   autocmd Filetype markdown,markdown.pandoc,r setlocal foldmethod=expr    
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
-  autocmd Filetype markdown,markdown.pandoc syn match MDnospell "<\S\+>" contains=@NoSpell
   " spelling
+  autocmd Filetype markdown,markdown.pandoc syn match MDnospell "<\S\+>" contains=@NoSpell
   autocmd Filetype markdown,markdown.pandoc setlocal iskeyword+=:
-  autocmd Filetype markdown,markdown.pandoc setlocal fdm=expr
 
 
 augroup end
-
 
 " Folding
 
@@ -1168,6 +1165,7 @@ imap <C-t> <plug>(fzf-complete-path)
 
 " completion of following word
 inoremap xx <c-x><c-n>
+
 "}}}2
 
 " {{{2 Navigating windows
@@ -1260,6 +1258,7 @@ inoremap <M--> ‑
 " non-breaking space
 inoremap <M-Space>  
 
+
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
 
@@ -1297,10 +1296,10 @@ iab spårk språk
 " Arabic
 iab قي في
 " shorthands
-iab am ʿāmmiyya
-iab Am ʿĀmmiyya
-iab fu fuṣḥā
-iab Fu Fuṣḥā
+" iab am ʿāmmiyya
+" iab Am ʿĀmmiyya
+" iab fu fuṣḥā
+" iab Fu Fuṣḥā
 
 
 
@@ -1326,8 +1325,8 @@ inoremap <M-<><M-<> 〈
 " autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^ ^^<Left>
 " autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^^ ^
 " When only one for English possessive 's etc.
-" inoremap " ""<Left>
-" inoremap "" "
+inoremap " ""<Left>
+inoremap "" "
 " inoremap < \<><Left>
 " inoremap << \<
 autocmd Filetype r inoremap <buffer> < <
@@ -1376,14 +1375,15 @@ call EngType() " Do this on startup
 nnoremap <Leader>s :<C-U>call SweType()<CR>
 " Switch to Arabic typing
 nnoremap <Leader>a :<C-U>call AraType()<CR>
+
 "{{{1 Readingnotes
 " https://github.com/andreasmhallberg/readingnotes
 
 augroup readingnotes
   autocmd!
   " Prettier list indentation after line break
-  " View article
-  autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>pa :e ~/jobb/articuli/%<.pdf
+  " View article. Better version below
+  " autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>pa :e ~/jobb/articuli/%<.pdf
   " Shift 2 characters after break
   autocmd BufRead,BufEnter **/readingnotes/*.md setlocal breakindentopt=shift:2
   " Don't fold
@@ -1418,8 +1418,7 @@ function! ReadingnotesOpenPdf()
       \ 'sink': 'e'
       \ })  
 endfunction
-
-  autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>pa :call ReadingnotesOpenPdf()<cr>
+autocmd BufRead,BufEnter **/readingnotes/*.md nnoremap <buffer> <leader>pa :call ReadingnotesOpenPdf()<cr>
 
 
 " Filter location list to get one hit per file 
@@ -1491,4 +1490,20 @@ endfunction
 
 "}}}
 
-"  vim:foldmethod=marker:nospell
+" until this issue solved: https://github.com/neovim/neovim/issues/20456
+augroup MyLuaHLBugFix
+  autocmd!
+  autocmd! ColorScheme,VimEnter * highlight! link luaParenError Normal | highlight! link luaError Normal
+augroup END
+
+lua<<EOF
+  require("zen-mode").setup({
+  window = { width = .60, -- width will be 85% of the editor width
+    height = .85, -- width will be 85% of the editor width
+    options = {
+      number = false,
+      },
+  },
+})
+EOF
+
