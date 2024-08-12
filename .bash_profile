@@ -21,8 +21,6 @@ export PATH=$PATH:~/dotfiles/bin
 export PATH=$PATH:~/dotfiles/bin/textanalysis
 export PATH=$PATH:/Users/xhalaa/Library/Python/3.7/bin
 
-export OPENAI_API_KEY=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 
-
 # brew in path
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
