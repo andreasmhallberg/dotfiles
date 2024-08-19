@@ -4,3 +4,4 @@ offlineimap.pyc
 *.log
 *.crt
 *.key
+__pycache__

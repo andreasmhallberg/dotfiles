@@ -787,21 +787,21 @@ nnoremap <Leader>d :let @d = strftime('%Y-%m-%d')<CR>"dp
 
 " FZF *** REPLACED BY TELESCOPE*
   " Files
-  " nnoremap <Leader>f :FZF<Space>~/<CR>
+  nnoremap <Leader>f :FZF<Space>~/<CR>
   " Buffers
-  " nnoremap <Leader>b :Buffers<CR>
+  nnoremap <Leader>b :Buffers<CR>
   " Help
-  " nnoremap <Leader>h :Help<CR>
+  nnoremap <Leader>h :Help<CR>
 
-" Telescope
-  " Files
-  nnoremap <Leader>f :Telescope find_files<CR>
-  " Buffers
-  nnoremap <Leader>b :Telescope buffers<CR>
-  " Help
-  nnoremap <Leader>h :Telescope help_tags<CR>
-  " Grep lines
-  nnoremap <Leader>l :Telescope grep_live<CR>
+" " Telescope
+"   " Files
+"   nnoremap <Leader>f :Telescope find_files<CR>
+"   " Buffers
+"   nnoremap <Leader>b :Telescope buffers<CR>
+"   " Help
+"   nnoremap <Leader>h :Telescope help_tags<CR>
+"   " Grep lines
+"   nnoremap <Leader>l :Telescope grep_live<CR>
 
   
 " Window command prefix

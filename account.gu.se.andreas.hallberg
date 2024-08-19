@@ -21,7 +21,6 @@ set folder = "imaps://outlook.office365.com:993"
 # set folder = "~/Maildir/gu/" # for use with offlineimap
 
 set spoolfile = "+INBOX"
-set record="+Skickat"
 set header_cache="~/.mutt/gu/cache/headers"
 set message_cachedir="~/.mutt/gu/cache/bodies"
 # set certificate_file=~/.mutt/certificates
