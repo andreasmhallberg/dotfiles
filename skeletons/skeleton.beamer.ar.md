@@ -8,13 +8,14 @@ slide-level: 2
 classoption:
   - 8pt
 header-includes:
-  - \newfontfamily\arabicfont[Script=Arabic]{Lateef}
-  - \newfontfamily\arabicfontsf[Script=Arabic]{Lateef}
-  - \newfontfamily\arabicfontit[Script=Arabic]{Amiri}
+  - |
+    ```{=latex}
+    \babelfont[arabic]{rm}[Scale=1.5]{Lateef}
+    ```
   - \frenchspacing
-  - \renewcommand\toprule{\null}
-  - \renewcommand\midrule{\null}
-  - \renewcommand\bottomrule{\null}
+  - \renewcommand\toprule[2]{\null}
+  - \renewcommand\midrule[2]{\null}
+  - \renewcommand\bottomrule[2]{\null}
   - \renewcommand\endhead{\null}
   - \input{/Users/xhalaa/dotfiles/mypandocstuff/beamermacros.tex}
   - \setbeamercolor{quotation}{fg=gray!80}

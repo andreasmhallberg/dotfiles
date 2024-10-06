@@ -56,6 +56,7 @@ settings:
   content.register_protocol_handler:
     https://calendar.google.com?cid=%25s: true
     https://mail.google.com?extsrc=mailto&url=%25s: false
+    https://outlook.office365.com?mailtouri=%25s: true
   content.user_stylesheets:
     global: null
   downloads.position:
@@ -118,6 +119,7 @@ settings:
       merriam: https://www.merriam-webster.com/dictionary/{}
       oxae: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/arabic-english/?q={}
       oxea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/?q={}
+      saol: https://svenska.se/saol/?sok={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       uba: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=default_scope&vid=46GUB_VU1&lang=en_US&offset=0

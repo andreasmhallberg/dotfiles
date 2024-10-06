@@ -1,6 +1,7 @@
 # Symlink in ~./.vim/spell/sv.utf-8.add
 # Words added to Swedish correct spelling list in Vim.
 
+it/!
 iden/!
 höge/!
 stort sätt/!
@@ -44,7 +45,6 @@ vs.
 vt
 ht
 
-Institutet för Språk och Folkminnen
 AR1100
 AR1101
 AR1102
@@ -64,6 +64,7 @@ Damaskus
 Elinor
 Etikprövningsmyndigheten
 Fatima
+Filippa
 Folkuniversitetes
 Folkuniversitetet
 Folkuniversitetets
@@ -71,18 +72,23 @@ Grammatikfestivalen
 Granberg
 Hallberg
 Hallbergs
+Handelsbanken
 Heléne
 Helénes
 Hindawi
+Humanisten
 Humanistlaboratoriet
 Humansten
 Högskoleförordningens
 Högskoleverket
+Institutet för Språk och Folkminnen
 Introduktionsvecka
 Janna
+Jonatan
 Järlehed
 Kammensjö
 Katharina
+Katsivelis
 Koranentexten
 Ladok
 Levanten
@@ -90,6 +96,7 @@ Lindström
 Lärarförslagsnämnden
 Mariam
 Medarbetarportalen
+Mellanönsters
 Michelle
 Mvh
 Myrne
@@ -103,6 +110,8 @@ Reykjavik
 Riyadh
 Rooke
 Ryding
+San Michele
+Sigtunastiftelsen
 Språkriktighetsboken
 Språkrådet
 Språkrådets
@@ -111,7 +120,9 @@ Tetz
 UKÄ
 Unicode
 Universetetskanslerämbetet
+Versteegh
 Vim
+Wellanders
 Wikimedia Commons
 
 abjad
@@ -148,6 +159,7 @@ antagningskraven
 antagningslista
 antagningssystemet
 anteckningsstöd
+anteckningsteknik
 antologikapitel
 användarnamnet
 applicerbart
@@ -163,6 +175,7 @@ arabiskalärarens
 arabiskaprogram
 arabiskaseminariet
 arabiskaseminarium
+arabiskastudent
 arabiskastudenter
 arabiskastudier
 arabiskaundervisning
@@ -174,12 +187,15 @@ arabiskaämnet
 arabiskhet
 arabiskkunnig
 arabiskkunnige
+arabiskspråkig
 arabiskspråkiga
 arabisktalande
 arabisktalare
 arabistik
 arabistiken
+arabistikens
 arabnationalistiska
+arabvärld
 arabvärlden
 arabvärldens
 arbetsfördelning
@@ -303,6 +319,7 @@ bokstavsformer
 bokstavspar
 bokstavstext
 boktryckarkonsten
+bokutgivning
 bordsgranne
 bottenplan
 boupptäckning
@@ -319,6 +336,7 @@ böjningsparadigm
 böjningssystem
 campus
 campusförlagda
+campuskurs
 campusstudenter
 campusstudenter
 campusstudier
@@ -423,6 +441,7 @@ diktanalys
 dimunitiv
 diptot
 direktlänk
+direktlänkar
 disciplinnämnd
 disciplinnämnden
 disciplinärende
@@ -433,6 +452,7 @@ diskussionsforum
 diskussionsforumet
 diskussionsfråga
 diskussionsfrågor
+diskussionstråden
 distansbaserad
 distanskurs
 distansomställningen
@@ -463,6 +483,7 @@ dubbeltimmar
 dubbning
 dödsdom
 dödsförklaring
+dödsår
 edéer
 egenproducerat
 elevgruppers
@@ -497,6 +518,7 @@ exempelnamnen
 exempelord
 exempelpresentation
 exempelverb
+exotiserande
 experimentdesign
 experimentprocedur
 expertgranskning
@@ -549,6 +571,7 @@ forksningskvalitén
 forksningstid
 formaliafrågor
 formateringsfel
+forskargärning
 forskarkarriär
 forskarlån
 forskarmiljö
@@ -559,6 +582,7 @@ forskningsanknytning
 forskningsartikel
 forskningsartiklar
 forskningsbaserad
+forskningsbeskrivning
 forskningserfarenhet
 forskningsfråga
 forskningsfrågan
@@ -580,6 +604,8 @@ forskningsmetoden
 forskningsmetoder
 forskningsmetoderna
 forskningsmiljö
+forskningsområde
+forskningsområden
 forskningsområdet
 forskningspresentation
 forskningspresentationen
@@ -587,6 +613,7 @@ forskningsproblemet
 forskningsprocessen
 forskningsprocessens
 forskningsprojekt
+forskningsprojektet
 forskningspublikationer
 forskningsrelaterad
 forskningsrelaterade
@@ -596,6 +623,8 @@ forskningstradition
 forskningstraditioner
 forskningsuppgift
 forskningsuppgiften
+forskningsöversikt
+forskningsöversikten
 forskningtiden
 forskninsmedel
 forskninsområden
@@ -629,7 +658,9 @@ funktionsord
 fyrfältare
 fältarbete
 fältlingvist
+färdighetsinriktad
 färdighetsinriktat
+färdighetsmål
 färdighetsnivå
 färdighetsnivån
 färdighetsorienterade
@@ -666,6 +697,7 @@ generaliserande
 generaliserbara
 genitivkonstruktion
 genomsnittstalarens
+genreavhängiga
 genreeffekten
 genreeffekter
 genrekonventioner
@@ -677,12 +709,14 @@ glosseringar
 glosseringen
 godissnören
 gradvisa
+grafotaktiskt
 grammatikanalysen
 grammatikbeskrivning
 grammatikbok
 grammatikboken
 grammatikböcker
 grammatikfrågor
+grammatikfärdigheter
 grammatikförklaringar
 grammatikkapitel
 grammatikor
@@ -742,6 +776,7 @@ handledningsmöte
 handledningsparxis
 handledningssession
 handledningstid
+handledningsträff
 handskriftsproduktion
 handskriftsstudier
 handskriftstraditionen
@@ -807,6 +842,7 @@ hälsotillstånd
 händelsekedja
 härkomstland
 hållbarhetsperspektiv
+högläsningsstudien
 högläsningstext
 högläsningstexten
 högläsningsuppgift
@@ -837,6 +873,7 @@ infromationsmaterialet
 ingengörsvetenskap
 ingenjörsvetenskap
 initiativtagande
+inköpsblanketter
 inloggningssätt
 inloggningsuppgifter
 inloggningsuppgifterna
@@ -855,6 +892,7 @@ inscannad
 inscannat
 inskottsvokal
 institutionsgemensam
+institutionsgemensamma
 institutionsledning
 institutionsledningen
 instruktionssida
@@ -896,6 +934,7 @@ julefriden
 jussiv
 kairoarabiska
 kairodialekten
+kalkylbladet
 kamratgranskare
 kamratgranskning
 kamratgranskningen
@@ -923,6 +962,7 @@ klassmarkör
 klassresa
 klassrumssituation
 klassrumsövning
+klickbara
 klyddet
 kodeväxling
 kodpunkter
@@ -964,6 +1004,7 @@ kontaktuppgifter
 kontextualiserad
 kontextualiseras
 kontorsbyggnad
+kontouppgifter
 kontraintuitivt
 kontraktsbrott
 kontrollerbarhet
@@ -1004,6 +1045,7 @@ kursansvarig
 kursanvarig
 kursbenämning
 kursbenämningarna
+kursbeskrivningar
 kursbeskrivningen
 kursbok
 kursboken
@@ -1016,6 +1058,7 @@ kursguiden
 kursguider
 kursinnehåll
 kursinnehållet
+kursintroduktionen
 kurskamrat
 kurskamrater
 kurskamraterna
@@ -1027,6 +1070,7 @@ kursmålen
 kursmålet
 kursnamn
 kursnamnen
+kursplanering
 kursplaneringar
 kursplattformen
 kurssammanfattningen
@@ -1034,6 +1078,7 @@ kursseminarier
 kurssidan
 kurssidor
 kurssidorna
+kursslut
 kursstart
 kursstarten
 kursstruktur
@@ -1049,6 +1094,7 @@ kursutbud
 kursutbudet
 kursutbudets
 kursutveckling
+kursversioner
 kursvärderingar
 kursvärderingarna
 kursvärderingen
@@ -1072,6 +1118,7 @@ kycklingrulle
 källhänvisning
 källtext
 källtexten
+källtextens
 källtexter
 källtexterna
 könsidentitet
@@ -1281,6 +1328,7 @@ morfofonologiska
 motargument
 motargumentet
 motivationsbrevet
+motiveringsbrev
 motkraft
 munskydd
 musikindustri
@@ -1291,6 +1339,7 @@ mådersmålstalare
 målspråket
 målspråkets
 månbokstav
+månbokstäver
 mönstersystemet
 möteslänk
 mötesrum
@@ -1344,6 +1393,7 @@ olivfälten
 oljeekonomin
 oljeproducenter
 ombearbetning
+omexamination
 områdesstudier
 onlineuppgifterna
 onlineövningar
@@ -1354,6 +1404,7 @@ ordidentifiering
 ordigenkänning
 ordintern
 ordkunskap
+ordmellanrum
 ordnivå
 ordslut
 orientalistisk
@@ -1381,6 +1432,7 @@ peer-review
 pensionsavgångar
 perfektiv
 periodiseras
+personalkostnader
 personalmöte
 personalmöten
 personalmötet
@@ -1392,6 +1444,7 @@ personböjt
 persondata
 personprefix
 personprefixet
+personsidor
 pilottesterna
 plagiatärenden
 planeringssidan
@@ -1425,6 +1478,7 @@ prepositionsfraser
 prepositionsobjekt
 prepostionsfras
 presentationsformer
+presentationsrunda
 preskriptiv
 preskriptiva
 preskriptivism
@@ -1475,6 +1529,7 @@ publiceringsmöjligheter
 publikationsformer
 publikationslista
 publikationslistor
+publikationsår
 punktlista
 punktlistan
 quiz
@@ -1482,10 +1537,12 @@ quizen
 quizet
 radbyte
 radiokanalen
+radnummer
 rasifiering
 realiauppgifterna
 redaktörsrgranskat
 redovisningsteman
+referensblad
 referensgrammatik
 referensgrammatikor
 referenshantering
@@ -1499,6 +1556,7 @@ referenssystem
 referensteknik
 reformförsök
 regelbildning
+regelsystem
 rekommendationsbrev
 rekommendationsbrevet
 rektorsbeslutet
@@ -1520,6 +1578,7 @@ rottyper
 rountable
 rubriksättning
 rättande
+rättskrivningsmanualer
 rättskrivningsregler
 rådge
 rådgivande
@@ -1527,14 +1586,18 @@ rödmarkerade
 sakkunniggranskning
 salstentamen
 salstentor
+samhällrelevans
 samhällseliten
 samhällsgrupp
 samhällsgrupps
 samhällsklass
 samhällsklasser
 samhällsklasserna
+samhällskontext
 samhällsliv
 samhällsrelevanta
+samhällsroll
+samhällsservice
 samhällsstegen
 samhällsstrukturer
 samhällsvetenskap
@@ -1578,6 +1641,7 @@ sidosyssla
 sidreferenserna
 sifferformerna
 sinnesintyck
+sittrappan
 sjukanmäld
 sjukanmälde
 sjukfrånvaro
@@ -1591,6 +1655,7 @@ självvärderingen
 skedmatning
 skelettskada
 skiljepunkterna
+skiljeteckensbruk
 skivfärdigheterna
 skolböcker
 skolspråk
@@ -1606,6 +1671,7 @@ skriftsystem
 skriftsystemen
 skriftsystemet
 skrivbordslåda
+skrivfärdighet
 skrivfärdigheter
 skrivinlärning
 skrivkunnighet
@@ -1635,11 +1701,15 @@ slalsnummer
 slutdiskussion
 slutform
 slutformen
+slutmålet
 slutnot
 slutprodukt
+slutredigeringen
+slutresultat
 slutuppgiften
 slutändan
 smågrejer
+smårättningar
 småtecken
 snittfrekvens
 socialsekreterare
@@ -1650,6 +1720,7 @@ solbokstäver
 spanskalärare
 specialformer
 specialkompetens
+spiralmetoden
 spiralpedagogik
 språkakademi
 språkakademierna
@@ -1660,6 +1731,7 @@ språkanvändningen
 språkarter
 språkattityder
 språkdagen
+språkdidaktik
 språkfamiljen
 språkfel
 språkformen
@@ -1667,6 +1739,8 @@ språkformer
 språkformernas
 språkfärdighet
 språkfärdigheten
+språkfärdigheter
+språkfärdighetsinriktad
 språkfärdighetsutveckling
 språkförmåga
 språkförändring
@@ -1689,6 +1763,7 @@ språkintresserad
 språkintresserade
 språkkompetens
 språkkontakt
+språkkorpusar
 språkkunskaper
 språkkunskaperna
 språklojalitet
@@ -1696,6 +1771,7 @@ språklärde
 språkmedvetandet
 språknivå
 språknormer
+språkpedagogiken
 språkpedagogiska
 språkpolicy
 språkpolitik
@@ -1710,6 +1786,7 @@ språksociologi
 språkstudenter
 språkstuderande
 språkstudier
+språkstörning
 språksyn
 språksynen
 språkundervisning
@@ -1723,6 +1800,8 @@ språkvarieteter
 språkvetenskap
 språkvetenskapen
 språkvetenskaperna
+språkvård
+språkvården
 språkämnen
 språkämnena
 spökskriva
@@ -1763,6 +1842,7 @@ standardvarietetens
 standardvarieteter
 standardvarieteterna
 standardverket
+startformen
 startgroparna
 startsida
 startsidan
@@ -1778,6 +1858,7 @@ stavelsetyper
 stavningskonventioner
 stavningsregler
 stavningsvariationen
+stildrag
 stilfigurer
 stilguid
 stilguider
@@ -1816,6 +1897,7 @@ studiehandleding
 studiehandledning
 studiehandledningen
 studieinstruktioner
+studieplanen
 studieplatser
 studieprogram
 studierektorskap
@@ -1827,6 +1909,7 @@ studievana
 studievägledning
 styckeindelning
 styrdokument
+styrdokumenten
 styrdokumentens
 stödord
 subjektspronomen
@@ -1918,6 +2001,7 @@ textpassager
 textproduktion
 textproduktionen
 textrutor
+textsamlingarna
 textsamlingen
 textstruktur
 textstycken
@@ -1955,11 +2039,13 @@ tolkningsbara
 tonalitet
 tonläge
 traditionsgränserna
+transkriptionstecken
 transkriptionsystem
 transkriptionsystemet
 translitterering
 tryckkostnad
 tryckkostnader
+tryckstil
 tryckstilformerna
 tungroten
 tungrots-r
@@ -1968,6 +2054,7 @@ turistmålen
 tvåordsmeningar
 typsättningsteknologi
 umgängesspråk
+ummayadisk
 ummayadiska
 underdiscipliner
 underhållningsmedia
@@ -1986,6 +2073,7 @@ underspecificerat
 understräckade
 understukna
 undertitel
+undervarieteter
 undervinsingsmaterial
 undervisningsaktiviteter
 undervisningserfarenhet
@@ -2009,6 +2097,7 @@ universitetsgemensamma
 universitetskontexten
 universitetslärare
 universitetsnivå
+universitetsprogram
 universitetsstudier
 universitetsvärlden
 uppgiftsgrupp
@@ -2019,6 +2108,7 @@ uppsamlingstenta
 uppsamlingstentor
 uppsatsarbete
 uppsatsarbetet
+uppsatsdatabas
 uppsatsförberedande
 uppsatsförfattandet
 uppsatsförlag
@@ -2058,6 +2148,7 @@ utelämnandet
 utgivningsdatum
 utlandsstudenter
 utlandsstudier
+utlandsstudierna
 utlandstermin
 utlandsterminen
 utlysningstext
@@ -2083,6 +2174,9 @@ vardagsverklighet
 varieriet
 varieteteter
 varmvatten
+vattenmelon
+vattenmelonmotiv
+vattenmelonstrumpor
 veckopendla
 veckopendlar
 veckopendlat
@@ -2090,6 +2184,7 @@ ventileringsseminarium
 verbalfras
 verbalfrasen
 verbalfraser
+verbalnomen
 verbalsats
 verbalsatser
 verbbildning
@@ -2108,6 +2203,7 @@ vetenskapsteori
 vetenskapstraditionen
 vetenskapstraditioner
 vidarebefordra
+vidarebefordrade
 vidarebefordrar
 vidareutbildning
 videokameror
@@ -2128,6 +2224,7 @@ vokalmönster
 vokalomgivningar
 vokalpassiv
 vokalreduktion
+vokalsekvens
 vokalsystem
 vokalsystemet
 vokaltecken
@@ -2143,9 +2240,11 @@ välstrukturerad
 välstrukturerat
 vänskapskretsen
 värdeomdöme
+värdeomdömen
 värderingsförmåga
 värdinstitutionen
 värduniversitet
+värduniversitetet
 världshistoriens
 världsreligion
 världsspråk
@@ -2197,6 +2296,7 @@ zoomrummet
 ämnesundervisningen
 ämnesval
 ämnesövergripande
+ändelsesystemet
 ärendenummer
 återbesöka
 åtgärdsplan
@@ -2211,41 +2311,20 @@ zoomrummet
 översättningsanalys
 översättningsbart
 översättningsfel
-personalkostnader
-ändelsesystemet
-utlandsstudierna
-motiveringsbrev
-styrdokumenten
 översättningsvetenskap
-språkdidaktik
-forskningsbeskrivning
-personsidor
-forskningsområde
-institutionsgemensamma
-forskningsområden
-studieplanen
-värduniversitetet
-kursbeskrivningar
-kalkylbladet
-Mellanönsters
-färdighetsmål
-klickbara
-månbokstäver
-högläsningsstudien
-referensblad
-vokalsekvens
-tryckstil
-transkriptionstecken
-startformen
-forskningsöversikt
-ordmellanrum
-rättskrivningsmanualer
-språkvården
-regelsystem
-grafotaktiskt
-källtextens
-genreavhängiga
-forskargärning
-bokutgivning
-arabiskspråkig
-skiljeteckensbruk
+arabistkollega
+ämnesinnehållet
+Uppsatshandboken
+källhänvisningar
+yrkesmöjligheter
+karriärvägar
+språkämne
+japp
+underdialekter
+papperstentor
+språkråd
+korpuslingvistiska
+analysarbetet
+språkriktighetslitteratur
+heltidskurs
+standardverk

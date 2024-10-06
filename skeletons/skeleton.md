@@ -6,6 +6,7 @@ papersize: a4
 fontsize: 12pt
 mainfont: Linux Libertine
 date:
+section-numbers: true
 header-includes:
   - \usepackage[bottom]{footmisc} 
  #  - \usepackage{titleps}
@@ -30,3 +31,5 @@ figPrefix:
 ---
 
 \frenchspacing
+\lefthyphenmin=3
+\righthyphenmin=3

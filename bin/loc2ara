@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# EXPERIMENTAL
+
+# Transliterate from Alif Baa to Arabic.
+# Does not handle:
+#     - ta marbuta
+#     - alif maqsuura
+#     - letter combination
+    #     - s-h e.g. 'ashal'. Transliterates as shin.
+    #     - k-h e.g. 'nakha'. Transliterates as khaa.
+    #     - DH e.g. 'aDHaa'. Transliterates as DHaa.
+    #     - DH e.g. 'aDHaa'. Transliterates as DHaa.
+    # - hamza. Transliterates all as hamza on alif
+    # - shadda.
+
+# final -a should always be interpreted to ta marbuuta 
+
+# First do prefixes, suffixes and long vowels, then plain transliteration
+
+# Prefixed conjunctions
+ sed -E  's/wa-/وِ-/g' |\
+ sed -E  's/fa-/ف-/g' |\
+
+# Prefixed prepositions 
+ sed -E  's/bi-/بِ-/g' |\
+ sed -E  's/-bi-/-بِ-/g' |\
+ sed -E  's/ka-/كَ-/g' |\
+ sed -E  's/-ka-/-كَ-/g' |\
+ sed -E  's/li-/لِ-/g' |\
+ sed -E  's/-li-/-لِ-/g' |\
+
+# definite article.
+ sed -E  's/\ba?(.)-/ا\1-/g' |\
+ sed -E  's/-a?(.)-/-ا\1-/g' |\
+
+# hamza at beginning
+ sed -E  's/\bʾ/أ/g' |\
+ sed -E  's/-ʾ/-أ/g' |\
+ sed -E  's/ā/ا/g' |\
+ sed -E  's/ū/ًو/g' |\
+ sed -E  's/ī/ِي/g' |\
+ sed -E  's/th/ث/g' |\
+ sed -E  's/kh/خ/g' |\
+ sed -E  's/dh/ذ/g' |\
+ sed -E  's/sh/ش/g' |\
+ sed -E  's/ẓ/ظ/g' |\
+ sed -E  's/gh/غ/g' |\
+
+tr  btjḥdrzsṣḍṭʿfqklmnhwy بتجحدرزسصضطعفقكلمنهوي |\
+
+sed -E 's/a//g'
+sed -E 's/u//g'
+sed -E 's/i//g'

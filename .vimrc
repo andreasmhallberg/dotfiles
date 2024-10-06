@@ -156,7 +156,7 @@ endif
 
 " FixHtmlPaddim
 function! FixHTMLTablePadding()
-  %s/<table>/<table cellspacing="10pt">/g
+  %s/<table/<table cellspacing="10pt"/g
 endfunction
 
 function! DoubleWordCorr()
@@ -171,6 +171,15 @@ function DeleteHiddenBuffers()
     for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
         silent execute 'bwipeout' buf
     endfor
+endfunction
+
+" New Album for musik.yml
+function! NewAlbum()
+  r ~/dotfiles/skeletons/skeleton.musik.yml
+  call cursor( line('.')+2, 1)
+  r!mktemp -u XXXXXXXXXXXX
+  call cursor( line('.')-1, 1)
+  join
 endfunction
 
 " Easier Arabic transcription
@@ -821,8 +830,8 @@ nnoremap <Leader>n :lnext<cr>
 " Tabularize mappings (normal and visual)
 augroup Tabularize
   autocmd!
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t mtvip:Tabularize /\|<CR>`t
-  autocmd Filetype markdown,markdown.pandoc vnoremap <buffer><Leader>t :Tabularize /\|<CR>
+  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer><Leader>t mtvip:Tabularize /\|<CR>gv:s/^ //<CR>`t
+  autocmd Filetype markdown,markdown.pandoc vnoremap <buffer><Leader>t :Tabularize /\|<CR>gv:s/^ //<CR>
   autocmd FileType tex nnoremap <buffer><Leader>t mtvip:Tabularize /&<CR>`t
   autocmd FileType tex vnoremap <buffer><Leader>t Tabularize /&<CR>
   autocmd FileType csv nnoremap <buffer><Leader>t :%Tabularize /,<CR>
@@ -907,22 +916,6 @@ autocmd!
     \ ' --csl ' . g:pandoc_citation_style .
     \ ' -o ' . g:pandoc_output_dir . '%' . '.pdf'<cr>
 
-
-  " to pdf with numbers 
-  autocmd Filetype markdown,pandoc.markdown
-    \ nnoremap <buffer> <Leader>ppn 
-    \ :w<CR>
-    \ :execute 'AsyncRun pandoc ' . '%' .
-    \ ' -f markdown+implicit_figures+table_captions+multiline_tables+smart
-    \ --pdf-engine=xelatex
-    \ --filter pandoc-crossref
-    \ --citeproc
-    \ --columns=200
-    \ --number-sections
-    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ' . g:pandoc_citation_style .
-    \ ' -o ' . '%' . '.pdf'<CR>
-
   "  to beamer 
   autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer><Leader>pb 
@@ -933,9 +926,10 @@ autocmd!
     \ --citeproc
     \ --columns=100
     \ --pdf-engine=xelatex
-    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
-    \ --csl ' . g:pandoc_citation_style .
+    \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib' .
     \ ' -o ' . '%' . '.beamer.pdf'<cr>
+
+    " \ --csl ' . g:pandoc_citation_style .
 
   "  to beamer (LaTeX)
   autocmd Filetype markdown,pandoc.markdown
@@ -961,7 +955,6 @@ autocmd!
       \ --filter pandoc-crossref
       \ --verbose
       \ --citeproc
-      \ -N
       \ --bibliography ' . g:pandoc_bibliography . 
       \ ' --csl ' . g:pandoc_citation_style .
       \ ' --reference-doc=' . g:pandoc_reference_docx .
@@ -1207,23 +1200,23 @@ augroup FontMappings
 
 " Boldface b
   " normal mode
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gb lmflbi**<esc>ea**<esc>`f
+  autocmd FileType markdown,markdown.pandoc,yaml nnoremap <buffer>gb lmflbi**<esc>ea**<esc>`f
   autocmd FileType tex nnoremap <buffer>gb lmflbi<Bslash>textbf{<esc>ea}<esc>`f
   " visual mode
-  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gb mf`<i**<esc>`>a**<esc>`f
+  autocmd FileType markdown,markdown.pandoc,yaml vnoremap <buffer>gb mf`<i**<esc>`>a**<esc>`f
 
 " Italic i (word) and I (WORD)
   " normal mode
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gi lmfbi*<esc>ea*<esc>`f
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gI lmfBi*<esc>ea*<esc>`f
+  autocmd FileType markdown,markdown.pandoc,yaml nnoremap <buffer>gi lmfbi*<esc>ea*<esc>`f
+  autocmd FileType markdown,markdown.pandoc,yaml nnoremap <buffer>gI lmfBi*<esc>ea*<esc>`f
 
 
   autocmd FileType tex nnoremap <buffer>gi lmfbi<Bslash>textit{<esc>ea}<esc>`f
   " visual mode
-  autocmd FileType markdown,markdown.pandoc vnoremap <buffer>gi mf<esc>`<i*<esc>`>a*<esc>`f
+  autocmd FileType markdown,markdown.pandoc,yaml vnoremap <buffer>gi mf<esc>`<i*<esc>`>a*<esc>`f
   autocmd FileType tex vnoremap <buffer>gi mf`<esc>i<Bslash>textit{<esc>`>a}<esc>`f
   " remove
-  autocmd FileType markdown,markdown.pandoc nnoremap <buffer>gdi mf<esc>?\*<cr>x/\*/\*<cr>x`f
+  autocmd FileType markdown,markdown.pandoc,yaml nnoremap <buffer>gdi mf<esc>?\*<cr>x/\*/\*<cr>x`f
 
 " Smallcaps s
   " normal mode
@@ -1455,6 +1448,8 @@ augroup MailStuff
   autocmd FileType mail setlocal iskeyword+=@-@
   autocmd FileType mail setlocal iskeyword+=.
   autocmd FileType mail setlocal iskeyword+=_
+  autocmd FileType mail setlocal formatoptions-=t
+
   " format text with Enter
   " autocmd FileType mail nnoremap <buffer> <CR> gqip
 augroup end
@@ -1498,7 +1493,7 @@ augroup END
 
 lua<<EOF
   require("zen-mode").setup({
-  window = { width = .60, -- width will be 85% of the editor width
+  window = { width = 80, -- width will be 80 characters
     height = .85, -- width will be 85% of the editor width
     options = {
       number = false,

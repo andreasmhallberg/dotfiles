@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ $# == 1 ]
+  then
+  echo "Provide file name and page range."
+  exit
+fi
+
+
+cpdf $1 $2 -o printpages.temp.pdf
+
+launch -p printpages.temp.pdf
+
+wait
+
+rm printpages.temp.pdf

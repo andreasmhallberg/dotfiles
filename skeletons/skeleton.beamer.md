@@ -14,9 +14,9 @@ header-includes:
     ```
   - \def\UrlFont{\itshape}
   - \frenchspacing
-  - \renewcommand\toprule{\null}
-  - \renewcommand\midrule{\null}
-  - \renewcommand\bottomrule{\null}
+  - \renewcommand\toprule[2]{}
+  - \renewcommand\midrule[2]{}
+  - \renewcommand\bottomrule[2]{}
   - \renewcommand\endhead{\null}
   - \input{/Users/xhalaa/dotfiles/mypandocstuff/beamermacros.tex}
   - \setbeamercolor{quotation}{fg=gray!80}
