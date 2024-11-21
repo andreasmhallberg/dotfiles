@@ -5,3 +5,4 @@ offlineimap.pyc
 *.crt
 *.key
 __pycache__
+karabiner/automatic_backups/
