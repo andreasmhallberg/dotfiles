@@ -1,0 +1,137 @@
+{
+    "description": "Symbolic Keypad Mode",
+    "manipulators": [
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "u" },
+            "to": [{ "key_code": "7", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "i" },
+            "to": [{ "key_code": "8", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "o" },
+            "to": [{ "key_code": "9", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "semicolon" },
+            "to": [{ "key_code": "hyphen" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "j" },
+            "to": [{ "key_code": "4", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "k" },
+            "to": [{ "key_code": "5", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "l" },
+            "to": [{ "key_code": "6", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+               {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "p" },
+            "to": [{ "key_code": "keypad_plus" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "m" },
+            "to": [{ "key_code": "1", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "comma" },
+            "to": [{ "key_code": "2", "modifiers": "shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "period" },
+            "to": [{ "key_code": "3", "modifiers": "shift" }],
+            "type": "basic"
+        }
+    ]
+}

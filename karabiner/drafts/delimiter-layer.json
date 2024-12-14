@@ -1,0 +1,77 @@
+{
+    "description": "Delimiter layer",
+    "manipulators": [
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "u" },
+            "to": [{ "key_code": "open_bracket" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "i" },
+            "to": [{ "key_code": "close_bracket" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "j" },
+            "to": [{ "key_code": "9", "modifiers": "left_shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "k" },
+            "to": [{ "key_code": "0", "modifiers": "left_shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "m" },
+            "to": [{ "key_code": "open_bracket", "modifiers": "left_shift" }],
+            "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "comma" },
+            "to": [{ "key_code": "close_bracket", "modifiers": "left_shift" }],
+            "type": "basic"
+        }
+    ]
+}

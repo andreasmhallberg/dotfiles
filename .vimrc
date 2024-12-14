@@ -3,6 +3,10 @@
 filetype plugin on
 filetype indent on
 
+" leader kye
+let mapleader = ";"
+let maplocalleader = ";"
+
 language en_US " set language of messages to English. Some plugins give error messages for other languages.
 
 "{{{1 Plugins
@@ -132,7 +136,7 @@ set number                                "  Display line numbers
 set foldcolumn=0                          "  No columns to show folds
 set guifont=Source\ Code\ Pro\ Light:h15
 " set nt=ALM\ Fixed:h16
-set linespace=5                           "  More space between lines. Default=0
+set linespace=10                           "  More space between lines. Default=0
 set cpoptions=|                           "  | at end of changed (<c>) object
 set linebreak                             "  Soft-wrap between words
 set autoindent
@@ -191,11 +195,13 @@ function! EALLToggle()
   if b:eallmappings == 0
     let b:eallmappings = 1
     echo "EALL mappings on for this buffer"
-    inoremap <buffer> <M-p> ʿ
-    inoremap <buffer> <M-P> ʾ
+    inoremap <buffer> <A-p> ʿ
+    inoremap <buffer> <A-P> ʾ
     inoremap <buffer> aa ā
     inoremap <buffer> ii ī
     inoremap <buffer> uu ū
+    inoremap <buffer> oo ō
+    inoremap <buffer> ee ē
     inoremap <buffer> AA Ā
     inoremap <buffer> II Ī
     inoremap <buffer> UU Ū
@@ -230,6 +236,8 @@ function! EALLToggle()
     iunmap <buffer>AA
     iunmap <buffer>II
     iunmap <buffer>UU
+    iunmap <buffer>oo
+    iunmap <buffer>ee
     iunmap <buffer>.d
     iunmap <buffer>.D
     iunmap <buffer>.t
@@ -405,16 +413,6 @@ vnoremap z "xy:call TTS()<CR>
 " TTS for rest of paragraph
 " nnoremap z "xy}:call TTS()<CR>
 
-augroup MoveSectionWhise
-autocmd!
-  " Move forwards
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>]] j/^#<CR>
-  autocmd Filetype tex nnoremap <buffer>]] j/^\\\(chapter\|section\|paragraph\)<CR>
-  " Move backwards
-  autocmd Filetype markdown,markdown.pandoc nnoremap <buffer>[[ k?^#<CR>
-  autocmd Filetype tex nnoremap <buffer>[[ k?^\\\(chapter\|section\|paragraph\)<CR>
-augroup end
-
 " cycle buffers
 nnoremap <TAB> :bn<CR>
 nnoremap <s-TAB> :bp<CR>
@@ -537,8 +535,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   "{{{2 asyncrun
     " Notify when background process is done
     let g:asyncrun_exit = "echo 'Done'"
-
-  "{{{ pandoc syntax
 
   "{{{2 yankstack
 
@@ -913,8 +909,10 @@ autocmd!
     \ --citeproc
     \ --columns=200
     \ --bibliography ' . g:pandoc_bibliography .
-    \ ' --csl ' . g:pandoc_citation_style .
     \ ' -o ' . g:pandoc_output_dir . '%' . '.pdf'<cr>
+
+
+    " \ ' --csl ' . g:pandoc_citation_style .
 
   "  to beamer 
   autocmd Filetype markdown,pandoc.markdown
@@ -1300,26 +1298,38 @@ iab قي في
 inoremap jj <c-w>
 " imap <BS><BS> <NOP> " To learn the above
 " delimiters
-inoremap ( ()<Left>
-inoremap (( (
-inoremap [ []<Left>
-inoremap [[ [
-inoremap { {}<Left>
-inoremap {{ {
+
+" Alt 1Insert pair autoamatically
+
+" inoremap ( ()<Left>
+" inoremap (( (
+" inoremap [ []<Left>
+" inoremap [[ [
+" inoremap { {}<Left>
+" inoremap {{ {
 " inoremap ` ``<Left>
 " inoremap `` `
 " inoremap ' ''<Left>
 " inoremap '' '
+
+" Alt 2: double tap to surround
+
+nmap g) ysiw)
+nmap g] ysiw]
+nmap g} ysiw}
+nmap g` ysiw`
+nmap g' ysiw'
+nmap g" ysiw"
+nmap g* ysiw*
+
+
 inoremap <M->> 〉
-inoremap <M-<> 〈〉<Left>
+" inoremap <M-<> 〈〉<Left>
 inoremap <M-<><M-<> 〈 
 " autocmd Filetype markdown,markdown.pandoc inoremap <buffer> * **<Left>
 " autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ** *
 " autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^ ^^<Left>
 " autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^^ ^
-" When only one for English possessive 's etc.
-inoremap " ""<Left>
-inoremap "" "
 " inoremap < \<><Left>
 " inoremap << \<
 autocmd Filetype r inoremap <buffer> < <
@@ -1493,7 +1503,7 @@ augroup END
 
 lua<<EOF
   require("zen-mode").setup({
-  window = { width = 80, -- width will be 80 characters
+  window = { width = 90, -- width will be 80 characters
     height = .85, -- width will be 85% of the editor width
     options = {
       number = false,

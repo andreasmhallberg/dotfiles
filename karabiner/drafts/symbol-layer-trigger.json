@@ -1,0 +1,40 @@
+{
+    "description": "Symbol Keypad Trigger [Tab+Q as trigger key]",
+    "manipulators": [
+        {
+
+	      "from": {
+		  "simultaneous": [
+		      {
+			  "key_code": "tab"
+		      },
+		      {
+			  "key_code": "q"
+		      }
+		  ],
+		  "modifiers": {
+		      "optional": ["any"]
+		  }
+	      },
+
+
+	      "to": [
+		  {
+		      "set_variable": {
+			  "name": "symbol_keypad_mode",
+			  "value": 1
+		      }
+		  }
+	      ],
+	      "to_after_key_up": [
+		  {
+		      "set_variable": {
+			  "name": "symbol_keypad_mode",
+			  "value": 0
+		      }
+		  }
+	      ],
+	      "type": "basic"
+	  }
+      ]
+  }

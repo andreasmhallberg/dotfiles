@@ -125,5 +125,7 @@ settings:
       uba: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=default_scope&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
       y: https://www.youtube.com/results?search_query={}
+  window.hide_decoration:
+    global: true
   window.title_format:
     global: '{host} - {current_title}{title_sep}qutebrowser'

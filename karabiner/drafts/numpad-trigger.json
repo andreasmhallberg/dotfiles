@@ -1,0 +1,30 @@
+{
+    "description": "Numeric Keypad Trigger [D + F as trigger key]",
+    "manipulators": [
+        {
+            "from": {
+                "simultaneous": [
+                    { "key_code": "d" },
+                    { "key_code": "f" }
+                ]
+            },
+            "to": [
+                {
+                    "set_variable": {
+                        "name": "numeric_keypad_mode",
+                        "value": 1
+                    }
+                }
+            ],
+            "to_after_key_up": [
+                {
+                    "set_variable": {
+                        "name": "numeric_keypad_mode",
+                        "value": 0
+                    }
+                }
+            ],
+	    "type": "basic"
+        }
+    ]
+}

@@ -6,7 +6,7 @@ papersize: a4
 fontsize: 12pt
 mainfont: Linux Libertine
 date:
-section-numbers: true
+number-sections: true
 header-includes:
   - \usepackage[bottom]{footmisc} 
  #  - \usepackage{titleps}

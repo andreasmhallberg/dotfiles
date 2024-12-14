@@ -179,6 +179,9 @@ ln -sf ~/dotfiles/sv.utf-8.add ~/.vim/spell/sv.utf-8.add
 ln -sf ~/dotfiles/en.utf-8.add ~/.vim/spell/en.utf-8.add
 # run :VundleInstall
 
+# keyboard stuff
+# zmk-viewer
+curl -sL https://raw.githubusercontent.com/MrMarble/zmk-viewer/master/scripts/install.sh | sudo -E bash -
 
 # install R-packages
 # may need to run with `sudo -i r` to fix non-zero exit status
@@ -195,3 +198,4 @@ gem install jekyll-seo-tag
 $pkgman install bash # to get bash 5. Places it in /usr/local/bin/bash
 sudo echo "/usr/local/bin/bash" >> /etc/shells # add to list of shells
 chsh -s /usr/local/bin/bash # make default
+

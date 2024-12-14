@@ -1,0 +1,30 @@
+{
+    "description": "Symbols Keypad Trigger [S + D as trigger key]",
+    "manipulators": [
+        {
+            "from": {
+                "simultaneous": [
+                    { "key_code": "s" },
+                    { "key_code": "d" }
+                ]
+            },
+            "to": [
+                {
+                    "set_variable": {
+                        "name": "symbolic_keypad_mode",
+                        "value": 1
+                    }
+                }
+            ],
+            "to_after_key_up": [
+                {
+                    "set_variable": {
+                        "name": "symbolic_keypad_mode",
+                        "value": 0
+                    }
+                }
+            ],
+	    "type": "basic"
+        }
+    ]
+}

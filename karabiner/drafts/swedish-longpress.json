@@ -1,0 +1,253 @@
+{
+    "description": "Long press for e/single quote, p/open bracket, p for å/ä/ö",
+    "manipulators": [
+
+  {
+      "type": "basic",
+      "from": { "key_code": "p"},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+             "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "p",
+                        "modifiers": []
+			,"halt": true
+                    }
+                ]
+            },
+      "to_if_alone":  { "key_code": "p" ,"halt": true },
+      "to_if_held_down": [
+	  { "key_code": "a", "modifiers":  ["left_alt"], "halt": true  }
+      ]
+  },
+
+  {
+      "type": "basic",
+      "from": { "key_code": "p", "modifiers": {"mandatory": ["shift"]}},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+      "to_if_alone": [ { "key_code": "p", "modifiers": ["shift"] ,"halt": true} ],
+           "to_delayed_action": {
+              "to_if_canceled": [
+                    {
+                        "key_code": "a",
+                        "modifiers": ["shift"]
+			,"halt": true
+                    }
+                ]
+            },
+      "to_if_held_down": [
+	  { "key_code": "a", "modifiers": ["left_alt","shift"] ,"halt": true }
+      ]
+  },
+
+
+  {
+      "type": "basic",
+      "from": { "key_code": "open_bracket"},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+             "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "open_bracket",
+                        "modifiers": []
+			,"halt": true
+                    }
+                ]
+            },
+      "to_if_alone":  { "key_code": "open_bracket" ,"halt": true },
+      "to_if_held_down": [
+	  { "key_code": "a", "modifiers":  ["left_alt"], "halt": true  }
+      ]
+  },
+
+  {
+      "type": "basic",
+      "from": { "key_code": "open_bracket", "modifiers": {"mandatory": ["shift"]}},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+      "to_if_alone": [ { "key_code": "open_bracket", "modifiers": ["shift"] ,"halt": true} ],
+           "to_delayed_action": {
+              "to_if_canceled": [
+                    {
+                        "key_code": "a",
+                        "modifiers": ["shift"]
+			,"halt": true
+                    }
+                ]
+            },
+      "to_if_held_down": [
+	  { "key_code": "a", "modifiers": ["left_alt","shift"] ,"halt": true }
+      ]
+  },
+
+{
+      "type": "basic",
+      "from": { "key_code": "o"},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+                  "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "o",
+                        "modifiers": []
+			,"halt": true
+                    }
+                ]
+            },
+      "to_if_alone": [
+	  { "key_code": "o" ,"halt": true}
+      ],
+      "to_if_held_down": [
+	  { "key_code": "u", "modifiers":  ["left_alt"] },
+	  { "key_code": "o","halt": true  }
+      ]
+  },
+
+{
+      "type": "basic",
+      "from": { "key_code": "o", "modifiers": {"mandatory": ["shift"]}},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+                  "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "o",
+                        "modifiers": ["shift"]
+			,"halt": true
+                    }
+                ]
+            },
+      "to_if_alone": [
+	  { "key_code": "o","modifiers": ["shift"], "halt": true }
+      ],
+      "to_if_held_down": [
+	  { "key_code": "u", "modifiers":  ["left_alt"] },
+	  { "key_code": "o", "modifiers": ["shift"],"halt": true  }
+      ]
+  },
+
+
+{
+      "type": "basic",
+      "from": { "key_code": "quote"},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+                  "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "quote",
+                        "modifiers": []
+			,"halt": true
+                    }
+                ]
+            },
+
+      "to_if_alone": [
+	  { "key_code": "quote","halt": true }
+      ],
+      "to_if_held_down": [
+	  { "key_code": "u", "modifiers":  ["left_alt"] },
+	  { "key_code": "a" ,"halt": true }
+      ]
+  },
+
+{
+      "type": "basic",
+      "from": { "key_code": "quote", "modifiers": {"mandatory": ["shift"]}},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+                        "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "quote",
+                        "modifiers": ["shift"]
+			,"halt": true
+                    }
+                ]
+            },
+
+      "to_if_alone": [
+	  { "key_code": "quote", "modifiers": ["shift"],"halt": true }
+      ],
+      "to_if_held_down": [
+	  { "key_code": "u", "modifiers":  ["left_alt"] },
+	  { "key_code": "a", "modifiers": ["shift"],"halt": true  }
+      ]
+  },
+
+{
+      "type": "basic",
+      "from": { "key_code": "e"},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+                  "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "e",
+                        "modifiers": []
+			,"halt": true
+                    }
+                ]
+            },
+
+      "to_if_alone": [
+	  { "key_code": "e","halt": true }
+      ],
+      "to_if_held_down": [
+	  { "key_code": "u", "modifiers":  ["left_alt"] },
+	  { "key_code": "a" ,"halt": true }
+      ]
+  },
+
+{
+      "type": "basic",
+      "from": { "key_code": "e", "modifiers": {"mandatory": ["shift"]}},
+      "parameters": {
+	  "basic.to_if_alone_timeout_milliseconds": 200,
+	  "basic.to_if_held_down_threshold_milliseconds": 200
+      },
+                        "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "e",
+                        "modifiers": ["shift"]
+			,"halt": true
+                    }
+                ]
+            },
+
+      "to_if_alone": [
+	  { "key_code": "e", "modifiers": ["shift"],"halt": true }
+      ],
+      "to_if_held_down": [
+	  { "key_code": "u", "modifiers":  ["left_alt"] },
+	  { "key_code": "a", "modifiers": ["shift"],"halt": true  }
+      ]
+  }
+
+
+
+    ]
+
+}

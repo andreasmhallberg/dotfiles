@@ -167,3 +167,10 @@ eval "$(rbenv init - bash)"
 
 export GPG_TTY=$(tty)
 
+# Disable annoying Microsoft AutoUpdate
+# https://superuser.com/a/1649000/782464
+launchctl disable gui/$(id -u)/com.microsoft.update.agent
+
+
+# Created by `pipx` on 2024-10-31 13:50:04
+export PATH="$PATH:/Users/xhalaa/.local/bin"

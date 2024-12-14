@@ -1,0 +1,16 @@
+{
+    "description": "d+f = Tab",
+    "manipulators": [
+        {
+            "from": {
+                "modifiers": { "optional": ["any"] },
+                "simultaneous": [
+                    { "key_code": "d" },
+                    { "key_code": "f" }
+                ]
+            },
+            "to": [{ "key_code": "tab" }],
+            "type": "basic"
+        }
+    ]
+}

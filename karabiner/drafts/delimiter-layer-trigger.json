@@ -1,0 +1,39 @@
+{
+    "description": "Delimiter Layer Trigger [E+R as trigger key]",
+    "manipulators": [
+        {
+	      "from": {
+		  "simultaneous": [
+		      {
+			  "key_code": "e"
+		      },
+		      {
+			  "key_code": "r"
+		      }
+		  ],
+		  "modifiers": {
+		      "optional": ["any"]
+		  }
+	      },
+
+
+	      "to": [
+		  {
+		      "set_variable": {
+			  "name": "delimiter_layer_mode",
+			  "value": 1
+		      }
+		  }
+	      ],
+	      "to_after_key_up": [
+		  {
+		      "set_variable": {
+			  "name": "delimiter_layer_mode",
+			  "value": 0
+		      }
+		  }
+	      ],
+	      "type": "basic"
+	  }
+      ]
+  }
