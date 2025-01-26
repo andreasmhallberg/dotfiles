@@ -3,8 +3,230 @@
     "profiles": [
         {
             "complex_modifications": {
-                "parameters": { "basic.to_if_held_down_threshold_milliseconds": 200 },
+                "parameters": { "basic.to_if_held_down_threshold_milliseconds": 150 },
                 "rules": [
+                    {
+                        "description": "Move zxcvb one step to the left",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "b" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "v" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "x",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "c" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "z",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "x" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "grave_accent_and_tilde",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "z" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change Command + h/j/k/l to Arrows",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "h",
+                                    "modifiers": {
+                                        "mandatory": ["command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "left_arrow" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "mandatory": ["command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "down_arrow" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "mandatory": ["command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "up_arrow" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "mandatory": ["command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "right_arrow" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "o+p = brightness up, l+; brightness down",
+                        "enabled": false,
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "modifiers": { "optional": ["any"] },
+                                    "simultaneous": [
+                                        { "key_code": "o" },
+                                        { "key_code": "p" }
+                                    ]
+                                },
+                                "to": [{ "key_code": "display_brightness_increment" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "optional": ["any"] },
+                                    "simultaneous": [
+                                        { "key_code": "l" },
+                                        { "key_code": "semicolon" }
+                                    ]
+                                },
+                                "to": [{ "key_code": "display_brightness_decrement" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "y+u = vol. up, h+j vol. down",
+                        "enabled": false,
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "modifiers": { "optional": ["any"] },
+                                    "simultaneous": [
+                                        { "key_code": "y" },
+                                        { "key_code": "u" }
+                                    ]
+                                },
+                                "to": [{ "key_code": "volume_increment" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "optional": ["any"] },
+                                    "simultaneous": [
+                                        { "key_code": "h" },
+                                        { "key_code": "j" }
+                                    ]
+                                },
+                                "to": [{ "key_code": "volume_decrement" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "K + L to double quote, .+, for single quote",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "simultaneous": [
+                                        { "key_code": "k" },
+                                        { "key_code": "l" }
+                                    ]
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "quote",
+                                        "modifiers": "left_shift"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "simultaneous": [
+                                        { "key_code": "comma" },
+                                        { "key_code": "period" }
+                                    ]
+                                },
+                                "to": [{ "key_code": "quote" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "mandatory": ["left_shift"] },
+                                    "simultaneous": [
+                                        { "key_code": "k" },
+                                        { "key_code": "l" }
+                                    ]
+                                },
+                                "to": [{ "key_code": "quote" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Delimiter Layer Trigger [A+S as trigger key]",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "modifiers": { "optional": ["any"] },
+                                    "simultaneous": [
+                                        { "key_code": "a" },
+                                        { "key_code": "s" }
+                                    ]
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "delimiter_layer_mode",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "delimiter_layer_mode",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
                     {
                         "description": "Delimiter layer",
                         "manipulators": [
@@ -16,7 +238,10 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "u" },
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": { "optional": ["any"] }
+                                },
                                 "to": [{ "key_code": "open_bracket" }],
                                 "type": "basic"
                             },
@@ -28,7 +253,10 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "i" },
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": { "optional": ["any"] }
+                                },
                                 "to": [{ "key_code": "close_bracket" }],
                                 "type": "basic"
                             },
@@ -40,7 +268,10 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "j" },
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": { "optional": ["any"] }
+                                },
                                 "to": [
                                     {
                                         "key_code": "9",
@@ -57,7 +288,10 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "k" },
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": { "optional": ["any"] }
+                                },
                                 "to": [
                                     {
                                         "key_code": "0",
@@ -74,7 +308,10 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "m" },
+                                "from": {
+                                    "key_code": "m",
+                                    "modifiers": { "optional": ["any"] }
+                                },
                                 "to": [
                                     {
                                         "key_code": "open_bracket",
@@ -91,7 +328,10 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "comma" },
+                                "from": {
+                                    "key_code": "comma",
+                                    "modifiers": { "optional": ["any"] }
+                                },
                                 "to": [
                                     {
                                         "key_code": "close_bracket",
@@ -99,45 +339,50 @@
                                     }
                                 ],
                                 "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Delimiter Layer Trigger [E+R as trigger key]",
-                        "manipulators": [
+                            },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "delimiter_layer_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "from": {
-                                    "modifiers": { "optional": ["any"] },
-                                    "simultaneous": [
-                                        { "key_code": "e" },
-                                        { "key_code": "r" }
-                                    ]
+                                    "key_code": "semicolon",
+                                    "modifiers": { "optional": ["any"] }
                                 },
                                 "to": [
                                     {
-                                        "set_variable": {
-                                            "name": "delimiter_layer_mode",
-                                            "value": 1
-                                        }
+                                        "key_code": "hyphen",
+                                        "modifiers": "left_shift"
                                     }
                                 ],
-                                "to_after_key_up": [
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
                                     {
-                                        "set_variable": {
-                                            "name": "delimiter_layer_mode",
-                                            "value": 0
-                                        }
+                                        "name": "delimiter_layer_mode",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "grave_accent_and_tilde" }],
                                 "type": "basic"
                             }
                         ]
                     },
                     {
-                        "description": "Numeric Keypad Trigger [D + F as trigger key]",
+                        "description": "Numeric Keypad Trigger [D + F as trigger key, Tab if alone]",
                         "manipulators": [
                             {
                                 "from": {
+                                    "modifiers": { "optional": ["any"] },
                                     "simultaneous": [
                                         { "key_code": "d" },
                                         { "key_code": "f" }
@@ -159,28 +404,13 @@
                                         }
                                     }
                                 ],
+                                "to_if_alone": [{ "key_code": "tab" }],
                                 "type": "basic"
                             }
                         ]
                     },
                     {
-                        "description": "d+f = Tab",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "modifiers": { "optional": ["any"] },
-                                    "simultaneous": [
-                                        { "key_code": "d" },
-                                        { "key_code": "f" }
-                                    ]
-                                },
-                                "to": [{ "key_code": "tab" }],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Numeric Keypad Mode [spacebar as 0] with longpress for symbols",
+                        "description": "Numeric Keypad Mode [space as 0]",
                         "manipulators": [
                             {
                                 "conditions": [
@@ -190,21 +420,56 @@
                                         "value": 1
                                     }
                                 ],
+                                "from": { "key_code": "7" },
+                                "to": [{ "key_code": "delete_or_backspace" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "8" },
+                                "to": [{ "key_code": "keypad_equal_sign" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "9" },
+                                "to": [{ "key_code": "keypad_slash" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "0" },
+                                "to": [{ "key_code": "keypad_asterisk" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "from": { "key_code": "u" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "7",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "7",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
+                                "to": [{ "key_code": "keypad_7" }],
                                 "type": "basic"
                             },
                             {
@@ -216,20 +481,7 @@
                                     }
                                 ],
                                 "from": { "key_code": "i" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "8",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "8",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
+                                "to": [{ "key_code": "keypad_8" }],
                                 "type": "basic"
                             },
                             {
@@ -241,198 +493,7 @@
                                     }
                                 ],
                                 "from": { "key_code": "o" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "9",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "9",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "j" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "4",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "4",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "k" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "5",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "5",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "l" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "6",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "6",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "m" },
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
-                                },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "1",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "1",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "comma" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "2",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "2",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "period" },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "3",
-                                        "repeat": false
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "3",
-                                        "modifiers": "shift",
-                                        "repeat": false
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "slash" },
-                                "to": [{ "key_code": "keypad_enter" }],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "numeric_keypad_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": { "key_code": "spacebar" },
-                                "to": [{ "key_code": "0" }],
+                                "to": [{ "key_code": "keypad_9" }],
                                 "type": "basic"
                             },
                             {
@@ -444,7 +505,43 @@
                                     }
                                 ],
                                 "from": { "key_code": "semicolon" },
-                                "to": [{ "key_code": "hyphen" }],
+                                "to": [{ "key_code": "keypad_hyphen" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "j" },
+                                "to": [{ "key_code": "keypad_4" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "k" },
+                                "to": [{ "key_code": "keypad_5" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "l" },
+                                "to": [{ "key_code": "keypad_6" }],
                                 "type": "basic"
                             },
                             {
@@ -467,8 +564,8 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "right_option" },
-                                "to": [{ "key_code": "comma" }],
+                                "from": { "key_code": "m" },
+                                "to": [{ "key_code": "keypad_1" }],
                                 "type": "basic"
                             },
                             {
@@ -479,17 +576,66 @@
                                         "value": 1
                                     }
                                 ],
-                                "from": { "key_code": "right_alt" },
-                                "to": [{ "key_code": "comma" }],
+                                "from": { "key_code": "comma" },
+                                "to": [{ "key_code": "keypad_2" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "period" },
+                                "to": [{ "key_code": "keypad_3" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "slash" },
+                                "to": [{ "key_code": "equal_sign" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "spacebar" },
+                                "to": [{ "key_code": "0" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "numeric_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "right_option" },
+                                "to": [{ "key_code": "keypad_period" }],
                                 "type": "basic"
                             }
                         ]
                     },
                     {
-                        "description": "Symbols Keypad Trigger [S + D as trigger key]",
+                        "description": "Symbols Keypad Trigger [S + D as trigger key, Hyphen if alone]",
                         "manipulators": [
                             {
                                 "from": {
+                                    "modifiers": { "optional": ["any"] },
                                     "simultaneous": [
                                         { "key_code": "s" },
                                         { "key_code": "d" }
@@ -511,6 +657,7 @@
                                         }
                                     }
                                 ],
+                                "to_if_alone": { "key_code": "hyphen" },
                                 "type": "basic"
                             }
                         ]
@@ -694,11 +841,58 @@
                                     }
                                 ],
                                 "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "symbolic_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "n" },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": "shift"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "symbolic_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "h" },
+                                "to": [{ "key_code": "backslash" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "symbolic_keypad_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "y" },
+                                "to": [
+                                    {
+                                        "key_code": "backslash",
+                                        "modifiers": "shift"
+                                    }
+                                ],
+                                "type": "basic"
                             }
                         ]
                     },
                     {
                         "description": "Longpress Forwardslash to Hyphen",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -779,13 +973,13 @@
                         ]
                     },
                     {
-                        "description": "Change Command + h/j/k/l to Arrows",
+                        "description": "Left Command + h/j/k/l to Arrows",
                         "manipulators": [
                             {
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": {
-                                        "mandatory": ["command"],
+                                        "mandatory": ["left_command"],
                                         "optional": ["any"]
                                     }
                                 },
@@ -796,7 +990,7 @@
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": {
-                                        "mandatory": ["command"],
+                                        "mandatory": ["left_command"],
                                         "optional": ["any"]
                                     }
                                 },
@@ -807,7 +1001,7 @@
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": {
-                                        "mandatory": ["command"],
+                                        "mandatory": ["left_command"],
                                         "optional": ["any"]
                                     }
                                 },
@@ -818,7 +1012,7 @@
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": {
-                                        "mandatory": ["command"],
+                                        "mandatory": ["left_command"],
                                         "optional": ["any"]
                                     }
                                 },
@@ -828,26 +1022,26 @@
                         ]
                     },
                     {
-                        "description": "Long press for e/single quote, p/open bracket, p for å/ä/ö",
+                        "description": "Long press for e,p,o for å/ä/ö",
                         "manipulators": [
                             {
-                                "from": { "key_code": "p" },
+                                "from": { "key_code": "u" },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
                                         {
                                             "halt": true,
-                                            "key_code": "p",
+                                            "key_code": "u",
                                             "modifiers": []
                                         }
                                     ]
                                 },
                                 "to_if_alone": {
                                     "halt": true,
-                                    "key_code": "p"
+                                    "key_code": "u"
                                 },
                                 "to_if_held_down": [
                                     {
@@ -860,12 +1054,12 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "p",
+                                    "key_code": "u",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
@@ -879,7 +1073,7 @@
                                 "to_if_alone": [
                                     {
                                         "halt": true,
-                                        "key_code": "p",
+                                        "key_code": "u",
                                         "modifiers": ["shift"]
                                     }
                                 ],
@@ -893,41 +1087,13 @@
                                 "type": "basic"
                             },
                             {
-                                "from": { "key_code": "open_bracket" },
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
-                                },
-                                "to_delayed_action": {
-                                    "to_if_canceled": [
-                                        {
-                                            "halt": true,
-                                            "key_code": "open_bracket",
-                                            "modifiers": []
-                                        }
-                                    ]
-                                },
-                                "to_if_alone": {
-                                    "halt": true,
-                                    "key_code": "open_bracket"
-                                },
-                                "to_if_held_down": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "a",
-                                        "modifiers": ["left_alt"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
                                 "from": {
                                     "key_code": "open_bracket",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
@@ -957,8 +1123,8 @@
                             {
                                 "from": { "key_code": "o" },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
@@ -993,8 +1159,8 @@
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
@@ -1026,46 +1192,13 @@
                                 "type": "basic"
                             },
                             {
-                                "from": { "key_code": "quote" },
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
-                                },
-                                "to_delayed_action": {
-                                    "to_if_canceled": [
-                                        {
-                                            "halt": true,
-                                            "key_code": "quote",
-                                            "modifiers": []
-                                        }
-                                    ]
-                                },
-                                "to_if_alone": [
-                                    {
-                                        "halt": true,
-                                        "key_code": "quote"
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "key_code": "u",
-                                        "modifiers": ["left_alt"]
-                                    },
-                                    {
-                                        "halt": true,
-                                        "key_code": "a"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
                                 "from": {
                                     "key_code": "quote",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
@@ -1099,8 +1232,8 @@
                             {
                                 "from": { "key_code": "e" },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
@@ -1135,8 +1268,8 @@
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 200,
-                                    "basic.to_if_held_down_threshold_milliseconds": 200
+                                    "basic.to_if_alone_timeout_milliseconds": 150,
+                                    "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
                                 "to_delayed_action": {
                                     "to_if_canceled": [
@@ -1179,48 +1312,6 @@
                                 },
                                 "to": [{ "key_code": "left_control" }],
                                 "to_if_alone": [{ "key_code": "escape" }],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Exchange semicolon and colon",
-                        "enabled": false,
-                        "manipulators": [
-                            {
-                                "conditions": [
-                                    {
-                                        "input_sources": [{ "language": "en" }],
-                                        "type": "input_source_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "semicolon",
-                                    "modifiers": { "optional": ["caps_lock"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "semicolon",
-                                        "modifiers": ["left_shift"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "input_sources": [{ "language": "en" }],
-                                        "type": "input_source_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "semicolon",
-                                    "modifiers": {
-                                        "mandatory": ["shift"],
-                                        "optional": ["caps_lock"]
-                                    }
-                                },
-                                "to": [{ "key_code": "semicolon" }],
                                 "type": "basic"
                             }
                         ]
@@ -1276,17 +1367,29 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": {
-                                    "basic.to_delayed_action_delay_milliseconds": 150,
-                                    "basic.to_if_held_down_threshold_milliseconds": 150
+                                    "basic.to_delayed_action_delay_milliseconds": 100,
+                                    "basic.to_if_held_down_threshold_milliseconds": 100
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "f" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "f"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "f"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "left_shift" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "left_shift"
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -1295,17 +1398,29 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": {
-                                    "basic.to_delayed_action_delay_milliseconds": 150,
-                                    "basic.to_if_held_down_threshold_milliseconds": 150
+                                    "basic.to_delayed_action_delay_milliseconds": 100,
+                                    "basic.to_if_held_down_threshold_milliseconds": 100
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "j" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "j"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "j"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "right_shift" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "right_shift"
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -1314,17 +1429,29 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": {
-                                    "basic.to_delayed_action_delay_milliseconds": 150,
-                                    "basic.to_if_held_down_threshold_milliseconds": 150
+                                    "basic.to_delayed_action_delay_milliseconds": 100,
+                                    "basic.to_if_held_down_threshold_milliseconds": 100
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "d" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "d"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "d"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "left_command" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "left_command"
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -1333,17 +1460,29 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": {
-                                    "basic.to_delayed_action_delay_milliseconds": 150,
-                                    "basic.to_if_held_down_threshold_milliseconds": 150
+                                    "basic.to_delayed_action_delay_milliseconds": 100,
+                                    "basic.to_if_held_down_threshold_milliseconds": 100
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "k" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "k"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "k"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "right_command" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "right_command"
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -1352,17 +1491,29 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": {
-                                    "basic.to_delayed_action_delay_milliseconds": 150,
-                                    "basic.to_if_held_down_threshold_milliseconds": 150
+                                    "basic.to_delayed_action_delay_milliseconds": 100,
+                                    "basic.to_if_held_down_threshold_milliseconds": 100
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "s" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "s"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "s"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "left_alt" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "left_alt"
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -1371,17 +1522,29 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": {
-                                    "basic.to_delayed_action_delay_milliseconds": 150,
-                                    "basic.to_if_held_down_threshold_milliseconds": 150
+                                    "basic.to_delayed_action_delay_milliseconds": 100,
+                                    "basic.to_if_held_down_threshold_milliseconds": 100
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "l" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "l"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "l"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "right_alt" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "right_alt"
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -1390,17 +1553,29 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": {
-                                    "basic.to_delayed_action_delay_milliseconds": 150,
-                                    "basic.to_if_held_down_threshold_milliseconds": 150
+                                    "basic.to_delayed_action_delay_milliseconds": 100,
+                                    "basic.to_if_held_down_threshold_milliseconds": 100
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "a" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "a"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "a"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "left_control" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "left_control"
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -1412,14 +1587,26 @@
                                     "basic.to_delayed_action_delay_milliseconds": 150,
                                     "basic.to_if_held_down_threshold_milliseconds": 150
                                 },
-                                "to_delayed_action": { "to_if_canceled": [{ "key_code": "semicolon" }] },
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "halt": true,
+                                            "key_code": "semicolon"
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "halt": true,
                                         "key_code": "semicolon"
                                     }
                                 ],
-                                "to_if_held_down": [{ "key_code": "right_control" }],
+                                "to_if_held_down": [
+                                    {
+                                        "halt": true,
+                                        "key_code": "right_control"
+                                    }
+                                ],
                                 "type": "basic"
                             }
                         ]
@@ -1513,6 +1700,14 @@
                         "vendor_id": 7504
                     },
                     "manipulate_caps_lock_led": false
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 24926,
+                        "vendor_id": 7504
+                    },
+                    "manipulate_caps_lock_led": false
                 }
             ],
             "fn_function_keys": [
@@ -1587,7 +1782,7 @@
                 "caps_lock_delay_milliseconds": 0,
                 "indicate_sticky_modifier_keys_state": false,
                 "keyboard_type": "ansi",
-                "keyboard_type_v2": "iso"
+                "keyboard_type_v2": "ansi"
             }
         }
     ]

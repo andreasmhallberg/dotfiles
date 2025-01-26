@@ -1,14 +1,14 @@
 {
-    "description": "Delimiter Layer Trigger [E+R as trigger key]",
+    "description": "Delimiter Layer Trigger [A+S as trigger key]",
     "manipulators": [
         {
 	      "from": {
 		  "simultaneous": [
 		      {
-			  "key_code": "e"
+			  "key_code": "a"
 		      },
 		      {
-			  "key_code": "r"
+			  "key_code": "s"
 		      }
 		  ],
 		  "modifiers": {

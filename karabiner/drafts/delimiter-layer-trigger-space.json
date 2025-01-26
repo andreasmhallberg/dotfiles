@@ -1,0 +1,30 @@
+{
+    "description": "Delimiter Layer Trigger [Space as trigger key]",
+    "manipulators": [
+        {
+	      "from": { "key_code": "spacebar" ,
+		  "modifiers": { "optional": ["any"] }
+	      },
+	      "to": [
+		  {
+		      "set_variable": {
+			  "name": "delimiter_layer_mode",
+			  "value": 1
+		      }
+		  }
+	      ],
+	      "to_after_key_up": [
+		  {
+		      "set_variable": {
+			  "name": "delimiter_layer_mode",
+			  "value": 0
+		      }
+		  }
+	      ],
+	    "to_if_alone": [
+	      { "key_code": "spacebar" }
+	    ]
+	    ,  "type": "basic"
+	  }
+      ]
+  }

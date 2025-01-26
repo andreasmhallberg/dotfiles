@@ -121,9 +121,10 @@
             "to": [{ "key_code": "2", "modifiers": "shift" }],
             "type": "basic"
         },
+
         {
             "conditions": [
-                {
+               {
                     "name": "symbolic_keypad_mode",
                     "type": "variable_if",
                     "value": 1
@@ -132,6 +133,46 @@
             "from": { "key_code": "period" },
             "to": [{ "key_code": "3", "modifiers": "shift" }],
             "type": "basic"
+        },
+
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "n" },
+            "to": [{ "key_code": "grave_accent_and_tilde", "modifiers": "shift" }],
+            "type": "basic"
+        },
+
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "h" },
+            "to": [{ "key_code": "backslash"}],
+            "type": "basic"
+        },
+
+        {
+            "conditions": [
+                {
+                    "name": "symbolic_keypad_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "y" },
+            "to": [{ "key_code": "backslash", "modifiers": "shift" }],
+            "type": "basic"
         }
+
     ]
 }

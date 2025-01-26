@@ -1,5 +1,5 @@
 {
-    "description": "Numeric Keypad Mode [spacebar as 0]",
+    "description": "Numeric Keypad Mode [space as 0]",
     "manipulators": [
         {
             "conditions": [
@@ -190,7 +190,7 @@
                 }
             ],
             "from": { "key_code": "slash" },
-            "to": [{ "key_code": "keypad_enter" }],
+            "to": [{ "key_code": "equal_sign" }],
             "type": "basic"
         },
         {
@@ -202,7 +202,7 @@
                 }
             ],
             "from": { "key_code": "spacebar" },
-            "to": [{ "key_code": "keypad_0" }],
+            "to": [{ "key_code": "0" }],
             "type": "basic"
         },
         {

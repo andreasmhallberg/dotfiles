@@ -954,10 +954,10 @@ autocmd!
       \ --verbose
       \ --citeproc
       \ --bibliography ' . g:pandoc_bibliography . 
-      \ ' --csl ' . g:pandoc_citation_style .
       \ ' --reference-doc=' . g:pandoc_reference_docx .
       \ ' -o ' . '%' . '.docx'<cr>
       
+      " \ ' --csl ' . g:pandoc_citation_style .
 
   " to tex
   autocmd Filetype markdown 
@@ -1347,7 +1347,7 @@ function! SweType()
   set spelllang=sv
   set spellfile=~/.vim/spell/sv.utf-8.add,~/.vim/spell/aratrans.utf-8.add
 " To switch back from Arabic
-  set keymap=swe-us "Modified keymap. File in .vim/keymap
+  " set keymap=swe-us "Modified keymap. File in .vim/keymap
   set norightleft
   set spell
 endfunction

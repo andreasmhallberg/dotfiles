@@ -22,8 +22,8 @@ settings:
         cm: clear-messages
         d: null
         h: back
-        j: scroll-px 0 25
-        k: scroll-px 0 -25
+        j: scroll-px 0 100
+        k: scroll-px 0 -100
         l: forward
         q: tab-close
   colors.tabs.bar.bg:

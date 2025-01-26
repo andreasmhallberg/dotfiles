@@ -1,0 +1,40 @@
+{
+    "description": "K + L to double quote, .+, for single quote",
+    "manipulators": [
+
+        {
+            "from": {
+                "simultaneous": [
+                    { "key_code": "k" },
+                    { "key_code": "l" }
+                ]
+            },
+	    "to": [ {"key_code": "quote", "modifiers": "left_shift"}
+            ],
+	    "type": "basic"
+        },
+
+        {
+            "from": {
+                "simultaneous": [
+                    { "key_code": "comma" },
+                    { "key_code": "period" }
+                ]
+            },
+	    "to": [ {"key_code": "quote"}
+            ],
+	    "type": "basic"
+        },
+        {
+            "from": {
+                "simultaneous": [
+                    { "key_code": "k" },
+                    { "key_code": "l" }
+                ], "modifiers": {"mandatory": ["left_shift"]}
+            },
+	    "to": [ {"key_code": "quote"}
+            ],
+	    "type": "basic"
+        }
+    ]
+}

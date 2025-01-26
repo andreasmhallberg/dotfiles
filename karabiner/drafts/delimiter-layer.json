@@ -9,7 +9,7 @@
                     "value": 1
                 }
             ],
-            "from": { "key_code": "u" },
+            "from": { "key_code": "u", "modifiers": { "optional": ["any"]}  },
             "to": [{ "key_code": "open_bracket" }],
             "type": "basic"
         },
@@ -21,7 +21,7 @@
                     "value": 1
                 }
             ],
-            "from": { "key_code": "i" },
+            "from": { "key_code": "i", "modifiers": { "optional": ["any"]}  },
             "to": [{ "key_code": "close_bracket" }],
             "type": "basic"
         },
@@ -33,7 +33,7 @@
                     "value": 1
                 }
             ],
-            "from": { "key_code": "j" },
+            "from": { "key_code": "j", "modifiers": { "optional": ["any"]}  },
             "to": [{ "key_code": "9", "modifiers": "left_shift" }],
             "type": "basic"
         },
@@ -45,7 +45,7 @@
                     "value": 1
                 }
             ],
-            "from": { "key_code": "k" },
+            "from": { "key_code": "k", "modifiers": { "optional": ["any"]}  },
             "to": [{ "key_code": "0", "modifiers": "left_shift" }],
             "type": "basic"
         },
@@ -57,7 +57,7 @@
                     "value": 1
                 }
             ],
-            "from": { "key_code": "m" },
+            "from": { "key_code": "m", "modifiers": { "optional": ["any"]}  },
             "to": [{ "key_code": "open_bracket", "modifiers": "left_shift" }],
             "type": "basic"
         },
@@ -69,9 +69,35 @@
                     "value": 1
                 }
             ],
-            "from": { "key_code": "comma" },
+            "from": { "key_code": "comma", "modifiers": { "optional": ["any"]} },
             "to": [{ "key_code": "close_bracket", "modifiers": "left_shift" }],
             "type": "basic"
+        },
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "semicolon", "modifiers": { "optional": ["any"]}  },
+            "to": [{ "key_code": "hyphen", "modifiers": "left_shift" }],
+            "type": "basic"
+        },
+
+        {
+            "conditions": [
+                {
+                    "name": "delimiter_layer_mode",
+                    "type": "variable_if",
+                    "value": 1
+                }
+            ],
+            "from": { "key_code": "l", "modifiers": { "optional": ["any"]}  },
+            "to": [{ "key_code": "grave_accent_and_tilde" }],
+            "type": "basic"
         }
+
     ]
 }

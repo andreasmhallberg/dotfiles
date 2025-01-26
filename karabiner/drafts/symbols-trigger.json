@@ -1,12 +1,12 @@
 {
-    "description": "Symbols Keypad Trigger [S + D as trigger key]",
+    "description": "Symbols Keypad Trigger [S + D as trigger key, Hyphen if alone]",
     "manipulators": [
         {
             "from": {
                 "simultaneous": [
                     { "key_code": "s" },
                     { "key_code": "d" }
-                ]
+                ], "modifiers": {"optional": ["any"]}
             },
             "to": [
                 {
@@ -24,6 +24,7 @@
                     }
                 }
             ],
+	      "to_if_alone": {"key_code": "hyphen"},
 	    "type": "basic"
         }
     ]

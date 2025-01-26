@@ -1,0 +1,28 @@
+{
+    "description": "y+u = vol. up, h+j vol. down",
+    "manipulators": [
+        {
+            "from": {
+                "modifiers": { "optional": ["any"] },
+                "simultaneous": [
+                    { "key_code": "y" },
+                    { "key_code": "u" }
+                ]
+            },
+            "to": [{ "key_code": "volume_increment" }],
+            "type": "basic"
+        },
+        {
+            "from": {
+                "modifiers": { "optional": ["any"] },
+                "simultaneous": [
+                    { "key_code": "h" },
+                    { "key_code": "j" }
+                ]
+            },
+            "to": [{ "key_code": "volume_decrement" }],
+            "type": "basic"
+        }
+    ]
+}
+

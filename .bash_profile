@@ -165,7 +165,8 @@ export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
 eval "$(rbenv init - bash)"
 
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # Disable annoying Microsoft AutoUpdate
 # https://superuser.com/a/1649000/782464

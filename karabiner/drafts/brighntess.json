@@ -1,0 +1,28 @@
+{
+    "description": "o+p = brightness up, l+; brightness down",
+    "manipulators": [
+        {
+            "from": {
+                "modifiers": { "optional": ["any"] },
+                "simultaneous": [
+                    { "key_code": "o" },
+                    { "key_code": "p" }
+                ]
+            },
+            "to": [{ "key_code": "display_brightness_increment" }],
+            "type": "basic"
+        },
+        {
+            "from": {
+                "modifiers": { "optional": ["any"] },
+                "simultaneous": [
+                    { "key_code": "l" },
+                    { "key_code": "semicolon" }
+                ]
+            },
+            "to": [{ "key_code": "display_brightness_decrement" }],
+            "type": "basic"
+        }
+    ]
+}
+
