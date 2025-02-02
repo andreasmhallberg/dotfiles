@@ -51,6 +51,8 @@ settings:
   content.geolocation:
     https://ut.no: true
     https://www.sas.se: true
+  content.javascript.clipboard:
+    https://github.com: access-paste
   content.notifications.enabled:
     https://toolbox.iskysoft.com: false
   content.register_protocol_handler:

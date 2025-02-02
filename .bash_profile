@@ -63,9 +63,7 @@ export CLICOLOR=1
 
 # Aliases
 
-alias todo="$EDITOR ~/jobb/notes/todo.md"
-alias todol='todolist'
-alias cv="$EDITOR ~/jobb/CV/cv.tex"
+alias vd='cd'
 
 
 function todolist () {

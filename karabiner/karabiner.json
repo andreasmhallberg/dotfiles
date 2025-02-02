@@ -1692,7 +1692,6 @@
                     ]
                 },
                 {
-                    "disable_built_in_keyboard_if_exists": true,
                     "identifiers": {
                         "is_keyboard": true,
                         "is_pointing_device": true,
@@ -1707,6 +1706,7 @@
                         "product_id": 24926,
                         "vendor_id": 7504
                     },
+                    "ignore": true,
                     "manipulate_caps_lock_led": false
                 }
             ],
@@ -1782,7 +1782,7 @@
                 "caps_lock_delay_milliseconds": 0,
                 "indicate_sticky_modifier_keys_state": false,
                 "keyboard_type": "ansi",
-                "keyboard_type_v2": "ansi"
+                "keyboard_type_v2": "iso"
             }
         }
     ]

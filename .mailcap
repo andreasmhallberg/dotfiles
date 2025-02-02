@@ -1,7 +1,9 @@
 # text/html; launch -l %s &; #test=test -n "$DISPLAY";
 # text/html; launch -a Qutebrowser %s; needsterminal; nametemplate=%s.html
 
-text/html; open -a Qutebrowser %s & "$DISPLAY"; needsterminal; nametemplate=%s.html
+# text/html; open -a Qutebrowser %s & "$DISPLAY"; needsterminal; nametemplate=%s.html
+text/html; qutebrowser %s; needsterminal; nametemplate=%s.html
+
 text/html; w3m -I %{charset} -T text/html; copiousoutput;
 
 text/plain; nvim %s 
