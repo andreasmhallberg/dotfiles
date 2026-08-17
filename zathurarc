@@ -8,9 +8,14 @@ set scroll-step 50
 set selection-clipboard clipboard
 set adjust-open height
 
+set guioptions ''
+
 set first-page-column 1:1
 
 set window-title-basename true
 
 set selection-clipboard clipboard
 
+set database sqlite
+
+set font 'monospace normal 20'

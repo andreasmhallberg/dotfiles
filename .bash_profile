@@ -106,7 +106,7 @@ alias print='launch -p '
 alias gc='git checkout'
 alias gb='git branch'
 alias gs='git status'
-alias gl="git log --pretty=format:'%h %C(blue) %<|(20) %as %C(auto) %d %s' --graph"
+alias gl="git log --pretty=format:'%h %C(blue) %<|(20) %as %C(auto) %d %s' --graph --all"
 
 alias z="zathura --mode=fullscreen"
 alias zathurafullscreen="zathura --mode=fullscreen"
@@ -115,6 +115,9 @@ alias acrobat="launch -a Adobe\ Acrobat\ Reader\ DC"
 alias gcal="gcalcli"
 alias agenda="gcalcli agenda --details end"
 alias calw="gcalcli calw --details end --monday"
+
+alias o="open"
+alias print="launch -p"
 
 
 # There is no Alt-key in ITerm which makes it difficult to write Arabic transcription.
@@ -173,3 +176,8 @@ launchctl disable gui/$(id -u)/com.microsoft.update.agent
 
 # Created by `pipx` on 2024-10-31 13:50:04
 export PATH="$PATH:/Users/xhalaa/.local/bin"
+
+# Setting PATH for Python 3.13
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.13/bin:${PATH}"
+export PATH

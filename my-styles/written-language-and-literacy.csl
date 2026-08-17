@@ -14,7 +14,7 @@
     <category citation-format="author-date"/>
     <category field="linguistics"/>
     <issn>0166-0829</issn>
-    <updated>2024-12-12T08:34:52+00:00</updated>
+    <updated>2025-07-23T10:19:55+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="en">
@@ -161,7 +161,7 @@
             </if>
             <else>
               <group delimiter=" ">
-                <text variable="URL" prefix="&lt;" suffix="&gt;"/>
+                <text variable="URL"/>
                 <date variable="accessed" prefix="(" suffix=").">
                   <date-part name="day"/>
                   <date-part name="month" prefix=" "/>
@@ -590,9 +590,7 @@
         <text macro="description"/>
         <text macro="secondary-contributors" prefix=". "/>
         <text macro="container-title" prefix=". "/>
-        <text macro="collection-title" prefix=" [" suffix="]"/>
         <text macro="container-contributors"/>
-        <text macro="edition"/>
         <text macro="locators-chapter"/>
         <text macro="collection-title-journal" prefix=", " suffix=", "/>
         <text macro="locators"/>

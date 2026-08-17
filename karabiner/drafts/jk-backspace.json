@@ -1,5 +1,5 @@
 {
-    "description": "j+k = backspace",
+    "description": "j+k = backspace, delete word if held",
     "manipulators": [
 
 {
@@ -17,12 +17,34 @@
             "optional": ["any"]
         }
     },
-    "to": [
-        {
-            "key_code": "delete_or_backspace"
+
+    "parameters": {
+	"basic.to_delayed_action_delay_milliseconds": 200,
+	"basic.to_if_held_down_threshold_milliseconds":200 
+  },
+            "to_delayed_action": {
+                "to_if_canceled": [
+                    {
+                        "key_code": "f",
+                        "halt": true
+                    }
+                ]
+            },
+            "to_if_alone": [
+                {
+                    "key_code": "delete_or_backspace",
+                    "halt": true
+                }
+            ],
+            "to_if_held_down": [
+                {
+                    "key_code": "delete_or_backspace" ,
+		    "modifiers": "left_alt",
+		    "halt": true
+                }
+            ],
+            "type": "basic"
         }
-    ]
-}
 
     ]
 }

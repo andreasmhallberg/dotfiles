@@ -4,8 +4,8 @@ filetype plugin on
 filetype indent on
 
 " leader kye
-let mapleader = ";"
-let maplocalleader = ";"
+let mapleader = ","
+let maplocalleader = ","
 
 language en_US " set language of messages to English. Some plugins give error messages for other languages.
 
@@ -25,8 +25,8 @@ Plugin 'jlanzarotta/bufexplorer'
 Plugin 'justinmk/vim-dirvish'                             "  Less klunky netrw alternative
 Plugin 'chrisbra/unicode.vim'                             "  Search for unicode chars
 Plugin 'junegunn/fzf'                                     "  general purpose fuzzy finder
-Plugin 'sk1418/HowMuch'                                   "  calculate visually marked math
 Plugin 'junegunn/fzf.vim'                                 "  heaven
+Plugin 'sk1418/HowMuch'                                   "  calculate visually marked math
 Plugin 'acarapetis/vim-sh-heredoc-highlighting'           "  support syntax highlighting embedded lua, python and ruby. Used for lua scripts vimrc
 let g:vimsyn_embed = 'lPr'
 Plugin 'milkypostman/vim-togglelist'                      "  toggle quickfix and location list on and off with <leader>q and <leader>l
@@ -36,7 +36,8 @@ Plugin 'will133/vim-dirdiff'
 Plugin 'Konfekt/vim-mutt-aliases'                         "  Compete emails is mutt with <c-x><c-u>
   let g:muttaliases_file = '/Users/xhalaa/.mutt/aliases'
 Plugin 'skywind3000/asyncrun.vim'
-Plugin 'jalvesaq/nvim-r'                                  "  r functionality and integration
+" Plugin 'jalvesaq/nvim-r'                                  "  r functionality and integration
+Plugin 'R-nvim/R.nvim'                                  "  r functionality and integration
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'                             "  gc<range> to comment
 Plugin 'tpope/vim-repeat'                                 "  make mappings repeatable
@@ -195,13 +196,17 @@ function! EALLToggle()
   if b:eallmappings == 0
     let b:eallmappings = 1
     echo "EALL mappings on for this buffer"
-    inoremap <buffer> <A-p> ʿ
-    inoremap <buffer> <A-P> ʾ
+    " The first two are MAC-specific. They may <M-p> by using the output of
+    " this combo in MAC
+    inoremap <buffer> π ʿ
+    inoremap <buffer> ∏ ʾ
     inoremap <buffer> aa ā
     inoremap <buffer> ii ī
     inoremap <buffer> uu ū
-    inoremap <buffer> oo ō
-    inoremap <buffer> ee ē
+    inoremap <buffer> ooo ō
+    inoremap <buffer> OOO Ō
+    inoremap <buffer> eee ē
+    inoremap <buffer> EEE Ē
     inoremap <buffer> AA Ā
     inoremap <buffer> II Ī
     inoremap <buffer> UU Ū
@@ -221,23 +226,25 @@ function! EALLToggle()
     inoremap <buffer> .G Ġ
     inoremap <buffer> vs š
     inoremap <buffer> vS Š
-    inoremap <buffer> _d ḏ
+    inoremap <buffer> _d ̲ḏ
     inoremap <buffer> _D Ḏ
     inoremap <buffer> _t ṯ
     inoremap <buffer> _T Ṯ
   elseif b:eallmappings == 1
     let b:eallmappings = 0
     echo "EALL mappings off"
-    iunmap <buffer> <M-p> ʿ
-    iunmap <buffer> <M-P> ʾ
+    iunmap <buffer> π ʿ
+    iunmap <buffer> ∏ ʾ
     iunmap <buffer>aa
     iunmap <buffer>ii
     iunmap <buffer>uu
     iunmap <buffer>AA
     iunmap <buffer>II
     iunmap <buffer>UU
-    iunmap <buffer>oo
-    iunmap <buffer>ee
+    iunmap <buffer>ooo
+    iunmap <buffer>OOO
+    iunmap <buffer>eee
+    iunmap <buffer>EEE
     iunmap <buffer>.d
     iunmap <buffer>.D
     iunmap <buffer>.t
@@ -261,6 +268,9 @@ endfunction
 
 command! EALLToggle call EALLToggle()
 
+  " Start with eall on.
+" call EALLToggle() 
+
 "}}}2
 "{{{2 IPA transcription 
 function! IPAToggle()
@@ -270,10 +280,13 @@ function! IPAToggle()
   if b:ipamappings == 0
     let b:ipamappings = 1
     echo "IPA mappings activated for this buffer"
-    inoremap <buffer> aa aː
-    inoremap <buffer> ii iː
-    inoremap <buffer> uu uː
-    inoremap <buffer> .t tˁ 
+  inoremap <buffer> aa aː
+  inoremap <buffer> ii iː
+  inoremap <buffer> uu uː
+    " inoremap <buffer> aa ā
+    " inoremap <buffer> ii ī
+    " inoremap <buffer> uu ū
+    inoremap <buffer> .t tˁ
     inoremap <buffer> .s sˁ
     inoremap <buffer> .d dˁ
     inoremap <buffer> .r rˁ
@@ -281,10 +294,11 @@ function! IPAToggle()
     inoremap <buffer> .h ħ
     inoremap <buffer> .g ɣ
     inoremap <buffer> vs ʃ
-    inoremap <buffer> _d ḏ
+    inoremap <buffer> _d ð
     inoremap <buffer> _t θ
-    inoremap <buffer> <M-p> ʕ
-    inoremap <buffer> <M-P> ʔ
+    inoremap <buffer> π ʕ
+    inoremap <buffer> ∏ ʔ
+
 
     " inormeap <buffer> ʿ ʕ
     " inormeap <buffer> ʾ ʔ
@@ -304,8 +318,8 @@ function! IPAToggle()
     iunmap vs
     iunmap _d
     iunmap _t
-    iunmap <buffer> <M-p>
-    iunmap <buffer> <M-P>
+    iunmap <buffer> π
+    iunmap <buffer> ∏
   endif
 endfunction
 
@@ -405,7 +419,7 @@ function! TTS()
          \ | sed -E "s/&nbsp;/ /g"
          \ | sed -E "s/[ʿʾ]//g"
          \ | sed -E "s/SA/S A/g"
-         \ | say --voice='. s:voice . ' -r 200 &')
+         \ | say --voice='. s:voice . ' -r 250 &')
     nnoremap <buffer><silent> <esc> :call system('killall say')<CR>
 endfunction
 
@@ -499,7 +513,9 @@ augroup end
 augroup ProseHighLighting
   autocmd!
   " Enumeration
-  autocmd BufEnter *.md syn match Constant '\v([Ff]irst(ly)?|[Ss]econd(ly)?|[Tt]hird(ly)?|[Ff]ourth(ly)?|[Ff]ifth(ly)?),'
+  autocmd BufEnter *.md syn match Constant '\v([Ff]irst(ly)?|[Ss]econd(ly)?|[Tt]hird(ly)?|[Ff]ourth(ly)?|[Ff]ifth(ly)?|[Ff]inally)>'
+    " Swedish
+  autocmd BufEnter *.md syn match Constant '\v([Ff]ör det (första|andra|tredje|fjärde|femte)|[Ss]lutligen)'
   autocmd BufEnter *.md syn match Constant '\<(?[a-z0-9])?' containedin=ALL
  " spell-check double words
 autocmd BufEnter *.md syn match SpellBad '/\<\(\w\+\)\s\+\1\>/'
@@ -667,11 +683,15 @@ augroup end
 
 augroup DirivshMappings
   autocmd!
+  " Open in a vertical split
   autocmd FileType dirvish nnoremap <buffer> v :call dirvish#open("vsplit", 1)<cr>
   " Rename
   autocmd FileType dirvish nnoremap <buffer> R 0y$$F/"1yg_:!mv "<c-r>0" ".<c-r>1<c-f>A"
+  " Delete
   autocmd FileType dirvish nnoremap <buffer> D 0y$:!rm -i "<c-r>0"<CR>
+  " Place on command line with !
   autocmd FileType dirvish nnoremap <buffer> ! 0y$:!"<c-r>0"<Home><Right><Space><Left>
+  " Open
   autocmd FileType dirvish nnoremap <buffer> x 0y$:!open "<c-r>0"<cr>
   " Remove modified search mappings
   autocmd FileType dirvish silent! unmap <buffer> /
@@ -733,7 +753,7 @@ augroup end
 " augroup RMaps
 "  autocmd!
 "   " Envoke nvim-r plugin mappings
-"  autocmd FileType r nnoremap <buffer> <leader>rf <Plug>RStart
+ autocmd FileType r nnoremap <buffer> <leader>rf <Plug>RStart
 "  autocmd FileType r nnoremap <buffer> <leader>rh <Plug>RHelp
 "  autocmd FileType r nnoremap <buffer> <leader>rq <Plug>RClose
 "  autocmd FileType r nnoremap <buffer> <leader>rv <Plug>RViewDF
@@ -898,7 +918,7 @@ augroup end
 augroup PandocCompilation
 autocmd!
 
-  "  to pdf 
+"  to pdf 
   autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer> <Leader>pp 
     \ :w <bar>
@@ -949,7 +969,7 @@ autocmd!
       \ nnoremap <buffer><Leader>pd
       \ :w<CR>
       \ :execute 'AsyncRun pandoc ' . '%' .
-      \ ' -f markdown+implicit_figures+table_captions+example_lists+smart
+      \ ' -f markdown+implicit_figures+table_captions+example_lists
       \ --filter pandoc-crossref
       \ --verbose
       \ --citeproc
@@ -989,9 +1009,11 @@ autocmd!
   autocmd Filetype markdown,pandoc.markdown
     \ nnoremap <buffer> <Leader>px
     \ :w<CR>
-    \ :AsyncRun pandoc+smart
+    \ :AsyncRun pandoc
     \ -f markdown+implicit_figures+table_captions %
     \ --filter pandoc-crossref
+    \ --wrap=none
+    \ --citeproc
     \ --bibliography ~/dotfiles/mylatexstuff/bibliotek.bib
     \ -o '%'.txt<CR>
 
@@ -1242,13 +1264,12 @@ augroup end
 
 " }}}2
 " {{{2 CHARACTER INPUT
-inoremap <M-e> ə
-inoremap <M-E> Ə
+inoremap <M-E> ə
 " non-breaking hyphen
 inoremap <M--> ‑
 " non-breaking space
 inoremap <M-Space>  
-
+ 
 
 " Space to insert space character before
 nnoremap <Space> i<Space><ESC>
@@ -1297,22 +1318,25 @@ iab قي في
 " Remove word in input mode.
 inoremap jj <c-w>
 " imap <BS><BS> <NOP> " To learn the above
-" delimiters
+
+" {{3 delimiters
 
 " Alt 1Insert pair autoamatically
 
-" inoremap ( ()<Left>
-" inoremap (( (
-" inoremap [ []<Left>
-" inoremap [[ [
-" inoremap { {}<Left>
-" inoremap {{ {
-" inoremap ` ``<Left>
-" inoremap `` `
+inoremap ( ()<Left>
+inoremap (( (
+inoremap < <><Left>
+inoremap << <
+inoremap [ []<Left>
+inoremap [[ [
+inoremap { {}<Left>
+inoremap {{ {
+inoremap ` ``<Left>
+inoremap `` `
 " inoremap ' ''<Left>
 " inoremap '' '
 
-" Alt 2: double tap to surround
+" Alt 2:  surround
 
 nmap g) ysiw)
 nmap g] ysiw]
@@ -1332,6 +1356,8 @@ inoremap <M-<><M-<> 〈
 " autocmd Filetype markdown,markdown.pandoc inoremap <buffer> ^^ ^
 " inoremap < \<><Left>
 " inoremap << \<
+
+"}}}3
 autocmd Filetype r inoremap <buffer> < <
 
 " Move to eol in Normal, Visual, Select, Operator-pending
@@ -1416,7 +1442,7 @@ function! ReadingnotesOpenPdf()
   call fzf#run({
       \ 'source': 'find ~/jobb/articuli ~/jobb/arkiv/bocker -type f',
       \ 'options': '-i --query=' . 
-      \ '"' . substitute(expand('%:t'),'\(^.\{1,30}\).*','\1','') . '"'
+      \ '"' . substitute(expand('%:t'),'\(^.\{1,20}\).*','\1','') . '"'
       \ . ' --select-1',
       \ 'sink': 'e'
       \ })  
@@ -1459,6 +1485,7 @@ augroup MailStuff
   autocmd FileType mail setlocal iskeyword+=.
   autocmd FileType mail setlocal iskeyword+=_
   autocmd FileType mail setlocal formatoptions-=t
+  autocmd FileType mail call SweType()
 
   " format text with Enter
   " autocmd FileType mail nnoremap <buffer> <CR> gqip

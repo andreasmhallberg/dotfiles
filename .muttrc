@@ -7,8 +7,9 @@ set use_from=yes
 # set smtp_authenticators = 'gssapi:login'
 
 source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
-# source ~/.mutt/gruvbox/colors-gruvbox-shuber.muttrc
+# source ~/.mutt/mutt-colors-solarized-light-256.muttrc
 
+# source ~/.mutt/gruvbox/colors-gruvbox-shuber.muttrc
 
 # Modify colorized to make read messages in index brighter
 color index         color244        color234        "~R"                        # read messages

@@ -1,0 +1,12 @@
+{
+    "description": "p to semicolon",
+    "manipulators": [
+        {
+            "from": { "key_code": "p",
+	"modifiers": { "optional": ["any"] }
+	 } ,
+            "to": [{ "key_code": "semicolon" }],
+            "type": "basic"
+        }
+    ]
+}

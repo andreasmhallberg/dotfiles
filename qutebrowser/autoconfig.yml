@@ -48,12 +48,31 @@ settings:
     global: 0.0
   colors.webpage.darkmode.enabled:
     global: false
+  content.desktop_capture:
+    https://teams.cloud.microsoft: true
   content.geolocation:
+    https://dhlpass.dhl.com: true
     https://ut.no: true
     https://www.sas.se: true
+  content.javascript.can_open_tabs_automatically:
+    global: true
   content.javascript.clipboard:
+    https://docs.google.com: access-paste
     https://github.com: access-paste
+    https://m365.cloud.microsoft: access-paste
+  content.media.audio_capture:
+    https://gu.instructure.com: true
+    https://teams.cloud.microsoft: true
+    https://teams.microsoft.com: true
+  content.media.audio_video_capture:
+    https://gu.instructure.com: true
+    https://teams.cloud.microsoft: true
+    https://teams.microsoft.com: true
+  content.media.video_capture:
+    https://teams.cloud.microsoft: true
+    https://teams.microsoft.com: true
   content.notifications.enabled:
+    https://jlcpcb.com: true
     https://toolbox.iskysoft.com: false
   content.register_protocol_handler:
     https://calendar.google.com?cid=%25s: true
@@ -78,6 +97,8 @@ settings:
     global: 15pt
   fonts.tabs.unselected:
     global: 15pt
+  hints.chars:
+    global: asdjklp
   input.insert_mode.auto_load:
     global: true
   messages.timeout:
@@ -87,6 +108,7 @@ settings:
   spellcheck.languages:
     global:
     - en-US
+    - sv-SE
   statusbar.position:
     global: bottom
   statusbar.show:
@@ -115,14 +137,15 @@ settings:
       adlibris: http://www.adlibris.com/se/sok?q={}
       colloc: https://www.freecollocation.com/search?word={}
       discogs: https://www.discogs.com/search/?q={}&type=all
-      eall: https://referenceworks-brillonline-com.ezproxy.ub.gu.se/search?s.f.s2_parent=s.f.book.encyclopedia-of-arabic-language-and-linguistics&search-go=&s.q={}
-      ei: https://referenceworks.brillonline.com/search?s.f.s2_parent=s.f.book.encyclopaedia-of-islam-2&search-go=&s.q={}
+      eall: https://referenceworks-brill-com.ezproxy.ub.gu.se/search?q={}&source=%2Fdb%2Fealo
+      ei: https://referenceworks.brill.com/search?q={}&source=%2Fdb%2Feieo
       libris: http://libris.kb.se/hitlist?d=libris&q={}
       merriam: https://www.merriam-webster.com/dictionary/{}
       oxae: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/arabic-english/?q={}
       oxea: https://premium-oxforddictionaries-com.ezproxy.ub.gu.se/translate/english-arabic/?q={}
       saol: https://svenska.se/saol/?sok={}
       sc: https://scholar.google.se/scholar?hl=en&as_sdt=0%2C5&q={}
+      sjr: https://www.scimagojr.com/journalsearch.php?q=+{}
       ub: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=BOOKS&vid=46GUB_VU1&lang=en_US&offset=0
       uba: https://gu-se-primo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,{}&tab=default_tab&search_scope=default_scope&vid=46GUB_VU1&lang=en_US&offset=0
       w: https://en.wikipedia.org/wiki/Special:Search?search={}
@@ -131,3 +154,5 @@ settings:
     global: true
   window.title_format:
     global: '{host} - {current_title}{title_sep}qutebrowser'
+  zoom.default:
+    global: 120%

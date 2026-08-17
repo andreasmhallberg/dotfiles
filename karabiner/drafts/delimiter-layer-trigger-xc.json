@@ -1,0 +1,34 @@
+{
+    "description": "Delimiter Layer Trigger [X+C as trigger key, underscore of alone]",
+    "manipulators": [
+        {
+      "from": {
+                  "simultaneous": [
+                      { "key_code": "x" },
+                      { "key_code": "c" }
+                  ],
+                  "modifiers": { "optional": ["any"] }
+              },
+              "to": [
+                  {
+                      "set_variable": {
+                          "name": "delimiter_layer_mode",
+                          "value": 1
+                      }
+                  }
+              ],
+              "to_after_key_up": [
+                  {
+                      "set_variable": {
+                          "name": "delimiter_layer_mode",
+                          "value": 0
+                      }
+                  }
+              ],
+            "to_if_alone": [
+              { "key_code": "hyphen", "modifiers": "left_shift" }
+            ]
+            , "type": "basic"
+          }
+      ]
+}

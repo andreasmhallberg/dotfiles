@@ -1,0 +1,16 @@
+{
+    "description": "x+c = underscore",
+    "manipulators": [
+        {
+            "from": {
+                "modifiers": { "optional": ["any"] },
+                "simultaneous": [
+                    { "key_code": "x" },
+                    { "key_code": "c" }
+                ]
+            },
+            "to": [{ "key_code": "hyphen", "modifiers": "right_shift" }],
+            "type": "basic"
+        }
+    ]
+}

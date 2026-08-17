@@ -1,0 +1,21 @@
+{
+    "description": "U + I to exclamation mark",
+    "manipulators": [
+
+        {
+            "from": {
+                "simultaneous": [
+                    { "key_code": "u" },
+                    { "key_code": "i" }
+                ]
+            },
+	    "to": [ {"key_code": "1", "modifiers": "left_shift"}
+            ],
+	    "type": "basic" ,
+
+    "parameters": {
+	"basic.to_delayed_action_delay_milliseconds": 50 
+       }
+        }
+    ]
+}
